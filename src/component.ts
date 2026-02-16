@@ -112,3 +112,68 @@ export function mergeTheme(theme?: Partial<Theme>): RequiredTheme {
     fontPx: { ...defaultTheme.fontPx, ...theme?.fontPx },
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ComponentRegistry = Record<string, (props: any) => POMNode>;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function expandNode(input: unknown, registry: ComponentRegistry): unknown {
+  if (Array.isArray(input)) {
+    return input.map((item) => expandNode(item, registry));
+  }
+
+  if (!isRecord(input)) {
+    return input;
+  }
+
+  if (input.type === "component") {
+    const name = input.name as string;
+    const fn = registry[name];
+    if (!fn) {
+      throw new Error(`Unknown component: "${name}"`);
+    }
+    const rawProps = isRecord(input.props) ? input.props : {};
+    const expandedProps = Object.fromEntries(
+      Object.entries(rawProps).map(([key, value]) => [
+        key,
+        expandNode(value, registry),
+      ]),
+    );
+    return expandNode(fn(expandedProps), registry);
+  }
+
+  const result: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(input)) {
+    if (key === "children") {
+      result[key] = expandNode(value, registry);
+    } else {
+      result[key] = value;
+    }
+  }
+  return result;
+}
+
+/**
+ * JSON 入力内のコンポーネントノードを展開して POMNode を返す。
+ * LLM が出力した JSON に `{ type: "component", name: "...", props: {...} }` が
+ * 含まれている場合、レジストリからコンポーネント関数を取得して展開する。
+ */
+export function expandComponents(
+  input: unknown,
+  registry: ComponentRegistry,
+): POMNode {
+  return expandNode(input, registry) as POMNode;
+}
+
+/**
+ * 複数スライドの JSON 入力内のコンポーネントノードを展開する。
+ */
+export function expandComponentSlides(
+  inputs: unknown[],
+  registry: ComponentRegistry,
+): POMNode[] {
+  return inputs.map((input) => expandComponents(input, registry));
+}

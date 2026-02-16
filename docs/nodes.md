@@ -129,6 +129,73 @@ const CardWithBadge = defineComponent<{ title: string; badge: string }>(
 );
 ```
 
+### Using Components with JSON (LLM Integration)
+
+When an LLM outputs JSON, it can reference registered components using `{ type: "component", name: "...", props: {...} }`. Use `expandComponents()` or `expandComponentSlides()` to resolve them before passing to `buildPptx()`.
+
+```typescript
+import {
+  buildPptx,
+  defineComponent,
+  expandComponentSlides,
+} from "@hirokisakabe/pom";
+
+// Define and register components
+const SectionCard = defineComponent<{ title: string; content: unknown }>(
+  (props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        props.content,
+      ],
+    },
+  }),
+);
+
+const registry = { SectionCard };
+
+// LLM outputs JSON with component references
+const llmOutput = [
+  {
+    type: "vstack",
+    w: 1280,
+    h: 720,
+    children: [
+      {
+        type: "component",
+        name: "SectionCard",
+        props: { title: "KPI", content: { type: "text", text: "$1M" } },
+      },
+    ],
+  },
+];
+
+// Expand components, then build
+const slides = expandComponentSlides(llmOutput, registry);
+const pptx = await buildPptx(slides, { w: 1280, h: 720 });
+```
+
+**Component node format:**
+
+```json
+{
+  "type": "component",
+  "name": "ComponentName",
+  "props": {
+    "title": "...",
+    "content": { "type": "text", "text": "..." }
+  }
+}
+```
+
+- `name`: Must match a key in the component registry
+- `props`: Passed to the component function. Props can contain POMNode objects (slots) or nested component references
+- Component references in props are recursively expanded before the component function is called
+
 ## Common Properties
 
 Layout attributes that all nodes can have.

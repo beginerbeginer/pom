@@ -140,6 +140,57 @@ Components support:
 - **Slots**: Pass `POMNode` or `POMNode[]` as props for content injection
 - **Theme**: Use `mergeTheme()` for colors, spacing, and font size overrides
 - **Nesting**: Components can call other components
+- **JSON / LLM**: Use `expandComponents()` to resolve component references in JSON
+
+### Using Components with LLM-generated JSON
+
+When an LLM outputs JSON containing `{ type: "component", name: "...", props: {...} }`, use `expandComponentSlides()` to resolve them before building:
+
+```typescript
+import {
+  buildPptx,
+  defineComponent,
+  expandComponentSlides,
+} from "@hirokisakabe/pom";
+
+// Register components
+const SectionCard = defineComponent<{ title: string; content: unknown }>(
+  (props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        props.content,
+      ],
+    },
+  }),
+);
+
+const registry = { SectionCard };
+
+// LLM output (JSON with component references)
+const llmOutput = [
+  {
+    type: "vstack",
+    w: 1280,
+    h: 720,
+    children: [
+      {
+        type: "component",
+        name: "SectionCard",
+        props: { title: "KPI", content: { type: "text", text: "$1M" } },
+      },
+    ],
+  },
+];
+
+// Expand → Build
+const slides = expandComponentSlides(llmOutput, registry);
+const pptx = await buildPptx(slides, { w: 1280, h: 720 });
+```
 
 ## Documentation
 

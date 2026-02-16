@@ -1,6 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { defineComponent, defaultTheme, mergeTheme } from "./component.ts";
+import {
+  defineComponent,
+  defaultTheme,
+  mergeTheme,
+  expandComponents,
+  expandComponentSlides,
+} from "./component.ts";
 import type { POMNode } from "./types.ts";
+import type { ComponentRegistry } from "./component.ts";
 
 describe("defineComponent", () => {
   it("Propsから POMNode を生成する関数を作成する", () => {
@@ -94,6 +101,197 @@ describe("defineComponent", () => {
       text: "NG",
       color: "FF0000",
     });
+  });
+});
+
+describe("expandComponents", () => {
+  const SectionCard = defineComponent<{
+    title: string;
+    content: POMNode;
+  }>((props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        props.content,
+      ],
+    },
+  }));
+
+  const registry: ComponentRegistry = { SectionCard };
+
+  it("type: 'component' ノードをレジストリから展開する", () => {
+    const input = {
+      type: "component",
+      name: "SectionCard",
+      props: {
+        title: "KPI",
+        content: { type: "text", text: "$1M" },
+      },
+    };
+
+    const result = expandComponents(input, registry);
+    expect(result).toEqual({
+      type: "box",
+      padding: 16,
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "KPI", bold: true },
+          { type: "text", text: "$1M" },
+        ],
+      },
+    });
+  });
+
+  it("コンテナノードの children 内のコンポーネントを展開する", () => {
+    const input = {
+      type: "vstack",
+      gap: 24,
+      children: [
+        { type: "text", text: "Title" },
+        {
+          type: "component",
+          name: "SectionCard",
+          props: {
+            title: "Card",
+            content: { type: "text", text: "Content" },
+          },
+        },
+      ],
+    };
+
+    const result = expandComponents(input, registry);
+    expect(result.type).toBe("vstack");
+    const children = (result as { children: POMNode[] }).children;
+    expect(children[0]).toEqual({ type: "text", text: "Title" });
+    expect(children[1]).toEqual({
+      type: "box",
+      padding: 16,
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "Card", bold: true },
+          { type: "text", text: "Content" },
+        ],
+      },
+    });
+  });
+
+  it("スロット内のネストされたコンポーネントを再帰展開する", () => {
+    const Badge = defineComponent<{ label: string }>((props) => ({
+      type: "text",
+      text: props.label,
+      bold: true,
+    }));
+
+    const nestedRegistry: ComponentRegistry = { ...registry, Badge };
+
+    const input = {
+      type: "component",
+      name: "SectionCard",
+      props: {
+        title: "Nested",
+        content: {
+          type: "component",
+          name: "Badge",
+          props: { label: "NEW" },
+        },
+      },
+    };
+
+    const result = expandComponents(input, nestedRegistry);
+    expect(result).toEqual({
+      type: "box",
+      padding: 16,
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "Nested", bold: true },
+          { type: "text", text: "NEW", bold: true },
+        ],
+      },
+    });
+  });
+
+  it("未登録のコンポーネント名でエラーが発生する", () => {
+    const input = {
+      type: "component",
+      name: "Unknown",
+      props: {},
+    };
+
+    expect(() => expandComponents(input, registry)).toThrow(
+      'Unknown component: "Unknown"',
+    );
+  });
+
+  it("コンポーネントを含まない通常の POMNode はそのまま通過する", () => {
+    const input = {
+      type: "vstack",
+      gap: 16,
+      children: [
+        { type: "text", text: "Hello" },
+        { type: "text", text: "World" },
+      ],
+    };
+
+    const result = expandComponents(input, registry);
+    expect(result).toEqual(input);
+  });
+
+  it("box の単一 children 内のコンポーネントを展開する", () => {
+    const input = {
+      type: "box",
+      padding: 8,
+      children: {
+        type: "component",
+        name: "SectionCard",
+        props: {
+          title: "Inner",
+          content: { type: "text", text: "Text" },
+        },
+      },
+    };
+
+    const result = expandComponents(input, registry);
+    expect((result as { children: POMNode }).children.type).toBe("box");
+  });
+});
+
+describe("expandComponentSlides", () => {
+  const Card = defineComponent<{ title: string }>((props) => ({
+    type: "text",
+    text: props.title,
+  }));
+
+  const registry: ComponentRegistry = { Card };
+
+  it("複数スライドのコンポーネントを展開する", () => {
+    const inputs = [
+      {
+        type: "component",
+        name: "Card",
+        props: { title: "Slide 1" },
+      },
+      {
+        type: "component",
+        name: "Card",
+        props: { title: "Slide 2" },
+      },
+    ];
+
+    const result = expandComponentSlides(inputs, registry);
+    expect(result).toEqual([
+      { type: "text", text: "Slide 1" },
+      { type: "text", text: "Slide 2" },
+    ]);
   });
 });
 
