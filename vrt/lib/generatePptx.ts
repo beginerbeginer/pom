@@ -3681,6 +3681,92 @@ const page16Layer: POMNode = {
   ],
 };
 
+// ===================== Page 17: HStack + Table 幅計算 =====================
+const page17HStackTable: POMNode = {
+  type: "vstack",
+  gap: 16,
+  padding: 48,
+  children: [
+    {
+      type: "text",
+      text: "17. HStack + Table Width Calculation",
+      fontPx: 22,
+      bold: true,
+    },
+    // テーブルが固有サイズを保持するケース
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 12,
+        children: [
+          {
+            type: "text",
+            text: "HStack with table (table should keep intrinsic width):",
+            fontPx: 14,
+            bold: true,
+          },
+          {
+            type: "hstack",
+            gap: 16,
+            children: [
+              {
+                type: "text",
+                text: "Left text",
+                fontPx: 14,
+              },
+              {
+                type: "table",
+                defaultRowHeight: 28,
+                columns: [{ width: 80 }, { width: 120 }, { width: 80 }],
+                rows: [
+                  {
+                    cells: [
+                      {
+                        text: "A",
+                        fontPx: 12,
+                        bold: true,
+                        backgroundColor: palette.lightBlue,
+                      },
+                      {
+                        text: "B",
+                        fontPx: 12,
+                        bold: true,
+                        backgroundColor: palette.lightBlue,
+                      },
+                      {
+                        text: "C",
+                        fontPx: 12,
+                        bold: true,
+                        backgroundColor: palette.lightBlue,
+                      },
+                    ],
+                  },
+                  {
+                    cells: [
+                      { text: "1", fontPx: 12 },
+                      { text: "Data", fontPx: 12 },
+                      { text: "OK", fontPx: 12 },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: "text",
+                text: "Right text",
+                fontPx: 14,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};
+
 export async function generatePptx(outputPath: string): Promise<void> {
   const pptx = await buildPptx(
     [
@@ -3700,6 +3786,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
       page14ProcessArrow,
       page15Line,
       page16Layer,
+      page17HStackTable,
     ],
     {
       w: 1280,

@@ -100,7 +100,12 @@ async function buildPomWithYogaTree(
   await applyStyleToYogaNode(node, yn);
 
   // HStack の子要素で幅が指定されていない場合、デフォルトで均等分割
-  if (parentNode?.type === "hstack" && node.w === undefined) {
+  // テーブルは setMeasureFunc でカラム幅合計を返すため除外
+  if (
+    parentNode?.type === "hstack" &&
+    node.w === undefined &&
+    node.type !== "table"
+  ) {
     yn.setFlexGrow(1);
     yn.setFlexBasis(0);
   }
