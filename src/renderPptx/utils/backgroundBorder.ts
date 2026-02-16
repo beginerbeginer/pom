@@ -1,9 +1,20 @@
-import type { PositionedNode } from "../../types.ts";
+import type { PositionedNode, ShadowStyle } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 
+function convertShadow(shadow: ShadowStyle) {
+  return {
+    type: shadow.type,
+    opacity: shadow.opacity,
+    blur: shadow.blur,
+    angle: shadow.angle,
+    offset: shadow.offset,
+    color: shadow.color,
+  };
+}
+
 /**
- * ノードの背景色とボーダーを描画する
+ * ノードの背景色・ボーダー・影を描画する
  * 全ノードタイプで最初に呼び出される共通処理
  */
 export function renderBackgroundAndBorder(
@@ -11,6 +22,8 @@ export function renderBackgroundAndBorder(
   ctx: RenderContext,
 ): void {
   const { backgroundColor, border, borderRadius } = node;
+  const shadow =
+    "shadow" in node ? (node as { shadow?: ShadowStyle }).shadow : undefined;
   const hasBackground = Boolean(backgroundColor);
   const hasBorder = Boolean(
     border &&
@@ -18,8 +31,9 @@ export function renderBackgroundAndBorder(
         border.width !== undefined ||
         border.dashType !== undefined),
   );
+  const hasShadow = Boolean(shadow);
 
-  if (!hasBackground && !hasBorder) {
+  if (!hasBackground && !hasBorder && !hasShadow) {
     return;
   }
 
@@ -53,6 +67,7 @@ export function renderBackgroundAndBorder(
     fill,
     line,
     rectRadius,
+    shadow: shadow ? convertShadow(shadow) : undefined,
   };
 
   ctx.slide.addShape(shapeType, shapeOptions);

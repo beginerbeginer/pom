@@ -145,6 +145,14 @@ A node for displaying images.
     x?: number;   // Crop X offset (crop only)
     y?: number;   // Crop Y offset (crop only)
   };
+  shadow?: {
+    type: "outer" | "inner";
+    opacity?: number;
+    blur?: number;
+    angle?: number;
+    offset?: number;
+    color?: string;
+  };
 
   // Common properties
   w?: number | "max" | `${number}%`;
@@ -259,6 +267,14 @@ A generic container that wraps a single child element.
 {
   type: "box";
   children: POMNode;
+  shadow?: {
+    type: "outer" | "inner";
+    opacity?: number;
+    blur?: number;
+    angle?: number;
+    offset?: number;
+    color?: string;
+  };
 
   // Common properties
   w?: number | "max" | `${number}%`;
