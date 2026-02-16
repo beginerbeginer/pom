@@ -16,21 +16,21 @@ Standard gap: 12-24px
 
 ### Node List
 
-| type         | Purpose      | Main Properties                                                             |
-| ------------ | ------------ | --------------------------------------------------------------------------- |
-| text         | Text         | text, fontPx, color, bold, alignText, bullet                                |
-| vstack       | Vertical     | children[], gap, alignItems, justifyContent                                 |
-| hstack       | Horizontal   | children[], gap, alignItems, justifyContent                                 |
-| box          | Wrapper      | children (single node)                                                      |
-| table        | Table        | columns[], rows[], defaultRowHeight                                         |
-| shape        | Shape        | shapeType, fill, line, text, fontPx                                         |
-| chart        | Chart        | chartType(bar/line/pie/area/doughnut/radar), data[], showLegend, radarStyle |
-| timeline     | Timeline     | direction(horizontal/vertical), items[]                                     |
-| matrix       | Matrix       | axes, quadrants, items[]                                                    |
-| tree         | Tree         | layout, nodeShape, data, connectorStyle                                     |
-| flow         | Flowchart    | direction(TB/LR), nodes[], edges[]                                          |
-| processArrow | ProcessArrow | direction(horizontal/vertical), steps[]                                     |
-| image        | Image        | src                                                                         |
+| type         | Purpose      | Main Properties                                                                    |
+| ------------ | ------------ | ---------------------------------------------------------------------------------- |
+| text         | Text         | text, fontPx, color, bold, italic, underline, strike, highlight, alignText, bullet |
+| vstack       | Vertical     | children[], gap, alignItems, justifyContent                                        |
+| hstack       | Horizontal   | children[], gap, alignItems, justifyContent                                        |
+| box          | Wrapper      | children (single node)                                                             |
+| table        | Table        | columns[], rows[], defaultRowHeight                                                |
+| shape        | Shape        | shapeType, fill, line, text, fontPx                                                |
+| chart        | Chart        | chartType(bar/line/pie/area/doughnut/radar), data[], showLegend, radarStyle        |
+| timeline     | Timeline     | direction(horizontal/vertical), items[]                                            |
+| matrix       | Matrix       | axes, quadrants, items[]                                                           |
+| tree         | Tree         | layout, nodeShape, data, connectorStyle                                            |
+| flow         | Flowchart    | direction(TB/LR), nodes[], edges[]                                                 |
+| processArrow | ProcessArrow | direction(horizontal/vertical), steps[]                                            |
+| image        | Image        | src                                                                                |
 
 ### Common Properties
 

@@ -1,6 +1,7 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { convertUnderline, convertStrike } from "../textOptions.ts";
 
 type ProcessArrowPositionedNode = Extract<
   PositionedNode,
@@ -87,6 +88,10 @@ function renderHorizontalProcessArrow(
       fontFace: "Noto Sans JP",
       color: textColor,
       bold: node.bold ?? false,
+      italic: node.italic,
+      underline: convertUnderline(node.underline),
+      strike: convertStrike(node.strike),
+      highlight: node.highlight,
       align: "center",
       valign: "middle",
     });
@@ -130,6 +135,10 @@ function renderVerticalProcessArrow(
       fontFace: "Noto Sans JP",
       color: textColor,
       bold: node.bold ?? false,
+      italic: node.italic,
+      underline: convertUnderline(node.underline),
+      strike: convertStrike(node.strike),
+      highlight: node.highlight,
       align: "center",
       valign: "middle",
     });

@@ -26,6 +26,7 @@ import type {
 } from "../types.ts";
 import type { RenderContext } from "./types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
+import { convertUnderline, convertStrike } from "./textOptions.ts";
 import { renderBackgroundAndBorder } from "./utils/backgroundBorder.ts";
 import {
   renderTextNode,
@@ -42,7 +43,11 @@ import {
 } from "./nodes/index.ts";
 
 type SlidePx = { w: number; h: number };
-export { createTextOptions } from "./textOptions.ts";
+export {
+  createTextOptions,
+  convertUnderline,
+  convertStrike,
+} from "./textOptions.ts";
 export { PX_PER_IN, pxToIn, pxToPt } from "./units.ts";
 
 const DEFAULT_MASTER_NAME = "POM_MASTER";
@@ -67,6 +72,10 @@ function convertMasterObject(
             fontFace: obj.fontFamily,
             color: obj.color,
             bold: obj.bold,
+            italic: obj.italic,
+            underline: convertUnderline(obj.underline),
+            strike: convertStrike(obj.strike),
+            highlight: obj.highlight,
             align: obj.alignText,
           },
         },
