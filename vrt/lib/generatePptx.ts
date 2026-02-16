@@ -4062,6 +4062,205 @@ const page18Opacity: POMNode = {
   ],
 };
 
+// ============================================================
+// Page 19: Shadow Test
+// テスト対象: Box shadow, Image shadow, Shape shadow
+// ============================================================
+const page19Shadow: POMNode = {
+  type: "vstack",
+  w: "100%",
+  h: "max",
+  padding: 48,
+  gap: 20,
+  alignItems: "stretch",
+  backgroundColor: palette.background,
+  children: [
+    {
+      type: "text",
+      text: "Page 19: Shadow Test",
+      fontPx: 28,
+      color: palette.charcoal,
+      bold: true,
+    },
+    // Box with outer shadow
+    {
+      type: "hstack",
+      gap: 24,
+      alignItems: "start",
+      children: [
+        {
+          type: "box",
+          w: 200,
+          h: 100,
+          padding: 16,
+          backgroundColor: "FFFFFF",
+          borderRadius: 8,
+          shadow: {
+            type: "outer",
+            color: "000000",
+            blur: 6,
+            offset: 3,
+            angle: 315,
+            opacity: 0.3,
+          },
+          children: {
+            type: "text",
+            text: "Box: outer shadow",
+            fontPx: 14,
+            color: palette.charcoal,
+          },
+        },
+        // Box with inner shadow
+        {
+          type: "box",
+          w: 200,
+          h: 100,
+          padding: 16,
+          backgroundColor: "FFFFFF",
+          borderRadius: 8,
+          shadow: {
+            type: "inner",
+            color: "000000",
+            blur: 4,
+            offset: 2,
+            angle: 315,
+            opacity: 0.2,
+          },
+          children: {
+            type: "text",
+            text: "Box: inner shadow",
+            fontPx: 14,
+            color: palette.charcoal,
+          },
+        },
+        // Box with shadow + border
+        {
+          type: "box",
+          w: 200,
+          h: 100,
+          padding: 16,
+          backgroundColor: "FFFFFF",
+          border: { color: palette.blue, width: 2 },
+          borderRadius: 8,
+          shadow: {
+            type: "outer",
+            color: palette.blue,
+            blur: 8,
+            offset: 4,
+            angle: 315,
+            opacity: 0.4,
+          },
+          children: {
+            type: "text",
+            text: "Box: shadow + border",
+            fontPx: 14,
+            color: palette.charcoal,
+          },
+        },
+      ],
+    },
+    // Shape with shadow (various shape types)
+    {
+      type: "hstack",
+      gap: 24,
+      alignItems: "start",
+      children: [
+        {
+          type: "shape",
+          shapeType: "ellipse",
+          w: 150,
+          h: 100,
+          fill: { color: palette.lightBlue },
+          shadow: {
+            type: "outer",
+            color: "000000",
+            blur: 6,
+            offset: 3,
+            angle: 315,
+            opacity: 0.3,
+          },
+          text: "Ellipse shadow",
+          fontPx: 12,
+          color: palette.charcoal,
+        },
+        {
+          type: "shape",
+          shapeType: "roundRect",
+          w: 150,
+          h: 100,
+          fill: { color: palette.lightBlue },
+          shadow: {
+            type: "outer",
+            color: palette.navy,
+            blur: 10,
+            offset: 5,
+            angle: 270,
+            opacity: 0.5,
+          },
+          text: "RoundRect shadow",
+          fontPx: 12,
+          color: palette.charcoal,
+        },
+      ],
+    },
+    // Image with shadow
+    {
+      type: "hstack",
+      gap: 24,
+      alignItems: "start",
+      children: [
+        {
+          type: "box",
+          w: 180,
+          h: 120,
+          children: {
+            type: "image",
+            src: "https://placehold.co/180x120/DBEAFE/1D4ED8?text=Shadow",
+            w: 180,
+            h: 120,
+            shadow: {
+              type: "outer",
+              color: "000000",
+              blur: 8,
+              offset: 4,
+              angle: 315,
+              opacity: 0.4,
+            },
+          },
+        },
+      ],
+    },
+    // Box with shadow only (no background, no border)
+    {
+      type: "hstack",
+      gap: 24,
+      alignItems: "start",
+      children: [
+        {
+          type: "box",
+          w: 200,
+          h: 80,
+          padding: 16,
+          shadow: {
+            type: "outer",
+            color: "000000",
+            blur: 6,
+            offset: 3,
+            angle: 315,
+            opacity: 0.3,
+          },
+          children: {
+            type: "text",
+            text: "Shadow only (no bg)",
+            fontPx: 14,
+            color: palette.charcoal,
+          },
+        },
+      ],
+    },
+  ],
+};
+
 export async function generatePptx(outputPath: string): Promise<void> {
   const pptx = await buildPptx(
     [
@@ -4084,6 +4283,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
       page16Layer,
       page17HStackTable,
       page18Opacity,
+      page19Shadow,
     ],
     {
       w: 1280,

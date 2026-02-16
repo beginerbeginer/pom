@@ -62,6 +62,7 @@ PPTX 生成は3段階のパイプライン:
 - `LayerNode` - 絶対配置コンテナ（children に x, y を指定して自由配置）
 - `ImageSizing` - 画像サイズ調整設定（type: contain/cover/crop, w, h, x, y）
 - `BulletOptions` - 箇条書き設定（type, indent, numberType, numberStartAt）
+- `ShadowStyle` - 影設定（type: outer/inner, color, blur, offset, angle, opacity）
 - `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
 - `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius, opacity）
 - `Theme` - テーマ設定型（colors, spacing, fontPx）
