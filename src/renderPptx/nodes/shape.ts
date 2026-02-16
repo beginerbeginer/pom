@@ -1,6 +1,7 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { convertUnderline, convertStrike } from "../textOptions.ts";
 
 type ShapePositionedNode = Extract<PositionedNode, { type: "shape" }>;
 
@@ -47,6 +48,11 @@ export function renderShapeNode(
       fontSize: pxToPt(node.fontPx ?? 24),
       fontFace: "Noto Sans JP",
       color: node.color,
+      bold: node.bold,
+      italic: node.italic,
+      underline: convertUnderline(node.underline),
+      strike: convertStrike(node.strike),
+      highlight: node.highlight,
       align: node.alignText ?? "center",
       valign: "middle" as const,
       lineSpacingMultiple: 1.3,
