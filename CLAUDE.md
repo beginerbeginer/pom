@@ -63,7 +63,7 @@ PPTX 生成は3段階のパイプライン:
 - `ImageSizing` - 画像サイズ調整設定（type: contain/cover/crop, w, h, x, y）
 - `BulletOptions` - 箇条書き設定（type, indent, numberType, numberStartAt）
 - `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
-- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius）
+- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius, opacity）
 
 ### 入力スキーマ（LLM連携用）
 

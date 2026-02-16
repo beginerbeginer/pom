@@ -227,9 +227,13 @@ export function renderPptx(
     // ルートノードの backgroundColor はスライドの background プロパティとして適用
     // これにより、マスタースライドのオブジェクトを覆い隠さない
     // line ノードは backgroundColor を持たないためスキップ
+    // ただし opacity が指定されている場合は slide.background では透過を表現できないため、
+    // renderBackgroundAndBorder で描画する
     const rootBackgroundColor =
       data.type !== "line" ? data.backgroundColor : undefined;
-    if (rootBackgroundColor) {
+    const rootHasOpacity =
+      data.type !== "line" && "opacity" in data && data.opacity !== undefined;
+    if (rootBackgroundColor && !rootHasOpacity) {
       slide.background = { color: rootBackgroundColor };
     }
 
@@ -241,7 +245,8 @@ export function renderPptx(
       // line ノードは backgroundColor/border を持たないため、background/border の描画をスキップ
       if (node.type !== "line") {
         // ルートノードの backgroundColor は既に slide.background に適用済みなのでスキップ
-        if (isRoot && rootBackgroundColor) {
+        // ただし opacity がある場合は slide.background を使わないため通常描画
+        if (isRoot && rootBackgroundColor && !rootHasOpacity) {
           // border のみ描画（backgroundColor はスキップ）
           const { border, borderRadius } = node;
           const hasBorder = Boolean(

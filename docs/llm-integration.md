@@ -41,6 +41,7 @@ Available for all nodes:
 - `backgroundColor`: Background color (6-digit hex, e.g., `"F8FAFC"`)
 - `border`: Border (`{ color, width, dashType }`)
 - `borderRadius`: Corner radius in px (e.g., `8`, `16`)
+- `opacity`: Background transparency (0-1, e.g., `0.5` for semi-transparent)
 
 ### alignItems / justifyContent
 
