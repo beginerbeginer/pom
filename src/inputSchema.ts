@@ -54,6 +54,7 @@ import {
   type AlignItems,
   type JustifyContent,
   type TreeDataItem,
+  type ShadowStyle,
 } from "./types.ts";
 
 // ===== Base Node Schema =====
@@ -69,6 +70,7 @@ export const inputBaseNodeSchema = z.object({
   backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
+  opacity: z.number().min(0).max(1).optional(),
 });
 
 type InputBaseNode = z.infer<typeof inputBaseNodeSchema>;
@@ -102,6 +104,7 @@ export const inputImageNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
   sizing: inputImageSizingSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 export const inputTableNodeSchema = inputBaseNodeSchema.extend({
@@ -228,6 +231,7 @@ export type InputLineNode = z.infer<typeof inputLineNodeSchema>;
 export type InputBoxNode = InputBaseNode & {
   type: "box";
   children: InputPOMNode;
+  shadow?: ShadowStyle;
 };
 
 export type InputVStackNode = InputBaseNode & {
@@ -278,6 +282,7 @@ export type InputPOMNode =
 const inputBoxNodeSchemaBase = inputBaseNodeSchema.extend({
   type: z.literal("box"),
   children: z.lazy(() => inputPomNodeSchema),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const inputVStackNodeSchemaBase = inputBaseNodeSchema.extend({

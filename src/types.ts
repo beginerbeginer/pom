@@ -336,6 +336,7 @@ const basePOMNodeSchema = z.object({
   backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
+  opacity: z.number().min(0).max(1).optional(),
 });
 
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
@@ -369,6 +370,7 @@ export const imageNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
   sizing: imageSizingSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 export const tableCellSchema = z.object({
@@ -684,6 +686,7 @@ export type LineNode = z.infer<typeof lineNodeSchema>;
 export type BoxNode = BasePOMNode & {
   type: "box";
   children: POMNode;
+  shadow?: ShadowStyle;
 };
 
 export type VStackNode = BasePOMNode & {
@@ -734,6 +737,7 @@ export type POMNode =
 const boxNodeSchemaBase = basePOMNodeSchema.extend({
   type: z.literal("box"),
   children: z.lazy(() => pomNodeSchema),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const vStackNodeSchemaBase = basePOMNodeSchema.extend({

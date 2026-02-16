@@ -1,10 +1,21 @@
-import type { PositionedNode } from "../../types.ts";
+import type { PositionedNode, ShadowStyle } from "../../types.ts";
 import { getImageData } from "../../calcYogaLayout/measureImage.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 
+function convertShadow(shadow: ShadowStyle) {
+  return {
+    type: shadow.type,
+    opacity: shadow.opacity,
+    blur: shadow.blur,
+    angle: shadow.angle,
+    offset: shadow.offset,
+    color: shadow.color,
+  };
+}
+
 /**
- * ノードの背景色・背景画像・ボーダーを描画する
+ * ノードの背景色・背景画像・ボーダー・影を描画する
  * 全ノードタイプで最初に呼び出される共通処理
  *
  * 描画順序: 背景色 → 背景画像 → ボーダー
@@ -14,6 +25,8 @@ export function renderBackgroundAndBorder(
   ctx: RenderContext,
 ): void {
   const { backgroundColor, backgroundImage, border, borderRadius } = node;
+  const shadow =
+    "shadow" in node ? (node as { shadow?: ShadowStyle }).shadow : undefined;
   const hasBackground = Boolean(backgroundColor);
   const hasBackgroundImage = Boolean(backgroundImage);
   const hasBorder = Boolean(
@@ -22,8 +35,9 @@ export function renderBackgroundAndBorder(
         border.width !== undefined ||
         border.dashType !== undefined),
   );
+  const hasShadow = Boolean(shadow);
 
-  if (!hasBackground && !hasBackgroundImage && !hasBorder) {
+  if (!hasBackground && !hasBackgroundImage && !hasBorder && !hasShadow) {
     return;
   }
 
@@ -40,7 +54,11 @@ export function renderBackgroundAndBorder(
   // backgroundImage がない場合は従来通り1回の addShape で処理
   if (!hasBackgroundImage) {
     const fill = hasBackground
-      ? { color: backgroundColor }
+      ? {
+          color: backgroundColor,
+          transparency:
+            node.opacity !== undefined ? (1 - node.opacity) * 100 : undefined,
+        }
       : { type: "none" as const };
 
     const line = hasBorder
@@ -59,6 +77,7 @@ export function renderBackgroundAndBorder(
       fill,
       line,
       rectRadius,
+      shadow: shadow ? convertShadow(shadow) : undefined,
     });
     return;
   }
@@ -72,7 +91,11 @@ export function renderBackgroundAndBorder(
       y: pxToIn(node.y),
       w: pxToIn(node.w),
       h: pxToIn(node.h),
-      fill: { color: backgroundColor },
+      fill: {
+        color: backgroundColor,
+        transparency:
+          node.opacity !== undefined ? (1 - node.opacity) * 100 : undefined,
+      },
       line: { type: "none" as const },
       rectRadius,
     });
@@ -102,19 +125,23 @@ export function renderBackgroundAndBorder(
   }
 
   // 3. ボーダー
-  if (hasBorder) {
+  if (hasBorder || hasShadow) {
     ctx.slide.addShape(shapeType, {
       x: pxToIn(node.x),
       y: pxToIn(node.y),
       w: pxToIn(node.w),
       h: pxToIn(node.h),
       fill: { type: "none" as const },
-      line: {
-        color: border?.color ?? "000000",
-        width: border?.width !== undefined ? pxToPt(border.width) : undefined,
-        dashType: border?.dashType,
-      },
+      line: hasBorder
+        ? {
+            color: border?.color ?? "000000",
+            width:
+              border?.width !== undefined ? pxToPt(border.width) : undefined,
+            dashType: border?.dashType,
+          }
+        : { type: "none" as const },
       rectRadius,
+      shadow: shadow ? convertShadow(shadow) : undefined,
     });
   }
 }
