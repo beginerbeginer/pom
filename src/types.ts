@@ -311,6 +311,17 @@ export type ShapeType = z.infer<typeof shapeTypeSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
 export type Underline = z.infer<typeof underlineSchema>;
 
+// ===== Background Image =====
+export const backgroundImageSizingSchema = z.enum(["cover", "contain"]);
+
+export const backgroundImageSchema = z.object({
+  src: z.string(),
+  sizing: backgroundImageSizingSchema.optional(),
+});
+
+export type BackgroundImageSizing = z.infer<typeof backgroundImageSizingSchema>;
+export type BackgroundImage = z.infer<typeof backgroundImageSchema>;
+
 // ===== Base Node =====
 const basePOMNodeSchema = z.object({
   yogaNode: z.custom<YogaNode>().optional(),
@@ -322,6 +333,7 @@ const basePOMNodeSchema = z.object({
   maxH: z.number().optional(),
   padding: paddingSchema.optional(),
   backgroundColor: z.string().optional(),
+  backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
   opacity: z.number().min(0).max(1).optional(),
@@ -928,6 +940,7 @@ export const slideMasterBackgroundSchema = z.union([
   z.object({ color: z.string() }),
   z.object({ path: z.string() }),
   z.object({ data: z.string() }),
+  z.object({ image: z.string() }),
 ]);
 
 export const slideMasterMarginSchema = z.union([

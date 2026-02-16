@@ -40,6 +40,7 @@ Available for all nodes:
 - `w`, `h`: Size (number in px / `"max"` / `"50%"`)
 - `padding`: Margin (number or `{ top, right, bottom, left }`)
 - `backgroundColor`: Background color (6-digit hex, e.g., `"F8FAFC"`)
+- `backgroundImage`: Background image (`{ src, sizing }`, sizing: `"cover"` / `"contain"`)
 - `border`: Border (`{ color, width, dashType }`)
 - `borderRadius`: Corner radius in px (e.g., `8`, `16`)
 - `opacity`: Background transparency (0-1, e.g., `0.5` for semi-transparent)

@@ -50,6 +50,7 @@ import {
   processArrowStepSchema,
   lineArrowSchema,
   underlineSchema,
+  backgroundImageSchema,
   type AlignItems,
   type JustifyContent,
   type TreeDataItem,
@@ -66,6 +67,7 @@ export const inputBaseNodeSchema = z.object({
   maxH: z.number().optional(),
   padding: paddingSchema.optional(),
   backgroundColor: z.string().optional(),
+  backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
   opacity: z.number().min(0).max(1).optional(),
@@ -428,6 +430,7 @@ export const inputSlideMasterBackgroundSchema = z.union([
   z.object({ color: z.string() }),
   z.object({ path: z.string() }),
   z.object({ data: z.string() }),
+  z.object({ image: z.string() }),
 ]);
 
 export const inputSlideMasterMarginSchema = z.union([

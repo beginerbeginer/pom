@@ -27,6 +27,7 @@ import type {
 import type { RenderContext } from "./types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
 import { convertUnderline, convertStrike } from "./textOptions.ts";
+import { getImageData } from "../calcYogaLayout/measureImage.ts";
 import { renderBackgroundAndBorder } from "./utils/backgroundBorder.ts";
 import {
   renderTextNode,
@@ -154,6 +155,8 @@ function defineSlideMasterFromOptions(
       masterProps.background = { path: master.background.path };
     } else if ("data" in master.background) {
       masterProps.background = { data: master.background.data };
+    } else if ("image" in master.background) {
+      masterProps.background = { path: master.background.image };
     }
   }
 
@@ -237,6 +240,19 @@ export function renderPptx(
       slide.background = { color: rootBackgroundColor };
     }
 
+    // ルートノードの backgroundImage はスライドの background プロパティとして適用
+    // backgroundColor と backgroundImage の両方がある場合、backgroundImage が優先
+    const rootBackgroundImage =
+      data.type !== "line" ? data.backgroundImage : undefined;
+    if (rootBackgroundImage) {
+      const cachedData = getImageData(rootBackgroundImage.src);
+      if (cachedData) {
+        slide.background = { data: cachedData };
+      } else {
+        slide.background = { path: rootBackgroundImage.src };
+      }
+    }
+
     /**
      * node をスライドにレンダリングする
      * @param isRoot ルートノードかどうか（ルートノードの background は slide.background で処理済み）
@@ -244,10 +260,13 @@ export function renderPptx(
     function renderNode(node: PositionedNode, isRoot = false) {
       // line ノードは backgroundColor/border を持たないため、background/border の描画をスキップ
       if (node.type !== "line") {
-        // ルートノードの backgroundColor は既に slide.background に適用済みなのでスキップ
-        // ただし opacity がある場合は slide.background を使わないため通常描画
-        if (isRoot && rootBackgroundColor && !rootHasOpacity) {
-          // border のみ描画（backgroundColor はスキップ）
+        // ルートノードの backgroundColor/backgroundImage は既に slide.background に適用済みなのでスキップ
+        // ただし opacity がある場合は slide.background では透過を表現できないため通常描画
+        if (
+          isRoot &&
+          (rootBackgroundImage || (rootBackgroundColor && !rootHasOpacity))
+        ) {
+          // border のみ描画（backgroundColor/backgroundImage はスキップ）
           const { border, borderRadius } = node;
           const hasBorder = Boolean(
             border &&
