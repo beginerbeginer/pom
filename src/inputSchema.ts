@@ -83,9 +83,18 @@ export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
 });
 
+export const inputImageSizingSchema = z.object({
+  type: z.enum(["contain", "cover", "crop"]),
+  w: z.number().optional(),
+  h: z.number().optional(),
+  x: z.number().optional(),
+  y: z.number().optional(),
+});
+
 export const inputImageNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
+  sizing: inputImageSizingSchema.optional(),
 });
 
 export const inputTableNodeSchema = inputBaseNodeSchema.extend({

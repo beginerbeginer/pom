@@ -30,7 +30,7 @@ Standard gap: 12-24px
 | tree         | Tree         | layout, nodeShape, data, connectorStyle                                     |
 | flow         | Flowchart    | direction(TB/LR), nodes[], edges[]                                          |
 | processArrow | ProcessArrow | direction(horizontal/vertical), steps[]                                     |
-| image        | Image        | src                                                                         |
+| image        | Image        | src, sizing(contain/cover/crop)                                             |
 
 ### Common Properties
 

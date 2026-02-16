@@ -313,9 +313,18 @@ export const textNodeSchema = basePOMNodeSchema.extend({
   bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
 });
 
+export const imageSizingSchema = z.object({
+  type: z.enum(["contain", "cover", "crop"]),
+  w: z.number().optional(),
+  h: z.number().optional(),
+  x: z.number().optional(),
+  y: z.number().optional(),
+});
+
 export const imageNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
+  sizing: imageSizingSchema.optional(),
 });
 
 export const tableCellSchema = z.object({
@@ -386,6 +395,7 @@ export const chartNodeSchema = basePOMNodeSchema.extend({
 });
 
 export type TextNode = z.infer<typeof textNodeSchema>;
+export type ImageSizing = z.infer<typeof imageSizingSchema>;
 export type ImageNode = z.infer<typeof imageNodeSchema>;
 export type TableCell = z.infer<typeof tableCellSchema>;
 export type TableRow = z.infer<typeof tableRowSchema>;
