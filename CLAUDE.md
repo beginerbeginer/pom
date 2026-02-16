@@ -64,7 +64,10 @@ PPTX 生成は3段階のパイプライン:
 - `BulletOptions` - 箇条書き設定（type, indent, numberType, numberStartAt）
 - `ShadowStyle` - 影設定（type: outer/inner, color, blur, offset, angle, opacity）
 - `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
-- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius）
+- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius, opacity）
+- `Theme` - テーマ設定型（colors, spacing, fontPx）
+- `defineComponent` - 再利用可能なコンポーネントを定義するヘルパー関数
+- `mergeTheme` - デフォルトテーマとユーザー指定テーマをマージするヘルパー
 
 ### 入力スキーマ（LLM連携用）
 

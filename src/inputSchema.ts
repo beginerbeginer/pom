@@ -68,6 +68,7 @@ export const inputBaseNodeSchema = z.object({
   backgroundColor: z.string().optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
+  opacity: z.number().min(0).max(1).optional(),
 });
 
 type InputBaseNode = z.infer<typeof inputBaseNodeSchema>;

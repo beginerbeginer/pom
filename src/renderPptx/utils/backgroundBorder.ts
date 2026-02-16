@@ -38,7 +38,11 @@ export function renderBackgroundAndBorder(
   }
 
   const fill = hasBackground
-    ? { color: backgroundColor }
+    ? {
+        color: backgroundColor,
+        transparency:
+          node.opacity !== undefined ? (1 - node.opacity) * 100 : undefined,
+      }
     : { type: "none" as const };
 
   const line = hasBorder

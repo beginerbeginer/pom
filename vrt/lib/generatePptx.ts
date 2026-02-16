@@ -3861,10 +3861,10 @@ const page17HStackTable: POMNode = {
 };
 
 // ============================================================
-// Page 18: Shadow Test
-// テスト対象: Box shadow, Image shadow, Shape shadow
+// Page 18: Opacity Test
+// テスト対象: opacity（背景色の透過度）
 // ============================================================
-const page18Shadow: POMNode = {
+const page18Opacity: POMNode = {
   type: "vstack",
   w: "100%",
   h: "max",
@@ -3875,7 +3875,209 @@ const page18Shadow: POMNode = {
   children: [
     {
       type: "text",
-      text: "Page 18: Shadow Test",
+      text: "Page 18: Opacity Test",
+      fontPx: 28,
+      color: palette.charcoal,
+      bold: true,
+    },
+    // opacity variations
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "opacity:", fontPx: 14, bold: true },
+          {
+            type: "hstack",
+            gap: 16,
+            alignItems: "stretch",
+            children: [
+              {
+                type: "box",
+                w: 150,
+                h: 80,
+                backgroundColor: palette.blue,
+                opacity: 1.0,
+                children: {
+                  type: "text",
+                  text: "opacity: 1.0",
+                  fontPx: 12,
+                  color: "FFFFFF",
+                },
+              },
+              {
+                type: "box",
+                w: 150,
+                h: 80,
+                backgroundColor: palette.blue,
+                opacity: 0.8,
+                children: {
+                  type: "text",
+                  text: "opacity: 0.8",
+                  fontPx: 12,
+                  color: "FFFFFF",
+                },
+              },
+              {
+                type: "box",
+                w: 150,
+                h: 80,
+                backgroundColor: palette.blue,
+                opacity: 0.5,
+                children: {
+                  type: "text",
+                  text: "opacity: 0.5",
+                  fontPx: 12,
+                  color: "FFFFFF",
+                },
+              },
+              {
+                type: "box",
+                w: 150,
+                h: 80,
+                backgroundColor: palette.blue,
+                opacity: 0.2,
+                children: {
+                  type: "text",
+                  text: "opacity: 0.2",
+                  fontPx: 12,
+                  color: "FFFFFF",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+    // Layer + opacity overlay
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          {
+            type: "text",
+            text: "Layer + opacity overlay:",
+            fontPx: 14,
+            bold: true,
+          },
+          {
+            type: "layer",
+            w: 400,
+            h: 120,
+            children: [
+              {
+                type: "box",
+                x: 0,
+                y: 0,
+                w: 400,
+                h: 120,
+                backgroundColor: palette.navy,
+                children: {
+                  type: "text",
+                  text: "Background",
+                  fontPx: 16,
+                  color: "FFFFFF",
+                },
+              },
+              {
+                type: "box",
+                x: 0,
+                y: 0,
+                w: 400,
+                h: 120,
+                backgroundColor: palette.red,
+                opacity: 0.4,
+                children: {
+                  type: "text",
+                  text: "Overlay (opacity: 0.4)",
+                  fontPx: 14,
+                  color: "FFFFFF",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+    // Different node types with opacity
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          {
+            type: "text",
+            text: "Different nodes with opacity:",
+            fontPx: 14,
+            bold: true,
+          },
+          {
+            type: "hstack",
+            gap: 16,
+            alignItems: "stretch",
+            children: [
+              {
+                type: "text",
+                text: "Text with opacity",
+                fontPx: 14,
+                backgroundColor: palette.green,
+                opacity: 0.5,
+                color: "FFFFFF",
+                w: 180,
+                h: 60,
+              },
+              {
+                type: "vstack",
+                w: 180,
+                h: 60,
+                backgroundColor: palette.accent,
+                opacity: 0.5,
+                children: [
+                  {
+                    type: "text",
+                    text: "VStack with opacity",
+                    fontPx: 14,
+                    color: "FFFFFF",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};
+
+// ============================================================
+// Page 19: Shadow Test
+// テスト対象: Box shadow, Image shadow, Shape shadow
+// ============================================================
+const page19Shadow: POMNode = {
+  type: "vstack",
+  w: "100%",
+  h: "max",
+  padding: 48,
+  gap: 20,
+  alignItems: "stretch",
+  backgroundColor: palette.background,
+  children: [
+    {
+      type: "text",
+      text: "Page 19: Shadow Test",
       fontPx: 28,
       color: palette.charcoal,
       bold: true,
@@ -4080,7 +4282,8 @@ export async function generatePptx(outputPath: string): Promise<void> {
       page15Line,
       page16Layer,
       page17HStackTable,
-      page18Shadow,
+      page18Opacity,
+      page19Shadow,
     ],
     {
       w: 1280,

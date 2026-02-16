@@ -31,6 +31,7 @@ Standard gap: 12-24px
 | flow         | Flowchart    | direction(TB/LR), nodes[], edges[]                                                 |
 | processArrow | ProcessArrow | direction(horizontal/vertical), steps[]                                            |
 | image        | Image        | src, sizing(contain/cover/crop), shadow                                            |
+| component    | Template     | name, props (requires expandComponentSlides before buildPptx)                      |
 
 ### Common Properties
 
@@ -41,6 +42,7 @@ Available for all nodes:
 - `backgroundColor`: Background color (6-digit hex, e.g., `"F8FAFC"`)
 - `border`: Border (`{ color, width, dashType }`)
 - `borderRadius`: Corner radius in px (e.g., `8`, `16`)
+- `opacity`: Background transparency (0-1, e.g., `0.5` for semi-transparent)
 
 ### alignItems / justifyContent
 
@@ -402,6 +404,53 @@ Options:
 - `gap`: Gap between steps (default: -15, negative for overlap)
 - `fontPx`: Font size (default: 14)
 - `bold`: Bold text (default: false)
+
+#### 12. Component (Reusable Template)
+
+LLMs can reference pre-registered components to reduce repetition:
+
+```json
+{
+  "type": "component",
+  "name": "SectionCard",
+  "props": {
+    "title": "Revenue",
+    "content": { "type": "text", "text": "$1,000,000" }
+  }
+}
+```
+
+- `name`: Component name (must be registered in the component registry)
+- `props`: Properties passed to the component. Can include nested POMNode objects or other component references
+
+Use `expandComponentSlides()` to resolve component references before building:
+
+```typescript
+import {
+  buildPptx,
+  defineComponent,
+  expandComponentSlides,
+} from "@hirokisakabe/pom";
+
+const SectionCard = defineComponent<{ title: string; content: unknown }>(
+  (props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        props.content,
+      ],
+    },
+  }),
+);
+
+const registry = { SectionCard };
+const slides = expandComponentSlides(llmOutput, registry);
+const pptx = await buildPptx(slides, { w: 1280, h: 720 });
+```
 
 ### Important Notes
 
