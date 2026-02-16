@@ -2,6 +2,7 @@ import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { resolveColumnWidths, resolveRowHeights } from "../../table/utils.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { convertUnderline, convertStrike } from "../textOptions.ts";
 
 type TablePositionedNode = Extract<PositionedNode, { type: "table" }>;
 
@@ -15,6 +16,10 @@ export function renderTableNode(
         fontSize: pxToPt(cell.fontPx ?? 18),
         color: cell.color,
         bold: cell.bold,
+        italic: cell.italic,
+        underline: convertUnderline(cell.underline),
+        strike: convertStrike(cell.strike),
+        highlight: cell.highlight,
         align: cell.alignText ?? "left",
         fill: cell.backgroundColor
           ? { color: cell.backgroundColor }

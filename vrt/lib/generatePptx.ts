@@ -14,7 +14,7 @@ const palette = {
 
 // ============================================================
 // Page 1: Text Node Test
-// テスト対象: fontPx, color, alignText, bold, fontFamily, lineSpacingMultiple
+// テスト対象: fontPx, color, alignText, bold, italic, underline, strike, highlight, fontFamily, lineSpacingMultiple
 // ============================================================
 const page1Text: POMNode = {
   type: "vstack",
@@ -165,6 +165,139 @@ const page1Text: POMNode = {
           },
         ],
       },
+    },
+    // italic variations
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "italic:", fontPx: 14, bold: true },
+          {
+            type: "hstack",
+            gap: 24,
+            alignItems: "center",
+            children: [
+              { type: "text", text: "Normal text", fontPx: 16 },
+              { type: "text", text: "Italic text", fontPx: 16, italic: true },
+            ],
+          },
+        ],
+      },
+    },
+    // underline variations
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 8,
+        children: [
+          { type: "text", text: "underline:", fontPx: 14, bold: true },
+          {
+            type: "hstack",
+            gap: 24,
+            alignItems: "center",
+            children: [
+              { type: "text", text: "Normal", fontPx: 16 },
+              {
+                type: "text",
+                text: "Underline (bool)",
+                fontPx: 16,
+                underline: true,
+              },
+              {
+                type: "text",
+                text: "Underline (wavy)",
+                fontPx: 16,
+                underline: { style: "wavy" },
+              },
+              {
+                type: "text",
+                text: "Underline (dbl + color)",
+                fontPx: 16,
+                underline: { style: "dbl", color: "DC2626" },
+              },
+            ],
+          },
+        ],
+      },
+    },
+    // strike & highlight variations
+    {
+      type: "hstack",
+      gap: 16,
+      alignItems: "stretch",
+      children: [
+        {
+          type: "box",
+          w: "50%",
+          padding: 16,
+          backgroundColor: "FFFFFF",
+          border: { color: palette.border, width: 1 },
+          children: {
+            type: "vstack",
+            gap: 8,
+            children: [
+              { type: "text", text: "strike:", fontPx: 14, bold: true },
+              {
+                type: "hstack",
+                gap: 24,
+                alignItems: "center",
+                children: [
+                  { type: "text", text: "Normal", fontPx: 16 },
+                  {
+                    type: "text",
+                    text: "Strike text",
+                    fontPx: 16,
+                    strike: true,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: "box",
+          w: "50%",
+          padding: 16,
+          backgroundColor: "FFFFFF",
+          border: { color: palette.border, width: 1 },
+          children: {
+            type: "vstack",
+            gap: 8,
+            children: [
+              { type: "text", text: "highlight:", fontPx: 14, bold: true },
+              {
+                type: "hstack",
+                gap: 24,
+                alignItems: "center",
+                children: [
+                  { type: "text", text: "Normal", fontPx: 16 },
+                  {
+                    type: "text",
+                    text: "Yellow highlight",
+                    fontPx: 16,
+                    highlight: "FFFF00",
+                  },
+                  {
+                    type: "text",
+                    text: "Cyan highlight",
+                    fontPx: 16,
+                    highlight: "00FFFF",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
     },
     // fontFamily & lineSpacingMultiple
     {

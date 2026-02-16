@@ -1,7 +1,37 @@
-import type { PositionedNode, BulletOptions } from "../types.ts";
+import type {
+  PositionedNode,
+  BulletOptions,
+  Underline,
+  UnderlineStyle,
+} from "../types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
 
 type TextNode = Extract<PositionedNode, { type: "text" }>;
+
+/**
+ * underline プロパティを pptxgenjs 形式に変換する
+ */
+export function convertUnderline(
+  underline: Underline | undefined,
+): { style?: UnderlineStyle; color?: string } | undefined {
+  if (underline === undefined) return undefined;
+  if (underline === false) return undefined;
+  if (underline === true) return { style: "sng" };
+  return {
+    style: underline.style,
+    color: underline.color,
+  };
+}
+
+/**
+ * strike プロパティを pptxgenjs 形式に変換する
+ */
+export function convertStrike(
+  strike: boolean | undefined,
+): "sngStrike" | undefined {
+  if (strike) return "sngStrike";
+  return undefined;
+}
 
 type PptxBulletOptions = {
   type?: "bullet" | "number";
@@ -53,6 +83,10 @@ export function createTextOptions(node: TextNode) {
     lineSpacingMultiple,
     color: node.color,
     bold: node.bold,
+    italic: node.italic,
+    underline: convertUnderline(node.underline),
+    strike: convertStrike(node.strike),
+    highlight: node.highlight,
   };
 
   if (node.bullet !== undefined) {

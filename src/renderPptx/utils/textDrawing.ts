@@ -1,5 +1,7 @@
+import type { Underline } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { convertUnderline, convertStrike } from "../textOptions.ts";
 
 export type SimpleTextOptions = {
   x: number; // px
@@ -11,6 +13,10 @@ export type SimpleTextOptions = {
   fontFace?: string;
   color?: string;
   bold?: boolean;
+  italic?: boolean;
+  underline?: Underline;
+  strike?: boolean;
+  highlight?: string;
   align?: "left" | "center" | "right";
   valign?: "top" | "middle" | "bottom";
 };
@@ -33,6 +39,10 @@ export function drawSimpleText(
     fontFace = "Noto Sans JP",
     color = "000000",
     bold,
+    italic,
+    underline,
+    strike,
+    highlight,
     align = "left",
     valign = "top",
   } = options;
@@ -46,6 +56,10 @@ export function drawSimpleText(
     fontFace,
     color,
     bold,
+    italic,
+    underline: convertUnderline(underline),
+    strike: convertStrike(strike),
+    highlight,
     align,
     valign,
   });

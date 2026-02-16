@@ -45,6 +45,10 @@ A node for displaying text.
   color?: string;
   alignText?: "left" | "center" | "right";
   bold?: boolean;
+  italic?: boolean;
+  underline?: boolean | { style?: UnderlineStyle; color?: string };
+  strike?: boolean;
+  highlight?: string;
   fontFamily?: string;
   lineSpacingMultiple?: number;
   bullet?: boolean | BulletOptions;
@@ -58,9 +62,17 @@ A node for displaying text.
 
 - `color` specifies the text color as a hex color code (e.g., `"FF0000"`).
 - `bold` enables bold text.
+- `italic` enables italic text.
+- `underline` enables underline. Use `true` for single underline, or an object for detailed settings (e.g., `{ style: "wavy", color: "FF0000" }`).
+- `strike` enables strikethrough text.
+- `highlight` specifies the text highlight color as a hex color code (e.g., `"FFFF00"` for yellow).
 - `fontFamily` specifies the font family (default: `"Noto Sans JP"`).
 - `lineSpacingMultiple` specifies the line spacing multiplier (default: `1.3`).
 - `bullet` enables bullet points. Use `true` for default bullets, or an object for detailed settings.
+
+**UnderlineStyle:**
+
+`"dash"` | `"dashHeavy"` | `"dashLong"` | `"dashLongHeavy"` | `"dbl"` | `"dotDash"` | `"dotDotDash"` | `"dotted"` | `"dottedHeavy"` | `"heavy"` | `"none"` | `"sng"` | `"wavy"` | `"wavyDbl"` | `"wavyHeavy"`
 
 **BulletOptions:**
 
@@ -158,6 +170,10 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
       fontPx?: number;
       color?: string;
       bold?: boolean;
+      italic?: boolean;
+      underline?: boolean | { style?: UnderlineStyle; color?: string };
+      strike?: boolean;
+      highlight?: string;
       alignText?: "left" | "center" | "right";
       backgroundColor?: string;
     }[];
@@ -207,6 +223,11 @@ A node for drawing shapes. Different representations are possible with or withou
   fontPx?: number;
   color?: string;
   alignText?: "left" | "center" | "right";
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean | { style?: UnderlineStyle; color?: string };
+  strike?: boolean;
+  highlight?: string;
 
   // Common properties
   w?: number | "max" | `${number}%`;
@@ -696,6 +717,10 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
   gap?: number;          // Gap between steps in px (default: -15, negative for overlap)
   fontPx?: number;       // Font size (default: 14)
   bold?: boolean;        // Bold text (default: false)
+  italic?: boolean;      // Italic text (default: false)
+  underline?: boolean | { style?: UnderlineStyle; color?: string };
+  strike?: boolean;      // Strikethrough text (default: false)
+  highlight?: string;    // Text highlight color (hex)
 
   // Common properties
   w?: number | "max" | `${number}%`;

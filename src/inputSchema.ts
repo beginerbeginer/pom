@@ -49,6 +49,7 @@ import {
   processArrowDirectionSchema,
   processArrowStepSchema,
   lineArrowSchema,
+  underlineSchema,
   type AlignItems,
   type JustifyContent,
   type TreeDataItem,
@@ -78,6 +79,10 @@ export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   color: z.string().optional(),
   alignText: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
   fontFamily: z.string().optional(),
   lineSpacingMultiple: z.number().optional(),
   bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
@@ -114,6 +119,11 @@ export const inputShapeNodeSchema = inputBaseNodeSchema.extend({
   fontPx: z.number().optional(),
   color: z.string().optional(),
   alignText: z.enum(["left", "center", "right"]).optional(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
 });
 
 export const inputChartNodeSchema = inputBaseNodeSchema.extend({
@@ -181,6 +191,10 @@ export const inputProcessArrowNodeSchema = inputBaseNodeSchema.extend({
   gap: z.number().optional(),
   fontPx: z.number().optional(),
   bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
 });
 
 export const inputLineNodeSchema = inputBaseNodeSchema.extend({
@@ -353,6 +367,10 @@ export const inputMasterTextObjectSchema = z.object({
   fontFamily: z.string().optional(),
   color: z.string().optional(),
   bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
   alignText: z.enum(["left", "center", "right"]).optional(),
 });
 
