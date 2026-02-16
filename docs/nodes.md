@@ -323,11 +323,22 @@ A node for displaying images.
 
 - If `w` and `h` are not specified, the actual image size is automatically used
 - If size is specified, the image is displayed at that size (aspect ratio is not preserved)
+- Use `sizing` to control how the image fits within its bounds:
+  - `contain`: Maintains aspect ratio, fits within the specified size
+  - `cover`: Maintains aspect ratio, covers the entire specified size
+  - `crop`: Crops the image to the specified region
 
 ```typescript
 {
   type: "image";
   src: string;  // Image path (local path, URL, or base64 data)
+  sizing?: {
+    type: "contain" | "cover" | "crop";
+    w?: number;   // Sizing width (defaults to node width)
+    h?: number;   // Sizing height (defaults to node height)
+    x?: number;   // Crop X offset (crop only)
+    y?: number;   // Crop Y offset (crop only)
+  };
 
   // Common properties
   w?: number | "max" | `${number}%`;
