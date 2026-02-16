@@ -61,9 +61,10 @@ PPTX 生成は3段階のパイプライン:
 - `LineNode` - 線ノード（x1, y1, x2, y2, color, lineWidth, dashType, beginArrow, endArrow をサポート）
 - `LayerNode` - 絶対配置コンテナ（children に x, y を指定して自由配置）
 - `ImageSizing` - 画像サイズ調整設定（type: contain/cover/crop, w, h, x, y）
+- `BackgroundImage` - 背景画像設定（src, sizing: cover/contain）
 - `BulletOptions` - 箇条書き設定（type, indent, numberType, numberStartAt）
 - `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
-- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, border, borderRadius）
+- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, backgroundImage, border, borderRadius）
 
 ### 入力スキーマ（LLM連携用）
 

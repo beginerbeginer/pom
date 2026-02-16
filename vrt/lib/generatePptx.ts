@@ -3860,6 +3860,135 @@ const page17HStackTable: POMNode = {
   ],
 };
 
+// ============================================================
+// Page 18: Background Image Test
+// テスト対象: backgroundImage (cover / contain), slideMaster background image
+// ============================================================
+const page18BackgroundImage: POMNode = {
+  type: "vstack",
+  w: "100%",
+  h: "max",
+  padding: 48,
+  gap: 20,
+  alignItems: "stretch",
+  backgroundColor: palette.background,
+  children: [
+    {
+      type: "text",
+      text: "Page 18: Background Image Test",
+      fontPx: 28,
+      color: palette.charcoal,
+      bold: true,
+    },
+    // backgroundImage sizing modes
+    {
+      type: "box",
+      padding: 16,
+      backgroundColor: "FFFFFF",
+      border: { color: palette.border, width: 1 },
+      children: {
+        type: "vstack",
+        gap: 12,
+        children: [
+          {
+            type: "text",
+            text: "Background Image Sizing Modes:",
+            fontPx: 16,
+            color: palette.charcoal,
+            bold: true,
+          },
+          {
+            type: "hstack",
+            gap: 16,
+            children: [
+              // cover モード
+              {
+                type: "box",
+                w: 280,
+                h: 180,
+                backgroundImage: {
+                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
+                  sizing: "cover",
+                },
+                border: { color: palette.border, width: 2 },
+                children: {
+                  type: "text",
+                  text: "cover",
+                  fontPx: 16,
+                  color: "FFFFFF",
+                  bold: true,
+                },
+              },
+              // contain モード
+              {
+                type: "box",
+                w: 280,
+                h: 180,
+                backgroundImage: {
+                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
+                  sizing: "contain",
+                },
+                backgroundColor: "333333",
+                border: { color: palette.border, width: 2 },
+                children: {
+                  type: "text",
+                  text: "contain (with backgroundColor)",
+                  fontPx: 16,
+                  color: "FFFFFF",
+                  bold: true,
+                },
+              },
+              // デフォルト（cover）
+              {
+                type: "box",
+                w: 280,
+                h: 180,
+                backgroundImage: {
+                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_1.png",
+                },
+                border: { color: palette.border, width: 2 },
+                children: {
+                  type: "text",
+                  text: "default (cover)",
+                  fontPx: 16,
+                  color: "FFFFFF",
+                  bold: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+    // VStack with backgroundImage
+    {
+      type: "vstack",
+      gap: 8,
+      padding: 16,
+      backgroundImage: {
+        src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
+        sizing: "cover",
+      },
+      border: { color: palette.border, width: 1 },
+      children: [
+        {
+          type: "text",
+          text: "VStack with backgroundImage",
+          fontPx: 16,
+          color: "FFFFFF",
+          bold: true,
+        },
+        {
+          type: "text",
+          text: "Background image on VStack container",
+          fontPx: 14,
+          color: "FFFFFF",
+        },
+      ],
+    },
+  ],
+};
+
 export async function generatePptx(outputPath: string): Promise<void> {
   const pptx = await buildPptx(
     [
@@ -3881,6 +4010,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
       page15Line,
       page16Layer,
       page17HStackTable,
+      page18BackgroundImage,
     ],
     {
       w: 1280,

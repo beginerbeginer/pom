@@ -16,6 +16,10 @@ Layout attributes that all nodes can have.
   maxH?: number;
   padding?: number;
   backgroundColor?: string;
+  backgroundImage?: {
+    src: string;
+    sizing?: "cover" | "contain";
+  };
   border?: {
     color?: string;
     width?: number;
@@ -26,6 +30,7 @@ Layout attributes that all nodes can have.
 ```
 
 - `backgroundColor` applies a fill to the entire node (e.g., `"F8F9FA"`).
+- `backgroundImage` sets a background image on the node. `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
 - `border.width` is specified in px and can be combined with color and `dashType` to control the border.
 - `borderRadius` specifies the corner radius in px. When specified, the background/border shape becomes a rounded rectangle.
 
