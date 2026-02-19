@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 1.3.0
+
+### Minor Changes
+
+- [#194](https://github.com/hirokisakabe/pom/pull/194) [`8d42f09`](https://github.com/hirokisakabe/pom/commit/8d42f09e4d8a80b485f1b1b70ae92ffd743063cb) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: スライドマスターおよび全ノードに背景画像（backgroundImage）をサポート
+
+- [#192](https://github.com/hirokisakabe/pom/pull/192) [`16b4055`](https://github.com/hirokisakabe/pom/commit/16b4055d71b89760aa462415ad4eed652803e758) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Box, Image ノードに shadow（ドロップシャドウ）プロパティを追加
+
+- [#191](https://github.com/hirokisakabe/pom/pull/191) [`5e321eb`](https://github.com/hirokisakabe/pom/commit/5e321eb00326752d56eecf4344c513ce34484be2) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: 透過（opacity）をサポート
+
 ## 1.2.0
 
 ### Minor Changes
