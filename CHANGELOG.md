@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 1.4.0
+
+### Minor Changes
+
+- [#198](https://github.com/hirokisakabe/pom/pull/198) [`21e8464`](https://github.com/hirokisakabe/pom/commit/21e8464971ca61380f4925aec8d8a68b0651d822) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - XML形式での入力サポートを追加。`parseXml()` 関数でXML文字列をPOMNode配列に変換可能に。
+
 ## 1.3.0
 
 ### Minor Changes
