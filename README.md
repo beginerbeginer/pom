@@ -192,6 +192,33 @@ const slides = expandComponentSlides(llmOutput, registry);
 const pptx = await buildPptx(slides, { w: 1280, h: 720 });
 ```
 
+## XML Input
+
+`parseXml` allows you to describe slides in XML instead of JSON. XML tags (PascalCase) are mapped to POM node types, and attribute values are automatically type-coerced using Zod schemas.
+
+```typescript
+import { parseXml, buildPptx } from "@hirokisakabe/pom";
+
+const xml = `
+<VStack gap="16" padding="32">
+  <Text fontPx="32" bold="true">売上レポート</Text>
+  <HStack gap="16">
+    <Chart chartType="bar" w="400" h="300"
+      data='[{ "name": "Q1", "labels": ["1月","2月","3月"], "values": [100,120,90] }]'
+    />
+    <Text fontPx="18" color="00AA00">前年比 +15%</Text>
+  </HStack>
+</VStack>
+`;
+
+const nodes = parseXml(xml);
+const pptx = await buildPptx(nodes, { w: 1280, h: 720 });
+```
+
+Unknown tags are treated as component nodes (`{ type: "component", name: tagName, props: {...} }`), which can be resolved with `expandComponents()`.
+
+For more details, see [LLM Integration - XML Format](./docs/llm-integration.md#xml-format).
+
 ## Documentation
 
 | Document                                        | Description                             |

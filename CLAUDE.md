@@ -29,6 +29,7 @@ src/
 ├── index.ts              # 公開API
 ├── types.ts              # 型定義
 ├── inputSchema.ts        # LLM用入力スキーマ（Zod）
+├── parseXml.ts           # XML入力パーサー（fast-xml-parser）
 ├── buildPptx.ts          # メイン処理（3段階パイプライン）
 ├── calcYogaLayout/       # レイアウト計算（yoga-layout）
 ├── toPositioned/         # 絶対座標変換
@@ -69,6 +70,7 @@ PPTX 生成は3段階のパイプライン:
 - `Theme` - テーマ設定型（colors, spacing, fontPx）
 - `defineComponent` - 再利用可能なコンポーネントを定義するヘルパー関数
 - `mergeTheme` - デフォルトテーマとユーザー指定テーマをマージするヘルパー
+- `parseXml` - XML 文字列を POMNode 配列に変換する関数（タグ名は PascalCase、属性値は Zod スキーマで型変換）
 
 ### 入力スキーマ（LLM連携用）
 

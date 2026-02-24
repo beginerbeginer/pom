@@ -543,3 +543,144 @@ if (result.success) {
 | -------------------------- | --------------- | -------------------------------------------- |
 | `@hirokisakabe/pom`        | Node.js         | Everything (PPTX generation, schemas, types) |
 | `@hirokisakabe/pom/schema` | Browser-capable | Schemas and types only (no PPTX generation)  |
+
+## XML Format
+
+You can describe slides in XML instead of JSON. The `parseXml` function converts an XML string into a `POMNode[]` array.
+
+### Basic Usage
+
+```typescript
+import { parseXml, buildPptx } from "@hirokisakabe/pom";
+
+const xml = `
+<VStack gap="16" padding="32">
+  <Text fontPx="32" bold="true">Sales Report</Text>
+  <HStack gap="16">
+    <Chart chartType="bar" w="400" h="300"
+      data='[{ "name": "Q1", "labels": ["Jan","Feb","Mar"], "values": [100,120,90] }]'
+    />
+    <Text fontPx="18" color="00AA00">+15% YoY</Text>
+  </HStack>
+</VStack>
+`;
+
+const nodes = parseXml(xml);
+const pptx = await buildPptx(nodes, { w: 1280, h: 720 });
+```
+
+### Tag Name to Node Type Mapping
+
+XML tag names (PascalCase) are mapped to POM node types.
+
+| XML Tag          | POM type     |
+| ---------------- | ------------ |
+| `<Text>`         | text         |
+| `<Image>`        | image        |
+| `<Table>`        | table        |
+| `<Shape>`        | shape        |
+| `<Chart>`        | chart        |
+| `<Timeline>`     | timeline     |
+| `<Matrix>`       | matrix       |
+| `<Tree>`         | tree         |
+| `<Flow>`         | flow         |
+| `<ProcessArrow>` | processArrow |
+| `<Line>`         | line         |
+| `<Box>`          | box          |
+| `<VStack>`       | vstack       |
+| `<HStack>`       | hstack       |
+| `<Layer>`        | layer        |
+
+### Attribute Value Type Coercion
+
+Attribute values are written as strings in XML, but are automatically coerced to the appropriate type based on Zod schemas.
+
+| Example     | Coerced to | Description                                 |
+| ----------- | ---------- | ------------------------------------------- |
+| `"32"`      | `32`       | Numeric properties are converted to number  |
+| `"true"`    | `true`     | Boolean properties are converted to boolean |
+| `'[1,2,3]'` | `[1,2,3]`  | Array/object types are JSON-parsed          |
+| `"center"`  | `"center"` | String and enum values are kept as-is       |
+
+### Text Content
+
+The text content of `<Text>` tags is mapped to the `text` property.
+
+```xml
+<Text fontPx="24" bold="true">Title Text</Text>
+```
+
+The above is equivalent to the following JSON:
+
+```json
+{ "type": "text", "fontPx": 24, "bold": true, "text": "Title Text" }
+```
+
+### Using Components
+
+Tag names that are not built-in node types are treated as component nodes. Use `expandComponents()` to resolve components before passing them to `buildPptx`.
+
+```typescript
+import {
+  parseXml,
+  expandComponents,
+  buildPptx,
+  defineComponent,
+} from "@hirokisakabe/pom";
+
+const SectionCard = defineComponent<{ title: string; children: unknown }>(
+  (props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        ...(Array.isArray(props.children) ? props.children : [props.children]),
+      ],
+    },
+  }),
+);
+
+const registry = { SectionCard };
+
+const xml = `
+<VStack w="1280" h="720" padding="48">
+  <SectionCard title="KPI">
+    <Text fontPx="24">$1,000,000</Text>
+  </SectionCard>
+</VStack>
+`;
+
+const nodes = parseXml(xml);
+const expanded = nodes.map((n) => expandComponents(n, registry));
+const pptx = await buildPptx(expanded, { w: 1280, h: 720 });
+```
+
+### Comparison with JSON
+
+XML format can describe deeply nested layouts more concisely than JSON. When generating slides with an LLM, XML tends to use fewer tokens.
+
+**JSON:**
+
+```json
+{
+  "type": "vstack",
+  "gap": 16,
+  "padding": 32,
+  "children": [
+    { "type": "text", "text": "Title", "fontPx": 32, "bold": true },
+    { "type": "text", "text": "Body text", "fontPx": 16 }
+  ]
+}
+```
+
+**XML:**
+
+```xml
+<VStack gap="16" padding="32">
+  <Text fontPx="32" bold="true">Title</Text>
+  <Text fontPx="16">Body text</Text>
+</VStack>
+```
