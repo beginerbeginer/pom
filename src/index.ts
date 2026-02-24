@@ -10,3 +10,4 @@ export {
   expandComponentSlides,
 } from "./component.ts";
 export type { Theme, ComponentRegistry } from "./component.ts";
+export { parseXml } from "./parseXml.ts";

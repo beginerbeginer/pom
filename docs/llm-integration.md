@@ -543,3 +543,144 @@ if (result.success) {
 | -------------------------- | --------------- | -------------------------------------------- |
 | `@hirokisakabe/pom`        | Node.js         | Everything (PPTX generation, schemas, types) |
 | `@hirokisakabe/pom/schema` | Browser-capable | Schemas and types only (no PPTX generation)  |
+
+## XML Format
+
+JSON の代わりに XML でスライドを記述できる。`parseXml` 関数は XML 文字列を `POMNode[]` に変換する。
+
+### 基本的な使い方
+
+```typescript
+import { parseXml, buildPptx } from "@hirokisakabe/pom";
+
+const xml = `
+<VStack gap="16" padding="32">
+  <Text fontPx="32" bold="true">売上レポート</Text>
+  <HStack gap="16">
+    <Chart chartType="bar" w="400" h="300"
+      data='[{ "name": "Q1", "labels": ["1月","2月","3月"], "values": [100,120,90] }]'
+    />
+    <Text fontPx="18" color="00AA00">前年比 +15%</Text>
+  </HStack>
+</VStack>
+`;
+
+const nodes = parseXml(xml);
+const pptx = await buildPptx(nodes, { w: 1280, h: 720 });
+```
+
+### タグ名とノードタイプの対応
+
+XML タグ名（PascalCase）は POM ノードタイプにマッピングされる。
+
+| XML タグ         | POM type     |
+| ---------------- | ------------ |
+| `<Text>`         | text         |
+| `<Image>`        | image        |
+| `<Table>`        | table        |
+| `<Shape>`        | shape        |
+| `<Chart>`        | chart        |
+| `<Timeline>`     | timeline     |
+| `<Matrix>`       | matrix       |
+| `<Tree>`         | tree         |
+| `<Flow>`         | flow         |
+| `<ProcessArrow>` | processArrow |
+| `<Line>`         | line         |
+| `<Box>`          | box          |
+| `<VStack>`       | vstack       |
+| `<HStack>`       | hstack       |
+| `<Layer>`        | layer        |
+
+### 属性値の型変換
+
+属性値は文字列として記述するが、Zod スキーマを参照して適切な型に自動変換される。
+
+| 値の例      | 変換後     | 説明                                     |
+| ----------- | ---------- | ---------------------------------------- |
+| `"32"`      | `32`       | 数値型プロパティは number に変換         |
+| `"true"`    | `true`     | 真偽値型プロパティは boolean に変換      |
+| `'[1,2,3]'` | `[1,2,3]`  | 配列・オブジェクト型は JSON パースされる |
+| `"center"`  | `"center"` | 文字列・enum はそのまま                  |
+
+### テキストコンテンツ
+
+`<Text>` タグのテキストコンテンツは `text` プロパティにマッピングされる。
+
+```xml
+<Text fontPx="24" bold="true">タイトルテキスト</Text>
+```
+
+上記は以下の JSON と同等:
+
+```json
+{ "type": "text", "fontPx": 24, "bold": true, "text": "タイトルテキスト" }
+```
+
+### コンポーネントの利用
+
+組み込みタグ以外のタグ名はコンポーネントノードとして扱われる。`expandComponents()` でコンポーネントを展開してから `buildPptx` に渡す。
+
+```typescript
+import {
+  parseXml,
+  expandComponents,
+  buildPptx,
+  defineComponent,
+} from "@hirokisakabe/pom";
+
+const SectionCard = defineComponent<{ title: string; children: unknown }>(
+  (props) => ({
+    type: "box",
+    padding: 16,
+    children: {
+      type: "vstack",
+      gap: 8,
+      children: [
+        { type: "text", text: props.title, bold: true },
+        ...(Array.isArray(props.children) ? props.children : [props.children]),
+      ],
+    },
+  }),
+);
+
+const registry = { SectionCard };
+
+const xml = `
+<VStack w="1280" h="720" padding="48">
+  <SectionCard title="KPI">
+    <Text fontPx="24">$1,000,000</Text>
+  </SectionCard>
+</VStack>
+`;
+
+const nodes = parseXml(xml);
+const expanded = nodes.map((n) => expandComponents(n, registry));
+const pptx = await buildPptx(expanded, { w: 1280, h: 720 });
+```
+
+### JSON との比較
+
+XML 形式は JSON に比べてネストが深いレイアウトを簡潔に記述できる。LLM に生成させる場合、XML のほうがトークン数を削減しやすい。
+
+**JSON:**
+
+```json
+{
+  "type": "vstack",
+  "gap": 16,
+  "padding": 32,
+  "children": [
+    { "type": "text", "text": "タイトル", "fontPx": 32, "bold": true },
+    { "type": "text", "text": "本文", "fontPx": 16 }
+  ]
+}
+```
+
+**XML:**
+
+```xml
+<VStack gap="16" padding="32">
+  <Text fontPx="32" bold="true">タイトル</Text>
+  <Text fontPx="16">本文</Text>
+</VStack>
+```
