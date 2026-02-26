@@ -598,7 +598,7 @@ function convertElement(node: XmlElement): Record<string, unknown> {
   if (nodeType) {
     return convertPomNode(nodeType, attrs, childElements, textContent);
   } else {
-    return convertComponentNode(tagName, attrs, childElements, textContent);
+    throw new Error(`Unknown tag: <${tagName}>`);
   }
 }
 
@@ -650,37 +650,12 @@ function convertPomNode(
   return result;
 }
 
-function convertComponentNode(
-  tagName: string,
-  attrs: Record<string, string>,
-  childElements: XmlElement[],
-  textContent: string | undefined,
-): Record<string, unknown> {
-  const props: Record<string, unknown> = {};
-
-  for (const [key, value] of Object.entries(attrs)) {
-    props[key] = coerceFallback(value);
-  }
-
-  if (childElements.length > 0) {
-    props.children = childElements.map(convertElement);
-  } else if (textContent !== undefined) {
-    props.children = textContent;
-  }
-
-  return {
-    type: "component",
-    name: tagName,
-    props,
-  };
-}
-
 /**
  * XML 文字列を POMNode 配列に変換する。
  *
  * XML タグは POM ノードタイプにマッピングされ、属性値は Zod スキーマを参照して
  * 適切な型（number, boolean, array, object）に変換される。
- * 組み込みノード以外のタグ名はカスタムコンポーネントとして扱われる。
+ * 未知のタグ名が指定された場合はエラーがスローされる。
  *
  * @example
  * ```typescript

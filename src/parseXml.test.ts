@@ -437,63 +437,20 @@ describe("parseXml", () => {
     });
   });
 
-  // ===== コンポーネント変換 =====
-  describe("コンポーネント変換", () => {
-    it("組み込みノード以外のタグをコンポーネントとして変換する", () => {
-      const xml = '<SectionCard title="KPI Summary" padding="20" />';
-      const result = parseXml(xml);
-      expect(result).toEqual([
-        {
-          type: "component",
-          name: "SectionCard",
-          props: { title: "KPI Summary", padding: 20 },
-        },
-      ]);
+  // ===== 未知タグのエラー =====
+  describe("未知タグのエラー", () => {
+    it("組み込みノード以外のタグでエラーをスローする", () => {
+      const xml = '<SectionCard title="KPI Summary" />';
+      expect(() => parseXml(xml)).toThrow("Unknown tag: <SectionCard>");
     });
 
-    it("コンポーネントの children を props に含める", () => {
+    it("未知タグがコンテナ内にある場合もエラーをスローする", () => {
       const xml = `
-        <SectionCard title="Report">
-          <Text>Revenue: $1M</Text>
-        </SectionCard>
+        <VStack>
+          <MyComponent />
+        </VStack>
       `;
-      const result = parseXml(xml);
-      expect(result).toEqual([
-        {
-          type: "component",
-          name: "SectionCard",
-          props: {
-            title: "Report",
-            children: [{ type: "text", text: "Revenue: $1M" }],
-          },
-        },
-      ]);
-    });
-
-    it("コンポーネントのテキストコンテンツを children に含める", () => {
-      const xml = "<Label>Hello</Label>";
-      const result = parseXml(xml);
-      expect(result).toEqual([
-        {
-          type: "component",
-          name: "Label",
-          props: { children: "Hello" },
-        },
-      ]);
-    });
-
-    it("コンポーネントの属性値をフォールバック変換する", () => {
-      const xml =
-        '<MyComp count="5" visible="true" name="test" data=\'[1,2,3]\' />';
-      const result = parseXml(xml);
-      const props = (result[0] as Record<string, unknown>).props as Record<
-        string,
-        unknown
-      >;
-      expect(props.count).toBe(5);
-      expect(props.visible).toBe(true);
-      expect(props.name).toBe("test");
-      expect(props.data).toEqual([1, 2, 3]);
+      expect(() => parseXml(xml)).toThrow("Unknown tag: <MyComponent>");
     });
   });
 
