@@ -31,7 +31,6 @@ Standard gap: 12-24px
 | flow         | Flowchart    | direction(TB/LR), nodes[], edges[]                                                 |
 | processArrow | ProcessArrow | direction(horizontal/vertical), steps[]                                            |
 | image        | Image        | src, sizing(contain/cover/crop), shadow                                            |
-| component    | Template     | name, props (requires expandComponentSlides before buildPptx)                      |
 
 ### Common Properties
 
@@ -406,53 +405,6 @@ Options:
 - `fontPx`: Font size (default: 14)
 - `bold`: Bold text (default: false)
 
-#### 12. Component (Reusable Template)
-
-LLMs can reference pre-registered components to reduce repetition:
-
-```json
-{
-  "type": "component",
-  "name": "SectionCard",
-  "props": {
-    "title": "Revenue",
-    "content": { "type": "text", "text": "$1,000,000" }
-  }
-}
-```
-
-- `name`: Component name (must be registered in the component registry)
-- `props`: Properties passed to the component. Can include nested POMNode objects or other component references
-
-Use `expandComponentSlides()` to resolve component references before building:
-
-```typescript
-import {
-  buildPptx,
-  defineComponent,
-  expandComponentSlides,
-} from "@hirokisakabe/pom";
-
-const SectionCard = defineComponent<{ title: string; content: unknown }>(
-  (props) => ({
-    type: "box",
-    padding: 16,
-    children: {
-      type: "vstack",
-      gap: 8,
-      children: [
-        { type: "text", text: props.title, bold: true },
-        props.content,
-      ],
-    },
-  }),
-);
-
-const registry = { SectionCard };
-const slides = expandComponentSlides(llmOutput, registry);
-const pptx = await buildPptx(slides, { w: 1280, h: 720 });
-```
-
 ### Important Notes
 
 | NG                       | OK                | Description                             |
@@ -725,48 +677,6 @@ Note: `<Tree>` must have exactly one `<TreeItem>` root child. `<TreeItem>` can b
 | `<ProcessArrow>` | `<Step>`                                | `steps`                      |
 
 JSON attribute notation is still supported for backward compatibility. When both are present, child elements take precedence.
-
-### Using Components
-
-Tag names that are not built-in node types are treated as component nodes. Use `expandComponents()` to resolve components before passing them to `buildPptx`.
-
-```typescript
-import {
-  parseXml,
-  expandComponents,
-  buildPptx,
-  defineComponent,
-} from "@hirokisakabe/pom";
-
-const SectionCard = defineComponent<{ title: string; children: unknown }>(
-  (props) => ({
-    type: "box",
-    padding: 16,
-    children: {
-      type: "vstack",
-      gap: 8,
-      children: [
-        { type: "text", text: props.title, bold: true },
-        ...(Array.isArray(props.children) ? props.children : [props.children]),
-      ],
-    },
-  }),
-);
-
-const registry = { SectionCard };
-
-const xml = `
-<VStack w="1280" h="720" padding="48">
-  <SectionCard title="KPI">
-    <Text fontPx="24">$1,000,000</Text>
-  </SectionCard>
-</VStack>
-`;
-
-const nodes = parseXml(xml);
-const expanded = nodes.map((n) => expandComponents(n, registry));
-const pptx = await buildPptx(expanded, { w: 1280, h: 720 });
-```
 
 ### Comparison with JSON
 
