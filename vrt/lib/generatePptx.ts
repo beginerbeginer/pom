@@ -1,4 +1,4 @@
-import { POMNode, buildPptx } from "../../src";
+import { POMNode, buildPptx, parseXml } from "../../src";
 
 const palette = {
   background: "F8FAFC",
@@ -4390,6 +4390,68 @@ const page20BackgroundImage: POMNode = {
   ],
 };
 
+// ============================================================
+// Page 21: XML Child Element Notation Test
+// テスト対象: parseXml の子要素記法（Chart, Table, Timeline, ProcessArrow, Tree）
+// ============================================================
+const page21XmlChildElements: POMNode = parseXml(`
+  <VStack gap="8" padding="48" backgroundColor="${palette.background}">
+    <Text fontPx="28" bold="true" color="${palette.navy}">XML Child Element Notation</Text>
+    <HStack gap="16" alignItems="start">
+      <VStack gap="8" w="380">
+        <Text fontPx="14" bold="true" color="${palette.charcoal}">Chart (Series/DataPoint)</Text>
+        <Chart chartType="bar" w="380" h="140">
+          <Series name="Q1">
+            <DataPoint label="Jan" value="100" />
+            <DataPoint label="Feb" value="120" />
+            <DataPoint label="Mar" value="90" />
+          </Series>
+        </Chart>
+        <Text fontPx="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
+        <Table w="380">
+          <Column width="190" />
+          <Column width="190" />
+          <Row>
+            <Cell bold="true" backgroundColor="${palette.lightBlue}">Name</Cell>
+            <Cell bold="true" backgroundColor="${palette.lightBlue}">Score</Cell>
+          </Row>
+          <Row>
+            <Cell>Alice</Cell>
+            <Cell>95</Cell>
+          </Row>
+          <Row>
+            <Cell>Bob</Cell>
+            <Cell>87</Cell>
+          </Row>
+        </Table>
+      </VStack>
+      <VStack gap="8" w="380">
+        <Text fontPx="14" bold="true" color="${palette.charcoal}">Timeline (TimelineItem)</Text>
+        <Timeline direction="horizontal" w="380" h="120">
+          <TimelineItem date="2024-01" title="Plan" color="${palette.blue}" />
+          <TimelineItem date="2024-04" title="Build" color="${palette.accent}" />
+          <TimelineItem date="2024-07" title="Launch" color="${palette.green}" />
+        </Timeline>
+        <Text fontPx="14" bold="true" color="${palette.charcoal}">ProcessArrow (Step)</Text>
+        <ProcessArrow direction="horizontal" w="380" h="60">
+          <Step label="Plan" color="${palette.blue}" />
+          <Step label="Build" color="${palette.accent}" />
+          <Step label="Launch" color="${palette.green}" />
+        </ProcessArrow>
+        <Text fontPx="14" bold="true" color="${palette.charcoal}">Tree (TreeItem)</Text>
+        <Tree layout="vertical" w="380" h="140">
+          <TreeItem label="CEO" color="${palette.navy}">
+            <TreeItem label="CTO" color="${palette.blue}">
+              <TreeItem label="Dev" />
+            </TreeItem>
+            <TreeItem label="CFO" color="${palette.accent}" />
+          </TreeItem>
+        </Tree>
+      </VStack>
+    </HStack>
+  </VStack>
+`)[0] as POMNode;
+
 export async function generatePptx(outputPath: string): Promise<void> {
   const pptx = await buildPptx(
     [
@@ -4414,6 +4476,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
       page18Opacity,
       page19Shadow,
       page20BackgroundImage,
+      page21XmlChildElements,
     ],
     {
       w: 1280,

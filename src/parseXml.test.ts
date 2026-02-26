@@ -627,4 +627,629 @@ describe("parseXml", () => {
       ]);
     });
   });
+
+  // ===== 子要素記法 =====
+  describe("子要素記法", () => {
+    // ----- ProcessArrow -----
+    describe("ProcessArrow", () => {
+      it("Step 子要素から steps を構築する", () => {
+        const xml = `
+          <ProcessArrow direction="horizontal">
+            <Step label="Plan" color="1D4ED8" />
+            <Step label="Build" color="0EA5E9" />
+            <Step label="Launch" />
+          </ProcessArrow>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "processArrow",
+            direction: "horizontal",
+            steps: [
+              { label: "Plan", color: "1D4ED8" },
+              { label: "Build", color: "0EA5E9" },
+              { label: "Launch" },
+            ],
+          },
+        ]);
+      });
+
+      it("textColor 属性も正しく変換する", () => {
+        const xml = `
+          <ProcessArrow>
+            <Step label="A" textColor="FFFFFF" />
+          </ProcessArrow>
+        `;
+        const result = parseXml(xml);
+        expect(
+          (
+            (result[0] as Record<string, unknown>).steps as Record<
+              string,
+              unknown
+            >[]
+          )[0].textColor,
+        ).toBe("FFFFFF");
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const steps = JSON.stringify([
+          { label: "Step 1" },
+          { label: "Step 2" },
+        ]);
+        const result = parseXml(`<ProcessArrow steps='${steps}' />`);
+        expect((result[0] as Record<string, unknown>).steps).toEqual([
+          { label: "Step 1" },
+          { label: "Step 2" },
+        ]);
+      });
+
+      it("未知の子タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml('<ProcessArrow><Unknown label="X" /></ProcessArrow>'),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <ProcessArrow>. Expected: <Step>",
+        );
+      });
+    });
+
+    // ----- Timeline -----
+    describe("Timeline", () => {
+      it("TimelineItem 子要素から items を構築する", () => {
+        const xml = `
+          <Timeline direction="horizontal">
+            <TimelineItem date="2024-01" title="Launch" description="Product launch" color="1D4ED8" />
+            <TimelineItem date="2024-06" title="Update" />
+          </Timeline>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "timeline",
+            direction: "horizontal",
+            items: [
+              {
+                date: "2024-01",
+                title: "Launch",
+                description: "Product launch",
+                color: "1D4ED8",
+              },
+              { date: "2024-06", title: "Update" },
+            ],
+          },
+        ]);
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const items = JSON.stringify([{ date: "2024-01", title: "Start" }]);
+        const result = parseXml(`<Timeline items='${items}' />`);
+        expect((result[0] as Record<string, unknown>).items).toEqual([
+          { date: "2024-01", title: "Start" },
+        ]);
+      });
+
+      it("未知の子タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Timeline><Unknown date="X" /></Timeline>'),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Timeline>. Expected: <TimelineItem>",
+        );
+      });
+    });
+
+    // ----- Matrix -----
+    describe("Matrix", () => {
+      it("Axes/Quadrants/MatrixItem 子要素から構築する", () => {
+        const xml = `
+          <Matrix>
+            <Axes x="Impact" y="Effort" />
+            <Quadrants topLeft="Quick Wins" topRight="Major Projects" bottomLeft="Fill-Ins" bottomRight="Thankless Tasks" />
+            <MatrixItem label="Feature A" x="0.8" y="0.2" color="1D4ED8" />
+            <MatrixItem label="Feature B" x="0.3" y="0.7" />
+          </Matrix>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "matrix",
+            axes: { x: "Impact", y: "Effort" },
+            quadrants: {
+              topLeft: "Quick Wins",
+              topRight: "Major Projects",
+              bottomLeft: "Fill-Ins",
+              bottomRight: "Thankless Tasks",
+            },
+            items: [
+              { label: "Feature A", x: 0.8, y: 0.2, color: "1D4ED8" },
+              { label: "Feature B", x: 0.3, y: 0.7 },
+            ],
+          },
+        ]);
+      });
+
+      it("Quadrants なしでも動作する", () => {
+        const xml = `
+          <Matrix>
+            <Axes x="X" y="Y" />
+            <MatrixItem label="A" x="0.5" y="0.5" />
+          </Matrix>
+        `;
+        const result = parseXml(xml);
+        const node = result[0] as Record<string, unknown>;
+        expect(node.axes).toEqual({ x: "X", y: "Y" });
+        expect(node.quadrants).toBeUndefined();
+        expect(node.items).toEqual([{ label: "A", x: 0.5, y: 0.5 }]);
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const axes = JSON.stringify({ x: "X", y: "Y" });
+        const items = JSON.stringify([{ label: "A", x: 0.5, y: 0.5 }]);
+        const result = parseXml(`<Matrix axes='${axes}' items='${items}' />`);
+        const node = result[0] as Record<string, unknown>;
+        expect(node.axes).toEqual({ x: "X", y: "Y" });
+        expect(node.items).toEqual([{ label: "A", x: 0.5, y: 0.5 }]);
+      });
+
+      it("未知の子タグでエラーをスローする", () => {
+        expect(() => parseXml('<Matrix><Unknown x="X" /></Matrix>')).toThrow(
+          "Unknown child element <Unknown> inside <Matrix>. Expected: <Axes>, <Quadrants>, or <MatrixItem>",
+        );
+      });
+    });
+
+    // ----- Flow -----
+    describe("Flow", () => {
+      it("FlowNode/Connection 子要素から構築する", () => {
+        const xml = `
+          <Flow direction="vertical">
+            <FlowNode id="start" shape="flowChartTerminator" text="Start" />
+            <FlowNode id="process" shape="flowChartProcess" text="Process" color="1D4ED8" />
+            <Connection from="start" to="process" label="next" />
+          </Flow>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "flow",
+            direction: "vertical",
+            nodes: [
+              {
+                id: "start",
+                shape: "flowChartTerminator",
+                text: "Start",
+              },
+              {
+                id: "process",
+                shape: "flowChartProcess",
+                text: "Process",
+                color: "1D4ED8",
+              },
+            ],
+            connections: [{ from: "start", to: "process", label: "next" }],
+          },
+        ]);
+      });
+
+      it("FlowNode と Connection の混在順序を許容する", () => {
+        const xml = `
+          <Flow>
+            <FlowNode id="a" shape="flowChartProcess" text="A" />
+            <Connection from="a" to="b" />
+            <FlowNode id="b" shape="flowChartProcess" text="B" />
+          </Flow>
+        `;
+        const result = parseXml(xml);
+        const node = result[0] as Record<string, unknown>;
+        expect(node.nodes).toHaveLength(2);
+        expect(node.connections).toHaveLength(1);
+      });
+
+      it("FlowNode の数値属性を正しく変換する", () => {
+        const xml = `
+          <Flow>
+            <FlowNode id="a" shape="flowChartProcess" text="A" width="200" height="100" />
+          </Flow>
+        `;
+        const result = parseXml(xml);
+        const nodes = (result[0] as Record<string, unknown>).nodes as Record<
+          string,
+          unknown
+        >[];
+        expect(nodes[0].width).toBe(200);
+        expect(nodes[0].height).toBe(100);
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const nodes = JSON.stringify([
+          { id: "1", shape: "flowChartProcess", text: "A" },
+        ]);
+        const connections = JSON.stringify([{ from: "1", to: "2" }]);
+        const result = parseXml(
+          `<Flow nodes='${nodes}' connections='${connections}' />`,
+        );
+        const node = result[0] as Record<string, unknown>;
+        expect(node.nodes).toEqual([
+          { id: "1", shape: "flowChartProcess", text: "A" },
+        ]);
+        expect(node.connections).toEqual([{ from: "1", to: "2" }]);
+      });
+
+      it("未知の子タグでエラーをスローする", () => {
+        expect(() => parseXml('<Flow><Unknown id="x" /></Flow>')).toThrow(
+          "Unknown child element <Unknown> inside <Flow>. Expected: <FlowNode> or <Connection>",
+        );
+      });
+    });
+
+    // ----- Chart -----
+    describe("Chart", () => {
+      it("Series/DataPoint 子要素から data を構築する", () => {
+        const xml = `
+          <Chart chartType="bar">
+            <Series name="Q1">
+              <DataPoint label="1月" value="100" />
+              <DataPoint label="2月" value="120" />
+              <DataPoint label="3月" value="90" />
+            </Series>
+          </Chart>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "chart",
+            chartType: "bar",
+            data: [
+              {
+                name: "Q1",
+                labels: ["1月", "2月", "3月"],
+                values: [100, 120, 90],
+              },
+            ],
+          },
+        ]);
+      });
+
+      it("複数 Series を処理する", () => {
+        const xml = `
+          <Chart chartType="line">
+            <Series name="2023">
+              <DataPoint label="Q1" value="100" />
+              <DataPoint label="Q2" value="200" />
+            </Series>
+            <Series name="2024">
+              <DataPoint label="Q1" value="150" />
+              <DataPoint label="Q2" value="250" />
+            </Series>
+          </Chart>
+        `;
+        const result = parseXml(xml);
+        const data = (result[0] as Record<string, unknown>).data as Record<
+          string,
+          unknown
+        >[];
+        expect(data).toHaveLength(2);
+        expect(data[0].name).toBe("2023");
+        expect(data[1].name).toBe("2024");
+      });
+
+      it("name なしの Series を処理する", () => {
+        const xml = `
+          <Chart chartType="pie">
+            <Series>
+              <DataPoint label="A" value="60" />
+              <DataPoint label="B" value="40" />
+            </Series>
+          </Chart>
+        `;
+        const result = parseXml(xml);
+        const data = (result[0] as Record<string, unknown>).data as Record<
+          string,
+          unknown
+        >[];
+        expect(data[0].name).toBeUndefined();
+        expect(data[0].labels).toEqual(["A", "B"]);
+        expect(data[0].values).toEqual([60, 40]);
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const data = JSON.stringify([
+          { name: "S1", labels: ["A"], values: [1] },
+        ]);
+        const result = parseXml(`<Chart chartType="bar" data='${data}' />`);
+        expect((result[0] as Record<string, unknown>).data).toEqual([
+          { name: "S1", labels: ["A"], values: [1] },
+        ]);
+      });
+
+      it("Chart 内の未知タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Chart chartType="bar"><Unknown /></Chart>'),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Chart>. Expected: <Series>",
+        );
+      });
+
+      it("Series 内の未知タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml(
+            '<Chart chartType="bar"><Series><Unknown /></Series></Chart>',
+          ),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Series>. Expected: <DataPoint>",
+        );
+      });
+    });
+
+    // ----- Table -----
+    describe("Table", () => {
+      it("Column/Row/Cell 子要素から columns/rows を構築する", () => {
+        const xml = `
+          <Table>
+            <Column width="200" />
+            <Column width="100" />
+            <Row>
+              <Cell>太郎</Cell>
+              <Cell>30</Cell>
+            </Row>
+            <Row>
+              <Cell>花子</Cell>
+              <Cell>25</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "table",
+            columns: [{ width: 200 }, { width: 100 }],
+            rows: [
+              { cells: [{ text: "太郎" }, { text: "30" }] },
+              { cells: [{ text: "花子" }, { text: "25" }] },
+            ],
+          },
+        ]);
+      });
+
+      it("Cell に属性（fontPx, bold等）を設定する", () => {
+        const xml = `
+          <Table>
+            <Column width="200" />
+            <Row>
+              <Cell fontPx="14" bold="true" color="FF0000">Header</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const rows = (result[0] as Record<string, unknown>).rows as Record<
+          string,
+          unknown
+        >[];
+        const cells = rows[0].cells as Record<string, unknown>[];
+        expect(cells[0]).toEqual({
+          text: "Header",
+          fontPx: 14,
+          bold: true,
+          color: "FF0000",
+        });
+      });
+
+      it("Cell の text 属性がテキストコンテンツより優先される", () => {
+        const xml = `
+          <Table>
+            <Column />
+            <Row>
+              <Cell text="from attr">from content</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const rows = (result[0] as Record<string, unknown>).rows as Record<
+          string,
+          unknown
+        >[];
+        const cells = rows[0].cells as Record<string, unknown>[];
+        expect(cells[0].text).toBe("from attr");
+      });
+
+      it("Row に height 属性を設定する", () => {
+        const xml = `
+          <Table>
+            <Column />
+            <Row height="50">
+              <Cell>A</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const rows = (result[0] as Record<string, unknown>).rows as Record<
+          string,
+          unknown
+        >[];
+        expect(rows[0].height).toBe(50);
+      });
+
+      it("Column なしで Row のみを指定する", () => {
+        const xml = `
+          <Table>
+            <Row>
+              <Cell>A</Cell>
+              <Cell>B</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const node = result[0] as Record<string, unknown>;
+        expect(node.columns).toBeUndefined();
+        expect(node.rows).toEqual([{ cells: [{ text: "A" }, { text: "B" }] }]);
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const columns = JSON.stringify([{ width: 100 }]);
+        const rows = JSON.stringify([{ cells: [{ text: "A" }] }]);
+        const result = parseXml(
+          `<Table columns='${columns}' rows='${rows}' />`,
+        );
+        const node = result[0] as Record<string, unknown>;
+        expect(node.columns).toEqual([{ width: 100 }]);
+        expect(node.rows).toEqual([{ cells: [{ text: "A" }] }]);
+      });
+
+      it("Row 内の未知タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml("<Table><Row><Unknown>x</Unknown></Row></Table>"),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Row>. Expected: <Cell>",
+        );
+      });
+
+      it("Table 内の未知タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Table><Unknown width="100" /></Table>'),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Table>. Expected: <Column> or <Row>",
+        );
+      });
+    });
+
+    // ----- Tree -----
+    describe("Tree", () => {
+      it("TreeItem の再帰的なネストを処理する", () => {
+        const xml = `
+          <Tree layout="vertical">
+            <TreeItem label="CEO" color="1D4ED8">
+              <TreeItem label="CTO">
+                <TreeItem label="Dev Lead" />
+              </TreeItem>
+              <TreeItem label="CFO" />
+            </TreeItem>
+          </Tree>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "tree",
+            layout: "vertical",
+            data: {
+              label: "CEO",
+              color: "1D4ED8",
+              children: [
+                {
+                  label: "CTO",
+                  children: [{ label: "Dev Lead" }],
+                },
+                { label: "CFO" },
+              ],
+            },
+          },
+        ]);
+      });
+
+      it("子要素なしの TreeItem（リーフノード）を処理する", () => {
+        const xml = `
+          <Tree>
+            <TreeItem label="Root" />
+          </Tree>
+        `;
+        const result = parseXml(xml);
+        expect((result[0] as Record<string, unknown>).data).toEqual({
+          label: "Root",
+        });
+      });
+
+      it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
+        const data = JSON.stringify({
+          label: "Root",
+          children: [{ label: "A" }],
+        });
+        const result = parseXml(`<Tree data='${data}' />`);
+        expect((result[0] as Record<string, unknown>).data).toEqual({
+          label: "Root",
+          children: [{ label: "A" }],
+        });
+      });
+
+      it("Tree に複数の TreeItem があるとエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Tree><TreeItem label="A" /><TreeItem label="B" /></Tree>'),
+        ).toThrow(
+          "<Tree> must have exactly 1 <TreeItem> child element, but got 2",
+        );
+      });
+
+      it("Tree 内の未知タグでエラーをスローする", () => {
+        expect(() => parseXml('<Tree><Unknown label="X" /></Tree>')).toThrow(
+          "Unknown child element <Unknown> inside <Tree>. Expected: <TreeItem>",
+        );
+      });
+
+      it("TreeItem 内の未知タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml(
+            '<Tree><TreeItem label="Root"><Unknown label="X" /></TreeItem></Tree>',
+          ),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <TreeItem>. Expected: <TreeItem>",
+        );
+      });
+    });
+
+    // ----- コンテナ内でのネスト -----
+    describe("コンテナ内でのネスト", () => {
+      it("VStack 内で Chart の子要素記法を使用できる", () => {
+        const xml = `
+          <VStack gap="16">
+            <Text fontPx="24" bold="true">売上</Text>
+            <Chart chartType="bar" w="400" h="300">
+              <Series name="Q1">
+                <DataPoint label="1月" value="100" />
+              </Series>
+            </Chart>
+          </VStack>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "vstack",
+            gap: 16,
+            children: [
+              { type: "text", text: "売上", fontPx: 24, bold: true },
+              {
+                type: "chart",
+                chartType: "bar",
+                w: 400,
+                h: 300,
+                data: [{ name: "Q1", labels: ["1月"], values: [100] }],
+              },
+            ],
+          },
+        ]);
+      });
+
+      it("HStack 内で Table の子要素記法を使用できる", () => {
+        const xml = `
+          <HStack gap="16">
+            <Table>
+              <Column width="200" />
+              <Row><Cell>A</Cell></Row>
+            </Table>
+            <Text>Notes</Text>
+          </HStack>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "hstack",
+            gap: 16,
+            children: [
+              {
+                type: "table",
+                columns: [{ width: 200 }],
+                rows: [{ cells: [{ text: "A" }] }],
+              },
+              { type: "text", text: "Notes" },
+            ],
+          },
+        ]);
+      });
+    });
+  });
 });
