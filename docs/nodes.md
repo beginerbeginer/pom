@@ -401,6 +401,23 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 - If `rows` `height` is omitted, `defaultRowHeight` is applied (32px if unspecified).
 - Cell background and font decoration can be specified individually for each element in `cells`.
 
+**XML Child Element Notation:**
+
+```xml
+<Table>
+  <Column width="200" />
+  <Column width="100" />
+  <Row>
+    <Cell bold="true">Name</Cell>
+    <Cell bold="true">Score</Cell>
+  </Row>
+  <Row>
+    <Cell>Alice</Cell>
+    <Cell>95</Cell>
+  </Row>
+</Table>
+```
+
 ### 4. Shape
 
 A node for drawing shapes. Different representations are possible with or without text, supporting complex visual effects.
@@ -617,6 +634,23 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 }
 ```
 
+**XML Child Element Notation:**
+
+```xml
+<Chart chartType="bar" w="600" h="400" showLegend="true">
+  <Series name="Sales">
+    <DataPoint label="Jan" value="100" />
+    <DataPoint label="Feb" value="200" />
+    <DataPoint label="Mar" value="150" />
+  </Series>
+  <Series name="Profit">
+    <DataPoint label="Jan" value="30" />
+    <DataPoint label="Feb" value="60" />
+    <DataPoint label="Mar" value="45" />
+  </Series>
+</Chart>
+```
+
 ### 9. Timeline
 
 A node for creating timeline/roadmap visualizations. Supports horizontal and vertical layouts.
@@ -670,6 +704,16 @@ A node for creating timeline/roadmap visualizations. Supports horizontal and ver
     { date: "Week 4", title: "Release" },
   ],
 }
+```
+
+**XML Child Element Notation:**
+
+```xml
+<Timeline direction="horizontal" w="1000" h="120">
+  <TimelineItem date="2025/Q1" title="Phase 1" description="Foundation" color="4CAF50" />
+  <TimelineItem date="2025/Q2" title="Phase 2" description="Development" color="2196F3" />
+  <TimelineItem date="2025/Q3" title="Phase 3" description="Release" color="E91E63" />
+</Timeline>
 ```
 
 ### 10. Matrix
@@ -743,6 +787,18 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
     { label: "Time Sink", x: 0.85, y: 0.15 },
   ],
 }
+```
+
+**XML Child Element Notation:**
+
+```xml
+<Matrix w="600" h="500">
+  <Axes x="Cost" y="Effect" />
+  <Quadrants topLeft="Low Cost / High Effect" topRight="High Cost / High Effect"
+    bottomLeft="Low Cost / Low Effect" bottomRight="High Cost / Low Effect" />
+  <MatrixItem label="Initiative A" x="0.2" y="0.8" color="4CAF50" />
+  <MatrixItem label="Initiative B" x="0.7" y="0.6" color="2196F3" />
+</Matrix>
 ```
 
 ### 11. Tree
@@ -839,6 +895,24 @@ A node for creating tree structures such as organization charts, decision trees,
 }
 ```
 
+**XML Child Element Notation:**
+
+```xml
+<Tree layout="vertical" nodeShape="roundRect" w="600" h="400">
+  <TreeItem label="CEO" color="1D4ED8">
+    <TreeItem label="CTO" color="0EA5E9">
+      <TreeItem label="Engineer A" />
+      <TreeItem label="Engineer B" />
+    </TreeItem>
+    <TreeItem label="CFO" color="16A34A">
+      <TreeItem label="Accountant" />
+    </TreeItem>
+  </TreeItem>
+</Tree>
+```
+
+Note: `<Tree>` must have exactly one `<TreeItem>` root child. `<TreeItem>` can be nested recursively.
+
 ### 12. Flow
 
 A node for creating flowcharts. Supports various node shapes and automatic layout.
@@ -912,6 +986,20 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
     { from: "save", to: "output" },
   ],
 }
+```
+
+**XML Child Element Notation:**
+
+```xml
+<Flow direction="vertical" w="400" h="300">
+  <FlowNode id="start" shape="flowChartTerminator" text="Start" color="4CAF50" />
+  <FlowNode id="process" shape="flowChartProcess" text="Process" />
+  <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
+  <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
+  <Connection from="start" to="process" />
+  <Connection from="process" to="decision" />
+  <Connection from="decision" to="end" label="Yes" />
+</Flow>
 ```
 
 ### 13. ProcessArrow
@@ -993,6 +1081,18 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
     { label: "Output", color: "#009688" },
   ],
 }
+```
+
+**XML Child Element Notation:**
+
+```xml
+<ProcessArrow direction="horizontal" w="1000" h="80">
+  <Step label="Planning" color="4472C4" />
+  <Step label="Design" color="5B9BD5" />
+  <Step label="Development" color="70AD47" />
+  <Step label="Testing" color="FFC000" />
+  <Step label="Release" color="ED7D31" />
+</ProcessArrow>
 ```
 
 ### 14. Line

@@ -616,6 +616,116 @@ The above is equivalent to the following JSON:
 { "type": "text", "fontPx": 24, "bold": true, "text": "Title Text" }
 ```
 
+### Child Element Notation
+
+For nodes with complex data properties (arrays, objects), you can use child elements instead of JSON attribute strings. This is more readable and easier for LLMs to generate.
+
+#### Chart
+
+```xml
+<Chart chartType="bar">
+  <Series name="Q1">
+    <DataPoint label="Jan" value="100" />
+    <DataPoint label="Feb" value="120" />
+    <DataPoint label="Mar" value="90" />
+  </Series>
+  <Series name="Q2">
+    <DataPoint label="Jan" value="110" />
+    <DataPoint label="Feb" value="130" />
+    <DataPoint label="Mar" value="95" />
+  </Series>
+</Chart>
+```
+
+#### Table
+
+```xml
+<Table>
+  <Column width="200" />
+  <Column width="100" />
+  <Row>
+    <Cell bold="true">Name</Cell>
+    <Cell bold="true">Score</Cell>
+  </Row>
+  <Row>
+    <Cell>Alice</Cell>
+    <Cell>95</Cell>
+  </Row>
+</Table>
+```
+
+`<Cell>` supports text content and all `TableCell` attributes (`fontPx`, `color`, `bold`, `italic`, `backgroundColor`, etc.).
+
+#### Timeline
+
+```xml
+<Timeline direction="horizontal">
+  <TimelineItem date="2024-01" title="Launch" description="Product launch" color="1D4ED8" />
+  <TimelineItem date="2024-06" title="Update" />
+</Timeline>
+```
+
+#### Matrix
+
+```xml
+<Matrix>
+  <Axes x="Impact" y="Effort" />
+  <Quadrants topLeft="Quick Wins" topRight="Major Projects"
+    bottomLeft="Fill-Ins" bottomRight="Thankless Tasks" />
+  <MatrixItem label="Feature A" x="0.8" y="0.2" color="1D4ED8" />
+  <MatrixItem label="Feature B" x="0.3" y="0.7" />
+</Matrix>
+```
+
+#### Tree
+
+```xml
+<Tree layout="vertical">
+  <TreeItem label="CEO" color="1D4ED8">
+    <TreeItem label="CTO">
+      <TreeItem label="Dev Lead" />
+    </TreeItem>
+    <TreeItem label="CFO" />
+  </TreeItem>
+</Tree>
+```
+
+Note: `<Tree>` must have exactly one `<TreeItem>` root child. `<TreeItem>` can be nested recursively.
+
+#### Flow
+
+```xml
+<Flow direction="vertical">
+  <FlowNode id="start" shape="flowChartTerminator" text="Start" />
+  <FlowNode id="process" shape="flowChartProcess" text="Process" color="1D4ED8" />
+  <Connection from="start" to="process" label="next" />
+</Flow>
+```
+
+#### ProcessArrow
+
+```xml
+<ProcessArrow direction="horizontal">
+  <Step label="Plan" color="1D4ED8" />
+  <Step label="Build" color="0EA5E9" />
+  <Step label="Launch" />
+</ProcessArrow>
+```
+
+#### Child Element Tag Reference
+
+| Parent Node      | Child Tags                              | Mapped Property              |
+| ---------------- | --------------------------------------- | ---------------------------- |
+| `<Chart>`        | `<Series>` > `<DataPoint>`              | `data`                       |
+| `<Table>`        | `<Column>`, `<Row>` > `<Cell>`          | `columns`, `rows`            |
+| `<Timeline>`     | `<TimelineItem>`                        | `items`                      |
+| `<Matrix>`       | `<Axes>`, `<Quadrants>`, `<MatrixItem>` | `axes`, `quadrants`, `items` |
+| `<Tree>`         | `<TreeItem>` (recursive)                | `data`                       |
+| `<Flow>`         | `<FlowNode>`, `<Connection>`            | `nodes`, `connections`       |
+| `<ProcessArrow>` | `<Step>`                                | `steps`                      |
+
+JSON attribute notation is still supported for backward compatibility. When both are present, child elements take precedence.
+
 ### Using Components
 
 Tag names that are not built-in node types are treated as component nodes. Use `expandComponents()` to resolve components before passing them to `buildPptx`.
