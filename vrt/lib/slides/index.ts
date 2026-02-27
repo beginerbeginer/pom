@@ -17,4 +17,5 @@ export { page19ShadowXml } from "./shadow";
 export { page20BackgroundImageXml } from "./backgroundImage";
 export { page21XmlChildElementsXml } from "./xmlChildElements";
 export { page22CompositeScaleToFitXml } from "./compositeScaleToFit";
-export { page23PyramidXml } from "./pyramid";
+export { page23TableColspanRowspanXml } from "./tableColspanRowspan";
+export { page24PyramidXml } from "./pyramid";

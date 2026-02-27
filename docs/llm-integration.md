@@ -187,7 +187,7 @@ Ul の全属性に加えて:
 
 - `<Column>`: `width`（省略で均等分割）
 - `<Row>`: `height`（省略で `defaultRowHeight` 適用、デフォルト 32）
-- `<Cell>`: テキスト内容 + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor`
+- `<Cell>`: テキスト内容 + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
 
 ### Chart
 

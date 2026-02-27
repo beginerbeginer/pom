@@ -1,12 +1,12 @@
 import { palette } from "./palette";
 
 // ============================================================
-// Page 23: Pyramid Node Test
+// Page 24: Pyramid Node Test
 // テスト対象: PyramidNode - direction, levels, fontPx, bold, textColor
 // ============================================================
-export const page23PyramidXml = `
+export const page24PyramidXml = `
 <VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 23: Pyramid Node Test</Text>
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 24: Pyramid Node Test</Text>
   <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
     <VStack gap="12">
       <Text fontPx="14" bold="true">Basic Pyramid (direction=up, 3 layers):</Text>

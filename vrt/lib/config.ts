@@ -36,7 +36,8 @@ export const PAGE_NAMES = [
   "20-background-image",
   "21-xml-child-elements",
   "22-composite-scale-to-fit",
-  "23-pyramid",
+  "23-table-colspan-rowspan",
+  "24-pyramid",
 ] as const;
 
 export const THRESHOLD = 0.1;
