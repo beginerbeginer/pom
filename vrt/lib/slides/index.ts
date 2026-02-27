@@ -1,0 +1,18 @@
+export { palette } from "./palette";
+export { page1TextXml, page2BulletXml } from "./text";
+export { page3ImageXml, page3bImageSizingXml } from "./image";
+export { page4TableXml } from "./table";
+export { page5ShapeXml } from "./shape";
+export { page6ChartXml, page10ChartAdditionalXml } from "./chart";
+export { page7LayoutXml, page16LayerXml, page17HStackTableXml } from "./layout";
+export { page8CommonXml } from "./common";
+export { page9TimelineXml } from "./timeline";
+export { page11MatrixXml } from "./matrix";
+export { page12TreeXml } from "./tree";
+export { page13FlowXml } from "./flow";
+export { page14ProcessArrowXml } from "./processArrow";
+export { page15LineXml } from "./line";
+export { page18OpacityXml } from "./opacity";
+export { page19ShadowXml } from "./shadow";
+export { page20BackgroundImageXml } from "./backgroundImage";
+export { page21XmlChildElementsXml } from "./xmlChildElements";
