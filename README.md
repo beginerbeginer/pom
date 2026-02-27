@@ -18,6 +18,12 @@
   <a href="https://pom-playground.vercel.app/"><b>Try it online — Playground</b></a>
 </p>
 
+<p align="center">
+  <a href="https://pom-playground.vercel.app/">
+    <img src="./docs/images/playground.png" alt="Playground" width="800">
+  </a>
+</p>
+
 ---
 
 <table>
