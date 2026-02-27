@@ -31,6 +31,17 @@ import {
   tableCellSchema,
 } from "./types.ts";
 
+// ===== ParseXmlError =====
+export class ParseXmlError extends Error {
+  public readonly errors: string[];
+  constructor(errors: string[]) {
+    const message = `XML validation failed (${errors.length} error${errors.length > 1 ? "s" : ""}):\n${errors.map((e) => `  - ${e}`).join("\n")}`;
+    super(message);
+    this.name = "ParseXmlError";
+    this.errors = errors;
+  }
+}
+
 // ===== Tag name → POM node type mapping =====
 const TAG_TO_TYPE: Record<string, string> = {
   Text: "text",
@@ -49,6 +60,11 @@ const TAG_TO_TYPE: Record<string, string> = {
   HStack: "hstack",
   Layer: "layer",
 };
+
+// Reverse mapping: node type → tag name
+const TYPE_TO_TAG: Record<string, string> = Object.fromEntries(
+  Object.entries(TAG_TO_TYPE).map(([tag, type]) => [type, tag]),
+);
 
 // ===== Node schemas for property type coercion =====
 // Extract shape from ZodObject schemas for property type lookup.
@@ -96,6 +112,178 @@ const containerShapes: Record<string, ShapeRecord> = {
 
 const CONTAINER_TYPES = new Set(["box", "vstack", "hstack", "layer"]);
 const TEXT_CONTENT_NODES = new Set(["text", "shape"]);
+// Attributes allowed on any node (e.g., x/y for Layer children positioning)
+const UNIVERSAL_ATTRS = new Set(["x", "y"]);
+
+// ===== Validation helpers =====
+function getKnownAttributes(nodeType: string): string[] {
+  const shape = leafNodeShapes[nodeType] ?? containerShapes[nodeType];
+  if (!shape) return [];
+  return Object.keys(shape).filter((k) => k !== "type");
+}
+
+function levenshteinDistance(a: string, b: string): number {
+  const m = a.length;
+  const n = b.length;
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    Array<number>(n + 1).fill(0),
+  );
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] =
+        a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function findClosestMatch(
+  input: string,
+  candidates: string[],
+): string | undefined {
+  const threshold = Math.max(2, Math.floor(input.length / 2));
+  let bestMatch: string | undefined;
+  let bestDistance = Infinity;
+  for (const candidate of candidates) {
+    const dist = levenshteinDistance(
+      input.toLowerCase(),
+      candidate.toLowerCase(),
+    );
+    if (dist < bestDistance && dist <= threshold) {
+      bestDistance = dist;
+      bestMatch = candidate;
+    }
+  }
+  return bestMatch;
+}
+
+function getKnownChildAttributes(tagName: string): string[] {
+  const shape = childElementShapes[tagName];
+  if (!shape) return [];
+  return Object.keys(shape);
+}
+
+// ===== Leaf node Zod validation schemas =====
+const leafNodeValidationSchemas: Record<string, z.ZodTypeAny> = {
+  text: inputTextNodeSchema,
+  image: inputImageNodeSchema,
+  table: inputTableNodeSchema,
+  shape: inputShapeNodeSchema,
+  chart: inputChartNodeSchema,
+  timeline: inputTimelineNodeSchema,
+  matrix: inputMatrixNodeSchema,
+  tree: inputTreeNodeSchema,
+  flow: inputFlowNodeSchema,
+  processArrow: inputProcessArrowNodeSchema,
+  line: inputLineNodeSchema,
+};
+
+function formatZodIssue(
+  issue: z.core.$ZodIssue,
+  tagName: string,
+): string | null {
+  const path = issue.path;
+  // Skip children-related issues (validated recursively)
+  if (path.length > 0 && path[0] === "children") return null;
+  // Skip "type" field issues (set internally)
+  if (path.length === 1 && path[0] === "type") return null;
+
+  const attrName = path.length > 0 ? String(path[0]) : undefined;
+
+  const code = issue.code;
+
+  if (code === "invalid_type") {
+    // Missing required attribute
+    if (issue.input === undefined) {
+      if (attrName) {
+        return `<${tagName}>: Missing required attribute "${attrName}"`;
+      }
+      return `<${tagName}>: ${issue.message}`;
+    }
+    // Type mismatch
+    if (attrName) {
+      return `<${tagName}>: Invalid type for attribute "${attrName}". ${issue.message}`;
+    }
+    return `<${tagName}>: ${issue.message}`;
+  }
+
+  if (code === "invalid_value") {
+    if (attrName) {
+      const values = (issue as unknown as { values: string[] }).values;
+      if (values) {
+        return `<${tagName}>: Invalid value for attribute "${attrName}". Expected: ${values.map((v) => `"${v}"`).join(", ")}`;
+      }
+      return `<${tagName}>: Invalid value for attribute "${attrName}". ${issue.message}`;
+    }
+    return `<${tagName}>: ${issue.message}`;
+  }
+
+  if (code === "too_small" || code === "too_big") {
+    if (attrName) {
+      return `<${tagName}>: Invalid value for attribute "${attrName}". ${issue.message}`;
+    }
+    return `<${tagName}>: ${issue.message}`;
+  }
+
+  // Generic fallback
+  if (attrName) {
+    return `<${tagName}>: Attribute "${attrName}": ${issue.message}`;
+  }
+  return `<${tagName}>: ${issue.message}`;
+}
+
+// Properties that may be legitimately absent when using child element notation
+// or when the property is optional in practice (even if required in schema).
+const CHILD_ELEMENT_PROPS: Record<string, Set<string>> = {
+  flow: new Set(["nodes", "connections"]),
+  table: new Set(["columns", "rows"]),
+  chart: new Set(["data"]),
+  timeline: new Set(["items"]),
+  matrix: new Set(["axes", "items", "quadrants"]),
+  processArrow: new Set(["steps"]),
+  tree: new Set(["data"]),
+};
+
+function validateLeafNode(
+  nodeType: string,
+  result: Record<string, unknown>,
+  errors: string[],
+): void {
+  const schema = leafNodeValidationSchemas[nodeType];
+  if (!schema) return;
+  const tagName = TYPE_TO_TAG[nodeType] ?? nodeType;
+  const childProps = CHILD_ELEMENT_PROPS[nodeType];
+  const parseResult = schema.safeParse(result);
+  if (!parseResult.success) {
+    const seen = new Set<string>();
+    for (const issue of parseResult.error.issues) {
+      // Skip only top-level missing child-element properties (path.length === 1)
+      // Nested issues (e.g., data.children[0].label) must still be reported
+      if (
+        childProps &&
+        issue.path.length === 1 &&
+        childProps.has(String(issue.path[0])) &&
+        issue.code === "invalid_type" &&
+        issue.input === undefined
+      ) {
+        continue;
+      }
+      // Skip issues for universal attributes (x, y)
+      if (issue.path.length > 0 && UNIVERSAL_ATTRS.has(String(issue.path[0]))) {
+        continue;
+      }
+      const msg = formatZodIssue(issue, tagName);
+      if (msg && !seen.has(msg)) {
+        seen.add(msg);
+        errors.push(msg);
+      }
+    }
+  }
+}
 
 // ===== Types for XML parser output (preserveOrder mode) =====
 type XmlNode = XmlElement | XmlTextNode;
@@ -149,7 +337,11 @@ function resolveZodTypeName(schema: z.ZodTypeAny): string {
 }
 
 // ===== Value coercion =====
-function coerceValue(value: string, schema: z.ZodTypeAny): unknown {
+// Returns { value, error } — if error is non-null, coercion failed.
+function coerceValue(
+  value: string,
+  schema: z.ZodTypeAny,
+): { value: unknown; error: string | null } {
   const unwrapped = unwrapSchema(schema);
   const typeName = getZodType(unwrapped);
   const def = getDef(unwrapped);
@@ -158,36 +350,47 @@ function coerceValue(value: string, schema: z.ZodTypeAny): unknown {
     case "number": {
       const num = Number(value);
       if (isNaN(num)) {
-        throw new Error(`Cannot convert "${value}" to number`);
+        return {
+          value: undefined,
+          error: `Cannot convert "${value}" to number`,
+        };
       }
-      return num;
+      return { value: num, error: null };
     }
     case "boolean":
       if (value !== "true" && value !== "false") {
-        throw new Error(
-          `Cannot convert "${value}" to boolean (expected "true" or "false")`,
-        );
+        return {
+          value: undefined,
+          error: `Cannot convert "${value}" to boolean (expected "true" or "false")`,
+        };
       }
-      return value === "true";
+      return { value: value === "true", error: null };
     case "string":
     case "enum":
-      return value;
+      return { value, error: null };
     case "literal": {
       const values = def.values as unknown[] | undefined;
       const singleValue = def.value;
-      return values?.[0] ?? singleValue;
+      return { value: values?.[0] ?? singleValue, error: null };
     }
     case "array":
     case "object":
     case "record":
     case "tuple":
-      return JSON.parse(value);
+      try {
+        return { value: JSON.parse(value), error: null };
+      } catch {
+        return {
+          value: undefined,
+          error: `Cannot parse JSON value: "${value}"`,
+        };
+      }
     case "union": {
       const options = def.options as z.ZodTypeAny[];
-      return coerceUnionValue(value, options);
+      return { value: coerceUnionValue(value, options), error: null };
     }
     default:
-      return coerceFallback(value);
+      return { value: coerceFallback(value), error: null };
   }
 }
 
@@ -313,14 +516,28 @@ const childElementShapes: Record<string, ShapeRecord> = {
 };
 
 function coerceChildAttrs(
+  parentTagName: string,
   tagName: string,
   attrs: Record<string, string>,
+  errors: string[],
 ): Record<string, unknown> {
   const shape = childElementShapes[tagName];
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(attrs)) {
     if (shape && shape[key]) {
-      result[key] = coerceValue(value, shape[key]);
+      const coerced = coerceValue(value, shape[key]);
+      if (coerced.error !== null) {
+        errors.push(`<${parentTagName}>.<${tagName}>: ${coerced.error}`);
+      } else {
+        result[key] = coerced.value;
+      }
+    } else if (shape) {
+      // Unknown attribute on child element
+      const knownAttrs = getKnownChildAttributes(tagName);
+      const suggestion = findClosestMatch(key, knownAttrs);
+      errors.push(
+        `<${parentTagName}>.<${tagName}>: Unknown attribute "${key}"${suggestion ? `. Did you mean "${suggestion}"?` : ""}`,
+      );
     } else {
       result[key] = coerceFallback(value);
     }
@@ -332,21 +549,26 @@ function coerceChildAttrs(
 type ChildElementConverter = (
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ) => void;
 
 function convertProcessArrowChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const steps: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
     if (tag !== "Step") {
-      throw new Error(
+      errors.push(
         `Unknown child element <${tag}> inside <ProcessArrow>. Expected: <Step>`,
       );
+      continue;
     }
-    steps.push(coerceChildAttrs(tag, getAttributes(child)));
+    steps.push(
+      coerceChildAttrs("ProcessArrow", tag, getAttributes(child), errors),
+    );
   }
   result.steps = steps;
 }
@@ -354,16 +576,18 @@ function convertProcessArrowChildren(
 function convertTimelineChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const items: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
     if (tag !== "TimelineItem") {
-      throw new Error(
+      errors.push(
         `Unknown child element <${tag}> inside <Timeline>. Expected: <TimelineItem>`,
       );
+      continue;
     }
-    items.push(coerceChildAttrs(tag, getAttributes(child)));
+    items.push(coerceChildAttrs("Timeline", tag, getAttributes(child), errors));
   }
   result.items = items;
 }
@@ -371,22 +595,35 @@ function convertTimelineChildren(
 function convertMatrixChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const items: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
     switch (tag) {
       case "Axes":
-        result.axes = coerceChildAttrs(tag, getAttributes(child));
+        result.axes = coerceChildAttrs(
+          "Matrix",
+          tag,
+          getAttributes(child),
+          errors,
+        );
         break;
       case "Quadrants":
-        result.quadrants = coerceChildAttrs(tag, getAttributes(child));
+        result.quadrants = coerceChildAttrs(
+          "Matrix",
+          tag,
+          getAttributes(child),
+          errors,
+        );
         break;
       case "MatrixItem":
-        items.push(coerceChildAttrs(tag, getAttributes(child)));
+        items.push(
+          coerceChildAttrs("Matrix", tag, getAttributes(child), errors),
+        );
         break;
       default:
-        throw new Error(
+        errors.push(
           `Unknown child element <${tag}> inside <Matrix>. Expected: <Axes>, <Quadrants>, or <MatrixItem>`,
         );
     }
@@ -399,6 +636,7 @@ function convertMatrixChildren(
 function convertFlowChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const nodes: Record<string, unknown>[] = [];
   const connections: Record<string, unknown>[] = [];
@@ -406,13 +644,15 @@ function convertFlowChildren(
     const tag = getTagName(child);
     switch (tag) {
       case "FlowNode":
-        nodes.push(coerceChildAttrs(tag, getAttributes(child)));
+        nodes.push(coerceChildAttrs("Flow", tag, getAttributes(child), errors));
         break;
       case "Connection":
-        connections.push(coerceChildAttrs(tag, getAttributes(child)));
+        connections.push(
+          coerceChildAttrs("Flow", tag, getAttributes(child), errors),
+        );
         break;
       default:
-        throw new Error(
+        errors.push(
           `Unknown child element <${tag}> inside <Flow>. Expected: <FlowNode> or <Connection>`,
         );
     }
@@ -428,15 +668,17 @@ function convertFlowChildren(
 function convertChartChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const dataShape = extractShape(chartDataSchema);
   const data: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
     if (tag !== "Series") {
-      throw new Error(
+      errors.push(
         `Unknown child element <${tag}> inside <Chart>. Expected: <Series>`,
       );
+      continue;
     }
     const attrs = getAttributes(child);
     const series: Record<string, unknown> = {
@@ -445,30 +687,42 @@ function convertChartChildren(
     };
     if (attrs.name !== undefined) {
       const nameSchema = dataShape.name;
-      series.name = nameSchema
-        ? coerceValue(attrs.name, nameSchema)
-        : attrs.name;
+      if (nameSchema) {
+        const coerced = coerceValue(attrs.name, nameSchema);
+        if (coerced.error !== null) {
+          errors.push(`<Chart>.<Series>: ${coerced.error}`);
+        } else {
+          series.name = coerced.value;
+        }
+      } else {
+        series.name = attrs.name;
+      }
     }
 
     for (const dp of getChildElements(child)) {
       const dpTag = getTagName(dp);
       if (dpTag !== "DataPoint") {
-        throw new Error(
+        errors.push(
           `Unknown child element <${dpTag}> inside <Series>. Expected: <DataPoint>`,
         );
+        continue;
       }
       const dpAttrs = getAttributes(dp);
       if (dpAttrs.label === undefined) {
-        throw new Error('<DataPoint> requires a "label" attribute');
+        errors.push('<DataPoint> requires a "label" attribute');
       }
       if (dpAttrs.value === undefined) {
-        throw new Error('<DataPoint> requires a "value" attribute');
+        errors.push('<DataPoint> requires a "value" attribute');
+      }
+      if (dpAttrs.label === undefined || dpAttrs.value === undefined) {
+        continue;
       }
       const numValue = Number(dpAttrs.value);
       if (isNaN(numValue)) {
-        throw new Error(
+        errors.push(
           `Cannot convert "${dpAttrs.value}" to number in <DataPoint> "value" attribute`,
         );
+        continue;
       }
       (series.labels as string[]).push(dpAttrs.label);
       (series.values as number[]).push(numValue);
@@ -481,6 +735,7 @@ function convertChartChildren(
 function convertTableChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   const columns: Record<string, unknown>[] = [];
   const rows: Record<string, unknown>[] = [];
@@ -488,7 +743,9 @@ function convertTableChildren(
     const tag = getTagName(child);
     switch (tag) {
       case "Column":
-        columns.push(coerceChildAttrs(tag, getAttributes(child)));
+        columns.push(
+          coerceChildAttrs("Table", tag, getAttributes(child), errors),
+        );
         break;
       case "Row": {
         const rowAttrs = getAttributes(child);
@@ -496,11 +753,17 @@ function convertTableChildren(
         for (const cellEl of getChildElements(child)) {
           const cellTag = getTagName(cellEl);
           if (cellTag !== "Cell") {
-            throw new Error(
+            errors.push(
               `Unknown child element <${cellTag}> inside <Row>. Expected: <Cell>`,
             );
+            continue;
           }
-          const cellAttrs = coerceChildAttrs(cellTag, getAttributes(cellEl));
+          const cellAttrs = coerceChildAttrs(
+            "Row",
+            cellTag,
+            getAttributes(cellEl),
+            errors,
+          );
           const cellText = getTextContent(cellEl);
           if (cellText !== undefined && !("text" in cellAttrs)) {
             cellAttrs.text = cellText;
@@ -511,17 +774,18 @@ function convertTableChildren(
         if (rowAttrs.height !== undefined) {
           const h = Number(rowAttrs.height);
           if (isNaN(h)) {
-            throw new Error(
+            errors.push(
               `Cannot convert "${rowAttrs.height}" to number in <Row> "height" attribute`,
             );
+          } else {
+            row.height = h;
           }
-          row.height = h;
         }
         rows.push(row);
         break;
       }
       default:
-        throw new Error(
+        errors.push(
           `Unknown child element <${tag}> inside <Table>. Expected: <Column> or <Row>`,
         );
     }
@@ -534,26 +798,35 @@ function convertTableChildren(
   }
 }
 
-function convertTreeItem(element: XmlElement): Record<string, unknown> {
+function convertTreeItem(
+  element: XmlElement,
+  errors: string[],
+): Record<string, unknown> {
   const attrs = getAttributes(element);
   if (attrs.label === undefined) {
-    throw new Error('<TreeItem> requires a "label" attribute');
+    errors.push('<TreeItem> requires a "label" attribute');
   }
-  const item: Record<string, unknown> = { label: attrs.label };
+  const item: Record<string, unknown> = {};
+  if (attrs.label !== undefined) {
+    item.label = attrs.label;
+  }
   if (attrs.color !== undefined) {
     item.color = attrs.color;
   }
   const children = getChildElements(element);
   if (children.length > 0) {
-    item.children = children.map((child) => {
-      const tag = getTagName(child);
-      if (tag !== "TreeItem") {
-        throw new Error(
-          `Unknown child element <${tag}> inside <TreeItem>. Expected: <TreeItem>`,
-        );
-      }
-      return convertTreeItem(child);
-    });
+    item.children = children
+      .map((child) => {
+        const tag = getTagName(child);
+        if (tag !== "TreeItem") {
+          errors.push(
+            `Unknown child element <${tag}> inside <TreeItem>. Expected: <TreeItem>`,
+          );
+          return null;
+        }
+        return convertTreeItem(child, errors);
+      })
+      .filter((item): item is Record<string, unknown> => item !== null);
   }
   return item;
 }
@@ -561,20 +834,23 @@ function convertTreeItem(element: XmlElement): Record<string, unknown> {
 function convertTreeChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
+  errors: string[],
 ): void {
   if (childElements.length !== 1) {
-    throw new Error(
+    errors.push(
       `<Tree> must have exactly 1 <TreeItem> child element, but got ${childElements.length}`,
     );
+    return;
   }
   const child = childElements[0];
   const tag = getTagName(child);
   if (tag !== "TreeItem") {
-    throw new Error(
+    errors.push(
       `Unknown child element <${tag}> inside <Tree>. Expected: <TreeItem>`,
     );
+    return;
   }
-  result.data = convertTreeItem(child);
+  result.data = convertTreeItem(child, errors);
 }
 
 const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
@@ -588,7 +864,10 @@ const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
 };
 
 // ===== Node conversion =====
-function convertElement(node: XmlElement): Record<string, unknown> {
+function convertElement(
+  node: XmlElement,
+  errors: string[],
+): Record<string, unknown> | null {
   const tagName = getTagName(node);
   const nodeType = TAG_TO_TYPE[tagName];
   const attrs = getAttributes(node);
@@ -596,17 +875,27 @@ function convertElement(node: XmlElement): Record<string, unknown> {
   const textContent = getTextContent(node);
 
   if (nodeType) {
-    return convertPomNode(nodeType, attrs, childElements, textContent);
+    return convertPomNode(
+      nodeType,
+      tagName,
+      attrs,
+      childElements,
+      textContent,
+      errors,
+    );
   } else {
-    throw new Error(`Unknown tag: <${tagName}>`);
+    errors.push(`Unknown tag: <${tagName}>`);
+    return null;
   }
 }
 
 function convertPomNode(
   nodeType: string,
+  tagName: string,
   attrs: Record<string, string>,
   childElements: XmlElement[],
   textContent: string | undefined,
+  errors: string[],
 ): Record<string, unknown> {
   const result: Record<string, unknown> = { type: nodeType };
 
@@ -614,9 +903,26 @@ function convertPomNode(
     if (key === "type") continue;
     const propSchema = getPropertySchema(nodeType, key);
     if (propSchema) {
-      result[key] = coerceValue(value, propSchema);
-    } else {
+      const coerced = coerceValue(value, propSchema);
+      if (coerced.error !== null) {
+        errors.push(`<${tagName}>: ${coerced.error}`);
+      } else {
+        result[key] = coerced.value;
+      }
+    } else if (UNIVERSAL_ATTRS.has(key)) {
+      // Allow universal attributes (e.g., x/y for Layer children)
       result[key] = coerceFallback(value);
+    } else {
+      // Unknown attribute
+      const knownAttrs = getKnownAttributes(nodeType);
+      const suggestion = findClosestMatch(key, knownAttrs);
+      if (suggestion) {
+        errors.push(
+          `<${tagName}>: Unknown attribute "${key}". Did you mean "${suggestion}"?`,
+        );
+      } else {
+        errors.push(`<${tagName}>: Unknown attribute "${key}"`);
+      }
     }
   }
 
@@ -630,21 +936,40 @@ function convertPomNode(
   // Child element notation for complex properties
   const childConverter = CHILD_ELEMENT_CONVERTERS[nodeType];
   if (childConverter && childElements.length > 0) {
-    childConverter(childElements, result);
+    childConverter(childElements, result, errors);
   }
   // Children for container nodes
   else if (CONTAINER_TYPES.has(nodeType) && childElements.length > 0) {
-    const convertedChildren = childElements.map(convertElement);
+    const convertedChildren = childElements
+      .map((child) => convertElement(child, errors))
+      .filter((child): child is Record<string, unknown> => child !== null);
     if (nodeType === "box") {
       if (childElements.length !== 1) {
-        throw new Error(
+        errors.push(
           `<Box> must have exactly 1 child element, but got ${childElements.length}`,
         );
       }
-      result.children = convertedChildren[0];
+      if (convertedChildren.length > 0) {
+        result.children = convertedChildren[0];
+      }
     } else {
       result.children = convertedChildren;
     }
+  }
+  // Leaf nodes that shouldn't have child elements
+  else if (
+    !CONTAINER_TYPES.has(nodeType) &&
+    !childConverter &&
+    childElements.length > 0
+  ) {
+    errors.push(
+      `<${tagName}>: Unexpected child elements. <${tagName}> does not accept child elements`,
+    );
+  }
+
+  // Zod validation for leaf nodes
+  if (!CONTAINER_TYPES.has(nodeType)) {
+    validateLeafNode(nodeType, result, errors);
   }
 
   return result;
@@ -691,7 +1016,17 @@ export function parseXml(xmlString: string): POMNode[] {
   const rootElement = parsed[0];
   const rootChildren = (rootElement["__root__"] ?? []) as XmlNode[];
 
-  return rootChildren
+  const errors: string[] = [];
+  const nodes = rootChildren
     .filter((child): child is XmlElement => !isTextNode(child))
-    .map((child) => convertElement(child) as POMNode);
+    .map((child) => convertElement(child, errors))
+    .filter(
+      (child): child is Record<string, unknown> => child !== null,
+    ) as POMNode[];
+
+  if (errors.length > 0) {
+    throw new ParseXmlError(errors);
+  }
+
+  return nodes;
 }
