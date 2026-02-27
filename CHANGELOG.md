@@ -1,5 +1,35 @@
 # @hirokisakabe/pom
 
+## 4.0.0
+
+### Major Changes
+
+- [#261](https://github.com/hirokisakabe/pom/pull/261) [`e1e73ab`](https://github.com/hirokisakabe/pom/commit/e1e73ab75578776dda18bafbce256ae2aaf1a298) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - 複合ノードの子要素XMLタグ名をプレフィックス方式に統一
+
+  **破壊的変更**: 以下のXMLタグ名が変更されました。既存のXMLを更新する必要があります。
+  - `Step` → `ProcessArrowStep`
+  - `Level` → `PyramidLevel`
+  - `Axes` → `MatrixAxes`
+  - `Quadrants` → `MatrixQuadrants`
+  - `Connection` → `FlowConnection`
+  - `Series` → `ChartSeries`
+  - `DataPoint` → `ChartDataPoint`
+  - `Column` → `TableColumn`
+  - `Row` → `TableRow`
+  - `Cell` → `TableCell`
+
+  変更なし: `TimelineItem`, `TreeItem`, `MatrixItem`, `FlowNode`, `Li`
+
+### Minor Changes
+
+- [#252](https://github.com/hirokisakabe/pom/pull/252) [`9987b3c`](https://github.com/hirokisakabe/pom/commit/9987b3c0f5680c1cf377a2a4ebc85beecd2e20a3) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: ピラミッド図を作成する PyramidNode を追加
+
+- [#250](https://github.com/hirokisakabe/pom/pull/250) [`29a715f`](https://github.com/hirokisakabe/pom/commit/29a715fe0745bbb25d48172990e4440b8f1748b8) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - TableCellにcolspan/rowspanプロパティを追加し、セル結合を可能にした
+
+### Patch Changes
+
+- [#262](https://github.com/hirokisakabe/pom/pull/262) [`6de8e08`](https://github.com/hirokisakabe/pom/commit/6de8e08fa931eea206e66716838fd32f28dac283) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Ul/Ol の高さ計算をフォントメトリクスベースに修正し、バレットインデント分の幅を考慮するように改善
+
 ## 3.0.0
 
 ### Major Changes
