@@ -612,12 +612,12 @@ describe("parseXml", () => {
   describe("子要素記法", () => {
     // ----- ProcessArrow -----
     describe("ProcessArrow", () => {
-      it("Step 子要素から steps を構築する", () => {
+      it("ProcessArrowStep 子要素から steps を構築する", () => {
         const xml = `
           <ProcessArrow direction="horizontal">
-            <Step label="Plan" color="1D4ED8" />
-            <Step label="Build" color="0EA5E9" />
-            <Step label="Launch" />
+            <ProcessArrowStep label="Plan" color="1D4ED8" />
+            <ProcessArrowStep label="Build" color="0EA5E9" />
+            <ProcessArrowStep label="Launch" />
           </ProcessArrow>
         `;
         const result = parseXml(xml);
@@ -637,7 +637,7 @@ describe("parseXml", () => {
       it("textColor 属性も正しく変換する", () => {
         const xml = `
           <ProcessArrow>
-            <Step label="A" textColor="FFFFFF" />
+            <ProcessArrowStep label="A" textColor="FFFFFF" />
           </ProcessArrow>
         `;
         const result = parseXml(xml);
@@ -667,19 +667,19 @@ describe("parseXml", () => {
         expect(() =>
           parseXml('<ProcessArrow><Unknown label="X" /></ProcessArrow>'),
         ).toThrow(
-          "Unknown child element <Unknown> inside <ProcessArrow>. Expected: <Step>",
+          "Unknown child element <Unknown> inside <ProcessArrow>. Expected: <ProcessArrowStep>",
         );
       });
     });
 
     // ----- Pyramid -----
     describe("Pyramid", () => {
-      it("Level 子要素から levels を構築する", () => {
+      it("PyramidLevel 子要素から levels を構築する", () => {
         const xml = `
           <Pyramid direction="up">
-            <Level label="Strategy" color="E91E63" />
-            <Level label="Tactics" color="9C27B0" />
-            <Level label="Execution" />
+            <PyramidLevel label="Strategy" color="E91E63" />
+            <PyramidLevel label="Tactics" color="9C27B0" />
+            <PyramidLevel label="Execution" />
           </Pyramid>
         `;
         const result = parseXml(xml);
@@ -699,7 +699,7 @@ describe("parseXml", () => {
       it("textColor 属性も正しく変換する", () => {
         const xml = `
           <Pyramid>
-            <Level label="A" textColor="333333" />
+            <PyramidLevel label="A" textColor="333333" />
           </Pyramid>
         `;
         const result = parseXml(xml);
@@ -716,8 +716,8 @@ describe("parseXml", () => {
       it("direction=down も変換する", () => {
         const xml = `
           <Pyramid direction="down">
-            <Level label="Top" color="4472C4" />
-            <Level label="Bottom" color="70AD47" />
+            <PyramidLevel label="Top" color="4472C4" />
+            <PyramidLevel label="Bottom" color="70AD47" />
           </Pyramid>
         `;
         const result = parseXml(xml);
@@ -728,7 +728,7 @@ describe("parseXml", () => {
         expect(() =>
           parseXml('<Pyramid><Unknown label="X" /></Pyramid>'),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Pyramid>. Expected: <Level>",
+          "Unknown child element <Unknown> inside <Pyramid>. Expected: <PyramidLevel>",
         );
       });
     });
@@ -779,11 +779,11 @@ describe("parseXml", () => {
 
     // ----- Matrix -----
     describe("Matrix", () => {
-      it("Axes/Quadrants/MatrixItem 子要素から構築する", () => {
+      it("MatrixAxes/MatrixQuadrants/MatrixItem 子要素から構築する", () => {
         const xml = `
           <Matrix>
-            <Axes x="Impact" y="Effort" />
-            <Quadrants topLeft="Quick Wins" topRight="Major Projects" bottomLeft="Fill-Ins" bottomRight="Thankless Tasks" />
+            <MatrixAxes x="Impact" y="Effort" />
+            <MatrixQuadrants topLeft="Quick Wins" topRight="Major Projects" bottomLeft="Fill-Ins" bottomRight="Thankless Tasks" />
             <MatrixItem label="Feature A" x="0.8" y="0.2" color="1D4ED8" />
             <MatrixItem label="Feature B" x="0.3" y="0.7" />
           </Matrix>
@@ -807,10 +807,10 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("Quadrants なしでも動作する", () => {
+      it("MatrixQuadrants なしでも動作する", () => {
         const xml = `
           <Matrix>
-            <Axes x="X" y="Y" />
+            <MatrixAxes x="X" y="Y" />
             <MatrixItem label="A" x="0.5" y="0.5" />
           </Matrix>
         `;
@@ -832,19 +832,19 @@ describe("parseXml", () => {
 
       it("未知の子タグでエラーをスローする", () => {
         expect(() => parseXml('<Matrix><Unknown x="X" /></Matrix>')).toThrow(
-          "Unknown child element <Unknown> inside <Matrix>. Expected: <Axes>, <Quadrants>, or <MatrixItem>",
+          "Unknown child element <Unknown> inside <Matrix>. Expected: <MatrixAxes>, <MatrixQuadrants>, or <MatrixItem>",
         );
       });
     });
 
     // ----- Flow -----
     describe("Flow", () => {
-      it("FlowNode/Connection 子要素から構築する", () => {
+      it("FlowNode/FlowConnection 子要素から構築する", () => {
         const xml = `
           <Flow direction="vertical">
             <FlowNode id="start" shape="flowChartTerminator" text="Start" />
             <FlowNode id="process" shape="flowChartProcess" text="Process" color="1D4ED8" />
-            <Connection from="start" to="process" label="next" />
+            <FlowConnection from="start" to="process" label="next" />
           </Flow>
         `;
         const result = parseXml(xml);
@@ -870,11 +870,11 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("FlowNode と Connection の混在順序を許容する", () => {
+      it("FlowNode と FlowConnection の混在順序を許容する", () => {
         const xml = `
           <Flow>
             <FlowNode id="a" shape="flowChartProcess" text="A" />
-            <Connection from="a" to="b" />
+            <FlowConnection from="a" to="b" />
             <FlowNode id="b" shape="flowChartProcess" text="B" />
           </Flow>
         `;
@@ -916,21 +916,21 @@ describe("parseXml", () => {
 
       it("未知の子タグでエラーをスローする", () => {
         expect(() => parseXml('<Flow><Unknown id="x" /></Flow>')).toThrow(
-          "Unknown child element <Unknown> inside <Flow>. Expected: <FlowNode> or <Connection>",
+          "Unknown child element <Unknown> inside <Flow>. Expected: <FlowNode> or <FlowConnection>",
         );
       });
     });
 
     // ----- Chart -----
     describe("Chart", () => {
-      it("Series/DataPoint 子要素から data を構築する", () => {
+      it("ChartSeries/ChartDataPoint 子要素から data を構築する", () => {
         const xml = `
           <Chart chartType="bar">
-            <Series name="Q1">
-              <DataPoint label="1月" value="100" />
-              <DataPoint label="2月" value="120" />
-              <DataPoint label="3月" value="90" />
-            </Series>
+            <ChartSeries name="Q1">
+              <ChartDataPoint label="1月" value="100" />
+              <ChartDataPoint label="2月" value="120" />
+              <ChartDataPoint label="3月" value="90" />
+            </ChartSeries>
           </Chart>
         `;
         const result = parseXml(xml);
@@ -949,17 +949,17 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("複数 Series を処理する", () => {
+      it("複数 ChartSeries を処理する", () => {
         const xml = `
           <Chart chartType="line">
-            <Series name="2023">
-              <DataPoint label="Q1" value="100" />
-              <DataPoint label="Q2" value="200" />
-            </Series>
-            <Series name="2024">
-              <DataPoint label="Q1" value="150" />
-              <DataPoint label="Q2" value="250" />
-            </Series>
+            <ChartSeries name="2023">
+              <ChartDataPoint label="Q1" value="100" />
+              <ChartDataPoint label="Q2" value="200" />
+            </ChartSeries>
+            <ChartSeries name="2024">
+              <ChartDataPoint label="Q1" value="150" />
+              <ChartDataPoint label="Q2" value="250" />
+            </ChartSeries>
           </Chart>
         `;
         const result = parseXml(xml);
@@ -972,13 +972,13 @@ describe("parseXml", () => {
         expect(data[1].name).toBe("2024");
       });
 
-      it("name なしの Series を処理する", () => {
+      it("name なしの ChartSeries を処理する", () => {
         const xml = `
           <Chart chartType="pie">
-            <Series>
-              <DataPoint label="A" value="60" />
-              <DataPoint label="B" value="40" />
-            </Series>
+            <ChartSeries>
+              <ChartDataPoint label="A" value="60" />
+              <ChartDataPoint label="B" value="40" />
+            </ChartSeries>
           </Chart>
         `;
         const result = parseXml(xml);
@@ -1005,36 +1005,36 @@ describe("parseXml", () => {
         expect(() =>
           parseXml('<Chart chartType="bar"><Unknown /></Chart>'),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Chart>. Expected: <Series>",
+          "Unknown child element <Unknown> inside <Chart>. Expected: <ChartSeries>",
         );
       });
 
-      it("Series 内の未知タグでエラーをスローする", () => {
+      it("ChartSeries 内の未知タグでエラーをスローする", () => {
         expect(() =>
           parseXml(
-            '<Chart chartType="bar"><Series><Unknown /></Series></Chart>',
+            '<Chart chartType="bar"><ChartSeries><Unknown /></ChartSeries></Chart>',
           ),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Series>. Expected: <DataPoint>",
+          "Unknown child element <Unknown> inside <ChartSeries>. Expected: <ChartDataPoint>",
         );
       });
     });
 
     // ----- Table -----
     describe("Table", () => {
-      it("Column/Row/Cell 子要素から columns/rows を構築する", () => {
+      it("TableColumn/TableRow/TableCell 子要素から columns/rows を構築する", () => {
         const xml = `
           <Table>
-            <Column width="200" />
-            <Column width="100" />
-            <Row>
-              <Cell>太郎</Cell>
-              <Cell>30</Cell>
-            </Row>
-            <Row>
-              <Cell>花子</Cell>
-              <Cell>25</Cell>
-            </Row>
+            <TableColumn width="200" />
+            <TableColumn width="100" />
+            <TableRow>
+              <TableCell>太郎</TableCell>
+              <TableCell>30</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>花子</TableCell>
+              <TableCell>25</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1050,13 +1050,13 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("Cell に属性（fontPx, bold等）を設定する", () => {
+      it("TableCell に属性（fontPx, bold等）を設定する", () => {
         const xml = `
           <Table>
-            <Column width="200" />
-            <Row>
-              <Cell fontPx="14" bold="true" color="FF0000">Header</Cell>
-            </Row>
+            <TableColumn width="200" />
+            <TableRow>
+              <TableCell fontPx="14" bold="true" color="FF0000">Header</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1073,13 +1073,13 @@ describe("parseXml", () => {
         });
       });
 
-      it("Cell の text 属性がテキストコンテンツより優先される", () => {
+      it("TableCell の text 属性がテキストコンテンツより優先される", () => {
         const xml = `
           <Table>
-            <Column />
-            <Row>
-              <Cell text="from attr">from content</Cell>
-            </Row>
+            <TableColumn />
+            <TableRow>
+              <TableCell text="from attr">from content</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1091,13 +1091,13 @@ describe("parseXml", () => {
         expect(cells[0].text).toBe("from attr");
       });
 
-      it("Row に height 属性を設定する", () => {
+      it("TableRow に height 属性を設定する", () => {
         const xml = `
           <Table>
-            <Column />
-            <Row height="50">
-              <Cell>A</Cell>
-            </Row>
+            <TableColumn />
+            <TableRow height="50">
+              <TableCell>A</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1108,13 +1108,13 @@ describe("parseXml", () => {
         expect(rows[0].height).toBe(50);
       });
 
-      it("Column なしで Row のみを指定する", () => {
+      it("TableColumn なしで TableRow のみを指定する", () => {
         const xml = `
           <Table>
-            <Row>
-              <Cell>A</Cell>
-              <Cell>B</Cell>
-            </Row>
+            <TableRow>
+              <TableCell>A</TableCell>
+              <TableCell>B</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1134,11 +1134,11 @@ describe("parseXml", () => {
         expect(node.rows).toEqual([{ cells: [{ text: "A" }] }]);
       });
 
-      it("Row 内の未知タグでエラーをスローする", () => {
+      it("TableRow 内の未知タグでエラーをスローする", () => {
         expect(() =>
-          parseXml("<Table><Row><Unknown>x</Unknown></Row></Table>"),
+          parseXml("<Table><TableRow><Unknown>x</Unknown></TableRow></Table>"),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Row>. Expected: <Cell>",
+          "Unknown child element <Unknown> inside <TableRow>. Expected: <TableCell>",
         );
       });
 
@@ -1146,24 +1146,24 @@ describe("parseXml", () => {
         expect(() =>
           parseXml('<Table><Unknown width="100" /></Table>'),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Table>. Expected: <Column> or <Row>",
+          "Unknown child element <Unknown> inside <Table>. Expected: <TableColumn> or <TableRow>",
         );
       });
 
-      it("Cell に colspan/rowspan を設定する", () => {
+      it("TableCell に colspan/rowspan を設定する", () => {
         const xml = `
           <Table>
-            <Column width="100" />
-            <Column width="100" />
-            <Column width="100" />
-            <Row>
-              <Cell colspan="3">Header</Cell>
-            </Row>
-            <Row>
-              <Cell rowspan="2">Left</Cell>
-              <Cell>A</Cell>
-              <Cell>B</Cell>
-            </Row>
+            <TableColumn width="100" />
+            <TableColumn width="100" />
+            <TableColumn width="100" />
+            <TableRow>
+              <TableCell colspan="3">Header</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell rowspan="2">Left</TableCell>
+              <TableCell>A</TableCell>
+              <TableCell>B</TableCell>
+            </TableRow>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1267,9 +1267,9 @@ describe("parseXml", () => {
           <VStack gap="16">
             <Text fontPx="24" bold="true">売上</Text>
             <Chart chartType="bar" w="400" h="300">
-              <Series name="Q1">
-                <DataPoint label="1月" value="100" />
-              </Series>
+              <ChartSeries name="Q1">
+                <ChartDataPoint label="1月" value="100" />
+              </ChartSeries>
             </Chart>
           </VStack>
         `;
@@ -1296,8 +1296,8 @@ describe("parseXml", () => {
         const xml = `
           <HStack gap="16">
             <Table>
-              <Column width="200" />
-              <Row><Cell>A</Cell></Row>
+              <TableColumn width="200" />
+              <TableRow><TableCell>A</TableCell></TableRow>
             </Table>
             <Text>Notes</Text>
           </HStack>
@@ -1354,7 +1354,7 @@ describe("parseXml", () => {
       it("子要素の未知属性もエラーをスローする", () => {
         const xml = `
           <ProcessArrow>
-            <Step labl="A" />
+            <ProcessArrowStep labl="A" />
           </ProcessArrow>
         `;
         expect(() => parseXml(xml)).toThrow(ParseXmlError);

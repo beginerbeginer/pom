@@ -11,22 +11,22 @@ export const page23TableColspanRowspanXml = `
     <VStack gap="12">
       <Text fontPx="14" bold="true">colspan (3-column merge header):</Text>
       <Table defaultRowHeight="32">
-        <Column width="100" />
-        <Column width="100" />
-        <Column width="100" />
-        <Row>
-          <Cell fontPx="14" bold="true" backgroundColor="${palette.lightBlue}" colspan="3" alignText="center">Merged Header</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13">A</Cell>
-          <Cell fontPx="13">B</Cell>
-          <Cell fontPx="13">C</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13">D</Cell>
-          <Cell fontPx="13">E</Cell>
-          <Cell fontPx="13">F</Cell>
-        </Row>
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableRow>
+          <TableCell fontPx="14" bold="true" backgroundColor="${palette.lightBlue}" colspan="3" alignText="center">Merged Header</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13">A</TableCell>
+          <TableCell fontPx="13">B</TableCell>
+          <TableCell fontPx="13">C</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13">D</TableCell>
+          <TableCell fontPx="13">E</TableCell>
+          <TableCell fontPx="13">F</TableCell>
+        </TableRow>
       </Table>
     </VStack>
   </Box>
@@ -34,23 +34,23 @@ export const page23TableColspanRowspanXml = `
     <VStack gap="12">
       <Text fontPx="14" bold="true">rowspan (2-row merge):</Text>
       <Table defaultRowHeight="32">
-        <Column width="100" />
-        <Column width="100" />
-        <Column width="100" />
-        <Row>
-          <Cell fontPx="13" bold="true" backgroundColor="${palette.lightBlue}" rowspan="2">Row Merge</Cell>
-          <Cell fontPx="13">A</Cell>
-          <Cell fontPx="13">B</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13">C</Cell>
-          <Cell fontPx="13">D</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13">E</Cell>
-          <Cell fontPx="13">F</Cell>
-          <Cell fontPx="13">G</Cell>
-        </Row>
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableRow>
+          <TableCell fontPx="13" bold="true" backgroundColor="${palette.lightBlue}" rowspan="2">Row Merge</TableCell>
+          <TableCell fontPx="13">A</TableCell>
+          <TableCell fontPx="13">B</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13">C</TableCell>
+          <TableCell fontPx="13">D</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13">E</TableCell>
+          <TableCell fontPx="13">F</TableCell>
+          <TableCell fontPx="13">G</TableCell>
+        </TableRow>
       </Table>
     </VStack>
   </Box>
@@ -58,21 +58,21 @@ export const page23TableColspanRowspanXml = `
     <VStack gap="12">
       <Text fontPx="14" bold="true">colspan + rowspan combined:</Text>
       <Table defaultRowHeight="32">
-        <Column width="100" />
-        <Column width="100" />
-        <Column width="100" />
-        <Row>
-          <Cell fontPx="14" bold="true" backgroundColor="${palette.navy}" color="FFFFFF" colspan="2" rowspan="2" alignText="center">2x2 Merge</Cell>
-          <Cell fontPx="13" backgroundColor="${palette.lightBlue}">Top</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13" backgroundColor="${palette.lightBlue}">Mid</Cell>
-        </Row>
-        <Row>
-          <Cell fontPx="13">X</Cell>
-          <Cell fontPx="13">Y</Cell>
-          <Cell fontPx="13">Z</Cell>
-        </Row>
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableColumn width="100" />
+        <TableRow>
+          <TableCell fontPx="14" bold="true" backgroundColor="${palette.navy}" color="FFFFFF" colspan="2" rowspan="2" alignText="center">2x2 Merge</TableCell>
+          <TableCell fontPx="13" backgroundColor="${palette.lightBlue}">Top</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13" backgroundColor="${palette.lightBlue}">Mid</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell fontPx="13">X</TableCell>
+          <TableCell fontPx="13">Y</TableCell>
+          <TableCell fontPx="13">Z</TableCell>
+        </TableRow>
       </Table>
     </VStack>
   </Box>

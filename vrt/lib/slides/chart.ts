@@ -12,18 +12,18 @@ export const page6ChartXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Bar Chart</Text>
         <Chart chartType="bar" w="400" h="180" showLegend="true" chartColors='["0088CC","00AA00"]'>
-          <Series name="Sales">
-            <DataPoint label="Q1" value="100" />
-            <DataPoint label="Q2" value="200" />
-            <DataPoint label="Q3" value="150" />
-            <DataPoint label="Q4" value="300" />
-          </Series>
-          <Series name="Profit">
-            <DataPoint label="Q1" value="30" />
-            <DataPoint label="Q2" value="60" />
-            <DataPoint label="Q3" value="45" />
-            <DataPoint label="Q4" value="90" />
-          </Series>
+          <ChartSeries name="Sales">
+            <ChartDataPoint label="Q1" value="100" />
+            <ChartDataPoint label="Q2" value="200" />
+            <ChartDataPoint label="Q3" value="150" />
+            <ChartDataPoint label="Q4" value="300" />
+          </ChartSeries>
+          <ChartSeries name="Profit">
+            <ChartDataPoint label="Q1" value="30" />
+            <ChartDataPoint label="Q2" value="60" />
+            <ChartDataPoint label="Q3" value="45" />
+            <ChartDataPoint label="Q4" value="90" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -31,14 +31,14 @@ export const page6ChartXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Line Chart</Text>
         <Chart chartType="line" w="400" h="180" showLegend="true" chartColors='["${palette.blue}"]'>
-          <Series name="Revenue">
-            <DataPoint label="Jan" value="50" />
-            <DataPoint label="Feb" value="80" />
-            <DataPoint label="Mar" value="60" />
-            <DataPoint label="Apr" value="120" />
-            <DataPoint label="May" value="100" />
-            <DataPoint label="Jun" value="150" />
-          </Series>
+          <ChartSeries name="Revenue">
+            <ChartDataPoint label="Jan" value="50" />
+            <ChartDataPoint label="Feb" value="80" />
+            <ChartDataPoint label="Mar" value="60" />
+            <ChartDataPoint label="Apr" value="120" />
+            <ChartDataPoint label="May" value="100" />
+            <ChartDataPoint label="Jun" value="150" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -48,12 +48,12 @@ export const page6ChartXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Pie Chart (with title)</Text>
         <Chart chartType="pie" w="400" h="180" showLegend="true" showTitle="true" title="Market Share" chartColors='["0088CC","00AA00","FF6600","888888"]'>
-          <Series name="Share">
-            <DataPoint label="A" value="40" />
-            <DataPoint label="B" value="30" />
-            <DataPoint label="C" value="20" />
-            <DataPoint label="D" value="10" />
-          </Series>
+          <ChartSeries name="Share">
+            <ChartDataPoint label="A" value="40" />
+            <ChartDataPoint label="B" value="30" />
+            <ChartDataPoint label="C" value="20" />
+            <ChartDataPoint label="D" value="10" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -61,18 +61,18 @@ export const page6ChartXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Bar Chart (with title)</Text>
         <Chart chartType="bar" w="400" h="180" showLegend="true" showTitle="true" title="Regional Sales" chartColors='["${palette.blue}","${palette.accent}"]'>
-          <Series name="2023">
-            <DataPoint label="N" value="250" />
-            <DataPoint label="S" value="180" />
-            <DataPoint label="E" value="220" />
-            <DataPoint label="W" value="150" />
-          </Series>
-          <Series name="2024">
-            <DataPoint label="N" value="300" />
-            <DataPoint label="S" value="200" />
-            <DataPoint label="E" value="250" />
-            <DataPoint label="W" value="180" />
-          </Series>
+          <ChartSeries name="2023">
+            <ChartDataPoint label="N" value="250" />
+            <ChartDataPoint label="S" value="180" />
+            <ChartDataPoint label="E" value="220" />
+            <ChartDataPoint label="W" value="150" />
+          </ChartSeries>
+          <ChartSeries name="2024">
+            <ChartDataPoint label="N" value="300" />
+            <ChartDataPoint label="S" value="200" />
+            <ChartDataPoint label="E" value="250" />
+            <ChartDataPoint label="W" value="180" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -92,13 +92,13 @@ export const page10ChartAdditionalXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Area Chart</Text>
         <Chart chartType="area" w="350" h="200" showLegend="true" chartColors='["0088CC"]'>
-          <Series name="Revenue">
-            <DataPoint label="Jan" value="30" />
-            <DataPoint label="Feb" value="50" />
-            <DataPoint label="Mar" value="40" />
-            <DataPoint label="Apr" value="70" />
-            <DataPoint label="May" value="60" />
-          </Series>
+          <ChartSeries name="Revenue">
+            <ChartDataPoint label="Jan" value="30" />
+            <ChartDataPoint label="Feb" value="50" />
+            <ChartDataPoint label="Mar" value="40" />
+            <ChartDataPoint label="Apr" value="70" />
+            <ChartDataPoint label="May" value="60" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -106,12 +106,12 @@ export const page10ChartAdditionalXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Doughnut Chart</Text>
         <Chart chartType="doughnut" w="350" h="200" showLegend="true" chartColors='["0088CC","00AA00","FF6600","888888"]'>
-          <Series name="Share">
-            <DataPoint label="A" value="35" />
-            <DataPoint label="B" value="25" />
-            <DataPoint label="C" value="25" />
-            <DataPoint label="D" value="15" />
-          </Series>
+          <ChartSeries name="Share">
+            <ChartDataPoint label="A" value="35" />
+            <ChartDataPoint label="B" value="25" />
+            <ChartDataPoint label="C" value="25" />
+            <ChartDataPoint label="D" value="15" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>
@@ -119,13 +119,13 @@ export const page10ChartAdditionalXml = `
       <VStack gap="8">
         <Text fontPx="14" bold="true">Radar Chart</Text>
         <Chart chartType="radar" w="350" h="200" showLegend="true" chartColors='["0088CC"]' radarStyle="filled">
-          <Series name="Skills">
-            <DataPoint label="Tech" value="80" />
-            <DataPoint label="Design" value="60" />
-            <DataPoint label="PM" value="70" />
-            <DataPoint label="Sales" value="50" />
-            <DataPoint label="Support" value="90" />
-          </Series>
+          <ChartSeries name="Skills">
+            <ChartDataPoint label="Tech" value="80" />
+            <ChartDataPoint label="Design" value="60" />
+            <ChartDataPoint label="PM" value="70" />
+            <ChartDataPoint label="Sales" value="50" />
+            <ChartDataPoint label="Support" value="90" />
+          </ChartSeries>
         </Chart>
       </VStack>
     </Box>

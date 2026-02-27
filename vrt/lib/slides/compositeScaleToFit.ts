@@ -28,11 +28,11 @@ export const page22CompositeScaleToFitXml = `
       <VStack gap="4">
         <Text fontPx="10" bold="true">ProcessArrow (shrunk in container):</Text>
         <ProcessArrow direction="horizontal">
-          <Step label="Plan" color="#4472C4" />
-          <Step label="Design" color="#5B9BD5" />
-          <Step label="Dev" color="#70AD47" />
-          <Step label="Test" color="#FFC000" />
-          <Step label="Ship" color="#ED7D31" />
+          <ProcessArrowStep label="Plan" color="#4472C4" />
+          <ProcessArrowStep label="Design" color="#5B9BD5" />
+          <ProcessArrowStep label="Dev" color="#70AD47" />
+          <ProcessArrowStep label="Test" color="#FFC000" />
+          <ProcessArrowStep label="Ship" color="#ED7D31" />
         </ProcessArrow>
       </VStack>
     </Box>
@@ -53,7 +53,7 @@ export const page22CompositeScaleToFitXml = `
       <VStack gap="4">
         <Text fontPx="10" bold="true">Matrix (shrunk):</Text>
         <Matrix>
-          <Axes x="Impact" y="Effort" />
+          <MatrixAxes x="Impact" y="Effort" />
           <MatrixItem label="A" x="0.2" y="0.8" color="4CAF50" />
           <MatrixItem label="B" x="0.7" y="0.3" color="E91E63" />
         </Matrix>
@@ -67,9 +67,9 @@ export const page22CompositeScaleToFitXml = `
           <FlowNode id="p" shape="flowChartProcess" text="Process" />
           <FlowNode id="d" shape="flowChartDecision" text="OK?" />
           <FlowNode id="e" shape="flowChartTerminator" text="End" />
-          <Connection from="s" to="p" />
-          <Connection from="p" to="d" />
-          <Connection from="d" to="e" />
+          <FlowConnection from="s" to="p" />
+          <FlowConnection from="p" to="d" />
+          <FlowConnection from="d" to="e" />
         </Flow>
       </VStack>
     </Box>

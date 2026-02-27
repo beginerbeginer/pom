@@ -172,31 +172,31 @@ Ul の全属性に加えて:
 
 ```xml
 <Table>
-  <Column width="200" />
-  <Column width="100" />
-  <Row>
-    <Cell bold="true" backgroundColor="DBEAFE">名前</Cell>
-    <Cell bold="true" backgroundColor="DBEAFE">点数</Cell>
-  </Row>
-  <Row>
-    <Cell>Alice</Cell>
-    <Cell>95</Cell>
-  </Row>
+  <TableColumn width="200" />
+  <TableColumn width="100" />
+  <TableRow>
+    <TableCell bold="true" backgroundColor="DBEAFE">名前</TableCell>
+    <TableCell bold="true" backgroundColor="DBEAFE">点数</TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Alice</TableCell>
+    <TableCell>95</TableCell>
+  </TableRow>
 </Table>
 ```
 
-- `<Column>`: `width`（省略で均等分割）
-- `<Row>`: `height`（省略で `defaultRowHeight` 適用、デフォルト 32）
-- `<Cell>`: テキスト内容 + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
+- `<TableColumn>`: `width`（省略で均等分割）
+- `<TableRow>`: `height`（省略で `defaultRowHeight` 適用、デフォルト 32）
+- `<TableCell>`: テキスト内容 + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
 
 ### Chart
 
 ```xml
 <Chart chartType="bar" w="500" h="300" showLegend="true" chartColors='["0088CC","00AA00"]'>
-  <Series name="売上">
-    <DataPoint label="1月" value="100" />
-    <DataPoint label="2月" value="150" />
-  </Series>
+  <ChartSeries name="売上">
+    <ChartDataPoint label="1月" value="100" />
+    <ChartDataPoint label="2月" value="150" />
+  </ChartSeries>
 </Chart>
 ```
 
@@ -228,16 +228,16 @@ Ul の全属性に加えて:
 
 ```xml
 <Matrix w="600" h="500">
-  <Axes x="コスト" y="効果" />
-  <Quadrants topLeft="Quick Wins" topRight="戦略的" bottomLeft="低優先" bottomRight="回避" />
+  <MatrixAxes x="コスト" y="効果" />
+  <MatrixQuadrants topLeft="Quick Wins" topRight="戦略的" bottomLeft="低優先" bottomRight="回避" />
   <MatrixItem label="施策A" x="0.2" y="0.8" color="4CAF50" />
   <MatrixItem label="施策B" x="0.7" y="0.6" />
 </Matrix>
 ```
 
 - 座標: (0,0)=左下, (1,1)=右上（数学座標系）
-- `<Axes>`: `x` `y`（軸ラベル、必須）
-- `<Quadrants>`: `topLeft` `topRight` `bottomLeft` `bottomRight`
+- `<MatrixAxes>`: `x` `y`（軸ラベル、必須）
+- `<MatrixQuadrants>`: `topLeft` `topRight` `bottomLeft` `bottomRight`
 - `<MatrixItem>`: `label` `x` `y`（必須）`color`
 
 ### Tree
@@ -273,9 +273,9 @@ Ul の全属性に加えて:
   <FlowNode id="process" shape="flowChartProcess" text="処理" />
   <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
   <FlowNode id="end" shape="flowChartTerminator" text="終了" color="E91E63" />
-  <Connection from="start" to="process" />
-  <Connection from="process" to="decision" />
-  <Connection from="decision" to="end" label="Yes" />
+  <FlowConnection from="start" to="process" />
+  <FlowConnection from="process" to="decision" />
+  <FlowConnection from="decision" to="end" label="Yes" />
 </Flow>
 ```
 
@@ -299,16 +299,16 @@ Ul の全属性に加えて:
 | `width`     | number — 個別ノード幅（`nodeWidth` を上書き）                                                                                                                                                                                                                                                     |
 | `height`    | number — 個別ノード高さ（`nodeHeight` を上書き）                                                                                                                                                                                                                                                  |
 
-`<Connection>`: `from` `to`（必須）`label` `color`
+`<FlowConnection>`: `from` `to`（必須）`label` `color`
 
 ### ProcessArrow
 
 ```xml
 <ProcessArrow direction="horizontal" w="1000" h="80">
-  <Step label="計画" color="4472C4" />
-  <Step label="設計" color="5B9BD5" />
-  <Step label="開発" color="70AD47" />
-  <Step label="リリース" color="ED7D31" />
+  <ProcessArrowStep label="計画" color="4472C4" />
+  <ProcessArrowStep label="設計" color="5B9BD5" />
+  <ProcessArrowStep label="開発" color="70AD47" />
+  <ProcessArrowStep label="リリース" color="ED7D31" />
 </ProcessArrow>
 ```
 
@@ -323,15 +323,15 @@ Ul の全属性に加えて:
 | `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
 | `highlight`              | hex（ハイライト色）                            |
 
-`<Step>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
+`<ProcessArrowStep>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
 
 ### Pyramid
 
 ```xml
 <Pyramid direction="up" w="600" h="300">
-  <Level label="戦略" color="E91E63" />
-  <Level label="戦術" color="9C27B0" />
-  <Level label="実行" color="673AB7" />
+  <PyramidLevel label="戦略" color="E91E63" />
+  <PyramidLevel label="戦術" color="9C27B0" />
+  <PyramidLevel label="実行" color="673AB7" />
 </Pyramid>
 ```
 
@@ -341,23 +341,23 @@ Ul の全属性に加えて:
 | `fontPx`    | number（デフォルト: 14）   |
 | `bold`      | boolean                    |
 
-`<Level>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
+`<PyramidLevel>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
 
-- `direction="up"`: 最初の Level が頂点（最も狭い）、最後が底辺（最も広い）
-- `direction="down"`: 最初の Level が最上段（最も広い）、最後が最下段（最も狭い）
+- `direction="up"`: 最初の PyramidLevel が頂点（最も狭い）、最後が底辺（最も広い）
+- `direction="down"`: 最初の PyramidLevel が最上段（最も広い）、最後が最下段（最も狭い）
 
 ## 子要素タグ一覧
 
-| 親ノード         | 子タグ                                  | 対応プロパティ               |
-| ---------------- | --------------------------------------- | ---------------------------- |
-| `<Chart>`        | `<Series>` > `<DataPoint>`              | `data`                       |
-| `<Table>`        | `<Column>`, `<Row>` > `<Cell>`          | `columns`, `rows`            |
-| `<Timeline>`     | `<TimelineItem>`                        | `items`                      |
-| `<Matrix>`       | `<Axes>`, `<Quadrants>`, `<MatrixItem>` | `axes`, `quadrants`, `items` |
-| `<Tree>`         | `<TreeItem>`（再帰）                    | `data`                       |
-| `<Flow>`         | `<FlowNode>`, `<Connection>`            | `nodes`, `connections`       |
-| `<ProcessArrow>` | `<Step>`                                | `steps`                      |
-| `<Pyramid>`      | `<Level>`                               | `levels`                     |
+| 親ノード         | 子タグ                                              | 対応プロパティ               |
+| ---------------- | --------------------------------------------------- | ---------------------------- |
+| `<Chart>`        | `<ChartSeries>` > `<ChartDataPoint>`                | `data`                       |
+| `<Table>`        | `<TableColumn>`, `<TableRow>` > `<TableCell>`       | `columns`, `rows`            |
+| `<Timeline>`     | `<TimelineItem>`                                    | `items`                      |
+| `<Matrix>`       | `<MatrixAxes>`, `<MatrixQuadrants>`, `<MatrixItem>` | `axes`, `quadrants`, `items` |
+| `<Tree>`         | `<TreeItem>`（再帰）                                | `data`                       |
+| `<Flow>`         | `<FlowNode>`, `<FlowConnection>`                    | `nodes`, `connections`       |
+| `<ProcessArrow>` | `<ProcessArrowStep>`                                | `steps`                      |
+| `<Pyramid>`      | `<PyramidLevel>`                                    | `levels`                     |
 
 属性（JSON 文字列）と子要素の両方で同一プロパティを指定した場合、子要素が優先される。
 
