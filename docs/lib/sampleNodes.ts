@@ -249,6 +249,32 @@ const processArrowSample = `
 </VStack>
 `;
 
+const pyramidSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Pyramid Node Example</Text>
+  <HStack gap="32">
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">direction: up (default)</Text>
+      <Pyramid direction="up" w="400" h="250">
+        <Level label="Vision" color="${palette.navy}" />
+        <Level label="Strategy" color="${palette.blue}" />
+        <Level label="Tactics" color="${palette.accent}" />
+        <Level label="Operations" color="${palette.green}" />
+      </Pyramid>
+    </VStack>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">direction: down</Text>
+      <Pyramid direction="down" w="400" h="250">
+        <Level label="Executive" color="${palette.navy}" />
+        <Level label="Management" color="${palette.blue}" />
+        <Level label="Team Lead" color="${palette.accent}" />
+        <Level label="Staff" color="${palette.green}" />
+      </Pyramid>
+    </VStack>
+  </HStack>
+</VStack>
+`;
+
 const boxSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Box Node Example</Text>
@@ -329,6 +355,7 @@ export const sampleNodes: Record<NodeType, string> = {
   tree: treeSample,
   flow: flowSample,
   processArrow: processArrowSample,
+  pyramid: pyramidSample,
   box: boxSample,
   vstack: vstackSample,
   hstack: hstackSample,

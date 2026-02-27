@@ -582,6 +582,8 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 
 A node for creating pyramid diagrams. Used for visualizing hierarchies, priorities, and layered concepts like Maslow's hierarchy.
 
+![Pyramid Node Example](./images/pyramid.png)
+
 ```xml
 <Pyramid direction="up" w="600" h="300">
   <Level label="Strategy" color="E91E63" />
