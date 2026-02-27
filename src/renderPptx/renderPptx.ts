@@ -40,6 +40,7 @@ import {
   renderTreeNode,
   renderFlowNode,
   renderProcessArrowNode,
+  renderPyramidNode,
   renderLineNode,
   renderUlNode,
   renderOlNode,
@@ -358,6 +359,10 @@ export function renderPptx(
 
         case "processArrow":
           renderProcessArrowNode(node, ctx);
+          break;
+
+        case "pyramid":
+          renderPyramidNode(node, ctx);
           break;
 
         case "line":

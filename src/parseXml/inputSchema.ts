@@ -37,6 +37,8 @@ import {
   flowConnectorStyleSchema,
   processArrowDirectionSchema,
   processArrowStepSchema,
+  pyramidDirectionSchema,
+  pyramidLevelSchema,
   lineArrowSchema,
   underlineSchema,
   backgroundImageSchema,
@@ -226,6 +228,14 @@ export const inputProcessArrowNodeSchema = inputBaseNodeSchema.extend({
   highlight: z.string().optional(),
 });
 
+export const inputPyramidNodeSchema = inputBaseNodeSchema.extend({
+  type: z.literal("pyramid"),
+  direction: pyramidDirectionSchema.optional(),
+  levels: z.array(pyramidLevelSchema).min(1),
+  fontPx: z.number().optional(),
+  bold: z.boolean().optional(),
+});
+
 export const inputLineNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("line"),
   x1: z.number(),
@@ -251,6 +261,7 @@ type InputMatrixNode = z.infer<typeof inputMatrixNodeSchema>;
 type InputTreeNode = z.infer<typeof inputTreeNodeSchema>;
 type InputFlowNode = z.infer<typeof inputFlowNodeSchema>;
 type InputProcessArrowNode = z.infer<typeof inputProcessArrowNodeSchema>;
+type InputPyramidNode = z.infer<typeof inputPyramidNodeSchema>;
 type InputLineNode = z.infer<typeof inputLineNodeSchema>;
 
 // ===== Recursive Types =====
@@ -303,6 +314,7 @@ type InputPOMNode =
   | InputTreeNode
   | InputFlowNode
   | InputProcessArrowNode
+  | InputPyramidNode
   | InputLineNode
   | InputLayerNode;
 
@@ -361,6 +373,7 @@ const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
     inputTreeNodeSchema,
     inputFlowNodeSchema,
     inputProcessArrowNodeSchema,
+    inputPyramidNodeSchema,
     inputLineNodeSchema,
     inputLayerNodeSchemaBase,
   ]),

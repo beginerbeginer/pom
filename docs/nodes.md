@@ -578,7 +578,59 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 </ProcessArrow>
 ```
 
-### 16. Line
+### 16. Pyramid
+
+A node for creating pyramid diagrams. Used for visualizing hierarchies, priorities, and layered concepts like Maslow's hierarchy.
+
+![Pyramid Node Example](./images/pyramid.png)
+
+```xml
+<Pyramid direction="up" w="600" h="300">
+  <Level label="Strategy" color="E91E63" />
+  <Level label="Tactics" color="9C27B0" />
+  <Level label="Execution" color="673AB7" />
+</Pyramid>
+```
+
+| Attribute   | Type / Values           |
+| ----------- | ----------------------- |
+| `direction` | `up` (default) / `down` |
+| `fontPx`    | number (default: 14)    |
+| `bold`      | boolean                 |
+
+`<Level>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
+
+- `direction="up"`: First level is the top (narrowest), last level is the base (widest).
+- `direction="down"`: First level is the top (widest), last level is the bottom (narrowest).
+
+**Usage Examples:**
+
+```xml
+<!-- Basic pyramid (up direction) -->
+<Pyramid direction="up" w="600" h="300">
+  <Level label="Vision" color="1D4ED8" />
+  <Level label="Strategy" color="2563EB" />
+  <Level label="Operations" color="3B82F6" />
+</Pyramid>
+
+<!-- Inverted pyramid -->
+<Pyramid direction="down" w="600" h="300">
+  <Level label="Wide" color="4472C4" />
+  <Level label="Medium" color="5B9BD5" />
+  <Level label="Narrow" color="70AD47" />
+</Pyramid>
+
+<!-- Maslow's hierarchy with custom text colors -->
+<Pyramid direction="up" w="800" h="400" fontPx="16" bold="true">
+  <Level label="Self-actualization" color="F44336" textColor="FFFFFF" />
+  <Level label="Esteem" color="FF9800" textColor="333333" />
+  <Level label="Love/Belonging" color="FFEB3B" textColor="333333" />
+  <Level label="Safety" color="4CAF50" textColor="FFFFFF" />
+  <Level label="Physiological" color="2196F3" textColor="FFFFFF" />
+</Pyramid>
+```
+
+### 17. Line
 
 A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) for start and end points.
 
@@ -620,7 +672,7 @@ Note: Line nodes use absolute coordinates on the slide and are not affected by Y
 <Line x1="100" y1="300" x2="300" y2="300" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
 ```
 
-### 17. Layer
+### 18. Layer
 
 A container for absolute positioning of child elements. Child elements are positioned using `x` and `y` coordinates relative to the layer's top-left corner.
 

@@ -325,6 +325,27 @@ Ul の全属性に加えて:
 
 `<Step>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
 
+### Pyramid
+
+```xml
+<Pyramid direction="up" w="600" h="300">
+  <Level label="戦略" color="E91E63" />
+  <Level label="戦術" color="9C27B0" />
+  <Level label="実行" color="673AB7" />
+</Pyramid>
+```
+
+| 属性        | 型 / 値                    |
+| ----------- | -------------------------- |
+| `direction` | `up`（デフォルト）/ `down` |
+| `fontPx`    | number（デフォルト: 14）   |
+| `bold`      | boolean                    |
+
+`<Level>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
+
+- `direction="up"`: 最初の Level が頂点（最も狭い）、最後が底辺（最も広い）
+- `direction="down"`: 最初の Level が最上段（最も広い）、最後が最下段（最も狭い）
+
 ## 子要素タグ一覧
 
 | 親ノード         | 子タグ                                  | 対応プロパティ               |
@@ -336,6 +357,7 @@ Ul の全属性に加えて:
 | `<Tree>`         | `<TreeItem>`（再帰）                    | `data`                       |
 | `<Flow>`         | `<FlowNode>`, `<Connection>`            | `nodes`, `connections`       |
 | `<ProcessArrow>` | `<Step>`                                | `steps`                      |
+| `<Pyramid>`      | `<Level>`                               | `levels`                     |
 
 属性（JSON 文字列）と子要素の両方で同一プロパティを指定した場合、子要素が優先される。
 

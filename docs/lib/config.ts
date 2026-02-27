@@ -15,6 +15,7 @@ export const NODE_TYPES = [
   "tree",
   "flow",
   "processArrow",
+  "pyramid",
   "box",
   "vstack",
   "hstack",

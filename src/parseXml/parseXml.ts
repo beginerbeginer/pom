@@ -15,6 +15,7 @@ import {
   inputTreeNodeSchema,
   inputFlowNodeSchema,
   inputProcessArrowNodeSchema,
+  inputPyramidNodeSchema,
   inputLineNodeSchema,
   inputBaseNodeSchema,
 } from "./inputSchema.ts";
@@ -23,6 +24,7 @@ import {
   justifyContentSchema,
   shadowStyleSchema,
   processArrowStepSchema,
+  pyramidLevelSchema,
   timelineItemSchema,
   matrixAxisSchema,
   matrixQuadrantsSchema,
@@ -57,6 +59,7 @@ const TAG_TO_TYPE: Record<string, string> = {
   Tree: "tree",
   Flow: "flow",
   ProcessArrow: "processArrow",
+  Pyramid: "pyramid",
   Ul: "ul",
   Ol: "ol",
   Line: "line",
@@ -91,6 +94,7 @@ const leafNodeShapes: Record<string, ShapeRecord> = {
   tree: extractShape(inputTreeNodeSchema),
   flow: extractShape(inputFlowNodeSchema),
   processArrow: extractShape(inputProcessArrowNodeSchema),
+  pyramid: extractShape(inputPyramidNodeSchema),
   line: extractShape(inputLineNodeSchema),
   ul: extractShape(inputUlNodeSchema),
   ol: extractShape(inputOlNodeSchema),
@@ -186,6 +190,7 @@ const leafNodeValidationSchemas: Record<string, z.ZodTypeAny> = {
   tree: inputTreeNodeSchema,
   flow: inputFlowNodeSchema,
   processArrow: inputProcessArrowNodeSchema,
+  pyramid: inputPyramidNodeSchema,
   line: inputLineNodeSchema,
   ul: inputUlNodeSchema,
   ol: inputOlNodeSchema,
@@ -254,6 +259,7 @@ const CHILD_ELEMENT_PROPS: Record<string, Set<string>> = {
   timeline: new Set(["items"]),
   matrix: new Set(["axes", "items", "quadrants"]),
   processArrow: new Set(["steps"]),
+  pyramid: new Set(["levels"]),
   tree: new Set(["data"]),
   ul: new Set(["items"]),
   ol: new Set(["items"]),
@@ -516,6 +522,7 @@ function getTextContent(node: XmlElement): string | undefined {
 // ===== Child element schemas for type coercion =====
 const childElementShapes: Record<string, ShapeRecord> = {
   Step: extractShape(processArrowStepSchema),
+  Level: extractShape(pyramidLevelSchema),
   TimelineItem: extractShape(timelineItemSchema),
   Axes: extractShape(matrixAxisSchema),
   Quadrants: extractShape(matrixQuadrantsSchema),
@@ -583,6 +590,25 @@ function convertProcessArrowChildren(
     );
   }
   result.steps = steps;
+}
+
+function convertPyramidChildren(
+  childElements: XmlElement[],
+  result: Record<string, unknown>,
+  errors: string[],
+): void {
+  const levels: Record<string, unknown>[] = [];
+  for (const child of childElements) {
+    const tag = getTagName(child);
+    if (tag !== "Level") {
+      errors.push(
+        `Unknown child element <${tag}> inside <Pyramid>. Expected: <Level>`,
+      );
+      continue;
+    }
+    levels.push(coerceChildAttrs("Pyramid", tag, getAttributes(child), errors));
+  }
+  result.levels = levels;
 }
 
 function convertTimelineChildren(
@@ -901,6 +927,7 @@ const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
   ol: (childElements, result, errors) =>
     convertListChildren("Ol", childElements, result, errors),
   processArrow: convertProcessArrowChildren,
+  pyramid: convertPyramidChildren,
   timeline: convertTimelineChildren,
   matrix: convertMatrixChildren,
   flow: convertFlowChildren,

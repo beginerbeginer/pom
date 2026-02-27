@@ -672,6 +672,67 @@ describe("parseXml", () => {
       });
     });
 
+    // ----- Pyramid -----
+    describe("Pyramid", () => {
+      it("Level 子要素から levels を構築する", () => {
+        const xml = `
+          <Pyramid direction="up">
+            <Level label="Strategy" color="E91E63" />
+            <Level label="Tactics" color="9C27B0" />
+            <Level label="Execution" />
+          </Pyramid>
+        `;
+        const result = parseXml(xml);
+        expect(result).toEqual([
+          {
+            type: "pyramid",
+            direction: "up",
+            levels: [
+              { label: "Strategy", color: "E91E63" },
+              { label: "Tactics", color: "9C27B0" },
+              { label: "Execution" },
+            ],
+          },
+        ]);
+      });
+
+      it("textColor 属性も正しく変換する", () => {
+        const xml = `
+          <Pyramid>
+            <Level label="A" textColor="333333" />
+          </Pyramid>
+        `;
+        const result = parseXml(xml);
+        expect(
+          (
+            (result[0] as Record<string, unknown>).levels as Record<
+              string,
+              unknown
+            >[]
+          )[0].textColor,
+        ).toBe("333333");
+      });
+
+      it("direction=down も変換する", () => {
+        const xml = `
+          <Pyramid direction="down">
+            <Level label="Top" color="4472C4" />
+            <Level label="Bottom" color="70AD47" />
+          </Pyramid>
+        `;
+        const result = parseXml(xml);
+        expect((result[0] as Record<string, unknown>).direction).toBe("down");
+      });
+
+      it("未知の子タグでエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Pyramid><Unknown label="X" /></Pyramid>'),
+        ).toThrow(
+          "Unknown child element <Unknown> inside <Pyramid>. Expected: <Level>",
+        );
+      });
+    });
+
     // ----- Timeline -----
     describe("Timeline", () => {
       it("TimelineItem 子要素から items を構築する", () => {

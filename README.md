@@ -85,6 +85,7 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 | Tree         | Organization charts and decision trees         |
 | Flow         | Flowcharts with nodes and edges                |
 | ProcessArrow | Chevron-style process diagrams                 |
+| Pyramid      | Pyramid diagrams for hierarchies               |
 | Line         | Horizontal / vertical lines                    |
 | Layer        | Absolute-positioned overlay container          |
 | Box          | Container for single child with padding        |
@@ -183,6 +184,18 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 ```
 
 <img src="./docs/images/processArrow.png" alt="ProcessArrow example" width="600">
+
+### Pyramid
+
+```xml
+<Pyramid direction="up" w="600" h="300">
+  <Level label="Strategy" color="E91E63" />
+  <Level label="Tactics" color="9C27B0" />
+  <Level label="Execution" color="673AB7" />
+</Pyramid>
+```
+
+<img src="./docs/images/pyramid.png" alt="Pyramid example" width="600">
 
 ## Documentation
 
