@@ -152,7 +152,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 - `<Column>`: `width` (omit for even distribution)
 - `<Row>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<Cell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor`
+- `<Cell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
 
 | Attribute          | Type / Values        |
 | ------------------ | -------------------- |

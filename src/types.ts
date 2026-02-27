@@ -406,6 +406,8 @@ export const tableCellSchema = z.object({
   highlight: z.string().optional(),
   alignText: z.enum(["left", "center", "right"]).optional(),
   backgroundColor: z.string().optional(),
+  colspan: z.number().int().min(1).optional(),
+  rowspan: z.number().int().min(1).optional(),
 });
 
 export const tableRowSchema = z.object({
