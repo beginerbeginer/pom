@@ -647,22 +647,33 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 ```typescript
 {
   type: "flow";
-  direction?: "TB" | "LR";  // TB: top-to-bottom, LR: left-to-right (default: "TB")
+  direction?: "horizontal" | "vertical";  // Layout direction (default: "vertical")
   nodes: {
     id: string;           // Unique node identifier
-    label: string;        // Node label
-    shape?: "rect" | "roundRect" | "diamond" | "ellipse" | "parallelogram";  // Node shape (default: "rect")
-    color?: string;       // Node color (hex, default: "1D4ED8")
+    shape: "flowChartTerminator" | "flowChartProcess" | "flowChartDecision"
+      | "flowChartInputOutput" | "flowChartDocument" | "flowChartPredefinedProcess"
+      | "flowChartConnector" | "flowChartPreparation" | "flowChartManualInput"
+      | "flowChartManualOperation" | "flowChartDelay" | "flowChartMagneticDisk";  // Node shape
+    text: string;         // Node text
+    color?: string;       // Node color (hex)
+    textColor?: string;   // Text color (hex)
+    width?: number;       // Node width in px
+    height?: number;      // Node height in px
   }[];
-  edges: {
+  connections: {
     from: string;         // Source node ID
     to: string;           // Target node ID
-    label?: string;       // Edge label
+    label?: string;       // Connection label
+    color?: string;       // Connection color (hex)
   }[];
-  nodeWidth?: number;     // Node width in px (default: 120)
-  nodeHeight?: number;    // Node height in px (default: 40)
+  connectorStyle?: {
+    color?: string;       // Connector color (hex)
+    width?: number;       // Connector width in px
+    arrowType?: "none" | "arrow" | "diamond" | "oval" | "stealth" | "triangle";  // Arrow type
+  };
+  nodeWidth?: number;     // Default node width in px (default: 120)
+  nodeHeight?: number;    // Default node height in px (default: 40)
   nodeGap?: number;       // Gap between nodes in px (default: 60)
-  rankGap?: number;       // Gap between ranks in px (default: 80)
 
   // Common properties
   w?: number | "max" | `${number}%`;
