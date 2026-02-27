@@ -1,7 +1,7 @@
 import path from "path";
 
 const LIB_DIR = path.dirname(new URL(import.meta.url).pathname);
-export const DOCS_DIR = path.dirname(LIB_DIR);
+const DOCS_DIR = path.dirname(LIB_DIR);
 export const IMAGES_DIR = path.join(DOCS_DIR, "images");
 
 export const NODE_TYPES = [

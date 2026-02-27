@@ -40,7 +40,7 @@ type PptxBulletOptions = {
   numberStartAt?: number;
 };
 
-export function createBulletOptions(
+function createBulletOptions(
   bullet: boolean | BulletOptions,
 ): PptxBulletOptions | boolean {
   if (typeof bullet === "boolean") {

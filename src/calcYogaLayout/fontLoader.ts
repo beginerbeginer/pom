@@ -37,7 +37,7 @@ function base64ToArrayBuffer(base64: string): ArrayBuffer {
  * @param weight フォントウェイト ("normal" or "bold")
  * @returns opentype.js の Font オブジェクト
  */
-export function getFont(weight: "normal" | "bold"): Font {
+function getFont(weight: "normal" | "bold"): Font {
   const cacheKey = weight;
 
   // キャッシュがあればそれを返す

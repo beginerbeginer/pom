@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { PX_PER_IN, pxToIn, pxToPt } from "./renderPptx.ts";
+import { PX_PER_IN, pxToIn, pxToPt } from "./units.ts";
 
 describe("PX_PER_IN", () => {
   it("96である", () => {

@@ -131,13 +131,6 @@ export function setTextMeasurementMode(mode: TextMeasurementMode): void {
 }
 
 /**
- * 現在のテキスト計測モードを取得する
- */
-export function getTextMeasurementMode(): TextMeasurementMode {
-  return currentMode;
-}
-
-/**
  * fontWeight を "normal" | "bold" に正規化する
  */
 function normalizeFontWeight(

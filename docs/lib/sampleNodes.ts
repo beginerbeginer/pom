@@ -12,7 +12,7 @@ const palette = {
   green: "16A34A",
 };
 
-export const textSample = `
+const textSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Text Node Example</Text>
   <HStack gap="40">
@@ -45,7 +45,7 @@ export const textSample = `
 const sampleImageUrl =
   "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png";
 
-export const imageSample = `
+const imageSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Image Node Example</Text>
   <HStack gap="40" alignItems="center">
@@ -62,7 +62,7 @@ export const imageSample = `
 </VStack>
 `;
 
-export const tableSample = `
+const tableSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Table Node Example</Text>
   <Table defaultRowHeight="36">
@@ -98,7 +98,7 @@ export const tableSample = `
 </VStack>
 `;
 
-export const shapeSample = `
+const shapeSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Shape Node Example</Text>
   <HStack gap="32" alignItems="center">
@@ -111,7 +111,7 @@ export const shapeSample = `
 </VStack>
 `;
 
-export const chartSample = `
+const chartSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
   <HStack gap="32">
@@ -153,7 +153,7 @@ export const chartSample = `
 </VStack>
 `;
 
-export const timelineSample = `
+const timelineSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Timeline Node Example</Text>
   <Timeline direction="horizontal" w="100%" h="200">
@@ -165,7 +165,7 @@ export const timelineSample = `
 </VStack>
 `;
 
-export const matrixSample = `
+const matrixSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
   <Matrix w="500" h="400">
@@ -179,7 +179,7 @@ export const matrixSample = `
 </VStack>
 `;
 
-export const treeSample = `
+const treeSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Tree Node Example</Text>
   <Tree layout="vertical" nodeShape="roundRect" w="100%" h="400" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
@@ -201,7 +201,7 @@ export const treeSample = `
 </VStack>
 `;
 
-export const flowSample = `
+const flowSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Flow Node Example</Text>
   <Flow direction="horizontal" w="100%" h="300" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
@@ -218,7 +218,7 @@ export const flowSample = `
 </VStack>
 `;
 
-export const processArrowSample = `
+const processArrowSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
   <ProcessArrow direction="horizontal" w="100%" h="100">
@@ -249,7 +249,7 @@ export const processArrowSample = `
 </VStack>
 `;
 
-export const boxSample = `
+const boxSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Box Node Example</Text>
   <HStack gap="32">
@@ -266,7 +266,7 @@ export const boxSample = `
 </VStack>
 `;
 
-export const vstackSample = `
+const vstackSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
   <HStack gap="32">
@@ -292,7 +292,7 @@ export const vstackSample = `
 </VStack>
 `;
 
-export const hstackSample = `
+const hstackSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">HStack Node Example</Text>
   <VStack gap="16">

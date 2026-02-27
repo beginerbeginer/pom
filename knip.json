@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["scripts/convertFontToBase64.ts"],
+  "project": [
+    "src/**/*.ts",
+    "vrt/**/*.ts",
+    "preview/**/*.ts",
+    "docs/lib/**/*.ts",
+    "scripts/**/*.ts"
+  ]
+}
