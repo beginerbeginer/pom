@@ -11,7 +11,6 @@ const SLIDE_HEIGHT = 720;
 async function generateNodeImage(nodeType: NodeType): Promise<void> {
   const sampleXml = sampleNodes[nodeType];
   const tempPptxPath = path.join(IMAGES_DIR, `${nodeType}.pptx`);
-  const outputPngPath = path.join(IMAGES_DIR, `${nodeType}.png`);
 
   // PPTXを生成
   const pptx = await buildPptx(
@@ -27,7 +26,7 @@ async function generateNodeImage(nodeType: NodeType): Promise<void> {
   fs.writeFileSync(tempPptxPath, Buffer.from(pptxBuffer));
 
   // PPTX → PNG変換
-  await pptxToPng(tempPptxPath, outputPngPath);
+  await pptxToPng(tempPptxPath, IMAGES_DIR, [nodeType]);
 
   // 一時PPTXファイルを削除
   fs.unlinkSync(tempPptxPath);

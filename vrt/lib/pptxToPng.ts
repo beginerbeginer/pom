@@ -1,14 +1,14 @@
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { PNG } from "pngjs";
 
 /**
- * LibreOfficeを使ってPPTXをPDFに変換し、ImageMagickでPNGに変換して全スライドを縦に連結した画像を生成
+ * LibreOfficeを使ってPPTXをPDFに変換し、ImageMagickでページごとのPNGに変換
  */
 export async function pptxToPng(
   pptxPath: string,
-  outputPngPath: string,
+  outputDir: string,
+  pageNames: readonly string[],
 ): Promise<void> {
   const tempDir = path.join(path.dirname(pptxPath), ".pptx-temp");
 
@@ -17,6 +17,9 @@ export async function pptxToPng(
     fs.rmSync(tempDir, { recursive: true });
   }
   fs.mkdirSync(tempDir, { recursive: true });
+
+  // 出力ディレクトリを作成
+  fs.mkdirSync(outputDir, { recursive: true });
 
   try {
     // 1. LibreOfficeでPPTXをPDFに変換（全ページ含む）
@@ -49,33 +52,18 @@ export async function pptxToPng(
       throw new Error("No PNG pages generated from PDF");
     }
 
-    // 3. 全スライドを縦に連結
-    const images = pngFiles.map((f) =>
-      PNG.sync.read(fs.readFileSync(path.join(tempDir, f))),
-    );
-
-    const totalWidth = Math.max(...images.map((img) => img.width));
-    const totalHeight = images.reduce((sum, img) => sum + img.height, 0);
-
-    const output = new PNG({ width: totalWidth, height: totalHeight });
-
-    let yOffset = 0;
-    for (const img of images) {
-      // 各スライドを連結画像にコピー
-      for (let y = 0; y < img.height; y++) {
-        for (let x = 0; x < img.width; x++) {
-          const srcIdx = (img.width * y + x) << 2;
-          const dstIdx = (totalWidth * (yOffset + y) + x) << 2;
-          output.data[dstIdx] = img.data[srcIdx];
-          output.data[dstIdx + 1] = img.data[srcIdx + 1];
-          output.data[dstIdx + 2] = img.data[srcIdx + 2];
-          output.data[dstIdx + 3] = img.data[srcIdx + 3];
-        }
-      }
-      yOffset += img.height;
+    if (pngFiles.length !== pageNames.length) {
+      throw new Error(
+        `Page count mismatch: generated ${pngFiles.length} pages, expected ${pageNames.length}`,
+      );
     }
 
-    fs.writeFileSync(outputPngPath, PNG.sync.write(output));
+    // 3. 各ページのPNGを出力ディレクトリにコピー
+    for (let i = 0; i < pngFiles.length; i++) {
+      const src = path.join(tempDir, pngFiles[i]);
+      const dst = path.join(outputDir, `${pageNames[i]}.png`);
+      fs.copyFileSync(src, dst);
+    }
   } finally {
     // 一時ディレクトリを削除
     if (fs.existsSync(tempDir)) {
