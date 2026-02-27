@@ -77,5 +77,14 @@ export const page5ShapeXml = `
       </HStack>
     </VStack>
   </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">fontFamily &amp; lineSpacingMultiple:</Text>
+      <HStack gap="24" alignItems="center">
+        <Shape shapeType="rect" w="140" h="50" fontPx="14" fontFamily="Arial" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":1}'>Arial Font</Shape>
+        <Shape shapeType="rect" w="140" h="80" fontPx="14" lineSpacingMultiple="2.0" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":1}'>Line 1\nLine 2\nLine 3</Shape>
+      </HStack>
+    </VStack>
+  </Box>
 </VStack>
 `;

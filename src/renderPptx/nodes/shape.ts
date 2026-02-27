@@ -46,7 +46,7 @@ export function renderShapeNode(
       ...shapeOptions,
       shape: node.shapeType,
       fontSize: pxToPt(node.fontPx ?? 24),
-      fontFace: "Noto Sans JP",
+      fontFace: node.fontFamily ?? "Noto Sans JP",
       color: node.color,
       bold: node.bold,
       italic: node.italic,
@@ -55,7 +55,7 @@ export function renderShapeNode(
       highlight: node.highlight,
       align: node.alignText ?? "center",
       valign: "middle" as const,
-      lineSpacingMultiple: 1.3,
+      lineSpacingMultiple: node.lineSpacingMultiple ?? 1.3,
     });
   } else {
     // テキストがない場合：addShapeを使用

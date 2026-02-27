@@ -308,9 +308,9 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
           // テキストがある場合、テキストサイズを測定
           const text = node.text;
           const fontSizePx = node.fontPx ?? 24;
-          const fontFamily = "Noto Sans JP";
+          const fontFamily = node.fontFamily ?? "Noto Sans JP";
           const fontWeight = node.bold ? "bold" : "normal";
-          const lineHeight = 1.3;
+          const lineHeight = node.lineSpacingMultiple ?? 1.3;
 
           yn.setMeasureFunc((width, widthMode) => {
             const maxWidthPx = (() => {
