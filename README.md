@@ -38,7 +38,6 @@
 - [Available Nodes](#available-nodes)
 - [Node Examples](#node-examples)
 - [Documentation](#documentation)
-- [Requirements](#requirements)
 - [License](#license)
 
 ## Features
@@ -54,6 +53,8 @@
 - **Accurate Text Measurement** — Text width measured with opentype.js and bundled Noto Sans JP fonts for consistent layout.
 
 ## Quick Start
+
+> Requires Node.js 18+
 
 ```bash
 npm install @hirokisakabe/pom
@@ -195,10 +196,6 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 | [Serverless Environments](./docs/serverless.md)  | Text measurement options for serverless |
 | [LLM Integration](./docs/llm-integration.md)     | Compact XML reference for LLM prompts   |
 | [Playground](https://pom-playground.vercel.app/) | Try pom XML in the browser              |
-
-## Requirements
-
-- Node.js 18 or higher
 
 ## License
 
