@@ -205,19 +205,19 @@ export const page17HStackTableXml = `
       <HStack gap="16">
         <Text fontPx="14">Left text</Text>
         <Table defaultRowHeight="28">
-          <Column width="80" />
-          <Column width="120" />
-          <Column width="80" />
-          <Row>
-            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">A</Cell>
-            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">B</Cell>
-            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">C</Cell>
-          </Row>
-          <Row>
-            <Cell fontPx="12">1</Cell>
-            <Cell fontPx="12">Data</Cell>
-            <Cell fontPx="12">OK</Cell>
-          </Row>
+          <TableColumn width="80" />
+          <TableColumn width="120" />
+          <TableColumn width="80" />
+          <TableRow>
+            <TableCell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">A</TableCell>
+            <TableCell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">B</TableCell>
+            <TableCell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">C</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell fontPx="12">1</TableCell>
+            <TableCell fontPx="12">Data</TableCell>
+            <TableCell fontPx="12">OK</TableCell>
+          </TableRow>
         </Table>
         <Text fontPx="14">Right text</Text>
       </HStack>

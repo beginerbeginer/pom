@@ -521,16 +521,16 @@ function getTextContent(node: XmlElement): string | undefined {
 
 // ===== Child element schemas for type coercion =====
 const childElementShapes: Record<string, ShapeRecord> = {
-  Step: extractShape(processArrowStepSchema),
-  Level: extractShape(pyramidLevelSchema),
+  ProcessArrowStep: extractShape(processArrowStepSchema),
+  PyramidLevel: extractShape(pyramidLevelSchema),
   TimelineItem: extractShape(timelineItemSchema),
-  Axes: extractShape(matrixAxisSchema),
-  Quadrants: extractShape(matrixQuadrantsSchema),
+  MatrixAxes: extractShape(matrixAxisSchema),
+  MatrixQuadrants: extractShape(matrixQuadrantsSchema),
   MatrixItem: extractShape(matrixItemSchema),
   FlowNode: extractShape(flowNodeItemSchema),
-  Connection: extractShape(flowConnectionSchema),
-  Column: extractShape(tableColumnSchema),
-  Cell: extractShape(tableCellSchema),
+  FlowConnection: extractShape(flowConnectionSchema),
+  TableColumn: extractShape(tableColumnSchema),
+  TableCell: extractShape(tableCellSchema),
   Li: extractShape(inputLiNodeSchema),
 };
 
@@ -579,9 +579,9 @@ function convertProcessArrowChildren(
   const steps: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
-    if (tag !== "Step") {
+    if (tag !== "ProcessArrowStep") {
       errors.push(
-        `Unknown child element <${tag}> inside <ProcessArrow>. Expected: <Step>`,
+        `Unknown child element <${tag}> inside <ProcessArrow>. Expected: <ProcessArrowStep>`,
       );
       continue;
     }
@@ -600,9 +600,9 @@ function convertPyramidChildren(
   const levels: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
-    if (tag !== "Level") {
+    if (tag !== "PyramidLevel") {
       errors.push(
-        `Unknown child element <${tag}> inside <Pyramid>. Expected: <Level>`,
+        `Unknown child element <${tag}> inside <Pyramid>. Expected: <PyramidLevel>`,
       );
       continue;
     }
@@ -639,7 +639,7 @@ function convertMatrixChildren(
   for (const child of childElements) {
     const tag = getTagName(child);
     switch (tag) {
-      case "Axes":
+      case "MatrixAxes":
         result.axes = coerceChildAttrs(
           "Matrix",
           tag,
@@ -647,7 +647,7 @@ function convertMatrixChildren(
           errors,
         );
         break;
-      case "Quadrants":
+      case "MatrixQuadrants":
         result.quadrants = coerceChildAttrs(
           "Matrix",
           tag,
@@ -662,7 +662,7 @@ function convertMatrixChildren(
         break;
       default:
         errors.push(
-          `Unknown child element <${tag}> inside <Matrix>. Expected: <Axes>, <Quadrants>, or <MatrixItem>`,
+          `Unknown child element <${tag}> inside <Matrix>. Expected: <MatrixAxes>, <MatrixQuadrants>, or <MatrixItem>`,
         );
     }
   }
@@ -684,14 +684,14 @@ function convertFlowChildren(
       case "FlowNode":
         nodes.push(coerceChildAttrs("Flow", tag, getAttributes(child), errors));
         break;
-      case "Connection":
+      case "FlowConnection":
         connections.push(
           coerceChildAttrs("Flow", tag, getAttributes(child), errors),
         );
         break;
       default:
         errors.push(
-          `Unknown child element <${tag}> inside <Flow>. Expected: <FlowNode> or <Connection>`,
+          `Unknown child element <${tag}> inside <Flow>. Expected: <FlowNode> or <FlowConnection>`,
         );
     }
   }
@@ -712,9 +712,9 @@ function convertChartChildren(
   const data: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
-    if (tag !== "Series") {
+    if (tag !== "ChartSeries") {
       errors.push(
-        `Unknown child element <${tag}> inside <Chart>. Expected: <Series>`,
+        `Unknown child element <${tag}> inside <Chart>. Expected: <ChartSeries>`,
       );
       continue;
     }
@@ -728,7 +728,7 @@ function convertChartChildren(
       if (nameSchema) {
         const coerced = coerceValue(attrs.name, nameSchema);
         if (coerced.error !== null) {
-          errors.push(`<Chart>.<Series>: ${coerced.error}`);
+          errors.push(`<Chart>.<ChartSeries>: ${coerced.error}`);
         } else {
           series.name = coerced.value;
         }
@@ -739,18 +739,18 @@ function convertChartChildren(
 
     for (const dp of getChildElements(child)) {
       const dpTag = getTagName(dp);
-      if (dpTag !== "DataPoint") {
+      if (dpTag !== "ChartDataPoint") {
         errors.push(
-          `Unknown child element <${dpTag}> inside <Series>. Expected: <DataPoint>`,
+          `Unknown child element <${dpTag}> inside <ChartSeries>. Expected: <ChartDataPoint>`,
         );
         continue;
       }
       const dpAttrs = getAttributes(dp);
       if (dpAttrs.label === undefined) {
-        errors.push('<DataPoint> requires a "label" attribute');
+        errors.push('<ChartDataPoint> requires a "label" attribute');
       }
       if (dpAttrs.value === undefined) {
-        errors.push('<DataPoint> requires a "value" attribute');
+        errors.push('<ChartDataPoint> requires a "value" attribute');
       }
       if (dpAttrs.label === undefined || dpAttrs.value === undefined) {
         continue;
@@ -758,7 +758,7 @@ function convertChartChildren(
       const numValue = Number(dpAttrs.value);
       if (isNaN(numValue)) {
         errors.push(
-          `Cannot convert "${dpAttrs.value}" to number in <DataPoint> "value" attribute`,
+          `Cannot convert "${dpAttrs.value}" to number in <ChartDataPoint> "value" attribute`,
         );
         continue;
       }
@@ -780,24 +780,24 @@ function convertTableChildren(
   for (const child of childElements) {
     const tag = getTagName(child);
     switch (tag) {
-      case "Column":
+      case "TableColumn":
         columns.push(
           coerceChildAttrs("Table", tag, getAttributes(child), errors),
         );
         break;
-      case "Row": {
+      case "TableRow": {
         const rowAttrs = getAttributes(child);
         const cells: Record<string, unknown>[] = [];
         for (const cellEl of getChildElements(child)) {
           const cellTag = getTagName(cellEl);
-          if (cellTag !== "Cell") {
+          if (cellTag !== "TableCell") {
             errors.push(
-              `Unknown child element <${cellTag}> inside <Row>. Expected: <Cell>`,
+              `Unknown child element <${cellTag}> inside <TableRow>. Expected: <TableCell>`,
             );
             continue;
           }
           const cellAttrs = coerceChildAttrs(
-            "Row",
+            "TableRow",
             cellTag,
             getAttributes(cellEl),
             errors,
@@ -813,7 +813,7 @@ function convertTableChildren(
           const h = Number(rowAttrs.height);
           if (isNaN(h)) {
             errors.push(
-              `Cannot convert "${rowAttrs.height}" to number in <Row> "height" attribute`,
+              `Cannot convert "${rowAttrs.height}" to number in <TableRow> "height" attribute`,
             );
           } else {
             row.height = h;
@@ -824,7 +824,7 @@ function convertTableChildren(
       }
       default:
         errors.push(
-          `Unknown child element <${tag}> inside <Table>. Expected: <Column> or <Row>`,
+          `Unknown child element <${tag}> inside <Table>. Expected: <TableColumn> or <TableRow>`,
         );
     }
   }

@@ -137,22 +137,22 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 ```xml
 <Table>
-  <Column width="200" />
-  <Column width="100" />
-  <Row>
-    <Cell bold="true" backgroundColor="DBEAFE">Name</Cell>
-    <Cell bold="true" backgroundColor="DBEAFE">Score</Cell>
-  </Row>
-  <Row>
-    <Cell>Alice</Cell>
-    <Cell>95</Cell>
-  </Row>
+  <TableColumn width="200" />
+  <TableColumn width="100" />
+  <TableRow>
+    <TableCell bold="true" backgroundColor="DBEAFE">Name</TableCell>
+    <TableCell bold="true" backgroundColor="DBEAFE">Score</TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Alice</TableCell>
+    <TableCell>95</TableCell>
+  </TableRow>
 </Table>
 ```
 
-- `<Column>`: `width` (omit for even distribution)
-- `<Row>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<Cell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
+- `<TableColumn>`: `width` (omit for even distribution)
+- `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
+- `<TableCell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
 
 | Attribute          | Type / Values        |
 | ------------------ | -------------------- |
@@ -289,10 +289,10 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 
 ```xml
 <Chart chartType="bar" w="500" h="300" showLegend="true" chartColors='["0088CC","00AA00"]'>
-  <Series name="Sales">
-    <DataPoint label="Jan" value="100" />
-    <DataPoint label="Feb" value="150" />
-  </Series>
+  <ChartSeries name="Sales">
+    <ChartDataPoint label="Jan" value="100" />
+    <ChartDataPoint label="Feb" value="150" />
+  </ChartSeries>
 </Chart>
 ```
 
@@ -311,41 +311,41 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 <!-- Bar chart -->
 <Chart chartType="bar" w="600" h="400" showLegend="true" showTitle="true"
   title="Monthly Sales &amp; Profit" chartColors='["0088CC","00AA00"]'>
-  <Series name="Sales">
-    <DataPoint label="Jan" value="100" />
-    <DataPoint label="Feb" value="200" />
-    <DataPoint label="Mar" value="150" />
-    <DataPoint label="Apr" value="300" />
-  </Series>
-  <Series name="Profit">
-    <DataPoint label="Jan" value="30" />
-    <DataPoint label="Feb" value="60" />
-    <DataPoint label="Mar" value="45" />
-    <DataPoint label="Apr" value="90" />
-  </Series>
+  <ChartSeries name="Sales">
+    <ChartDataPoint label="Jan" value="100" />
+    <ChartDataPoint label="Feb" value="200" />
+    <ChartDataPoint label="Mar" value="150" />
+    <ChartDataPoint label="Apr" value="300" />
+  </ChartSeries>
+  <ChartSeries name="Profit">
+    <ChartDataPoint label="Jan" value="30" />
+    <ChartDataPoint label="Feb" value="60" />
+    <ChartDataPoint label="Mar" value="45" />
+    <ChartDataPoint label="Apr" value="90" />
+  </ChartSeries>
 </Chart>
 
 <!-- Pie chart -->
 <Chart chartType="pie" w="400" h="300" showLegend="true"
   chartColors='["0088CC","00AA00","FF6600","888888"]'>
-  <Series name="Market Share">
-    <DataPoint label="Product A" value="40" />
-    <DataPoint label="Product B" value="30" />
-    <DataPoint label="Product C" value="20" />
-    <DataPoint label="Others" value="10" />
-  </Series>
+  <ChartSeries name="Market Share">
+    <ChartDataPoint label="Product A" value="40" />
+    <ChartDataPoint label="Product B" value="30" />
+    <ChartDataPoint label="Product C" value="20" />
+    <ChartDataPoint label="Others" value="10" />
+  </ChartSeries>
 </Chart>
 
 <!-- Radar chart -->
 <Chart chartType="radar" w="400" h="300" showLegend="true"
   radarStyle="filled" chartColors='["0088CC"]'>
-  <Series name="Skill Assessment">
-    <DataPoint label="Technical" value="80" />
-    <DataPoint label="Design" value="60" />
-    <DataPoint label="PM" value="70" />
-    <DataPoint label="Sales" value="50" />
-    <DataPoint label="Support" value="90" />
-  </Series>
+  <ChartSeries name="Skill Assessment">
+    <ChartDataPoint label="Technical" value="80" />
+    <ChartDataPoint label="Design" value="60" />
+    <ChartDataPoint label="PM" value="70" />
+    <ChartDataPoint label="Sales" value="50" />
+    <ChartDataPoint label="Support" value="90" />
+  </ChartSeries>
 </Chart>
 ```
 
@@ -395,16 +395,16 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 
 ```xml
 <Matrix w="600" h="500">
-  <Axes x="Cost" y="Effect" />
-  <Quadrants topLeft="Quick Wins" topRight="Strategic" bottomLeft="Low Priority" bottomRight="Avoid" />
+  <MatrixAxes x="Cost" y="Effect" />
+  <MatrixQuadrants topLeft="Quick Wins" topRight="Strategic" bottomLeft="Low Priority" bottomRight="Avoid" />
   <MatrixItem label="Initiative A" x="0.2" y="0.8" color="4CAF50" />
   <MatrixItem label="Initiative B" x="0.7" y="0.6" />
 </Matrix>
 ```
 
 - Coordinates: (0,0)=bottom-left, (1,1)=top-right (mathematical coordinate system)
-- `<Axes>`: `x` `y` (axis labels, required)
-- `<Quadrants>`: `topLeft` `topRight` `bottomLeft` `bottomRight`
+- `<MatrixAxes>`: `x` `y` (axis labels, required)
+- `<MatrixQuadrants>`: `topLeft` `topRight` `bottomLeft` `bottomRight`
 - `<MatrixItem>`: `label` `x` `y` (required) `color`
 
 **Usage Examples:**
@@ -412,8 +412,8 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 ```xml
 <!-- Cost-Effectiveness Matrix -->
 <Matrix w="600" h="500">
-  <Axes x="Cost" y="Effect" />
-  <Quadrants
+  <MatrixAxes x="Cost" y="Effect" />
+  <MatrixQuadrants
     topLeft="Low Cost / High Effect (Priority)"
     topRight="High Cost / High Effect (Consider)"
     bottomLeft="Low Cost / Low Effect (Low Priority)"
@@ -426,7 +426,7 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 
 <!-- Simple Impact-Effort Matrix (without quadrant labels) -->
 <Matrix w="500" h="400">
-  <Axes x="Effort" y="Impact" />
+  <MatrixAxes x="Effort" y="Impact" />
   <MatrixItem label="Quick Win" x="0.15" y="0.85" />
   <MatrixItem label="Major Project" x="0.75" y="0.75" />
   <MatrixItem label="Fill-In" x="0.25" y="0.25" />
@@ -506,9 +506,9 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
   <FlowNode id="process" shape="flowChartProcess" text="Process" />
   <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
   <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
-  <Connection from="start" to="process" />
-  <Connection from="process" to="decision" />
-  <Connection from="decision" to="end" label="Yes" />
+  <FlowConnection from="start" to="process" />
+  <FlowConnection from="process" to="decision" />
+  <FlowConnection from="decision" to="end" label="Yes" />
 </Flow>
 ```
 
@@ -532,7 +532,7 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 | `width`     | number — individual node width (overrides `nodeWidth`)                                                                                                                                                                                                                                            |
 | `height`    | number — individual node height (overrides `nodeHeight`)                                                                                                                                                                                                                                          |
 
-`<Connection>`: `from` `to` (required) `label` `color`
+`<FlowConnection>`: `from` `to` (required) `label` `color`
 
 **Usage Examples:**
 
@@ -543,9 +543,9 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
   <FlowNode id="process" shape="flowChartProcess" text="Process" />
   <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
   <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
-  <Connection from="start" to="process" />
-  <Connection from="process" to="decision" />
-  <Connection from="decision" to="end" label="Yes" />
+  <FlowConnection from="start" to="process" />
+  <FlowConnection from="process" to="decision" />
+  <FlowConnection from="decision" to="end" label="Yes" />
 </Flow>
 
 <!-- Horizontal flowchart -->
@@ -554,9 +554,9 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
   <FlowNode id="validate" shape="flowChartProcess" text="Validate" />
   <FlowNode id="save" shape="flowChartProcess" text="Save" />
   <FlowNode id="output" shape="flowChartInputOutput" text="Output" />
-  <Connection from="input" to="validate" />
-  <Connection from="validate" to="save" />
-  <Connection from="save" to="output" />
+  <FlowConnection from="input" to="validate" />
+  <FlowConnection from="validate" to="save" />
+  <FlowConnection from="save" to="output" />
 </Flow>
 ```
 
@@ -568,10 +568,10 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 
 ```xml
 <ProcessArrow direction="horizontal" w="1000" h="80">
-  <Step label="Planning" color="4472C4" />
-  <Step label="Design" color="5B9BD5" />
-  <Step label="Development" color="70AD47" />
-  <Step label="Release" color="ED7D31" />
+  <ProcessArrowStep label="Planning" color="4472C4" />
+  <ProcessArrowStep label="Design" color="5B9BD5" />
+  <ProcessArrowStep label="Development" color="70AD47" />
+  <ProcessArrowStep label="Release" color="ED7D31" />
 </ProcessArrow>
 ```
 
@@ -586,33 +586,33 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 | `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
 | `highlight`              | hex (highlight color)                          |
 
-`<Step>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
+`<ProcessArrowStep>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
 
 **Usage Examples:**
 
 ```xml
 <!-- Horizontal process arrow with colors -->
 <ProcessArrow direction="horizontal" w="1000" h="80">
-  <Step label="Planning" color="4472C4" />
-  <Step label="Design" color="5B9BD5" />
-  <Step label="Development" color="70AD47" />
-  <Step label="Testing" color="FFC000" />
-  <Step label="Release" color="ED7D31" />
+  <ProcessArrowStep label="Planning" color="4472C4" />
+  <ProcessArrowStep label="Design" color="5B9BD5" />
+  <ProcessArrowStep label="Development" color="70AD47" />
+  <ProcessArrowStep label="Testing" color="FFC000" />
+  <ProcessArrowStep label="Release" color="ED7D31" />
 </ProcessArrow>
 
 <!-- Vertical process arrow -->
 <ProcessArrow direction="vertical" w="200" h="250">
-  <Step label="Phase 1" color="4CAF50" />
-  <Step label="Phase 2" color="2196F3" />
-  <Step label="Phase 3" color="9C27B0" />
+  <ProcessArrowStep label="Phase 1" color="4CAF50" />
+  <ProcessArrowStep label="Phase 2" color="2196F3" />
+  <ProcessArrowStep label="Phase 3" color="9C27B0" />
 </ProcessArrow>
 
 <!-- Custom styling -->
 <ProcessArrow direction="horizontal" w="600" h="80"
   itemWidth="180" itemHeight="70" fontPx="16" bold="true">
-  <Step label="Input" color="2196F3" />
-  <Step label="Process" color="00BCD4" />
-  <Step label="Output" color="009688" />
+  <ProcessArrowStep label="Input" color="2196F3" />
+  <ProcessArrowStep label="Process" color="00BCD4" />
+  <ProcessArrowStep label="Output" color="009688" />
 </ProcessArrow>
 ```
 
@@ -624,9 +624,9 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 
 ```xml
 <Pyramid direction="up" w="600" h="300">
-  <Level label="Strategy" color="E91E63" />
-  <Level label="Tactics" color="9C27B0" />
-  <Level label="Execution" color="673AB7" />
+  <PyramidLevel label="Strategy" color="E91E63" />
+  <PyramidLevel label="Tactics" color="9C27B0" />
+  <PyramidLevel label="Execution" color="673AB7" />
 </Pyramid>
 ```
 
@@ -636,7 +636,7 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 | `fontPx`    | number (default: 14)    |
 | `bold`      | boolean                 |
 
-`<Level>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
+`<PyramidLevel>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
 
 - `direction="up"`: First level is the top (narrowest), last level is the base (widest).
 - `direction="down"`: First level is the top (widest), last level is the bottom (narrowest).
@@ -646,25 +646,25 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 ```xml
 <!-- Basic pyramid (up direction) -->
 <Pyramid direction="up" w="600" h="300">
-  <Level label="Vision" color="1D4ED8" />
-  <Level label="Strategy" color="2563EB" />
-  <Level label="Operations" color="3B82F6" />
+  <PyramidLevel label="Vision" color="1D4ED8" />
+  <PyramidLevel label="Strategy" color="2563EB" />
+  <PyramidLevel label="Operations" color="3B82F6" />
 </Pyramid>
 
 <!-- Inverted pyramid -->
 <Pyramid direction="down" w="600" h="300">
-  <Level label="Wide" color="4472C4" />
-  <Level label="Medium" color="5B9BD5" />
-  <Level label="Narrow" color="70AD47" />
+  <PyramidLevel label="Wide" color="4472C4" />
+  <PyramidLevel label="Medium" color="5B9BD5" />
+  <PyramidLevel label="Narrow" color="70AD47" />
 </Pyramid>
 
 <!-- Maslow's hierarchy with custom text colors -->
 <Pyramid direction="up" w="800" h="400" fontPx="16" bold="true">
-  <Level label="Self-actualization" color="F44336" textColor="FFFFFF" />
-  <Level label="Esteem" color="FF9800" textColor="333333" />
-  <Level label="Love/Belonging" color="FFEB3B" textColor="333333" />
-  <Level label="Safety" color="4CAF50" textColor="FFFFFF" />
-  <Level label="Physiological" color="2196F3" textColor="FFFFFF" />
+  <PyramidLevel label="Self-actualization" color="F44336" textColor="FFFFFF" />
+  <PyramidLevel label="Esteem" color="FF9800" textColor="333333" />
+  <PyramidLevel label="Love/Belonging" color="FFEB3B" textColor="333333" />
+  <PyramidLevel label="Safety" color="4CAF50" textColor="FFFFFF" />
+  <PyramidLevel label="Physiological" color="2196F3" textColor="FFFFFF" />
 </Pyramid>
 ```
 

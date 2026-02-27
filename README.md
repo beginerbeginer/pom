@@ -100,10 +100,10 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ```xml
 <Chart chartType="bar" w="350" h="250" showTitle="true" title="Bar Chart" showLegend="true">
-  <Series name="Q1">
-    <DataPoint label="Jan" value="30" />
-    <DataPoint label="Feb" value="45" />
-  </Series>
+  <ChartSeries name="Q1">
+    <ChartDataPoint label="Jan" value="30" />
+    <ChartDataPoint label="Feb" value="45" />
+  </ChartSeries>
 </Chart>
 ```
 
@@ -116,8 +116,8 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
   <FlowNode id="start" shape="flowChartTerminator" text="Start" color="16A34A" />
   <FlowNode id="process" shape="flowChartProcess" text="Process" color="1D4ED8" />
   <FlowNode id="end" shape="flowChartTerminator" text="End" color="DC2626" />
-  <Connection from="start" to="process" />
-  <Connection from="process" to="end" />
+  <FlowConnection from="start" to="process" />
+  <FlowConnection from="process" to="end" />
 </Flow>
 ```
 
@@ -144,16 +144,16 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ```xml
 <Table defaultRowHeight="36">
-  <Column width="80" />
-  <Column width="200" />
-  <Row>
-    <Cell bold="true" backgroundColor="0F172A" color="FFFFFF">ID</Cell>
-    <Cell bold="true" backgroundColor="0F172A" color="FFFFFF">Name</Cell>
-  </Row>
-  <Row>
-    <Cell>001</Cell>
-    <Cell>Project Alpha</Cell>
-  </Row>
+  <TableColumn width="80" />
+  <TableColumn width="200" />
+  <TableRow>
+    <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">ID</TableCell>
+    <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">Name</TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>001</TableCell>
+    <TableCell>Project Alpha</TableCell>
+  </TableRow>
 </Table>
 ```
 
@@ -175,11 +175,11 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ```xml
 <ProcessArrow direction="horizontal" w="100%" h="100">
-  <Step label="Planning" color="4472C4" />
-  <Step label="Design" color="5B9BD5" />
-  <Step label="Development" color="70AD47" />
-  <Step label="Testing" color="FFC000" />
-  <Step label="Release" color="ED7D31" />
+  <ProcessArrowStep label="Planning" color="4472C4" />
+  <ProcessArrowStep label="Design" color="5B9BD5" />
+  <ProcessArrowStep label="Development" color="70AD47" />
+  <ProcessArrowStep label="Testing" color="FFC000" />
+  <ProcessArrowStep label="Release" color="ED7D31" />
 </ProcessArrow>
 ```
 
@@ -189,9 +189,9 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ```xml
 <Pyramid direction="up" w="600" h="300">
-  <Level label="Strategy" color="E91E63" />
-  <Level label="Tactics" color="9C27B0" />
-  <Level label="Execution" color="673AB7" />
+  <PyramidLevel label="Strategy" color="E91E63" />
+  <PyramidLevel label="Tactics" color="9C27B0" />
+  <PyramidLevel label="Execution" color="673AB7" />
 </Pyramid>
 ```
 

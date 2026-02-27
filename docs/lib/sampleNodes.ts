@@ -66,34 +66,34 @@ const tableSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Table Node Example</Text>
   <Table defaultRowHeight="36">
-    <Column width="80" />
-    <Column width="200" />
-    <Column width="100" />
-    <Column width="120" />
-    <Row>
-      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">ID</Cell>
-      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Name</Cell>
-      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Status</Cell>
-      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Progress</Cell>
-    </Row>
-    <Row>
-      <Cell alignText="center">001</Cell>
-      <Cell>Project Alpha</Cell>
-      <Cell color="${palette.green}">Active</Cell>
-      <Cell alignText="right">75%</Cell>
-    </Row>
-    <Row>
-      <Cell alignText="center">002</Cell>
-      <Cell>Project Beta</Cell>
-      <Cell color="${palette.accent}">Pending</Cell>
-      <Cell alignText="right">30%</Cell>
-    </Row>
-    <Row>
-      <Cell alignText="center">003</Cell>
-      <Cell>Project Gamma</Cell>
-      <Cell color="${palette.blue}">Complete</Cell>
-      <Cell alignText="right">100%</Cell>
-    </Row>
+    <TableColumn width="80" />
+    <TableColumn width="200" />
+    <TableColumn width="100" />
+    <TableColumn width="120" />
+    <TableRow>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">ID</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Name</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Status</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Progress</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell alignText="center">001</TableCell>
+      <TableCell>Project Alpha</TableCell>
+      <TableCell color="${palette.green}">Active</TableCell>
+      <TableCell alignText="right">75%</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell alignText="center">002</TableCell>
+      <TableCell>Project Beta</TableCell>
+      <TableCell color="${palette.accent}">Pending</TableCell>
+      <TableCell alignText="right">30%</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell alignText="center">003</TableCell>
+      <TableCell>Project Gamma</TableCell>
+      <TableCell color="${palette.blue}">Complete</TableCell>
+      <TableCell alignText="right">100%</TableCell>
+    </TableRow>
   </Table>
 </VStack>
 `;
@@ -116,38 +116,38 @@ const chartSample = `
   <Text fontPx="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
   <HStack gap="32">
     <Chart chartType="bar" w="350" h="250" showTitle="true" title="Bar Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.red}"]'>
-      <Series name="Q1">
-        <DataPoint label="Jan" value="30" />
-        <DataPoint label="Feb" value="45" />
-        <DataPoint label="Mar" value="60" />
-      </Series>
-      <Series name="Q2">
-        <DataPoint label="Jan" value="40" />
-        <DataPoint label="Feb" value="55" />
-        <DataPoint label="Mar" value="70" />
-      </Series>
+      <ChartSeries name="Q1">
+        <ChartDataPoint label="Jan" value="30" />
+        <ChartDataPoint label="Feb" value="45" />
+        <ChartDataPoint label="Mar" value="60" />
+      </ChartSeries>
+      <ChartSeries name="Q2">
+        <ChartDataPoint label="Jan" value="40" />
+        <ChartDataPoint label="Feb" value="55" />
+        <ChartDataPoint label="Mar" value="70" />
+      </ChartSeries>
     </Chart>
     <Chart chartType="pie" w="300" h="250" showTitle="true" title="Pie Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.accent}","${palette.red}"]'>
-      <Series>
-        <DataPoint label="Category A" value="35" />
-        <DataPoint label="Category B" value="25" />
-        <DataPoint label="Category C" value="25" />
-        <DataPoint label="Category D" value="15" />
-      </Series>
+      <ChartSeries>
+        <ChartDataPoint label="Category A" value="35" />
+        <ChartDataPoint label="Category B" value="25" />
+        <ChartDataPoint label="Category C" value="25" />
+        <ChartDataPoint label="Category D" value="15" />
+      </ChartSeries>
     </Chart>
     <Chart chartType="line" w="350" h="250" showTitle="true" title="Line Chart" showLegend="true" chartColors='["${palette.blue}","${palette.red}"]'>
-      <Series name="2023">
-        <DataPoint label="Q1" value="20" />
-        <DataPoint label="Q2" value="35" />
-        <DataPoint label="Q3" value="45" />
-        <DataPoint label="Q4" value="60" />
-      </Series>
-      <Series name="2024">
-        <DataPoint label="Q1" value="30" />
-        <DataPoint label="Q2" value="50" />
-        <DataPoint label="Q3" value="55" />
-        <DataPoint label="Q4" value="75" />
-      </Series>
+      <ChartSeries name="2023">
+        <ChartDataPoint label="Q1" value="20" />
+        <ChartDataPoint label="Q2" value="35" />
+        <ChartDataPoint label="Q3" value="45" />
+        <ChartDataPoint label="Q4" value="60" />
+      </ChartSeries>
+      <ChartSeries name="2024">
+        <ChartDataPoint label="Q1" value="30" />
+        <ChartDataPoint label="Q2" value="50" />
+        <ChartDataPoint label="Q3" value="55" />
+        <ChartDataPoint label="Q4" value="75" />
+      </ChartSeries>
     </Chart>
   </HStack>
 </VStack>
@@ -169,8 +169,8 @@ const matrixSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
   <Matrix w="500" h="400">
-    <Axes x="Cost" y="Impact" />
-    <Quadrants topLeft="Low Cost\nHigh Impact" topRight="High Cost\nHigh Impact" bottomLeft="Low Cost\nLow Impact" bottomRight="High Cost\nLow Impact" />
+    <MatrixAxes x="Cost" y="Impact" />
+    <MatrixQuadrants topLeft="Low Cost\nHigh Impact" topRight="High Cost\nHigh Impact" bottomLeft="Low Cost\nLow Impact" bottomRight="High Cost\nLow Impact" />
     <MatrixItem label="Project A" x="0.2" y="0.8" color="${palette.green}" />
     <MatrixItem label="Project B" x="0.7" y="0.85" color="${palette.blue}" />
     <MatrixItem label="Project C" x="0.3" y="0.3" color="${palette.accent}" />
@@ -210,10 +210,10 @@ const flowSample = `
     <FlowNode id="process" shape="flowChartProcess" text="Process" color="${palette.blue}" />
     <FlowNode id="decision" shape="flowChartDecision" text="Valid?" color="${palette.accent}" />
     <FlowNode id="end" shape="flowChartTerminator" text="End" color="${palette.red}" />
-    <Connection from="start" to="input" />
-    <Connection from="input" to="process" />
-    <Connection from="process" to="decision" />
-    <Connection from="decision" to="end" label="Yes" />
+    <FlowConnection from="start" to="input" />
+    <FlowConnection from="input" to="process" />
+    <FlowConnection from="process" to="decision" />
+    <FlowConnection from="decision" to="end" label="Yes" />
   </Flow>
 </VStack>
 `;
@@ -222,27 +222,27 @@ const processArrowSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontPx="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
   <ProcessArrow direction="horizontal" w="100%" h="100">
-    <Step label="Planning" color="4472C4" />
-    <Step label="Design" color="5B9BD5" />
-    <Step label="Development" color="70AD47" />
-    <Step label="Testing" color="FFC000" />
-    <Step label="Release" color="ED7D31" />
+    <ProcessArrowStep label="Planning" color="4472C4" />
+    <ProcessArrowStep label="Design" color="5B9BD5" />
+    <ProcessArrowStep label="Development" color="70AD47" />
+    <ProcessArrowStep label="Testing" color="FFC000" />
+    <ProcessArrowStep label="Release" color="ED7D31" />
   </ProcessArrow>
   <HStack gap="32">
     <VStack gap="8">
       <Text fontPx="14" bold="true">Default Style</Text>
       <ProcessArrow direction="horizontal" w="400" h="60">
-        <Step label="Input" />
-        <Step label="Process" />
-        <Step label="Output" />
+        <ProcessArrowStep label="Input" />
+        <ProcessArrowStep label="Process" />
+        <ProcessArrowStep label="Output" />
       </ProcessArrow>
     </VStack>
     <VStack gap="8">
       <Text fontPx="14" bold="true">Custom Text Color</Text>
       <ProcessArrow direction="horizontal" w="400" h="60">
-        <Step label="Light BG" color="FFEB3B" textColor="333333" />
-        <Step label="Dark BG" color="${palette.navy}" textColor="FFFFFF" />
-        <Step label="Blue BG" color="${palette.blue}" textColor="FFFFFF" />
+        <ProcessArrowStep label="Light BG" color="FFEB3B" textColor="333333" />
+        <ProcessArrowStep label="Dark BG" color="${palette.navy}" textColor="FFFFFF" />
+        <ProcessArrowStep label="Blue BG" color="${palette.blue}" textColor="FFFFFF" />
       </ProcessArrow>
     </VStack>
   </HStack>
@@ -256,19 +256,19 @@ const pyramidSample = `
     <VStack gap="8">
       <Text fontPx="14" bold="true">direction: up (default)</Text>
       <Pyramid direction="up" w="400" h="250">
-        <Level label="Vision" color="${palette.navy}" />
-        <Level label="Strategy" color="${palette.blue}" />
-        <Level label="Tactics" color="${palette.accent}" />
-        <Level label="Operations" color="${palette.green}" />
+        <PyramidLevel label="Vision" color="${palette.navy}" />
+        <PyramidLevel label="Strategy" color="${palette.blue}" />
+        <PyramidLevel label="Tactics" color="${palette.accent}" />
+        <PyramidLevel label="Operations" color="${palette.green}" />
       </Pyramid>
     </VStack>
     <VStack gap="8">
       <Text fontPx="14" bold="true">direction: down</Text>
       <Pyramid direction="down" w="400" h="250">
-        <Level label="Executive" color="${palette.navy}" />
-        <Level label="Management" color="${palette.blue}" />
-        <Level label="Team Lead" color="${palette.accent}" />
-        <Level label="Staff" color="${palette.green}" />
+        <PyramidLevel label="Executive" color="${palette.navy}" />
+        <PyramidLevel label="Management" color="${palette.blue}" />
+        <PyramidLevel label="Team Lead" color="${palette.accent}" />
+        <PyramidLevel label="Staff" color="${palette.green}" />
       </Pyramid>
     </VStack>
   </HStack>

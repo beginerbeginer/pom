@@ -12,8 +12,8 @@ export const page11MatrixXml = `
       <VStack gap="12">
         <Text fontPx="14" bold="true">Cost-Effectiveness Matrix (with quadrants):</Text>
         <Matrix w="500" h="400">
-          <Axes x="コスト" y="効果" />
-          <Quadrants topLeft="低コスト高効果\n（優先実施）" topRight="高コスト高効果\n（検討）" bottomLeft="低コスト低効果\n（様子見）" bottomRight="高コスト低効果\n（見送り）" />
+          <MatrixAxes x="コスト" y="効果" />
+          <MatrixQuadrants topLeft="低コスト高効果\n（優先実施）" topRight="高コスト高効果\n（検討）" bottomLeft="低コスト低効果\n（様子見）" bottomRight="高コスト低効果\n（見送り）" />
           <MatrixItem label="施策A" x="0.2" y="0.8" color="4CAF50" />
           <MatrixItem label="施策B" x="0.7" y="0.6" color="2196F3" />
           <MatrixItem label="施策C" x="0.3" y="0.3" color="FF9800" />
@@ -25,7 +25,7 @@ export const page11MatrixXml = `
       <VStack gap="12">
         <Text fontPx="14" bold="true">Impact-Effort Matrix (without quadrants):</Text>
         <Matrix w="500" h="400">
-          <Axes x="Effort" y="Impact" />
+          <MatrixAxes x="Effort" y="Impact" />
           <MatrixItem label="Quick Win" x="0.15" y="0.85" />
           <MatrixItem label="Major Project" x="0.75" y="0.75" />
           <MatrixItem label="Fill-In" x="0.25" y="0.25" />
