@@ -16,3 +16,4 @@ export { page18OpacityXml } from "./opacity";
 export { page19ShadowXml } from "./shadow";
 export { page20BackgroundImageXml } from "./backgroundImage";
 export { page21XmlChildElementsXml } from "./xmlChildElements";
+export { page22CompositeScaleToFitXml } from "./compositeScaleToFit";

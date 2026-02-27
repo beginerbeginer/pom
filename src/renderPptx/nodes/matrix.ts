@@ -1,6 +1,8 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { measureMatrix } from "../../calcYogaLayout/measureCompositeNodes.ts";
+import { calcScaleFactor } from "../utils/scaleToFit.ts";
 
 type MatrixPositionedNode = Extract<PositionedNode, { type: "matrix" }>;
 
@@ -13,12 +15,25 @@ export function renderMatrixNode(
   const quadrants = node.quadrants;
 
   const defaultItemColor = "1D4ED8"; // blue
-  const itemSize = 24; // px
-  const lineWidth = 2; // px
+  const baseItemSize = 24; // px
+  const baseLineWidth = 2; // px
   const axisColor = "E2E8F0";
 
+  // スケール係数を計算
+  const intrinsic = measureMatrix(node);
+  const scaleFactor = calcScaleFactor(
+    node.w,
+    node.h,
+    intrinsic.width,
+    intrinsic.height,
+    "matrix",
+  );
+
+  const itemSize = baseItemSize * scaleFactor;
+  const lineWidth = baseLineWidth * scaleFactor;
+
   // マトリクスの描画領域（パディングを考慮）
-  const padding = 60; // 軸ラベル用の余白
+  const padding = 60 * scaleFactor; // 軸ラベル用の余白
   const areaX = node.x + padding;
   const areaY = node.y + padding;
   const areaW = node.w - padding * 2;
@@ -48,13 +63,16 @@ export function renderMatrixNode(
   });
 
   // === 2. 軸ラベルを描画 ===
+  const axisLabelW = 120 * scaleFactor;
+  const axisLabelH = 24 * scaleFactor;
+
   // X軸ラベル（下部中央）
   ctx.slide.addText(axes.x, {
-    x: pxToIn(centerX - 60),
-    y: pxToIn(areaY + areaH + 8),
-    w: pxToIn(120),
-    h: pxToIn(24),
-    fontSize: pxToPt(12),
+    x: pxToIn(centerX - axisLabelW / 2),
+    y: pxToIn(areaY + areaH + 8 * scaleFactor),
+    w: pxToIn(axisLabelW),
+    h: pxToIn(axisLabelH),
+    fontSize: pxToPt(12 * scaleFactor),
     fontFace: "Noto Sans JP",
     color: "64748B",
     align: "center",
@@ -63,11 +81,11 @@ export function renderMatrixNode(
 
   // Y軸ラベル（左部中央）
   ctx.slide.addText(axes.y, {
-    x: pxToIn(node.x + 4),
-    y: pxToIn(centerY - 12),
-    w: pxToIn(48),
-    h: pxToIn(24),
-    fontSize: pxToPt(12),
+    x: pxToIn(node.x + 4 * scaleFactor),
+    y: pxToIn(centerY - 12 * scaleFactor),
+    w: pxToIn(48 * scaleFactor),
+    h: pxToIn(axisLabelH),
+    fontSize: pxToPt(12 * scaleFactor),
     fontFace: "Noto Sans JP",
     color: "64748B",
     align: "center",
@@ -85,10 +103,14 @@ export function renderMatrixNode(
       areaH,
       centerX,
       centerY,
+      scaleFactor,
     );
   }
 
   // === 4. アイテムをプロット ===
+  const itemLabelW = 100 * scaleFactor;
+  const itemLabelH = 18 * scaleFactor;
+
   for (const item of items) {
     // 座標変換: (0,0)=左下, (1,1)=右上
     // x: 0 -> areaX, 1 -> areaX + areaW
@@ -109,11 +131,11 @@ export function renderMatrixNode(
 
     // ラベルを描画（円の上）
     ctx.slide.addText(item.label, {
-      x: pxToIn(itemX - 50),
-      y: pxToIn(itemY - itemSize / 2 - 20),
-      w: pxToIn(100),
-      h: pxToIn(18),
-      fontSize: pxToPt(11),
+      x: pxToIn(itemX - itemLabelW / 2),
+      y: pxToIn(itemY - itemSize / 2 - 20 * scaleFactor),
+      w: pxToIn(itemLabelW),
+      h: pxToIn(itemLabelH),
+      fontSize: pxToPt(11 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: "1E293B",
       bold: true,
@@ -132,16 +154,18 @@ function renderQuadrantLabels(
   areaH: number,
   centerX: number,
   centerY: number,
+  scaleFactor: number,
 ): void {
-  const quadrantFontSize = 11;
+  const quadrantFontSize = 11 * scaleFactor;
   const quadrantColor = "94A3B8"; // slate-400
-  const quadrantW = areaW / 2 - 20;
-  const quadrantH = 48;
+  const quadrantInset = 10 * scaleFactor;
+  const quadrantW = areaW / 2 - 20 * scaleFactor;
+  const quadrantH = 48 * scaleFactor;
 
   // 左上
   ctx.slide.addText(quadrants.topLeft, {
-    x: pxToIn(areaX + 10),
-    y: pxToIn(areaY + 10),
+    x: pxToIn(areaX + quadrantInset),
+    y: pxToIn(areaY + quadrantInset),
     w: pxToIn(quadrantW),
     h: pxToIn(quadrantH),
     fontSize: pxToPt(quadrantFontSize),
@@ -153,8 +177,8 @@ function renderQuadrantLabels(
 
   // 右上
   ctx.slide.addText(quadrants.topRight, {
-    x: pxToIn(centerX + 10),
-    y: pxToIn(areaY + 10),
+    x: pxToIn(centerX + quadrantInset),
+    y: pxToIn(areaY + quadrantInset),
     w: pxToIn(quadrantW),
     h: pxToIn(quadrantH),
     fontSize: pxToPt(quadrantFontSize),
@@ -166,8 +190,8 @@ function renderQuadrantLabels(
 
   // 左下
   ctx.slide.addText(quadrants.bottomLeft, {
-    x: pxToIn(areaX + 10),
-    y: pxToIn(centerY + areaH / 2 - quadrantH - 10),
+    x: pxToIn(areaX + quadrantInset),
+    y: pxToIn(centerY + areaH / 2 - quadrantH - quadrantInset),
     w: pxToIn(quadrantW),
     h: pxToIn(quadrantH),
     fontSize: pxToPt(quadrantFontSize),
@@ -179,8 +203,8 @@ function renderQuadrantLabels(
 
   // 右下
   ctx.slide.addText(quadrants.bottomRight, {
-    x: pxToIn(centerX + 10),
-    y: pxToIn(centerY + areaH / 2 - quadrantH - 10),
+    x: pxToIn(centerX + quadrantInset),
+    y: pxToIn(centerY + areaH / 2 - quadrantH - quadrantInset),
     w: pxToIn(quadrantW),
     h: pxToIn(quadrantH),
     fontSize: pxToPt(quadrantFontSize),
