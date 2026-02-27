@@ -64,32 +64,6 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 
 For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
-## XML Input
-
-`buildPptx` accepts XML strings. XML tags (PascalCase) are mapped to POM node types, and attribute values are automatically type-coerced using Zod schemas.
-
-```typescript
-import { buildPptx } from "@hirokisakabe/pom";
-
-const xml = `
-<VStack gap="16" padding="32">
-  <Text fontPx="32" bold="true">売上レポート</Text>
-  <HStack gap="16">
-    <Chart chartType="bar" w="400" h="300"
-      data='[{ "name": "Q1", "labels": ["1月","2月","3月"], "values": [100,120,90] }]'
-    />
-    <Text fontPx="18" color="00AA00">前年比 +15%</Text>
-  </HStack>
-</VStack>
-`;
-
-const pptx = await buildPptx(xml, { w: 1280, h: 720 });
-```
-
-Unknown tags will throw an error.
-
-For more details, see [LLM Integration - XML Format](./docs/llm-integration.md#xml-format).
-
 ## Documentation
 
 | Document                                         | Description                             |
@@ -97,8 +71,7 @@ For more details, see [LLM Integration - XML Format](./docs/llm-integration.md#x
 | [Nodes Reference](./docs/nodes.md)               | Complete reference for all node types   |
 | [Master Slide](./docs/master-slide.md)           | Headers, footers, and page numbers      |
 | [Serverless Environments](./docs/serverless.md)  | Text measurement options for serverless |
-| [LLM Integration](./docs/llm-integration.md)     | Guide for generating slides with AI/LLM |
-| [LLM XML Reference](./docs/llm-xml-reference.md) | Compact XML reference for LLM prompts   |
+| [LLM Integration](./docs/llm-integration.md)     | Compact XML reference for LLM prompts   |
 | [Playground](https://pom-playground.vercel.app/) | Try pom XML in the browser              |
 
 ## License

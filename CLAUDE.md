@@ -91,8 +91,7 @@ PPTX 生成は3段階のパイプライン:
 7. **ドキュメント更新**:
    - `README.md` - ユーザー向けドキュメント
    - `docs/nodes.md` - ノードリファレンス
-   - `docs/llm-integration.md` - LLM 向けガイド
-   - `docs/llm-xml-reference.md` - LLM 向け XML リファレンス（プロンプト用）
+   - `docs/llm-integration.md` - LLM 向け XML リファレンス（プロンプト用）
    - `CLAUDE.md` - 主要な型セクションに追加
 8. **changeset 追加**: PR 作成前に `npx changeset add` を実行
 
