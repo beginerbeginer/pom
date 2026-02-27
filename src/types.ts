@@ -594,6 +594,25 @@ export const processArrowNodeSchema = basePOMNodeSchema.extend({
 
 export type ProcessArrowNode = z.infer<typeof processArrowNodeSchema>;
 
+// ===== Pyramid Node =====
+export const pyramidDirectionSchema = z.enum(["up", "down"]);
+
+export const pyramidLevelSchema = z.object({
+  label: z.string(),
+  color: z.string().optional(),
+  textColor: z.string().optional(),
+});
+
+export const pyramidNodeSchema = basePOMNodeSchema.extend({
+  type: z.literal("pyramid"),
+  direction: pyramidDirectionSchema.optional(),
+  levels: z.array(pyramidLevelSchema).min(1),
+  fontPx: z.number().optional(),
+  bold: z.boolean().optional(),
+});
+
+export type PyramidNode = z.infer<typeof pyramidNodeSchema>;
+
 // ===== Flow Node =====
 export const flowDirectionSchema = z.enum(["horizontal", "vertical"]);
 
@@ -737,6 +756,7 @@ export type POMNode =
   | TreeNode
   | FlowNode
   | ProcessArrowNode
+  | PyramidNode
   | LineNode
   | LayerNode;
 
@@ -794,6 +814,7 @@ const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
     treeNodeSchema,
     flowNodeSchema,
     processArrowNodeSchema,
+    pyramidNodeSchema,
     lineNodeSchema,
     layerNodeSchemaBase,
   ]),
@@ -831,6 +852,7 @@ export type PositionedNode =
   | (TreeNode & PositionedBase)
   | (FlowNode & PositionedBase)
   | (ProcessArrowNode & PositionedBase)
+  | (PyramidNode & PositionedBase)
   | (LineNode & PositionedBase)
   | (LayerNode & PositionedBase & { children: PositionedLayerChild[] });
 
@@ -868,6 +890,7 @@ const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
     treeNodeSchema.merge(positionedBaseSchema),
     flowNodeSchema.merge(positionedBaseSchema),
     processArrowNodeSchema.merge(positionedBaseSchema),
+    pyramidNodeSchema.merge(positionedBaseSchema),
     lineNodeSchema.merge(positionedBaseSchema),
     layerNodeSchemaBase.merge(positionedBaseSchema).extend({
       children: z.array(positionedLayerChildSchema),

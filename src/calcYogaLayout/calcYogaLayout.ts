@@ -10,6 +10,7 @@ import {
   measureMatrix,
   measureTree,
   measureFlow,
+  measurePyramid,
 } from "./measureCompositeNodes.ts";
 
 /**
@@ -161,6 +162,7 @@ async function buildPomWithYogaTree(
     case "tree":
     case "flow":
     case "processArrow":
+    case "pyramid":
     case "line":
       // 子要素なし
       break;
@@ -394,6 +396,24 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
       {
         yn.setMeasureFunc((width, widthMode, height, heightMode) => {
           const intrinsic = measureProcessArrow(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
+        });
+      }
+      break;
+
+    case "pyramid":
+      {
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measurePyramid(node);
           return {
             width:
               widthMode !== yoga.MEASURE_MODE_UNDEFINED

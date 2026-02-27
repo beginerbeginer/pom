@@ -59,7 +59,7 @@ PPTX 生成は3段階のパイプライン:
 
 ### 主要な内部型
 
-- `POMNode` - 入力ノード型（内部型。Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Line, Layer, Box, VStack, HStack）
+- `POMNode` - 入力ノード型（内部型。Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, Box, VStack, HStack）
 - `PositionedNode` - 位置情報付きノード（x, y, w, h を持つ）
 - `parseXml` - XML 文字列を POMNode 配列に変換する内部関数（タグ名は PascalCase、属性値は Zod スキーマで型変換、未知タグはエラー）
 

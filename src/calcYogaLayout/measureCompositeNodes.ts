@@ -4,6 +4,7 @@ import type {
   MatrixNode,
   TreeNode,
   FlowNode,
+  PyramidNode,
   TreeDataItem,
 } from "../types.ts";
 
@@ -184,4 +185,31 @@ export function measureFlow(node: FlowNode): {
       height: nodeCount * nodeHeight + (nodeCount - 1) * nodeGap,
     };
   }
+}
+
+/**
+ * Pyramid ノードの intrinsic size を計算する
+ *
+ * ピラミッドの描画には以下のデフォルト値が使用される：
+ * - baseWidth: 400px (最も広い層の幅)
+ * - layerHeight: 50px (各層の高さ)
+ * - gap: 2px (層間の隙間)
+ */
+export function measurePyramid(node: PyramidNode): {
+  width: number;
+  height: number;
+} {
+  const levelCount = node.levels.length;
+  if (levelCount === 0) {
+    return { width: 0, height: 0 };
+  }
+
+  const baseWidth = 400;
+  const layerHeight = 50;
+  const gap = 2;
+
+  return {
+    width: baseWidth,
+    height: levelCount * layerHeight + (levelCount - 1) * gap,
+  };
 }
