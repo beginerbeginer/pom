@@ -508,14 +508,16 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 </ProcessArrow>
 ```
 
-| Attribute                | Type / Values                               |
-| ------------------------ | ------------------------------------------- |
-| `direction`              | `horizontal` / `vertical`                   |
-| `itemWidth`              | number (default: 150)                       |
-| `itemHeight`             | number (default: 60)                        |
-| `gap`                    | number (default: -15, negative for overlap) |
-| `fontPx`                 | number (default: 14)                        |
-| `bold` `italic` `strike` | boolean                                     |
+| Attribute                | Type / Values                                  |
+| ------------------------ | ---------------------------------------------- |
+| `direction`              | `horizontal` / `vertical`                      |
+| `itemWidth`              | number (default: 150)                          |
+| `itemHeight`             | number (default: 60)                           |
+| `gap`                    | number (default: -15, negative for overlap)    |
+| `fontPx`                 | number (default: 14)                           |
+| `bold` `italic` `strike` | boolean                                        |
+| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
+| `highlight`              | hex (highlight color)                          |
 
 `<Step>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
 
