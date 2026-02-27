@@ -1,6 +1,8 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { measureTimeline } from "../../calcYogaLayout/measureCompositeNodes.ts";
+import { calcScaleFactor } from "../utils/scaleToFit.ts";
 
 type TimelinePositionedNode = Extract<PositionedNode, { type: "timeline" }>;
 
@@ -15,8 +17,21 @@ export function renderTimelineNode(
   if (itemCount === 0) return;
 
   const defaultColor = "1D4ED8"; // blue
-  const nodeRadius = 12; // px
-  const lineWidth = 4; // px
+  const baseNodeRadius = 12; // px
+  const baseLineWidth = 4; // px
+
+  // スケール係数を計算
+  const intrinsic = measureTimeline(node);
+  const scaleFactor = calcScaleFactor(
+    node.w,
+    node.h,
+    intrinsic.width,
+    intrinsic.height,
+    "timeline",
+  );
+
+  const nodeRadius = baseNodeRadius * scaleFactor;
+  const lineWidth = baseLineWidth * scaleFactor;
 
   if (direction === "horizontal") {
     renderHorizontalTimeline(
@@ -26,6 +41,7 @@ export function renderTimelineNode(
       defaultColor,
       nodeRadius,
       lineWidth,
+      scaleFactor,
     );
   } else {
     renderVerticalTimeline(
@@ -35,6 +51,7 @@ export function renderTimelineNode(
       defaultColor,
       nodeRadius,
       lineWidth,
+      scaleFactor,
     );
   }
 }
@@ -46,6 +63,7 @@ function renderHorizontalTimeline(
   defaultColor: string,
   nodeRadius: number,
   lineWidth: number,
+  scaleFactor: number,
 ): void {
   const itemCount = items.length;
   const lineY = node.y + node.h / 2;
@@ -61,6 +79,14 @@ function renderHorizontalTimeline(
     h: 0,
     line: { color: "E2E8F0", width: pxToPt(lineWidth) },
   });
+
+  const labelW = 120 * scaleFactor;
+  const dateLabelH = 24 * scaleFactor;
+  const titleLabelH = 24 * scaleFactor;
+  const descLabelH = 32 * scaleFactor;
+  const dateOffset = 40 * scaleFactor;
+  const titleGap = 8 * scaleFactor;
+  const descOffset = 32 * scaleFactor;
 
   // 各アイテムを描画
   items.forEach((item, index) => {
@@ -81,11 +107,11 @@ function renderHorizontalTimeline(
 
     // 日付を上に表示
     ctx.slide.addText(item.date, {
-      x: pxToIn(cx - 60),
-      y: pxToIn(cy - nodeRadius - 40),
-      w: pxToIn(120),
-      h: pxToIn(24),
-      fontSize: pxToPt(12),
+      x: pxToIn(cx - labelW / 2),
+      y: pxToIn(cy - nodeRadius - dateOffset),
+      w: pxToIn(labelW),
+      h: pxToIn(dateLabelH),
+      fontSize: pxToPt(12 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: "64748B",
       align: "center",
@@ -94,11 +120,11 @@ function renderHorizontalTimeline(
 
     // タイトルを下に表示
     ctx.slide.addText(item.title, {
-      x: pxToIn(cx - 60),
-      y: pxToIn(cy + nodeRadius + 8),
-      w: pxToIn(120),
-      h: pxToIn(24),
-      fontSize: pxToPt(14),
+      x: pxToIn(cx - labelW / 2),
+      y: pxToIn(cy + nodeRadius + titleGap),
+      w: pxToIn(labelW),
+      h: pxToIn(titleLabelH),
+      fontSize: pxToPt(14 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: "1E293B",
       bold: true,
@@ -109,11 +135,11 @@ function renderHorizontalTimeline(
     // 説明を表示
     if (item.description) {
       ctx.slide.addText(item.description, {
-        x: pxToIn(cx - 60),
-        y: pxToIn(cy + nodeRadius + 32),
-        w: pxToIn(120),
-        h: pxToIn(32),
-        fontSize: pxToPt(11),
+        x: pxToIn(cx - labelW / 2),
+        y: pxToIn(cy + nodeRadius + descOffset),
+        w: pxToIn(labelW),
+        h: pxToIn(descLabelH),
+        fontSize: pxToPt(11 * scaleFactor),
         fontFace: "Noto Sans JP",
         color: "64748B",
         align: "center",
@@ -130,9 +156,10 @@ function renderVerticalTimeline(
   defaultColor: string,
   nodeRadius: number,
   lineWidth: number,
+  scaleFactor: number,
 ): void {
   const itemCount = items.length;
-  const lineX = node.x + 40;
+  const lineX = node.x + 40 * scaleFactor;
   const startY = node.y + nodeRadius;
   const endY = node.y + node.h - nodeRadius;
   const lineLength = endY - startY;
@@ -145,6 +172,14 @@ function renderVerticalTimeline(
     h: pxToIn(lineLength),
     line: { color: "E2E8F0", width: pxToPt(lineWidth) },
   });
+
+  const labelGap = 16 * scaleFactor;
+  const dateLabelW = 100 * scaleFactor;
+  const dateLabelH = 20 * scaleFactor;
+  const titleLabelH = 24 * scaleFactor;
+  const descLabelH = 32 * scaleFactor;
+  const titleLabelW = node.w - 80 * scaleFactor;
+  const descLabelW = node.w - 80 * scaleFactor;
 
   // 各アイテムを描画
   items.forEach((item, index) => {
@@ -165,11 +200,11 @@ function renderVerticalTimeline(
 
     // 日付を左上に表示
     ctx.slide.addText(item.date, {
-      x: pxToIn(cx + nodeRadius + 16),
-      y: pxToIn(cy - nodeRadius - 4),
-      w: pxToIn(100),
-      h: pxToIn(20),
-      fontSize: pxToPt(12),
+      x: pxToIn(cx + nodeRadius + labelGap),
+      y: pxToIn(cy - nodeRadius - 4 * scaleFactor),
+      w: pxToIn(dateLabelW),
+      h: pxToIn(dateLabelH),
+      fontSize: pxToPt(12 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: "64748B",
       align: "left",
@@ -178,11 +213,11 @@ function renderVerticalTimeline(
 
     // タイトルを右に表示
     ctx.slide.addText(item.title, {
-      x: pxToIn(cx + nodeRadius + 16),
-      y: pxToIn(cy - 4),
-      w: pxToIn(node.w - 80),
-      h: pxToIn(24),
-      fontSize: pxToPt(14),
+      x: pxToIn(cx + nodeRadius + labelGap),
+      y: pxToIn(cy - 4 * scaleFactor),
+      w: pxToIn(titleLabelW),
+      h: pxToIn(titleLabelH),
+      fontSize: pxToPt(14 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: "1E293B",
       bold: true,
@@ -193,11 +228,11 @@ function renderVerticalTimeline(
     // 説明を表示
     if (item.description) {
       ctx.slide.addText(item.description, {
-        x: pxToIn(cx + nodeRadius + 16),
-        y: pxToIn(cy + 20),
-        w: pxToIn(node.w - 80),
-        h: pxToIn(32),
-        fontSize: pxToPt(11),
+        x: pxToIn(cx + nodeRadius + labelGap),
+        y: pxToIn(cy + 20 * scaleFactor),
+        w: pxToIn(descLabelW),
+        h: pxToIn(descLabelH),
+        fontSize: pxToPt(11 * scaleFactor),
         fontFace: "Noto Sans JP",
         color: "64748B",
         align: "left",

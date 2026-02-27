@@ -1,6 +1,8 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { measureFlow } from "../../calcYogaLayout/measureCompositeNodes.ts";
+import { calcScaleFactor } from "../utils/scaleToFit.ts";
 
 type FlowPositionedNode = Extract<PositionedNode, { type: "flow" }>;
 
@@ -24,6 +26,20 @@ export function renderFlowNode(
   const connectorStyle = node.connectorStyle ?? {};
   const defaultColor = "1D4ED8";
 
+  // スケール係数を計算
+  const intrinsic = measureFlow(node);
+  const scaleFactor = calcScaleFactor(
+    node.w,
+    node.h,
+    intrinsic.width,
+    intrinsic.height,
+    "flow",
+  );
+
+  const scaledNodeWidth = nodeWidth * scaleFactor;
+  const scaledNodeHeight = nodeHeight * scaleFactor;
+  const scaledNodeGap = nodeGap * scaleFactor;
+
   const layouts = new Map<string, FlowNodeLayout>();
   const nodeCount = node.nodes.length;
 
@@ -33,18 +49,20 @@ export function renderFlowNode(
       node,
       layouts,
       nodeCount,
-      nodeWidth,
-      nodeHeight,
-      nodeGap,
+      scaledNodeWidth,
+      scaledNodeHeight,
+      scaledNodeGap,
+      scaleFactor,
     );
   } else {
     calculateVerticalLayout(
       node,
       layouts,
       nodeCount,
-      nodeWidth,
-      nodeHeight,
-      nodeGap,
+      scaledNodeWidth,
+      scaledNodeHeight,
+      scaledNodeGap,
+      scaleFactor,
     );
   }
 
@@ -56,7 +74,7 @@ export function renderFlowNode(
     if (!fromLayout || !toLayout) continue;
 
     const lineColor = conn.color ?? connectorStyle.color ?? "333333";
-    const lineWidth = connectorStyle.width ?? 2;
+    const lineWidth = (connectorStyle.width ?? 2) * scaleFactor;
     const arrowType = connectorStyle.arrowType ?? "triangle";
 
     drawConnection(
@@ -84,12 +102,15 @@ export function renderFlowNode(
           toLayout.height / 2) /
         2;
 
+      const labelW = 60 * scaleFactor;
+      const labelH = 20 * scaleFactor;
+
       ctx.slide.addText(conn.label, {
-        x: pxToIn(labelX - 30),
-        y: pxToIn(labelY - 10),
-        w: pxToIn(60),
-        h: pxToIn(20),
-        fontSize: pxToPt(10),
+        x: pxToIn(labelX - labelW / 2),
+        y: pxToIn(labelY - labelH / 2),
+        w: pxToIn(labelW),
+        h: pxToIn(labelH),
+        fontSize: pxToPt(10 * scaleFactor),
         fontFace: "Noto Sans JP",
         color: "64748B",
         align: "center",
@@ -114,8 +135,8 @@ export function renderFlowNode(
       h: pxToIn(layout.height),
       shape: item.shape,
       fill: { color: fillColor },
-      line: { color: "333333", width: pxToPt(1) },
-      fontSize: pxToPt(14),
+      line: { color: "333333", width: pxToPt(1 * scaleFactor) },
+      fontSize: pxToPt(14 * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
       align: "center",
@@ -131,14 +152,15 @@ function calculateHorizontalLayout(
   nodeWidth: number,
   nodeHeight: number,
   nodeGap: number,
+  scaleFactor: number,
 ): void {
   const totalWidth = nodeCount * nodeWidth + (nodeCount - 1) * nodeGap;
   const startX = node.x + (node.w - totalWidth) / 2;
   const centerY = node.y + node.h / 2;
 
   node.nodes.forEach((item, index) => {
-    const w = item.width ?? nodeWidth;
-    const h = item.height ?? nodeHeight;
+    const w = (item.width ?? nodeWidth / scaleFactor) * scaleFactor;
+    const h = (item.height ?? nodeHeight / scaleFactor) * scaleFactor;
     layouts.set(item.id, {
       id: item.id,
       x: startX + index * (nodeWidth + nodeGap) + (nodeWidth - w) / 2,
@@ -157,14 +179,15 @@ function calculateVerticalLayout(
   nodeWidth: number,
   nodeHeight: number,
   nodeGap: number,
+  scaleFactor: number,
 ): void {
   const totalHeight = nodeCount * nodeHeight + (nodeCount - 1) * nodeGap;
   const startY = node.y + (node.h - totalHeight) / 2;
   const centerX = node.x + node.w / 2;
 
   node.nodes.forEach((item, index) => {
-    const w = item.width ?? nodeWidth;
-    const h = item.height ?? nodeHeight;
+    const w = (item.width ?? nodeWidth / scaleFactor) * scaleFactor;
+    const h = (item.height ?? nodeHeight / scaleFactor) * scaleFactor;
     layouts.set(item.id, {
       id: item.id,
       x: centerX - w / 2,
