@@ -195,6 +195,8 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 </Pyramid>
 ```
 
+<img src="./docs/images/pyramid.png" alt="Pyramid example" width="600">
+
 ## Documentation
 
 | Document                                         | Description                             |
