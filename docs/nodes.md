@@ -148,14 +148,14 @@ A node for drawing shapes. Different representations are possible with or withou
 <Shape shapeType="roundRect" w="200" h="60" text="Button" fontPx="16" fill='{"color":"1D4ED8"}' color="FFFFFF" />
 ```
 
-| Attribute       | Type / Values                                                                        |
-| --------------- | ------------------------------------------------------------------------------------ |
-| `shapeType`     | `rect` / `roundRect` / `ellipse` / `triangle` / `star5` / `cloud` / `downArrow` etc. |
-| `text`          | string (text inside the shape)                                                       |
-| `fill`          | `'{"color":"hex","transparency":0.5}'`                                               |
-| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                      |
-| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                               |
-| Text attributes | `fontPx` `color` `alignText` `bold` `italic` `underline` `strike` `highlight`        |
+| Attribute       | Type / Values                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `shapeType`     | `rect` / `roundRect` / `ellipse` / `triangle` / `star5` / `cloud` / `downArrow` etc.                             |
+| `text`          | string (text inside the shape)                                                                                   |
+| `fill`          | `'{"color":"hex","transparency":0.5}'`                                                                           |
+| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                                                  |
+| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                                           |
+| Text attributes | `fontPx` `color` `alignText` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineSpacingMultiple` |
 
 **Common Shape Types:**
 

@@ -117,6 +117,8 @@ export const inputShapeNodeSchema = inputBaseNodeSchema.extend({
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
+  fontFamily: z.string().optional(),
+  lineSpacingMultiple: z.number().optional(),
 });
 
 export const inputChartNodeSchema = inputBaseNodeSchema.extend({
