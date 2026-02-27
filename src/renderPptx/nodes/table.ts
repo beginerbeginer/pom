@@ -1,6 +1,9 @@
 import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
-import { resolveColumnWidths, resolveRowHeights } from "../../table/utils.ts";
+import {
+  resolveColumnWidths,
+  resolveRowHeights,
+} from "../../shared/tableUtils.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { convertUnderline, convertStrike } from "../textOptions.ts";
 

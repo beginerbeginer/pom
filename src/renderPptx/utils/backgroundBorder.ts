@@ -1,5 +1,5 @@
 import type { PositionedNode, ShadowStyle } from "../../types.ts";
-import { getImageData } from "../../calcYogaLayout/measureImage.ts";
+import { getImageData } from "../../shared/measureImage.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 

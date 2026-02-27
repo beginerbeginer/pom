@@ -27,7 +27,7 @@ import type {
 import type { RenderContext } from "./types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
 import { convertUnderline, convertStrike } from "./textOptions.ts";
-import { getImageData } from "../calcYogaLayout/measureImage.ts";
+import { getImageData } from "../shared/measureImage.ts";
 import { renderBackgroundAndBorder } from "./utils/backgroundBorder.ts";
 import {
   renderTextNode,

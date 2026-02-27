@@ -43,7 +43,7 @@ import {
   type JustifyContent,
   type TreeDataItem,
   type ShadowStyle,
-} from "./types.ts";
+} from "../types.ts";
 
 // ===== Base Node Schema =====
 export const inputBaseNodeSchema = z.object({

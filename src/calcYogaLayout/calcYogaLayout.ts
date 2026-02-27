@@ -2,8 +2,8 @@ import type { POMNode, VStackNode, HStackNode } from "../types.ts";
 import { Node as YogaNode } from "yoga-layout";
 import { loadYoga } from "yoga-layout/load";
 import { measureText } from "./measureText.ts";
-import { measureImage, prefetchImageSize } from "./measureImage.ts";
-import { calcTableIntrinsicSize } from "../table/utils.ts";
+import { measureImage, prefetchImageSize } from "../shared/measureImage.ts";
+import { calcTableIntrinsicSize } from "../shared/tableUtils.ts";
 import {
   measureProcessArrow,
   measureTimeline,
