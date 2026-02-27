@@ -288,7 +288,6 @@ export const shapeTypeSchema = z.enum([
 
 // ===== TypeScript Types (defined early for recursive references) =====
 export type ShadowStyle = z.infer<typeof shadowStyleSchema>;
-export type BulletNumberType = z.infer<typeof bulletNumberTypeSchema>;
 export type AlignItems = z.infer<typeof alignItemsSchema>;
 export type JustifyContent = z.infer<typeof justifyContentSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
