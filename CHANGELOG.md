@@ -1,5 +1,21 @@
 # @hirokisakabe/pom
 
+## 3.0.0
+
+### Major Changes
+
+- [#247](https://github.com/hirokisakabe/pom/pull/247) [`805fc92`](https://github.com/hirokisakabe/pom/commit/805fc92ea74bf048193c54af5242158e7be841cc) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Ul/Ol/Li ノードを追加し、Text.bullet を廃止
+  - `<Ul>` + `<Li>` で箇条書きリスト、`<Ol>` + `<Li>` で番号付きリストを記述可能に
+  - Li ごとに個別のテキストスタイル（bold, italic, color, fontPx 等）を指定可能
+  - Ol は numberType（alphaLcPeriod 等）と numberStartAt をサポート
+  - Text ノードの bullet 属性を削除（破壊的変更）
+
+### Minor Changes
+
+- [#239](https://github.com/hirokisakabe/pom/pull/239) [`db614e5`](https://github.com/hirokisakabe/pom/commit/db614e5da89df38d047d6964f0e60311baec166e) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - ShapeNodeのテキストスタイルプロパティを拡張（fontFamily, lineSpacingMultiple を追加）
+
+- [#245](https://github.com/hirokisakabe/pom/pull/245) [`36adf73`](https://github.com/hirokisakabe/pom/commit/36adf732d762cc5ae3b66c589263ea42544b9fb1) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - コンポジットノード（Tree, ProcessArrow, Timeline, Matrix, Flow）の Scale to Fit 対応。親コンテナより大きい場合に等比縮小して描画されるようになった。
+
 ## 2.0.0
 
 ### Major Changes
