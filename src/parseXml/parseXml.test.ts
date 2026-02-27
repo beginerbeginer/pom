@@ -1088,6 +1088,33 @@ describe("parseXml", () => {
           "Unknown child element <Unknown> inside <Table>. Expected: <Column> or <Row>",
         );
       });
+
+      it("Cell に colspan/rowspan を設定する", () => {
+        const xml = `
+          <Table>
+            <Column width="100" />
+            <Column width="100" />
+            <Column width="100" />
+            <Row>
+              <Cell colspan="3">Header</Cell>
+            </Row>
+            <Row>
+              <Cell rowspan="2">Left</Cell>
+              <Cell>A</Cell>
+              <Cell>B</Cell>
+            </Row>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const rows = (result[0] as Record<string, unknown>).rows as Record<
+          string,
+          unknown
+        >[];
+        const row0Cells = rows[0].cells as Record<string, unknown>[];
+        expect(row0Cells[0]).toEqual({ text: "Header", colspan: 3 });
+        const row1Cells = rows[1].cells as Record<string, unknown>[];
+        expect(row1Cells[0]).toEqual({ text: "Left", rowspan: 2 });
+      });
     });
 
     // ----- Tree -----

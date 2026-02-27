@@ -27,6 +27,8 @@ export function renderTableNode(
         fill: cell.backgroundColor
           ? { color: cell.backgroundColor }
           : undefined,
+        colspan: cell.colspan,
+        rowspan: cell.rowspan,
       };
 
       return {
