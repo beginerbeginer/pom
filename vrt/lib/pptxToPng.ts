@@ -38,9 +38,10 @@ export async function pptxToPng(
 
     // 2. ImageMagickでPDFを各ページごとにPNGに変換
     const pngPrefix = path.join(tempDir, "page");
-    execSync(`convert -density 150 "${pdfPath}" "${pngPrefix}-%03d.png"`, {
-      stdio: "inherit",
-    });
+    execSync(
+      `convert -density 150 -strip "${pdfPath}" "${pngPrefix}-%03d.png"`,
+      { stdio: "inherit" },
+    );
 
     // 生成されたPNGファイルを取得（ページ順にソート）
     const pngFiles = fs
