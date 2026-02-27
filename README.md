@@ -76,23 +76,25 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 
 ## Available Nodes
 
-| Node         | Description                                           |
-| ------------ | ----------------------------------------------------- |
-| Text         | Text with font styling, decoration, and bullet points |
-| Image        | Images from file path, URL, or base64                 |
-| Table        | Tables with customizable columns and rows             |
-| Shape        | PowerPoint shapes (roundRect, ellipse, etc.)          |
-| Chart        | Charts (bar, line, pie, area, doughnut, radar)        |
-| Timeline     | Timeline / roadmap visualizations                     |
-| Matrix       | 2x2 positioning maps                                  |
-| Tree         | Organization charts and decision trees                |
-| Flow         | Flowcharts with nodes and edges                       |
-| ProcessArrow | Chevron-style process diagrams                        |
-| Line         | Horizontal / vertical lines                           |
-| Layer        | Absolute-positioned overlay container                 |
-| Box          | Container for single child with padding               |
-| VStack       | Vertical stack layout                                 |
-| HStack       | Horizontal stack layout                               |
+| Node         | Description                                    |
+| ------------ | ---------------------------------------------- |
+| Text         | Text with font styling and decoration          |
+| Ul           | Unordered (bullet) list with Li items          |
+| Ol           | Ordered (numbered) list with Li items          |
+| Image        | Images from file path, URL, or base64          |
+| Table        | Tables with customizable columns and rows      |
+| Shape        | PowerPoint shapes (roundRect, ellipse, etc.)   |
+| Chart        | Charts (bar, line, pie, area, doughnut, radar) |
+| Timeline     | Timeline / roadmap visualizations              |
+| Matrix       | 2x2 positioning maps                           |
+| Tree         | Organization charts and decision trees         |
+| Flow         | Flowcharts with nodes and edges                |
+| ProcessArrow | Chevron-style process diagrams                 |
+| Line         | Horizontal / vertical lines                    |
+| Layer        | Absolute-positioned overlay container          |
+| Box          | Container for single child with padding        |
+| VStack       | Vertical stack layout                          |
+| HStack       | Horizontal stack layout                        |
 
 For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 

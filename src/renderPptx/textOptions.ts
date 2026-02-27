@@ -1,9 +1,4 @@
-import type {
-  PositionedNode,
-  BulletOptions,
-  Underline,
-  UnderlineStyle,
-} from "../types.ts";
+import type { PositionedNode, Underline, UnderlineStyle } from "../types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
 
 type TextNode = Extract<PositionedNode, { type: "text" }>;
@@ -33,44 +28,12 @@ export function convertStrike(
   return undefined;
 }
 
-type PptxBulletOptions = {
-  type?: "bullet" | "number";
-  indent?: number;
-  numberType?: BulletOptions["numberType"];
-  numberStartAt?: number;
-};
-
-function createBulletOptions(
-  bullet: boolean | BulletOptions,
-): PptxBulletOptions | boolean {
-  if (typeof bullet === "boolean") {
-    return bullet;
-  }
-
-  const options: PptxBulletOptions = {};
-
-  if (bullet.type !== undefined) {
-    options.type = bullet.type;
-  }
-  if (bullet.indent !== undefined) {
-    options.indent = bullet.indent;
-  }
-  if (bullet.numberType !== undefined) {
-    options.numberType = bullet.numberType;
-  }
-  if (bullet.numberStartAt !== undefined) {
-    options.numberStartAt = bullet.numberStartAt;
-  }
-
-  return options;
-}
-
 export function createTextOptions(node: TextNode) {
   const fontSizePx = node.fontPx ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
   const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
 
-  const baseOptions = {
+  return {
     x: pxToIn(node.x),
     y: pxToIn(node.y),
     w: pxToIn(node.w),
@@ -88,13 +51,4 @@ export function createTextOptions(node: TextNode) {
     strike: convertStrike(node.strike),
     highlight: node.highlight,
   };
-
-  if (node.bullet !== undefined) {
-    return {
-      ...baseOptions,
-      bullet: createBulletOptions(node.bullet),
-    };
-  }
-
-  return baseOptions;
 }

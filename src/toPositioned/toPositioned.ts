@@ -22,7 +22,9 @@ export function toPositioned(
   const absoluteY = parentY + layout.top;
 
   switch (pom.type) {
-    case "text": {
+    case "text":
+    case "ul":
+    case "ol": {
       return {
         ...pom,
         x: absoluteX,

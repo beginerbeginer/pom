@@ -35,17 +35,16 @@ A node for displaying text.
 <Text fontPx="24" bold="true" color="333333" alignText="center">Title</Text>
 ```
 
-| Attribute                | Type / Values                                                                       |
-| ------------------------ | ----------------------------------------------------------------------------------- |
-| `fontPx`                 | number (default: 24)                                                                |
-| `color`                  | hex (text color)                                                                    |
-| `alignText`              | `left` / `center` / `right`                                                         |
-| `bold` `italic` `strike` | `true` / `false`                                                                    |
-| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'`                                      |
-| `highlight`              | hex (highlight color)                                                               |
-| `fontFamily`             | string (default: `Noto Sans JP`)                                                    |
-| `lineSpacingMultiple`    | number (default: 1.3)                                                               |
-| `bullet`                 | `true` / `'{"type":"number"}'` / `'{"type":"number","numberType":"alphaLcPeriod"}'` |
+| Attribute                | Type / Values                                  |
+| ------------------------ | ---------------------------------------------- |
+| `fontPx`                 | number (default: 24)                           |
+| `color`                  | hex (text color)                               |
+| `alignText`              | `left` / `center` / `right`                    |
+| `bold` `italic` `strike` | `true` / `false`                               |
+| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
+| `highlight`              | hex (highlight color)                          |
+| `fontFamily`             | string (default: `Noto Sans JP`)               |
+| `lineSpacingMultiple`    | number (default: 1.3)                          |
 
 Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
@@ -53,40 +52,61 @@ Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
 `"dash"` | `"dashHeavy"` | `"dashLong"` | `"dashLongHeavy"` | `"dbl"` | `"dotDash"` | `"dotDotDash"` | `"dotted"` | `"dottedHeavy"` | `"heavy"` | `"none"` | `"sng"` | `"wavy"` | `"wavyDbl"` | `"wavyHeavy"`
 
-**BulletOptions:**
+### 2. Ul (Unordered List)
 
-| Property        | Type / Values                                                                                                                |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `type`          | `"bullet"` (symbol) / `"number"` (numbered)                                                                                  |
-| `indent`        | number (indent level)                                                                                                        |
-| `numberType`    | `alphaLcPeriod` / `alphaUcPeriod` / `arabicParenR` / `arabicPeriod` / `arabicPlain` / `romanLcPeriod` / `romanUcPeriod` etc. |
-| `numberStartAt` | number (starting number)                                                                                                     |
-
-**Usage Examples:**
+A node for displaying bullet-point lists. Use `<Li>` child elements to define list items.
 
 ```xml
-<!-- Simple bullet list -->
-<Text bullet="true">Item 1
-Item 2
-Item 3</Text>
-
-<!-- Numbered list -->
-<Text bullet='{"type":"number"}'>Step 1
-Step 2
-Step 3</Text>
-
-<!-- Lowercase alphabet (a. b. c.) -->
-<Text bullet='{"type":"number","numberType":"alphaLcPeriod"}'>Item A
-Item B
-Item C</Text>
-
-<!-- Numbered list starting from 5 -->
-<Text bullet='{"type":"number","numberStartAt":5}'>Fifth
-Sixth
-Seventh</Text>
+<Ul fontPx="14" color="333333">
+  <Li>Item A</Li>
+  <Li>Item B</Li>
+  <Li bold="true">Item C (bold)</Li>
+</Ul>
 ```
 
-### 2. Image
+**Ul Attributes:**
+
+| Attribute                | Type / Values                    |
+| ------------------------ | -------------------------------- |
+| `fontPx`                 | number (default: 24)             |
+| `color`                  | hex (text color)                 |
+| `alignText`              | `left` / `center` / `right`      |
+| `bold` `italic` `strike` | `true` / `false`                 |
+| `underline`              | `true` / underline options       |
+| `highlight`              | hex (highlight color)            |
+| `fontFamily`             | string (default: `Noto Sans JP`) |
+| `lineSpacingMultiple`    | number (default: 1.3)            |
+
+**Li Attributes (overrides parent Ul/Ol style):**
+
+| Attribute                | Type / Values              |
+| ------------------------ | -------------------------- |
+| `fontPx`                 | number                     |
+| `color`                  | hex (text color)           |
+| `bold` `italic` `strike` | `true` / `false`           |
+| `underline`              | `true` / underline options |
+| `highlight`              | hex (highlight color)      |
+| `fontFamily`             | string                     |
+
+### 3. Ol (Ordered List)
+
+A node for displaying numbered lists. Has all Ul attributes plus the following:
+
+```xml
+<Ol fontPx="14" numberType="alphaLcPeriod" numberStartAt="3">
+  <Li>Item A</Li>
+  <Li>Item B</Li>
+</Ol>
+```
+
+**Additional Ol Attributes:**
+
+| Attribute       | Type / Values                                                                                                                |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `numberType`    | `alphaLcPeriod` / `alphaUcPeriod` / `arabicParenR` / `arabicPeriod` / `arabicPlain` / `romanLcPeriod` / `romanUcPeriod` etc. |
+| `numberStartAt` | number (starting number, default: 1)                                                                                         |
+
+### 4. Image
 
 A node for displaying images.
 
@@ -109,7 +129,7 @@ A node for displaying images.
   - `cover`: Maintains aspect ratio, covers the entire specified size
   - `crop`: Crops the image to the specified region
 
-### 3. Table
+### 5. Table
 
 A node for drawing tables. Column widths and row heights are declared in px, with fine-grained control over cell decoration.
 
@@ -138,7 +158,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 | ------------------ | -------------------- |
 | `defaultRowHeight` | number (default: 32) |
 
-### 4. Shape
+### 6. Shape
 
 A node for drawing shapes. Different representations are possible with or without text, supporting complex visual effects.
 
@@ -167,7 +187,7 @@ A node for drawing shapes. Different representations are possible with or withou
 - `star5`: 5-pointed star (emphasis, decoration)
 - `downArrow`: Down arrow (flow diagrams)
 
-### 5. Box
+### 7. Box
 
 A generic container that wraps a single child element. Used for grouping with padding or fixed size.
 
@@ -185,7 +205,7 @@ A generic container that wraps a single child element. Used for grouping with pa
 
 - Only **one** child element.
 
-### 6. VStack
+### 8. VStack
 
 Arranges child elements **vertically**.
 
@@ -204,7 +224,7 @@ Arranges child elements **vertically**.
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 
-### 7. HStack
+### 9. HStack
 
 Arranges child elements **horizontally**.
 
@@ -223,7 +243,7 @@ Arranges child elements **horizontally**.
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 
-### 8. Chart
+### 10. Chart
 
 A node for drawing charts. Supports bar charts, line charts, pie charts, area charts, doughnut charts, and radar charts.
 
@@ -291,7 +311,7 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 </Chart>
 ```
 
-### 9. Timeline
+### 11. Timeline
 
 A node for creating timeline/roadmap visualizations. Supports horizontal and vertical layouts.
 
@@ -329,7 +349,7 @@ A node for creating timeline/roadmap visualizations. Supports horizontal and ver
 </Timeline>
 ```
 
-### 10. Matrix
+### 12. Matrix
 
 A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiveness analysis, impact-effort prioritization, etc.
 
@@ -376,7 +396,7 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 </Matrix>
 ```
 
-### 11. Tree
+### 13. Tree
 
 A node for creating tree structures such as organization charts, decision trees, and hierarchical diagrams.
 
@@ -436,7 +456,7 @@ A node for creating tree structures such as organization charts, decision trees,
 </Tree>
 ```
 
-### 12. Flow
+### 14. Flow
 
 A node for creating flowcharts. Supports various node shapes and automatic layout.
 
@@ -502,7 +522,7 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 </Flow>
 ```
 
-### 13. ProcessArrow
+### 15. ProcessArrow
 
 A node for creating chevron-style process diagrams. Commonly used for visualizing sequential steps in a workflow.
 
@@ -558,7 +578,7 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 </ProcessArrow>
 ```
 
-### 14. Line
+### 16. Line
 
 A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) for start and end points.
 
@@ -600,7 +620,7 @@ Note: Line nodes use absolute coordinates on the slide and are not affected by Y
 <Line x1="100" y1="300" x2="300" y2="300" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
 ```
 
-### 15. Layer
+### 17. Layer
 
 A container for absolute positioning of child elements. Child elements are positioned using `x` and `y` coordinates relative to the layer's top-left corner.
 

@@ -315,16 +315,39 @@ describe("parseXml", () => {
       });
     });
 
-    it("union 型（boolean | object）の bullet を正しく変換する", () => {
-      const r1 = parseXml('<Text bullet="true">test</Text>');
-      expect((r1[0] as Record<string, unknown>).bullet).toBe(true);
+    it("Ul + Li を正しくパースする", () => {
+      const result = parseXml(
+        '<Ul fontPx="14"><Li>Item A</Li><Li>Item B</Li></Ul>',
+      );
+      expect(result).toHaveLength(1);
+      const node = result[0] as Record<string, unknown>;
+      expect(node.type).toBe("ul");
+      expect(node.fontPx).toBe(14);
+      expect(node.items).toEqual([{ text: "Item A" }, { text: "Item B" }]);
+    });
 
-      const obj = JSON.stringify({ type: "number", numberStartAt: 1 });
-      const r2 = parseXml(`<Text bullet='${obj}'>test</Text>`);
-      expect((r2[0] as Record<string, unknown>).bullet).toEqual({
-        type: "number",
-        numberStartAt: 1,
-      });
+    it("Ol + Li を正しくパースする", () => {
+      const result = parseXml(
+        '<Ol fontPx="14" numberType="alphaLcPeriod" numberStartAt="3"><Li>A</Li><Li>B</Li></Ol>',
+      );
+      expect(result).toHaveLength(1);
+      const node = result[0] as Record<string, unknown>;
+      expect(node.type).toBe("ol");
+      expect(node.fontPx).toBe(14);
+      expect(node.numberType).toBe("alphaLcPeriod");
+      expect(node.numberStartAt).toBe(3);
+      expect(node.items).toEqual([{ text: "A" }, { text: "B" }]);
+    });
+
+    it("Li にスタイル属性がある場合を正しくパースする", () => {
+      const result = parseXml(
+        '<Ul><Li bold="true">Bold</Li><Li color="FF0000">Red</Li></Ul>',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.items).toEqual([
+        { text: "Bold", bold: true },
+        { text: "Red", color: "FF0000" },
+      ]);
     });
 
     it("enum 型をそのまま文字列として保持する", () => {

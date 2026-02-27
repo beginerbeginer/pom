@@ -288,6 +288,41 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
       }
       break;
 
+    case "ul":
+    case "ol":
+      {
+        const combinedText = node.items.map((item) => item.text).join("\n");
+        const fontSizePx = node.fontPx ?? 24;
+        const fontFamily = "Noto Sans JP";
+        const fontWeight = node.bold ? "bold" : "normal";
+        const lineHeight = node.lineSpacingMultiple ?? 1.3;
+
+        yn.setMeasureFunc((width, widthMode) => {
+          const maxWidthPx = (() => {
+            switch (widthMode) {
+              case yoga.MEASURE_MODE_UNDEFINED:
+                return Number.POSITIVE_INFINITY;
+              case yoga.MEASURE_MODE_EXACTLY:
+              case yoga.MEASURE_MODE_AT_MOST:
+                return width;
+            }
+          })();
+
+          const { widthPx, heightPx } = measureText(combinedText, maxWidthPx, {
+            fontFamily,
+            fontSizePx,
+            lineHeight,
+            fontWeight,
+          });
+
+          return {
+            width: widthPx,
+            height: heightPx,
+          };
+        });
+      }
+      break;
+
     case "image":
       {
         const src = node.src;

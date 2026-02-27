@@ -1,5 +1,5 @@
 export { palette } from "./palette";
-export { page1TextXml, page2BulletXml } from "./text";
+export { page1TextXml, page2ListXml } from "./text";
 export { page3ImageXml, page3bImageSizingXml } from "./image";
 export { page4TableXml } from "./table";
 export { page5ShapeXml } from "./shape";

@@ -41,6 +41,8 @@ import {
   renderFlowNode,
   renderProcessArrowNode,
   renderLineNode,
+  renderUlNode,
+  renderOlNode,
 } from "./nodes/index.ts";
 
 type SlidePx = { w: number; h: number };
@@ -299,6 +301,14 @@ export function renderPptx(
       switch (node.type) {
         case "text":
           renderTextNode(node, ctx);
+          break;
+
+        case "ul":
+          renderUlNode(node, ctx);
+          break;
+
+        case "ol":
+          renderOlNode(node, ctx);
           break;
 
         case "image":

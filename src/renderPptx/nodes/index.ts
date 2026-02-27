@@ -9,3 +9,4 @@ export { renderTreeNode } from "./tree.ts";
 export { renderFlowNode } from "./flow.ts";
 export { renderProcessArrowNode } from "./processArrow.ts";
 export { renderLineNode } from "./line.ts";
+export { renderUlNode, renderOlNode } from "./list.ts";

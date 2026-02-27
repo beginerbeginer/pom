@@ -121,23 +121,31 @@ export const page1TextXml = `
 `;
 
 // ============================================================
-// Page 2: Bullet Test
-// テスト対象: bullet: true, type, numberType, numberStartAt
+// Page 2: List Test (Ul / Ol)
+// テスト対象: Ul, Ol, Li, numberType, numberStartAt, Li style override
 // ============================================================
-export const page2BulletXml = `
+export const page2ListXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 2: Bullet Test</Text>
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 2: List Test (Ul / Ol)</Text>
   <HStack gap="16" alignItems="stretch">
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">bullet: true</Text>
-        <Text fontPx="14" bullet="true">Item A\nItem B\nItem C</Text>
+        <Text fontPx="14" bold="true">Ul (bullet)</Text>
+        <Ul fontPx="14">
+          <Li>Item A</Li>
+          <Li>Item B</Li>
+          <Li>Item C</Li>
+        </Ul>
       </VStack>
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">type: "number"</Text>
-        <Text fontPx="14" bullet='{"type":"number"}'>First\nSecond\nThird</Text>
+        <Text fontPx="14" bold="true">Ol (number)</Text>
+        <Ol fontPx="14">
+          <Li>First</Li>
+          <Li>Second</Li>
+          <Li>Third</Li>
+        </Ol>
       </VStack>
     </Box>
   </HStack>
@@ -145,21 +153,46 @@ export const page2BulletXml = `
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
         <Text fontPx="14" bold="true">alphaLcPeriod (a. b. c.)</Text>
-        <Text fontPx="14" bullet='{"type":"number","numberType":"alphaLcPeriod"}'>Alpha\nBeta\nGamma</Text>
+        <Ol fontPx="14" numberType="alphaLcPeriod">
+          <Li>Alpha</Li>
+          <Li>Beta</Li>
+          <Li>Gamma</Li>
+        </Ol>
       </VStack>
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
         <Text fontPx="14" bold="true">romanLcPeriod (i. ii. iii.)</Text>
-        <Text fontPx="14" bullet='{"type":"number","numberType":"romanLcPeriod"}'>Roman I\nRoman II\nRoman III</Text>
+        <Ol fontPx="14" numberType="romanLcPeriod">
+          <Li>Roman I</Li>
+          <Li>Roman II</Li>
+          <Li>Roman III</Li>
+        </Ol>
       </VStack>
     </Box>
   </HStack>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
-    <VStack gap="8">
-      <Text fontPx="14" bold="true">numberStartAt: 5</Text>
-      <Text fontPx="14" bullet='{"type":"number","numberStartAt":5}'>Starts at 5\nContinues 6\nAnd 7</Text>
-    </VStack>
-  </Box>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">numberStartAt: 5</Text>
+        <Ol fontPx="14" numberStartAt="5">
+          <Li>Starts at 5</Li>
+          <Li>Continues 6</Li>
+          <Li>And 7</Li>
+        </Ol>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Li style override</Text>
+        <Ul fontPx="14" color="${palette.charcoal}">
+          <Li>Normal item</Li>
+          <Li bold="true">Bold item</Li>
+          <Li color="${palette.red}">Red item</Li>
+          <Li italic="true" color="${palette.blue}">Italic blue item</Li>
+        </Ul>
+      </VStack>
+    </Box>
+  </HStack>
 </VStack>
 `;
