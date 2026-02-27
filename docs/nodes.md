@@ -98,34 +98,26 @@ A node for displaying text.
 
 **Usage Examples:**
 
-```typescript
-// Simple bullet list
-{
-  type: "text",
-  text: "Item 1\nItem 2\nItem 3",
-  bullet: true,
-}
+```xml
+<!-- Simple bullet list -->
+<Text bullet="true">Item 1
+Item 2
+Item 3</Text>
 
-// Numbered list
-{
-  type: "text",
-  text: "Step 1\nStep 2\nStep 3",
-  bullet: { type: "number" },
-}
+<!-- Numbered list -->
+<Text bullet='{"type":"number"}'>Step 1
+Step 2
+Step 3</Text>
 
-// Lowercase alphabet (a. b. c.)
-{
-  type: "text",
-  text: "Item A\nItem B\nItem C",
-  bullet: { type: "number", numberType: "alphaLcPeriod" },
-}
+<!-- Lowercase alphabet (a. b. c.) -->
+<Text bullet='{"type":"number","numberType":"alphaLcPeriod"}'>Item A
+Item B
+Item C</Text>
 
-// Numbered list starting from 5
-{
-  type: "text",
-  text: "Fifth\nSixth\nSeventh",
-  bullet: { type: "number", numberStartAt: 5 },
-}
+<!-- Numbered list starting from 5 -->
+<Text bullet='{"type":"number","numberStartAt":5}'>Fifth
+Sixth
+Seventh</Text>
 ```
 
 ### 2. Image
@@ -379,65 +371,46 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 
 **Usage Examples:**
 
-```typescript
-// Bar chart
-{
-  type: "chart",
-  chartType: "bar",
-  w: 600,
-  h: 400,
-  data: [
-    {
-      name: "Sales",
-      labels: ["Jan", "Feb", "Mar", "Apr"],
-      values: [100, 200, 150, 300],
-    },
-    {
-      name: "Profit",
-      labels: ["Jan", "Feb", "Mar", "Apr"],
-      values: [30, 60, 45, 90],
-    },
-  ],
-  showLegend: true,
-  showTitle: true,
-  title: "Monthly Sales & Profit",
-  chartColors: ["0088CC", "00AA00"],
-}
+```xml
+<!-- Bar chart -->
+<Chart chartType="bar" w="600" h="400" showLegend="true" showTitle="true"
+  title="Monthly Sales &amp; Profit" chartColors='["0088CC","00AA00"]'>
+  <Series name="Sales">
+    <DataPoint label="Jan" value="100" />
+    <DataPoint label="Feb" value="200" />
+    <DataPoint label="Mar" value="150" />
+    <DataPoint label="Apr" value="300" />
+  </Series>
+  <Series name="Profit">
+    <DataPoint label="Jan" value="30" />
+    <DataPoint label="Feb" value="60" />
+    <DataPoint label="Mar" value="45" />
+    <DataPoint label="Apr" value="90" />
+  </Series>
+</Chart>
 
-// Pie chart
-{
-  type: "chart",
-  chartType: "pie",
-  w: 400,
-  h: 300,
-  data: [
-    {
-      name: "Market Share",
-      labels: ["Product A", "Product B", "Product C", "Others"],
-      values: [40, 30, 20, 10],
-    },
-  ],
-  showLegend: true,
-  chartColors: ["0088CC", "00AA00", "FF6600", "888888"],
-}
+<!-- Pie chart -->
+<Chart chartType="pie" w="400" h="300" showLegend="true"
+  chartColors='["0088CC","00AA00","FF6600","888888"]'>
+  <Series name="Market Share">
+    <DataPoint label="Product A" value="40" />
+    <DataPoint label="Product B" value="30" />
+    <DataPoint label="Product C" value="20" />
+    <DataPoint label="Others" value="10" />
+  </Series>
+</Chart>
 
-// Radar chart
-{
-  type: "chart",
-  chartType: "radar",
-  w: 400,
-  h: 300,
-  data: [
-    {
-      name: "Skill Assessment",
-      labels: ["Technical", "Design", "PM", "Sales", "Support"],
-      values: [80, 60, 70, 50, 90],
-    },
-  ],
-  showLegend: true,
-  radarStyle: "filled",
-  chartColors: ["0088CC"],
-}
+<!-- Radar chart -->
+<Chart chartType="radar" w="400" h="300" showLegend="true"
+  radarStyle="filled" chartColors='["0088CC"]'>
+  <Series name="Skill Assessment">
+    <DataPoint label="Technical" value="80" />
+    <DataPoint label="Design" value="60" />
+    <DataPoint label="PM" value="70" />
+    <DataPoint label="Sales" value="50" />
+    <DataPoint label="Support" value="90" />
+  </Series>
+</Chart>
 ```
 
 **XML Child Element Notation:**
@@ -483,33 +456,21 @@ A node for creating timeline/roadmap visualizations. Supports horizontal and ver
 
 **Usage Examples:**
 
-```typescript
-// Horizontal roadmap
-{
-  type: "timeline",
-  direction: "horizontal",
-  w: 1000,
-  h: 120,
-  items: [
-    { date: "2025/Q1", title: "Phase 1", description: "Foundation", color: "4CAF50" },
-    { date: "2025/Q2", title: "Phase 2", description: "Development", color: "2196F3" },
-    { date: "2025/Q3", title: "Phase 3", description: "Testing", color: "FF9800" },
-    { date: "2025/Q4", title: "Phase 4", description: "Release", color: "E91E63" },
-  ],
-}
+```xml
+<!-- Horizontal roadmap -->
+<Timeline direction="horizontal" w="1000" h="120">
+  <TimelineItem date="2025/Q1" title="Phase 1" description="Foundation" color="4CAF50" />
+  <TimelineItem date="2025/Q2" title="Phase 2" description="Development" color="2196F3" />
+  <TimelineItem date="2025/Q3" title="Phase 3" description="Testing" color="FF9800" />
+  <TimelineItem date="2025/Q4" title="Phase 4" description="Release" color="E91E63" />
+</Timeline>
 
-// Vertical project plan
-{
-  type: "timeline",
-  direction: "vertical",
-  w: 400,
-  h: 300,
-  items: [
-    { date: "Week 1", title: "Planning" },
-    { date: "Week 2-3", title: "Development" },
-    { date: "Week 4", title: "Release" },
-  ],
-}
+<!-- Vertical project plan -->
+<Timeline direction="vertical" w="400" h="300">
+  <TimelineItem date="Week 1" title="Planning" />
+  <TimelineItem date="Week 2-3" title="Development" />
+  <TimelineItem date="Week 4" title="Release" />
+</Timeline>
 ```
 
 **XML Child Element Notation:**
@@ -559,40 +520,29 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 
 **Usage Examples:**
 
-```typescript
-// Cost-Effectiveness Matrix
-{
-  type: "matrix",
-  w: 600,
-  h: 500,
-  axes: { x: "Cost", y: "Effect" },
-  quadrants: {
-    topLeft: "Low Cost / High Effect\n(Priority)",
-    topRight: "High Cost / High Effect\n(Consider)",
-    bottomLeft: "Low Cost / Low Effect\n(Low Priority)",
-    bottomRight: "High Cost / Low Effect\n(Avoid)",
-  },
-  items: [
-    { label: "Initiative A", x: 0.2, y: 0.8, color: "4CAF50" },
-    { label: "Initiative B", x: 0.7, y: 0.6, color: "2196F3" },
-    { label: "Initiative C", x: 0.3, y: 0.3, color: "FF9800" },
-    { label: "Initiative D", x: 0.8, y: 0.2, color: "E91E63" },
-  ],
-}
+```xml
+<!-- Cost-Effectiveness Matrix -->
+<Matrix w="600" h="500">
+  <Axes x="Cost" y="Effect" />
+  <Quadrants
+    topLeft="Low Cost / High Effect (Priority)"
+    topRight="High Cost / High Effect (Consider)"
+    bottomLeft="Low Cost / Low Effect (Low Priority)"
+    bottomRight="High Cost / Low Effect (Avoid)" />
+  <MatrixItem label="Initiative A" x="0.2" y="0.8" color="4CAF50" />
+  <MatrixItem label="Initiative B" x="0.7" y="0.6" color="2196F3" />
+  <MatrixItem label="Initiative C" x="0.3" y="0.3" color="FF9800" />
+  <MatrixItem label="Initiative D" x="0.8" y="0.2" color="E91E63" />
+</Matrix>
 
-// Simple Impact-Effort Matrix (without quadrant labels)
-{
-  type: "matrix",
-  w: 500,
-  h: 400,
-  axes: { x: "Effort", y: "Impact" },
-  items: [
-    { label: "Quick Win", x: 0.15, y: 0.85 },
-    { label: "Major Project", x: 0.75, y: 0.75 },
-    { label: "Fill-In", x: 0.25, y: 0.25 },
-    { label: "Time Sink", x: 0.85, y: 0.15 },
-  ],
-}
+<!-- Simple Impact-Effort Matrix (without quadrant labels) -->
+<Matrix w="500" h="400">
+  <Axes x="Effort" y="Impact" />
+  <MatrixItem label="Quick Win" x="0.15" y="0.85" />
+  <MatrixItem label="Major Project" x="0.75" y="0.75" />
+  <MatrixItem label="Fill-In" x="0.25" y="0.25" />
+  <MatrixItem label="Time Sink" x="0.85" y="0.15" />
+</Matrix>
 ```
 
 **XML Child Element Notation:**
@@ -641,64 +591,33 @@ A node for creating tree structures such as organization charts, decision trees,
 
 **Usage Examples:**
 
-```typescript
-// Vertical Organization Chart
-{
-  type: "tree",
-  layout: "vertical",
-  nodeShape: "roundRect",
-  w: 600,
-  h: 400,
-  data: {
-    label: "CEO",
-    color: "1D4ED8",
-    children: [
-      {
-        label: "CTO",
-        color: "0EA5E9",
-        children: [
-          { label: "Engineer A" },
-          { label: "Engineer B" },
-        ],
-      },
-      {
-        label: "CFO",
-        color: "16A34A",
-        children: [
-          { label: "Accountant" },
-        ],
-      },
-    ],
-  },
-  connectorStyle: { color: "333333", width: 2 },
-}
+```xml
+<!-- Vertical Organization Chart -->
+<Tree layout="vertical" nodeShape="roundRect" w="600" h="400"
+  connectorStyle='{"color":"333333","width":2}'>
+  <TreeItem label="CEO" color="1D4ED8">
+    <TreeItem label="CTO" color="0EA5E9">
+      <TreeItem label="Engineer A" />
+      <TreeItem label="Engineer B" />
+    </TreeItem>
+    <TreeItem label="CFO" color="16A34A">
+      <TreeItem label="Accountant" />
+    </TreeItem>
+  </TreeItem>
+</Tree>
 
-// Horizontal Decision Tree
-{
-  type: "tree",
-  layout: "horizontal",
-  nodeShape: "rect",
-  w: 600,
-  h: 300,
-  data: {
-    label: "Start",
-    children: [
-      {
-        label: "Option A",
-        children: [
-          { label: "Result 1" },
-          { label: "Result 2" },
-        ],
-      },
-      {
-        label: "Option B",
-        children: [
-          { label: "Result 3" },
-        ],
-      },
-    ],
-  },
-}
+<!-- Horizontal Decision Tree -->
+<Tree layout="horizontal" nodeShape="rect" w="600" h="300">
+  <TreeItem label="Start">
+    <TreeItem label="Option A">
+      <TreeItem label="Result 1" />
+      <TreeItem label="Result 2" />
+    </TreeItem>
+    <TreeItem label="Option B">
+      <TreeItem label="Result 3" />
+    </TreeItem>
+  </TreeItem>
+</Tree>
 ```
 
 **XML Child Element Notation:**
@@ -754,44 +673,28 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 
 **Usage Examples:**
 
-```typescript
-// Simple vertical flowchart
-{
-  type: "flow",
-  direction: "TB",
-  w: 400,
-  h: 300,
-  nodes: [
-    { id: "start", label: "Start", shape: "ellipse", color: "4CAF50" },
-    { id: "process", label: "Process", shape: "rect" },
-    { id: "decision", label: "OK?", shape: "diamond", color: "FF9800" },
-    { id: "end", label: "End", shape: "ellipse", color: "E91E63" },
-  ],
-  edges: [
-    { from: "start", to: "process" },
-    { from: "process", to: "decision" },
-    { from: "decision", to: "end", label: "Yes" },
-  ],
-}
+```xml
+<!-- Simple vertical flowchart -->
+<Flow direction="vertical" w="400" h="300">
+  <FlowNode id="start" shape="flowChartTerminator" text="Start" color="4CAF50" />
+  <FlowNode id="process" shape="flowChartProcess" text="Process" />
+  <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
+  <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
+  <Connection from="start" to="process" />
+  <Connection from="process" to="decision" />
+  <Connection from="decision" to="end" label="Yes" />
+</Flow>
 
-// Horizontal flowchart
-{
-  type: "flow",
-  direction: "LR",
-  w: 600,
-  h: 200,
-  nodes: [
-    { id: "input", label: "Input", shape: "parallelogram" },
-    { id: "validate", label: "Validate" },
-    { id: "save", label: "Save" },
-    { id: "output", label: "Output", shape: "parallelogram" },
-  ],
-  edges: [
-    { from: "input", to: "validate" },
-    { from: "validate", to: "save" },
-    { from: "save", to: "output" },
-  ],
-}
+<!-- Horizontal flowchart -->
+<Flow direction="horizontal" w="600" h="200">
+  <FlowNode id="input" shape="flowChartInputOutput" text="Input" />
+  <FlowNode id="validate" shape="flowChartProcess" text="Validate" />
+  <FlowNode id="save" shape="flowChartProcess" text="Save" />
+  <FlowNode id="output" shape="flowChartInputOutput" text="Output" />
+  <Connection from="input" to="validate" />
+  <Connection from="validate" to="save" />
+  <Connection from="save" to="output" />
+</Flow>
 ```
 
 **XML Child Element Notation:**
@@ -842,51 +745,30 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 
 **Usage Examples:**
 
-```typescript
-// Horizontal process arrow with colors
-{
-  type: "processArrow",
-  direction: "horizontal",
-  w: 1000,
-  h: 80,
-  steps: [
-    { label: "Planning", color: "#4472C4" },
-    { label: "Design", color: "#5B9BD5" },
-    { label: "Development", color: "#70AD47" },
-    { label: "Testing", color: "#FFC000" },
-    { label: "Release", color: "#ED7D31" },
-  ],
-}
+```xml
+<!-- Horizontal process arrow with colors -->
+<ProcessArrow direction="horizontal" w="1000" h="80">
+  <Step label="Planning" color="4472C4" />
+  <Step label="Design" color="5B9BD5" />
+  <Step label="Development" color="70AD47" />
+  <Step label="Testing" color="FFC000" />
+  <Step label="Release" color="ED7D31" />
+</ProcessArrow>
 
-// Vertical process arrow
-{
-  type: "processArrow",
-  direction: "vertical",
-  w: 200,
-  h: 250,
-  steps: [
-    { label: "Phase 1", color: "#4CAF50" },
-    { label: "Phase 2", color: "#2196F3" },
-    { label: "Phase 3", color: "#9C27B0" },
-  ],
-}
+<!-- Vertical process arrow -->
+<ProcessArrow direction="vertical" w="200" h="250">
+  <Step label="Phase 1" color="4CAF50" />
+  <Step label="Phase 2" color="2196F3" />
+  <Step label="Phase 3" color="9C27B0" />
+</ProcessArrow>
 
-// Custom styling
-{
-  type: "processArrow",
-  direction: "horizontal",
-  w: 600,
-  h: 80,
-  itemWidth: 180,
-  itemHeight: 70,
-  fontPx: 16,
-  bold: true,
-  steps: [
-    { label: "Input", color: "#2196F3" },
-    { label: "Process", color: "#00BCD4" },
-    { label: "Output", color: "#009688" },
-  ],
-}
+<!-- Custom styling -->
+<ProcessArrow direction="horizontal" w="600" h="80"
+  itemWidth="180" itemHeight="70" fontPx="16" bold="true">
+  <Step label="Input" color="2196F3" />
+  <Step label="Process" color="00BCD4" />
+  <Step label="Output" color="009688" />
+</ProcessArrow>
 ```
 
 **XML Child Element Notation:**
@@ -939,24 +821,24 @@ A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) 
 
 **Usage Examples:**
 
-```typescript
-// Simple horizontal line
-{ type: "line", x1: 100, y1: 100, x2: 300, y2: 100, color: "333333", lineWidth: 2 }
+```xml
+<!-- Simple horizontal line -->
+<Line x1="100" y1="100" x2="300" y2="100" color="333333" lineWidth="2" />
 
-// Arrow pointing right
-{ type: "line", x1: 100, y1: 150, x2: 300, y2: 150, color: "333333", lineWidth: 2, endArrow: true }
+<!-- Arrow pointing right -->
+<Line x1="100" y1="150" x2="300" y2="150" color="333333" lineWidth="2" endArrow="true" />
 
-// Bidirectional arrow
-{ type: "line", x1: 100, y1: 200, x2: 300, y2: 200, color: "333333", lineWidth: 2, beginArrow: true, endArrow: true }
+<!-- Bidirectional arrow -->
+<Line x1="100" y1="200" x2="300" y2="200" color="333333" lineWidth="2" beginArrow="true" endArrow="true" />
 
-// Diagonal line with arrow (bottom-right direction)
-{ type: "line", x1: 100, y1: 100, x2: 250, y2: 200, color: "1D4ED8", lineWidth: 2, endArrow: true }
+<!-- Diagonal line with arrow (bottom-right direction) -->
+<Line x1="100" y1="100" x2="250" y2="200" color="1D4ED8" lineWidth="2" endArrow="true" />
 
-// Dashed line
-{ type: "line", x1: 100, y1: 250, x2: 300, y2: 250, color: "333333", lineWidth: 2, dashType: "dash" }
+<!-- Dashed line -->
+<Line x1="100" y1="250" x2="300" y2="250" color="333333" lineWidth="2" dashType="dash" />
 
-// Custom arrow type (diamond)
-{ type: "line", x1: 100, y1: 300, x2: 300, y2: 300, color: "1D4ED8", lineWidth: 2, endArrow: { type: "diamond" } }
+<!-- Custom arrow type (diamond) -->
+<Line x1="100" y1="300" x2="300" y2="300" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
 ```
 
 ### 15. Layer
@@ -985,90 +867,40 @@ A container for absolute positioning of child elements. Child elements are posit
 
 **Usage Examples:**
 
-```typescript
-// Basic absolute positioning with overlapping shapes
-{
-  type: "layer",
-  w: 600,
-  h: 400,
-  backgroundColor: "F0F4F8",
-  children: [
-    // Back shape (drawn first)
-    { type: "shape", shapeType: "rect", x: 50, y: 50, w: 120, h: 100, fill: { color: "1D4ED8" }, text: "Back", color: "FFFFFF" },
-    // Front shape (drawn on top)
-    { type: "shape", shapeType: "rect", x: 100, y: 80, w: 120, h: 100, fill: { color: "DC2626" }, text: "Front", color: "FFFFFF" },
-  ],
-}
+```xml
+<!-- Basic absolute positioning with overlapping shapes -->
+<Layer w="600" h="400" backgroundColor="F0F4F8">
+  <!-- Back shape (drawn first) -->
+  <Shape shapeType="rect" x="50" y="50" w="120" h="100" fill='{"color":"1D4ED8"}' text="Back" color="FFFFFF" />
+  <!-- Front shape (drawn on top) -->
+  <Shape shapeType="rect" x="100" y="80" w="120" h="100" fill='{"color":"DC2626"}' text="Front" color="FFFFFF" />
+</Layer>
 
-// Layer with VStack children for free-form layout
-{
-  type: "layer",
-  w: 800,
-  h: 300,
-  backgroundColor: "F8FAFC",
-  children: [
-    {
-      type: "vstack",
-      x: 20,
-      y: 20,
-      w: 200,
-      gap: 8,
-      padding: 12,
-      backgroundColor: "FFFFFF",
-      children: [
-        { type: "text", text: "Left Column", fontPx: 14, bold: true },
-        { type: "text", text: "Content A", fontPx: 12 },
-      ],
-    },
-    {
-      type: "vstack",
-      x: 300,
-      y: 20,
-      w: 200,
-      gap: 8,
-      padding: 12,
-      backgroundColor: "FFFFFF",
-      children: [
-        { type: "text", text: "Right Column", fontPx: 14, bold: true },
-        { type: "text", text: "Content B", fontPx: 12 },
-      ],
-    },
-  ],
-}
+<!-- Layer with VStack children for free-form layout -->
+<Layer w="800" h="300" backgroundColor="F8FAFC">
+  <VStack x="20" y="20" w="200" gap="8" padding="12" backgroundColor="FFFFFF">
+    <Text fontPx="14" bold="true">Left Column</Text>
+    <Text fontPx="12">Content A</Text>
+  </VStack>
+  <VStack x="300" y="20" w="200" gap="8" padding="12" backgroundColor="FFFFFF">
+    <Text fontPx="14" bold="true">Right Column</Text>
+    <Text fontPx="12">Content B</Text>
+  </VStack>
+</Layer>
 
-// Connection diagram with lines
-{
-  type: "layer",
-  w: 800,
-  h: 200,
-  backgroundColor: "F8FAFC",
-  children: [
-    { type: "shape", shapeType: "roundRect", x: 50, y: 60, w: 150, h: 80, fill: { color: "1D4ED8" }, text: "Service A", color: "FFFFFF" },
-    { type: "shape", shapeType: "roundRect", x: 350, y: 60, w: 150, h: 80, fill: { color: "16A34A" }, text: "Service B", color: "FFFFFF" },
-    { type: "line", x1: 200, y1: 100, x2: 350, y2: 100, color: "333333", lineWidth: 2, endArrow: true },
-    { type: "text", text: "API Call", x: 240, y: 70, fontPx: 10 },
-  ],
-}
+<!-- Connection diagram with lines -->
+<Layer w="800" h="200" backgroundColor="F8FAFC">
+  <Shape shapeType="roundRect" x="50" y="60" w="150" h="80" fill='{"color":"1D4ED8"}' text="Service A" color="FFFFFF" />
+  <Shape shapeType="roundRect" x="350" y="60" w="150" h="80" fill='{"color":"16A34A"}' text="Service B" color="FFFFFF" />
+  <Line x1="200" y1="100" x2="350" y2="100" color="333333" lineWidth="2" endArrow="true" />
+  <Text x="240" y="70" fontPx="10">API Call</Text>
+</Layer>
 
-// Nested layers
-{
-  type: "layer",
-  w: 600,
-  h: 150,
-  backgroundColor: "E3F2FD",
-  children: [
-    { type: "text", text: "Outer Layer", x: 10, y: 10, fontPx: 12, bold: true },
-    {
-      type: "layer",
-      x: 50,
-      y: 40,
-      w: 200,
-      h: 80,
-      backgroundColor: "FFF3E0",
-      children: [
-        { type: "text", text: "Inner Layer", x: 10, y: 30, fontPx: 11 },
-      ],
-    },
-  ],
-}
+<!-- Nested layers -->
+<Layer w="600" h="150" backgroundColor="E3F2FD">
+  <Text x="10" y="10" fontPx="12" bold="true">Outer Layer</Text>
+  <Layer x="50" y="40" w="200" h="80" backgroundColor="FFF3E0">
+    <Text x="10" y="30" fontPx="11">Inner Layer</Text>
+  </Layer>
+</Layer>
 ```
