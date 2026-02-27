@@ -462,8 +462,17 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 | `nodeGap`        | number (default: 80)                              |
 | `connectorStyle` | `'{"color":"hex","width":2,"arrowType":"arrow"}'` |
 
-`<FlowNode>` shapes:
-`flowChartTerminator` / `flowChartProcess` / `flowChartDecision` / `flowChartInputOutput` / `flowChartDocument` / `flowChartPredefinedProcess` / `flowChartConnector` / `flowChartPreparation` / `flowChartManualInput` / `flowChartManualOperation` / `flowChartDelay` / `flowChartMagneticDisk`
+`<FlowNode>` attributes:
+
+| Attribute   | Type / Values                                                                                                                                                                                                                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | string (required) — unique node identifier                                                                                                                                                                                                                                                        |
+| `shape`     | `flowChartTerminator` / `flowChartProcess` / `flowChartDecision` / `flowChartInputOutput` / `flowChartDocument` / `flowChartPredefinedProcess` / `flowChartConnector` / `flowChartPreparation` / `flowChartManualInput` / `flowChartManualOperation` / `flowChartDelay` / `flowChartMagneticDisk` |
+| `text`      | string (required) — display text                                                                                                                                                                                                                                                                  |
+| `color`     | hex color (e.g. `"4CAF50"`) — node fill color                                                                                                                                                                                                                                                     |
+| `textColor` | hex color (e.g. `"FFFFFF"`) — text color                                                                                                                                                                                                                                                          |
+| `width`     | number — individual node width (overrides `nodeWidth`)                                                                                                                                                                                                                                            |
+| `height`    | number — individual node height (overrides `nodeHeight`)                                                                                                                                                                                                                                          |
 
 `<Connection>`: `from` `to` (required) `label` `color`
 
