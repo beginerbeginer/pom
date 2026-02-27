@@ -34,10 +34,9 @@ async function main() {
 
   // 3. PPTXをPNGに変換
   console.log("2. Converting PPTX to PNG...");
-  const targetPng = path.join(OUTPUT_DIR, "sample.png");
-  await pptxToPng(targetPptx, targetPng);
+  await pptxToPng(targetPptx, OUTPUT_DIR, ["sample"]);
 
-  console.log(`\nPreview saved: ${targetPng}`);
+  console.log(`\nPreview saved: ${path.join(OUTPUT_DIR, "sample.png")}`);
   console.log("\nClaude Code can now read this PNG file to check the layout.");
 }
 
