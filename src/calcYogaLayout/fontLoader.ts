@@ -75,3 +75,36 @@ export function measureTextWidth(
   const font = getFont(weight);
   return font.getAdvanceWidth(text, fontSizePx, { kerning: true });
 }
+
+/**
+ * フォントの自然な行高さ比率を取得する
+ *
+ * PowerPoint の lineSpacingMultiple はフォントサイズではなく、
+ * フォントメトリクス（ascent + descent）に対する倍率として適用される。
+ * この関数は fontSizePx に対する自然な行高さの比率を返す。
+ *
+ * - USE_TYPO_METRICS (fsSelection bit 7) が設定されている場合:
+ *   sTypoAscender, sTypoDescender, sTypoLineGap を使用
+ * - 設定されていない場合:
+ *   usWinAscent, usWinDescent を使用
+ *
+ * @param weight フォントウェイト
+ * @returns fontSizePx に対する行高さの比率（例: 1.448）
+ */
+export function measureFontLineHeightRatio(weight: "normal" | "bold"): number {
+  const font = getFont(weight);
+  const upm = font.unitsPerEm;
+  const os2 = font.tables?.os2;
+
+  if (!os2) {
+    return 1.0;
+  }
+
+  const useTypoMetrics = Boolean(os2.fsSelection & (1 << 7));
+
+  if (useTypoMetrics) {
+    return (os2.sTypoAscender - os2.sTypoDescender + os2.sTypoLineGap) / upm;
+  }
+
+  return (os2.usWinAscent + os2.usWinDescent) / upm;
+}

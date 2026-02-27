@@ -2,6 +2,7 @@ import type { POMNode, VStackNode, HStackNode } from "../types.ts";
 import { Node as YogaNode } from "yoga-layout";
 import { loadYoga } from "yoga-layout/load";
 import { measureText } from "./measureText.ts";
+import { measureFontLineHeightRatio } from "./fontLoader.ts";
 import { measureImage, prefetchImageSize } from "../shared/measureImage.ts";
 import { calcTableIntrinsicSize } from "../shared/tableUtils.ts";
 import {
@@ -297,7 +298,15 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
         const fontSizePx = node.fontPx ?? 24;
         const fontFamily = "Noto Sans JP";
         const fontWeight = node.bold ? "bold" : "normal";
-        const lineHeight = node.lineSpacingMultiple ?? 1.3;
+        const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
+
+        // PowerPoint の lineSpacingMultiple はフォントメトリクス（ascent + descent）に
+        // 対する倍率。fontSizePx × fontMetricsRatio × lineSpacingMultiple で計算する。
+        const fontMetricsRatio = measureFontLineHeightRatio(fontWeight);
+        const lineHeight = fontMetricsRatio * lineSpacingMultiple;
+
+        // バレット/番号のインデント幅（pptxgenjs DEF_BULLET_MARGIN = 27pt = 36px @96dpi）
+        const bulletIndentPx = 36;
 
         yn.setMeasureFunc((width, widthMode) => {
           const maxWidthPx = (() => {
@@ -310,15 +319,22 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
             }
           })();
 
-          const { widthPx, heightPx } = measureText(combinedText, maxWidthPx, {
-            fontFamily,
-            fontSizePx,
-            lineHeight,
-            fontWeight,
-          });
+          // バレットインデント分を除いたテキスト利用可能幅で計測
+          const textMaxWidthPx = Math.max(0, maxWidthPx - bulletIndentPx);
+
+          const { widthPx, heightPx } = measureText(
+            combinedText,
+            textMaxWidthPx,
+            {
+              fontFamily,
+              fontSizePx,
+              lineHeight,
+              fontWeight,
+            },
+          );
 
           return {
-            width: widthPx,
+            width: widthPx + bulletIndentPx,
             height: heightPx,
           };
         });
