@@ -36,7 +36,7 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 
 ## Features
 
-- **Type-safe**: Strict type definitions with TypeScript
+- **Schema-validated**: XML input validated with Zod schemas at runtime
 - **Declarative**: Describe slides with XML
 - **PowerPoint First**: Native support for Shape features
 - **Flexible Layout**: Automatic layout with VStack/HStack/Box
