@@ -1,20 +1,8 @@
 /**
- * Input schemas for LLM/external input validation
+ * Input schemas for LLM/external input validation (internal module)
  *
  * These schemas do not include internal properties like `yogaNode`.
- * Use these when validating JSON from OpenAI, Claude, or other LLMs.
- *
- * @example
- * ```typescript
- * import { inputPomNodeSchema, InputPOMNode } from "@hirokisakabe/pom";
- *
- * // Validate and parse JSON from LLM
- * const json = JSON.parse(llmResponse);
- * const result = inputPomNodeSchema.safeParse(json);
- * if (result.success) {
- *   const pptx = await buildPptx([result.data], { w: 1280, h: 720 });
- * }
- * ```
+ * Used by `parseXml` to validate parsed XML input.
  */
 
 import { z } from "zod";
@@ -92,7 +80,7 @@ export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
 });
 
-export const inputImageSizingSchema = z.object({
+const inputImageSizingSchema = z.object({
   type: z.enum(["contain", "cover", "crop"]),
   w: z.number().optional(),
   h: z.number().optional(),
@@ -156,7 +144,7 @@ export const inputMatrixNodeSchema = inputBaseNodeSchema.extend({
   items: z.array(matrixItemSchema),
 });
 
-export const inputTreeDataItemSchema: z.ZodType<TreeDataItem> = z.lazy(() =>
+const inputTreeDataItemSchema: z.ZodType<TreeDataItem> = z.lazy(() =>
   z.object({
     label: z.string(),
     color: z.string().optional(),
@@ -215,26 +203,26 @@ export const inputLineNodeSchema = inputBaseNodeSchema.extend({
   endArrow: lineArrowSchema.optional(),
 });
 
-export type InputTextNode = z.infer<typeof inputTextNodeSchema>;
-export type InputImageNode = z.infer<typeof inputImageNodeSchema>;
-export type InputTableNode = z.infer<typeof inputTableNodeSchema>;
-export type InputShapeNode = z.infer<typeof inputShapeNodeSchema>;
-export type InputChartNode = z.infer<typeof inputChartNodeSchema>;
-export type InputTimelineNode = z.infer<typeof inputTimelineNodeSchema>;
-export type InputMatrixNode = z.infer<typeof inputMatrixNodeSchema>;
-export type InputTreeNode = z.infer<typeof inputTreeNodeSchema>;
-export type InputFlowNode = z.infer<typeof inputFlowNodeSchema>;
-export type InputProcessArrowNode = z.infer<typeof inputProcessArrowNodeSchema>;
-export type InputLineNode = z.infer<typeof inputLineNodeSchema>;
+type InputTextNode = z.infer<typeof inputTextNodeSchema>;
+type InputImageNode = z.infer<typeof inputImageNodeSchema>;
+type InputTableNode = z.infer<typeof inputTableNodeSchema>;
+type InputShapeNode = z.infer<typeof inputShapeNodeSchema>;
+type InputChartNode = z.infer<typeof inputChartNodeSchema>;
+type InputTimelineNode = z.infer<typeof inputTimelineNodeSchema>;
+type InputMatrixNode = z.infer<typeof inputMatrixNodeSchema>;
+type InputTreeNode = z.infer<typeof inputTreeNodeSchema>;
+type InputFlowNode = z.infer<typeof inputFlowNodeSchema>;
+type InputProcessArrowNode = z.infer<typeof inputProcessArrowNodeSchema>;
+type InputLineNode = z.infer<typeof inputLineNodeSchema>;
 
 // ===== Recursive Types =====
-export type InputBoxNode = InputBaseNode & {
+type InputBoxNode = InputBaseNode & {
   type: "box";
   children: InputPOMNode;
   shadow?: ShadowStyle;
 };
 
-export type InputVStackNode = InputBaseNode & {
+type InputVStackNode = InputBaseNode & {
   type: "vstack";
   children: InputPOMNode[];
   gap?: number;
@@ -242,7 +230,7 @@ export type InputVStackNode = InputBaseNode & {
   justifyContent?: JustifyContent;
 };
 
-export type InputHStackNode = InputBaseNode & {
+type InputHStackNode = InputBaseNode & {
   type: "hstack";
   children: InputPOMNode[];
   gap?: number;
@@ -251,17 +239,17 @@ export type InputHStackNode = InputBaseNode & {
 };
 
 // Layer の子要素は x, y を必須とする
-export type InputLayerChild = InputPOMNode & {
+type InputLayerChild = InputPOMNode & {
   x: number;
   y: number;
 };
 
-export type InputLayerNode = InputBaseNode & {
+type InputLayerNode = InputBaseNode & {
   type: "layer";
   children: InputLayerChild[];
 };
 
-export type InputPOMNode =
+type InputPOMNode =
   | InputTextNode
   | InputImageNode
   | InputTableNode
@@ -315,34 +303,8 @@ const inputLayerNodeSchemaBase = inputBaseNodeSchema.extend({
   children: z.array(inputLayerChildSchemaBase),
 });
 
-export const inputBoxNodeSchema: z.ZodType<InputBoxNode> =
-  inputBoxNodeSchemaBase as z.ZodType<InputBoxNode>;
-export const inputVStackNodeSchema: z.ZodType<InputVStackNode> =
-  inputVStackNodeSchemaBase as z.ZodType<InputVStackNode>;
-export const inputHStackNodeSchema: z.ZodType<InputHStackNode> =
-  inputHStackNodeSchemaBase as z.ZodType<InputHStackNode>;
-export const inputLayerNodeSchema: z.ZodType<InputLayerNode> =
-  inputLayerNodeSchemaBase as z.ZodType<InputLayerNode>;
-
-/**
- * Input schema for POM nodes (for LLM/external input validation)
- *
- * @example
- * ```typescript
- * import { inputPomNodeSchema, buildPptx } from "@hirokisakabe/pom";
- *
- * const json = JSON.parse(llmResponse);
- * const result = inputPomNodeSchema.safeParse(json);
- *
- * if (result.success) {
- *   const pptx = await buildPptx([result.data], { w: 1280, h: 720 });
- *   await pptx.writeFile({ fileName: "output.pptx" });
- * } else {
- *   console.error("Validation failed:", result.error);
- * }
- * ```
- */
-export const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
+/** Input schema for POM nodes (used internally by parseXml) */
+const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
   z.discriminatedUnion("type", [
     inputTextNodeSchema,
     inputImageNodeSchema,
@@ -361,115 +323,3 @@ export const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
     inputLayerNodeSchemaBase,
   ]),
 ) as z.ZodType<InputPOMNode>;
-
-// ===== Slide Master Options Schema =====
-export const inputMasterTextObjectSchema = z.object({
-  type: z.literal("text"),
-  text: z.string(),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-  fontPx: z.number().optional(),
-  fontFamily: z.string().optional(),
-  color: z.string().optional(),
-  bold: z.boolean().optional(),
-  italic: z.boolean().optional(),
-  underline: underlineSchema.optional(),
-  strike: z.boolean().optional(),
-  highlight: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
-});
-
-export const inputMasterImageObjectSchema = z.object({
-  type: z.literal("image"),
-  src: z.string(),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-});
-
-export const inputMasterRectObjectSchema = z.object({
-  type: z.literal("rect"),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-  fill: fillStyleSchema.optional(),
-  border: borderStyleSchema.optional(),
-});
-
-export const inputMasterLineObjectSchema = z.object({
-  type: z.literal("line"),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-  line: borderStyleSchema.optional(),
-});
-
-export const inputMasterObjectSchema = z.discriminatedUnion("type", [
-  inputMasterTextObjectSchema,
-  inputMasterImageObjectSchema,
-  inputMasterRectObjectSchema,
-  inputMasterLineObjectSchema,
-]);
-
-export const inputSlideNumberOptionsSchema = z.object({
-  x: z.number(),
-  y: z.number(),
-  w: z.number().optional(),
-  h: z.number().optional(),
-  fontPx: z.number().optional(),
-  fontFamily: z.string().optional(),
-  color: z.string().optional(),
-});
-
-export const inputSlideMasterBackgroundSchema = z.union([
-  z.object({ color: z.string() }),
-  z.object({ path: z.string() }),
-  z.object({ data: z.string() }),
-  z.object({ image: z.string() }),
-]);
-
-export const inputSlideMasterMarginSchema = z.union([
-  z.number(),
-  z.object({
-    top: z.number().optional(),
-    right: z.number().optional(),
-    bottom: z.number().optional(),
-    left: z.number().optional(),
-  }),
-]);
-
-/**
- * Input schema for slide master options (for LLM/external input validation)
- *
- * @example
- * ```typescript
- * import { inputSlideMasterOptionsSchema, buildPptx } from "@hirokisakabe/pom";
- *
- * const masterOptions = inputSlideMasterOptionsSchema.parse({
- *   title: "MY_MASTER",
- *   background: { color: "F0F0F0" },
- *   objects: [
- *     { type: "text", text: "Header", x: 48, y: 12, w: 200, h: 28, fontPx: 14 },
- *   ],
- *   slideNumber: { x: 1100, y: 680, fontPx: 10 },
- * });
- *
- * const pptx = await buildPptx([page], { w: 1280, h: 720 }, { master: masterOptions });
- * ```
- */
-export const inputSlideMasterOptionsSchema = z.object({
-  title: z.string().optional(),
-  background: inputSlideMasterBackgroundSchema.optional(),
-  margin: inputSlideMasterMarginSchema.optional(),
-  objects: z.array(inputMasterObjectSchema).optional(),
-  slideNumber: inputSlideNumberOptionsSchema.optional(),
-});
-
-export type InputSlideMasterOptions = z.infer<
-  typeof inputSlideMasterOptionsSchema
->;

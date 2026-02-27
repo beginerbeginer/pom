@@ -1,7 +1,7 @@
 import type { TableNode } from "../types.ts";
 
-export const DEFAULT_TABLE_ROW_HEIGHT = 32;
-export const DEFAULT_TABLE_COLUMN_WIDTH = 100;
+const DEFAULT_TABLE_ROW_HEIGHT = 32;
+const DEFAULT_TABLE_COLUMN_WIDTH = 100;
 
 export function calcTableIntrinsicSize(node: TableNode) {
   const width = node.columns.reduce(

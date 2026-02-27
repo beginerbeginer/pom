@@ -49,7 +49,7 @@ export const shadowStyleSchema = z.object({
   color: z.string().optional(),
 });
 
-export const bulletNumberTypeSchema = z.enum([
+const bulletNumberTypeSchema = z.enum([
   "alphaLcParenBoth",
   "alphaLcParenR",
   "alphaLcPeriod",
@@ -111,8 +111,6 @@ export const justifyContentSchema = z.enum([
   "spaceAround",
   "spaceEvenly",
 ]);
-
-export const flexDirectionSchema = z.enum(["row", "column"]);
 
 export const shapeTypeSchema = z.enum([
   "accentBorderCallout1",
@@ -296,31 +294,20 @@ export const shapeTypeSchema = z.enum([
 ]);
 
 // ===== TypeScript Types (defined early for recursive references) =====
-export type Length = z.infer<typeof lengthSchema>;
-export type Padding = z.infer<typeof paddingSchema>;
-export type BorderDash = z.infer<typeof borderDashSchema>;
-export type BorderStyle = z.infer<typeof borderStyleSchema>;
-export type FillStyle = z.infer<typeof fillStyleSchema>;
 export type ShadowStyle = z.infer<typeof shadowStyleSchema>;
-export type BulletNumberType = z.infer<typeof bulletNumberTypeSchema>;
 export type BulletOptions = z.infer<typeof bulletOptionsSchema>;
 export type AlignItems = z.infer<typeof alignItemsSchema>;
 export type JustifyContent = z.infer<typeof justifyContentSchema>;
-export type FlexDirection = z.infer<typeof flexDirectionSchema>;
-export type ShapeType = z.infer<typeof shapeTypeSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
 export type Underline = z.infer<typeof underlineSchema>;
 
 // ===== Background Image =====
-export const backgroundImageSizingSchema = z.enum(["cover", "contain"]);
+const backgroundImageSizingSchema = z.enum(["cover", "contain"]);
 
 export const backgroundImageSchema = z.object({
   src: z.string(),
   sizing: backgroundImageSizingSchema.optional(),
 });
-
-export type BackgroundImageSizing = z.infer<typeof backgroundImageSizingSchema>;
-export type BackgroundImage = z.infer<typeof backgroundImageSchema>;
 
 // ===== Base Node =====
 const basePOMNodeSchema = z.object({
@@ -342,7 +329,7 @@ const basePOMNodeSchema = z.object({
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
 
 // ===== Non-recursive Node Types =====
-export const textNodeSchema = basePOMNodeSchema.extend({
+const textNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("text"),
   text: z.string(),
   fontPx: z.number().optional(),
@@ -358,7 +345,7 @@ export const textNodeSchema = basePOMNodeSchema.extend({
   bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
 });
 
-export const imageSizingSchema = z.object({
+const imageSizingSchema = z.object({
   type: z.enum(["contain", "cover", "crop"]),
   w: z.number().optional(),
   h: z.number().optional(),
@@ -366,7 +353,7 @@ export const imageSizingSchema = z.object({
   y: z.number().optional(),
 });
 
-export const imageNodeSchema = basePOMNodeSchema.extend({
+const imageNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
   sizing: imageSizingSchema.optional(),
@@ -402,7 +389,7 @@ export const tableNodeSchema = basePOMNodeSchema.extend({
   defaultRowHeight: z.number().optional(),
 });
 
-export const shapeNodeSchema = basePOMNodeSchema.extend({
+const shapeNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("shape"),
   shapeType: shapeTypeSchema,
   text: z.string().optional(),
@@ -436,7 +423,7 @@ export const chartDataSchema = z.object({
   values: z.array(z.number()),
 });
 
-export const chartNodeSchema = basePOMNodeSchema.extend({
+const chartNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("chart"),
   chartType: chartTypeSchema,
   data: z.array(chartDataSchema),
@@ -449,17 +436,10 @@ export const chartNodeSchema = basePOMNodeSchema.extend({
 });
 
 export type TextNode = z.infer<typeof textNodeSchema>;
-export type ImageSizing = z.infer<typeof imageSizingSchema>;
 export type ImageNode = z.infer<typeof imageNodeSchema>;
-export type TableCell = z.infer<typeof tableCellSchema>;
-export type TableRow = z.infer<typeof tableRowSchema>;
-export type TableColumn = z.infer<typeof tableColumnSchema>;
 export type TableNode = z.infer<typeof tableNodeSchema>;
 export type ShapeNode = z.infer<typeof shapeNodeSchema>;
-export type ChartType = z.infer<typeof chartTypeSchema>;
-export type ChartData = z.infer<typeof chartDataSchema>;
 export type ChartNode = z.infer<typeof chartNodeSchema>;
-export type RadarStyle = z.infer<typeof radarStyleSchema>;
 
 // ===== Timeline Node =====
 export const timelineDirectionSchema = z.enum(["horizontal", "vertical"]);
@@ -477,8 +457,6 @@ export const timelineNodeSchema = basePOMNodeSchema.extend({
   items: z.array(timelineItemSchema),
 });
 
-export type TimelineDirection = z.infer<typeof timelineDirectionSchema>;
-export type TimelineItem = z.infer<typeof timelineItemSchema>;
 export type TimelineNode = z.infer<typeof timelineNodeSchema>;
 
 // ===== Matrix Node =====
@@ -508,9 +486,6 @@ export const matrixNodeSchema = basePOMNodeSchema.extend({
   items: z.array(matrixItemSchema),
 });
 
-export type MatrixAxis = z.infer<typeof matrixAxisSchema>;
-export type MatrixQuadrants = z.infer<typeof matrixQuadrantsSchema>;
-export type MatrixItem = z.infer<typeof matrixItemSchema>;
 export type MatrixNode = z.infer<typeof matrixNodeSchema>;
 
 // ===== Tree Node =====
@@ -529,7 +504,7 @@ export type TreeDataItem = {
   children?: TreeDataItem[];
 };
 
-export const treeDataItemSchema: z.ZodType<TreeDataItem> = z.lazy(() =>
+const treeDataItemSchema: z.ZodType<TreeDataItem> = z.lazy(() =>
   z.object({
     label: z.string(),
     color: z.string().optional(),
@@ -549,7 +524,6 @@ export const treeNodeSchema = basePOMNodeSchema.extend({
   siblingGap: z.number().optional(),
 });
 
-export type TreeLayout = z.infer<typeof treeLayoutSchema>;
 export type TreeNodeShape = z.infer<typeof treeNodeShapeSchema>;
 export type TreeConnectorStyle = z.infer<typeof treeConnectorStyleSchema>;
 export type TreeNode = z.infer<typeof treeNodeSchema>;
@@ -578,14 +552,12 @@ export const processArrowNodeSchema = basePOMNodeSchema.extend({
   highlight: z.string().optional(),
 });
 
-export type ProcessArrowDirection = z.infer<typeof processArrowDirectionSchema>;
-export type ProcessArrowStep = z.infer<typeof processArrowStepSchema>;
 export type ProcessArrowNode = z.infer<typeof processArrowNodeSchema>;
 
 // ===== Flow Node =====
 export const flowDirectionSchema = z.enum(["horizontal", "vertical"]);
 
-export const flowNodeShapeSchema = z.enum([
+const flowNodeShapeSchema = z.enum([
   "flowChartTerminator",
   "flowChartProcess",
   "flowChartDecision",
@@ -636,15 +608,10 @@ export const flowNodeSchema = basePOMNodeSchema.extend({
   nodeGap: z.number().optional(),
 });
 
-export type FlowDirection = z.infer<typeof flowDirectionSchema>;
-export type FlowNodeShape = z.infer<typeof flowNodeShapeSchema>;
-export type FlowNodeItem = z.infer<typeof flowNodeItemSchema>;
-export type FlowConnection = z.infer<typeof flowConnectionSchema>;
-export type FlowConnectorStyle = z.infer<typeof flowConnectorStyleSchema>;
 export type FlowNode = z.infer<typeof flowNodeSchema>;
 
 // ===== Line Node =====
-export const lineArrowTypeSchema = z.enum([
+const lineArrowTypeSchema = z.enum([
   "none",
   "arrow",
   "triangle",
@@ -653,13 +620,13 @@ export const lineArrowTypeSchema = z.enum([
   "stealth",
 ]);
 
-export const lineArrowOptionsSchema = z.object({
+const lineArrowOptionsSchema = z.object({
   type: lineArrowTypeSchema.optional(),
 });
 
 export const lineArrowSchema = z.union([z.boolean(), lineArrowOptionsSchema]);
 
-export const lineNodeSchema = basePOMNodeSchema.extend({
+const lineNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("line"),
   x1: z.number(),
   y1: z.number(),
@@ -672,8 +639,6 @@ export const lineNodeSchema = basePOMNodeSchema.extend({
   endArrow: lineArrowSchema.optional(),
 });
 
-export type LineArrowType = z.infer<typeof lineArrowTypeSchema>;
-export type LineArrowOptions = z.infer<typeof lineArrowOptionsSchema>;
 export type LineArrow = z.infer<typeof lineArrowSchema>;
 export type LineNode = z.infer<typeof lineNodeSchema>;
 
@@ -706,7 +671,7 @@ export type HStackNode = BasePOMNode & {
 };
 
 // Layer の子要素は x, y を必須とする
-export type LayerChild = POMNode & {
+type LayerChild = POMNode & {
   x: number;
   y: number;
 };
@@ -770,17 +735,7 @@ const layerNodeSchemaBase = basePOMNodeSchema.extend({
   children: z.array(layerChildSchemaBase),
 });
 
-// Export with proper type annotations using z.ZodType
-export const boxNodeSchema: z.ZodType<BoxNode> =
-  boxNodeSchemaBase as z.ZodType<BoxNode>;
-export const vStackNodeSchema: z.ZodType<VStackNode> =
-  vStackNodeSchemaBase as z.ZodType<VStackNode>;
-export const hStackNodeSchema: z.ZodType<HStackNode> =
-  hStackNodeSchemaBase as z.ZodType<HStackNode>;
-export const layerNodeSchema: z.ZodType<LayerNode> =
-  layerNodeSchemaBase as z.ZodType<LayerNode>;
-
-export const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
+const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
   z.discriminatedUnion("type", [
     textNodeSchema,
     imageNodeSchema,
@@ -842,7 +797,7 @@ const positionedLayerChildSchema: z.ZodType<PositionedLayerChild> = z.lazy(() =>
   ),
 ) as z.ZodType<PositionedLayerChild>;
 
-export const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
+const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
   z.union([
     textNodeSchema.merge(positionedBaseSchema),
     imageNodeSchema.merge(positionedBaseSchema).extend({
@@ -873,7 +828,7 @@ export const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
 ) as z.ZodType<PositionedNode>;
 
 // ===== Slide Master Options =====
-export const masterTextObjectSchema = z.object({
+const masterTextObjectSchema = z.object({
   type: z.literal("text"),
   text: z.string(),
   x: z.number(),
@@ -891,7 +846,7 @@ export const masterTextObjectSchema = z.object({
   alignText: z.enum(["left", "center", "right"]).optional(),
 });
 
-export const masterImageObjectSchema = z.object({
+const masterImageObjectSchema = z.object({
   type: z.literal("image"),
   src: z.string(),
   x: z.number(),
@@ -900,7 +855,7 @@ export const masterImageObjectSchema = z.object({
   h: z.number(),
 });
 
-export const masterRectObjectSchema = z.object({
+const masterRectObjectSchema = z.object({
   type: z.literal("rect"),
   x: z.number(),
   y: z.number(),
@@ -910,7 +865,7 @@ export const masterRectObjectSchema = z.object({
   border: borderStyleSchema.optional(),
 });
 
-export const masterLineObjectSchema = z.object({
+const masterLineObjectSchema = z.object({
   type: z.literal("line"),
   x: z.number(),
   y: z.number(),
@@ -926,7 +881,7 @@ export const masterObjectSchema = z.discriminatedUnion("type", [
   masterLineObjectSchema,
 ]);
 
-export const slideNumberOptionsSchema = z.object({
+const slideNumberOptionsSchema = z.object({
   x: z.number(),
   y: z.number(),
   w: z.number().optional(),
@@ -936,14 +891,14 @@ export const slideNumberOptionsSchema = z.object({
   color: z.string().optional(),
 });
 
-export const slideMasterBackgroundSchema = z.union([
+const slideMasterBackgroundSchema = z.union([
   z.object({ color: z.string() }),
   z.object({ path: z.string() }),
   z.object({ data: z.string() }),
   z.object({ image: z.string() }),
 ]);
 
-export const slideMasterMarginSchema = z.union([
+const slideMasterMarginSchema = z.union([
   z.number(),
   z.object({
     top: z.number().optional(),

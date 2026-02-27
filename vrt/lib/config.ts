@@ -1,7 +1,7 @@
 import path from "path";
 
 const LIB_DIR = path.dirname(new URL(import.meta.url).pathname);
-export const VRT_DIR = path.dirname(LIB_DIR);
+const VRT_DIR = path.dirname(LIB_DIR);
 export const OUTPUT_DIR = path.join(VRT_DIR, "output");
 
 export const FILES = {

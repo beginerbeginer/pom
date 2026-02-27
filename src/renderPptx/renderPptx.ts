@@ -44,12 +44,6 @@ import {
 } from "./nodes/index.ts";
 
 type SlidePx = { w: number; h: number };
-export {
-  createTextOptions,
-  convertUnderline,
-  convertStrike,
-} from "./textOptions.ts";
-export { PX_PER_IN, pxToIn, pxToPt } from "./units.ts";
 
 const DEFAULT_MASTER_NAME = "POM_MASTER";
 
