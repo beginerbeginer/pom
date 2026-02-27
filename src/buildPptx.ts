@@ -3,7 +3,7 @@ import {
   setTextMeasurementMode,
   TextMeasurementMode,
 } from "./calcYogaLayout/measureText.ts";
-import { parseXml } from "./parseXml.ts";
+import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { toPositioned } from "./toPositioned/toPositioned.ts";
 import { PositionedNode, SlideMasterOptions } from "./types.ts";

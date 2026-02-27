@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { z } from "zod";
-import type { POMNode } from "./types.ts";
+import type { POMNode } from "../types.ts";
 import {
   inputTextNodeSchema,
   inputImageNodeSchema,
@@ -29,7 +29,7 @@ import {
   chartDataSchema,
   tableColumnSchema,
   tableCellSchema,
-} from "./types.ts";
+} from "../types.ts";
 
 // ===== ParseXmlError =====
 export class ParseXmlError extends Error {

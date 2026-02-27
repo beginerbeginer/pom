@@ -28,13 +28,16 @@ npm run preview:docker    # プレビュー（main.tsのPPTXをPNG化）
 src/
 ├── index.ts              # 公開API
 ├── types.ts              # 型定義
-├── inputSchema.ts        # 入力スキーマ（Zod、内部用）
-├── parseXml.ts           # XML入力パーサー（fast-xml-parser、内部用）
 ├── buildPptx.ts          # メイン処理（XML → parseXml → レイアウト → PPTX）
+├── shared/               # 複数パイプラインステージが使う共有コード
+│   ├── measureImage.ts   # 画像サイズ計測・キャッシュ
+│   └── tableUtils.ts     # テーブルサイズ計算ユーティリティ
+├── parseXml/             # XML入力パーサー（fast-xml-parser、内部用）
+│   ├── parseXml.ts       # XMLパーサー本体
+│   └── inputSchema.ts    # 入力スキーマ（Zod、内部用）
 ├── calcYogaLayout/       # レイアウト計算（yoga-layout）
 ├── toPositioned/         # 絶対座標変換
-├── renderPptx/           # PPTX描画（pptxgenjs）
-└── table/                # テーブルユーティリティ
+└── renderPptx/           # PPTX描画（pptxgenjs）
 
 vrt/                      # Visual Regression Test
 preview/                  # プレビュー基盤（Claude Code用）
@@ -83,8 +86,8 @@ PPTX 生成は3段階のパイプライン:
 新しいプロパティや機能を追加する際は、以下のファイルを更新すること：
 
 1. **型定義**: `src/types.ts` - 新しい型やプロパティを追加
-2. **入力スキーマ**: `src/inputSchema.ts` - Zod スキーマを追加（内部バリデーション用）
-3. **XMLパーサー**: `src/parseXml.ts` - XML タグ/属性の変換処理を追加
+2. **入力スキーマ**: `src/parseXml/inputSchema.ts` - Zod スキーマを追加（内部バリデーション用）
+3. **XMLパーサー**: `src/parseXml/parseXml.ts` - XML タグ/属性の変換処理を追加
 4. **描画処理**: `src/renderPptx/` 配下 - pptxgenjs への変換処理を実装
 5. **VRT テストデータ**: `vrt/lib/generatePptx.ts` - 新機能のテストケースを追加
 6. **VRT ベースライン更新**: `npm run vrt:docker:update` を実行
