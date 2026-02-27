@@ -2,6 +2,8 @@ import type { PositionedNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { convertUnderline, convertStrike } from "../textOptions.ts";
+import { measureProcessArrow } from "../../calcYogaLayout/measureCompositeNodes.ts";
+import { calcScaleFactor } from "../utils/scaleToFit.ts";
 
 type ProcessArrowPositionedNode = Extract<
   PositionedNode,
@@ -24,17 +26,32 @@ export function renderProcessArrowNode(
   const itemHeight = node.itemHeight ?? 60;
   const gap = node.gap ?? -15; // 負の値でシェブロンを重ねる
 
+  // スケール係数を計算
+  const intrinsic = measureProcessArrow(node);
+  const scaleFactor = calcScaleFactor(
+    node.w,
+    node.h,
+    intrinsic.width,
+    intrinsic.height,
+    "processArrow",
+  );
+
+  const scaledItemWidth = itemWidth * scaleFactor;
+  const scaledItemHeight = itemHeight * scaleFactor;
+  const scaledGap = gap * scaleFactor;
+
   if (direction === "horizontal") {
     renderHorizontalProcessArrow(
       node,
       ctx,
       steps,
       stepCount,
-      itemWidth,
-      itemHeight,
-      gap,
+      scaledItemWidth,
+      scaledItemHeight,
+      scaledGap,
       defaultColor,
       defaultTextColor,
+      scaleFactor,
     );
   } else {
     renderVerticalProcessArrow(
@@ -42,11 +59,12 @@ export function renderProcessArrowNode(
       ctx,
       steps,
       stepCount,
-      itemWidth,
-      itemHeight,
-      gap,
+      scaledItemWidth,
+      scaledItemHeight,
+      scaledGap,
       defaultColor,
       defaultTextColor,
+      scaleFactor,
     );
   }
 }
@@ -61,6 +79,7 @@ function renderHorizontalProcessArrow(
   gap: number,
   defaultColor: string,
   defaultTextColor: string,
+  scaleFactor: number,
 ): void {
   const totalWidth = stepCount * itemWidth + (stepCount - 1) * gap;
   const startX = node.x + (node.w - totalWidth) / 2;
@@ -84,7 +103,7 @@ function renderHorizontalProcessArrow(
       shape: shapeType,
       fill: { color: fillColor },
       line: { type: "none" as const },
-      fontSize: pxToPt(node.fontPx ?? 14),
+      fontSize: pxToPt((node.fontPx ?? 14) * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
       bold: node.bold ?? false,
@@ -108,6 +127,7 @@ function renderVerticalProcessArrow(
   gap: number,
   defaultColor: string,
   defaultTextColor: string,
+  scaleFactor: number,
 ): void {
   const totalHeight = stepCount * itemHeight + (stepCount - 1) * gap;
   const startY = node.y + (node.h - totalHeight) / 2;
@@ -131,7 +151,7 @@ function renderVerticalProcessArrow(
       shape: shapeType,
       fill: { color: fillColor },
       line: { type: "none" as const },
-      fontSize: pxToPt(node.fontPx ?? 14),
+      fontSize: pxToPt((node.fontPx ?? 14) * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
       bold: node.bold ?? false,

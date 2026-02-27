@@ -13,6 +13,21 @@ import {
 } from "./measureCompositeNodes.ts";
 
 /**
+ * コンポジットノードの最小スケール閾値。
+ * renderPptx/utils/scaleToFit.ts の MIN_SCALE_THRESHOLD と同じ値を維持すること。
+ */
+const MIN_SCALE_THRESHOLD = 0.5;
+
+/** 制約付きサイズを閾値でクランプする */
+function constrainWithMinScale(
+  intrinsicSize: number,
+  availableSize: number,
+): number {
+  const minSize = intrinsicSize * MIN_SCALE_THRESHOLD;
+  return Math.max(minSize, Math.min(intrinsicSize, availableSize));
+}
+
+/**
  * POMNode ツリーを Yoga でレイアウト計算する
  * POMNode ツリーの各ノードに yogaNode プロパティがセットされる
  *
@@ -377,45 +392,90 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
 
     case "processArrow":
       {
-        yn.setMeasureFunc(() => {
-          const { width, height } = measureProcessArrow(node);
-          return { width, height };
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measureProcessArrow(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
         });
       }
       break;
 
     case "timeline":
       {
-        yn.setMeasureFunc(() => {
-          const { width, height } = measureTimeline(node);
-          return { width, height };
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measureTimeline(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
         });
       }
       break;
 
     case "matrix":
       {
-        yn.setMeasureFunc(() => {
-          const { width, height } = measureMatrix(node);
-          return { width, height };
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measureMatrix(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
         });
       }
       break;
 
     case "tree":
       {
-        yn.setMeasureFunc(() => {
-          const { width, height } = measureTree(node);
-          return { width, height };
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measureTree(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
         });
       }
       break;
 
     case "flow":
       {
-        yn.setMeasureFunc(() => {
-          const { width, height } = measureFlow(node);
-          return { width, height };
+        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
+          const intrinsic = measureFlow(node);
+          return {
+            width:
+              widthMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.width, width)
+                : intrinsic.width,
+            height:
+              heightMode !== yoga.MEASURE_MODE_UNDEFINED
+                ? constrainWithMinScale(intrinsic.height, height)
+                : intrinsic.height,
+          };
         });
       }
       break;

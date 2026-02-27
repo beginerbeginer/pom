@@ -6,6 +6,7 @@ import type {
 } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
+import { calcScaleFactor } from "../utils/scaleToFit.ts";
 
 type TreePositionedNode = Extract<PositionedNode, { type: "tree" }>;
 
@@ -63,7 +64,7 @@ export function renderTreeNode(
     }
   }
 
-  // ツリーレイアウトを計算
+  // ツリーレイアウトを計算（原点(0,0)からの相対座標）
   function calculateTreeLayout(
     item: TreeDataItem,
     x: number,
@@ -131,16 +132,19 @@ export function renderTreeNode(
     parent: LayoutNode,
     child: LayoutNode,
     style: TreeConnectorStyle,
+    sf: number,
+    ox: number,
+    oy: number,
   ) {
     const lineColor = style.color ?? "333333";
     const lineWidth = style.width ?? 2;
 
     if (layout === "vertical") {
       // 親の下端中央から子の上端中央へ
-      const parentCenterX = parent.x + parent.width / 2;
-      const parentBottomY = parent.y + parent.height;
-      const childCenterX = child.x + child.width / 2;
-      const childTopY = child.y;
+      const parentCenterX = ox + (parent.x + parent.width / 2) * sf;
+      const parentBottomY = oy + (parent.y + parent.height) * sf;
+      const childCenterX = ox + (child.x + child.width / 2) * sf;
+      const childTopY = oy + child.y * sf;
       const midY = (parentBottomY + childTopY) / 2;
 
       // 垂直線（親から中間点まで）
@@ -149,7 +153,7 @@ export function renderTreeNode(
         y: pxToIn(parentBottomY),
         w: 0,
         h: pxToIn(midY - parentBottomY),
-        line: { color: lineColor, width: pxToPt(lineWidth) },
+        line: { color: lineColor, width: pxToPt(lineWidth * sf) },
       });
 
       // 水平線（中間点で）
@@ -161,7 +165,7 @@ export function renderTreeNode(
           y: pxToIn(midY),
           w: pxToIn(maxX - minX),
           h: 0,
-          line: { color: lineColor, width: pxToPt(lineWidth) },
+          line: { color: lineColor, width: pxToPt(lineWidth * sf) },
         });
       }
 
@@ -171,14 +175,14 @@ export function renderTreeNode(
         y: pxToIn(midY),
         w: 0,
         h: pxToIn(childTopY - midY),
-        line: { color: lineColor, width: pxToPt(lineWidth) },
+        line: { color: lineColor, width: pxToPt(lineWidth * sf) },
       });
     } else {
       // 親の右端中央から子の左端中央へ
-      const parentRightX = parent.x + parent.width;
-      const parentCenterY = parent.y + parent.height / 2;
-      const childLeftX = child.x;
-      const childCenterY = child.y + child.height / 2;
+      const parentRightX = ox + (parent.x + parent.width) * sf;
+      const parentCenterY = oy + (parent.y + parent.height / 2) * sf;
+      const childLeftX = ox + child.x * sf;
+      const childCenterY = oy + (child.y + child.height / 2) * sf;
       const midX = (parentRightX + childLeftX) / 2;
 
       // 水平線（親から中間点まで）
@@ -187,7 +191,7 @@ export function renderTreeNode(
         y: pxToIn(parentCenterY),
         w: pxToIn(midX - parentRightX),
         h: 0,
-        line: { color: lineColor, width: pxToPt(lineWidth) },
+        line: { color: lineColor, width: pxToPt(lineWidth * sf) },
       });
 
       // 垂直線（中間点で）
@@ -199,7 +203,7 @@ export function renderTreeNode(
           y: pxToIn(minY),
           w: 0,
           h: pxToIn(maxY - minY),
-          line: { color: lineColor, width: pxToPt(lineWidth) },
+          line: { color: lineColor, width: pxToPt(lineWidth * sf) },
         });
       }
 
@@ -209,7 +213,7 @@ export function renderTreeNode(
         y: pxToIn(childCenterY),
         w: pxToIn(childLeftX - midX),
         h: 0,
-        line: { color: lineColor, width: pxToPt(lineWidth) },
+        line: { color: lineColor, width: pxToPt(lineWidth * sf) },
       });
     }
   }
@@ -219,6 +223,9 @@ export function renderTreeNode(
     layoutNode: LayoutNode,
     shape: TreeNodeShape,
     defaultNodeColor: string,
+    sf: number,
+    ox: number,
+    oy: number,
   ) {
     const color = layoutNode.item.color ?? defaultNodeColor;
     const shapeType = (() => {
@@ -232,23 +239,28 @@ export function renderTreeNode(
       }
     })();
 
+    const drawX = ox + layoutNode.x * sf;
+    const drawY = oy + layoutNode.y * sf;
+    const drawW = layoutNode.width * sf;
+    const drawH = layoutNode.height * sf;
+
     // ノードの背景
     ctx.slide.addShape(shapeType, {
-      x: pxToIn(layoutNode.x),
-      y: pxToIn(layoutNode.y),
-      w: pxToIn(layoutNode.width),
-      h: pxToIn(layoutNode.height),
+      x: pxToIn(drawX),
+      y: pxToIn(drawY),
+      w: pxToIn(drawW),
+      h: pxToIn(drawH),
       fill: { color },
-      line: { color: "333333", width: pxToPt(1) },
+      line: { color: "333333", width: pxToPt(1 * sf) },
     });
 
     // ノードのラベル
     ctx.slide.addText(layoutNode.item.label, {
-      x: pxToIn(layoutNode.x),
-      y: pxToIn(layoutNode.y),
-      w: pxToIn(layoutNode.width),
-      h: pxToIn(layoutNode.height),
-      fontSize: pxToPt(12),
+      x: pxToIn(drawX),
+      y: pxToIn(drawY),
+      w: pxToIn(drawW),
+      h: pxToIn(drawH),
+      fontSize: pxToPt(12 * sf),
       fontFace: "Noto Sans JP",
       color: "FFFFFF",
       align: "center",
@@ -257,32 +269,53 @@ export function renderTreeNode(
   }
 
   // すべての接続線を再帰的に描画
-  function drawAllConnectors(layoutNode: LayoutNode) {
+  function drawAllConnectors(
+    layoutNode: LayoutNode,
+    sf: number,
+    ox: number,
+    oy: number,
+  ) {
     for (const child of layoutNode.children) {
-      drawConnector(layoutNode, child, connectorStyle);
-      drawAllConnectors(child);
+      drawConnector(layoutNode, child, connectorStyle, sf, ox, oy);
+      drawAllConnectors(child, sf, ox, oy);
     }
   }
 
   // すべてのノードを再帰的に描画
-  function drawAllNodes(layoutNode: LayoutNode) {
-    drawTreeNode(layoutNode, nodeShape, defaultColor);
+  function drawAllNodes(
+    layoutNode: LayoutNode,
+    sf: number,
+    ox: number,
+    oy: number,
+  ) {
+    drawTreeNode(layoutNode, nodeShape, defaultColor, sf, ox, oy);
     for (const child of layoutNode.children) {
-      drawAllNodes(child);
+      drawAllNodes(child, sf, ox, oy);
     }
   }
 
   // ツリーのサイズを計算
   const treeSize = calculateSubtreeSize(node.data);
 
-  // 描画領域内の中央に配置
-  const offsetX = node.x + (node.w - treeSize.width) / 2;
-  const offsetY = node.y + (node.h - treeSize.height) / 2;
+  // スケール係数を計算
+  const scaleFactor = calcScaleFactor(
+    node.w,
+    node.h,
+    treeSize.width,
+    treeSize.height,
+    "tree",
+  );
 
-  // レイアウト計算
-  const rootLayout = calculateTreeLayout(node.data, offsetX, offsetY);
+  // スケール後のサイズで中央配置オフセットを計算
+  const scaledW = treeSize.width * scaleFactor;
+  const scaledH = treeSize.height * scaleFactor;
+  const offsetX = node.x + (node.w - scaledW) / 2;
+  const offsetY = node.y + (node.h - scaledH) / 2;
+
+  // レイアウト計算（原点(0,0)からの相対座標）
+  const rootLayout = calculateTreeLayout(node.data, 0, 0);
 
   // 描画（接続線を先に、ノードを後に描画）
-  drawAllConnectors(rootLayout);
-  drawAllNodes(rootLayout);
+  drawAllConnectors(rootLayout, scaleFactor, offsetX, offsetY);
+  drawAllNodes(rootLayout, scaleFactor, offsetX, offsetY);
 }
