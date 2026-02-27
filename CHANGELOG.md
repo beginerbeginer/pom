@@ -1,5 +1,25 @@
 # @hirokisakabe/pom
 
+## 2.0.0
+
+### Major Changes
+
+- [#215](https://github.com/hirokisakabe/pom/pull/215) [`3e14f52`](https://github.com/hirokisakabe/pom/commit/3e14f52dad4930ee83db6774d9b78d3b60ff8974) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - コンポーネント機能を削除: defineComponent, expandComponents, expandComponentSlides, Theme, mergeTheme, ComponentRegistry を削除。parseXml で未知タグはエラーをスローするよう変更。
+
+- [#218](https://github.com/hirokisakabe/pom/pull/218) [`3ea9400`](https://github.com/hirokisakabe/pom/commit/3ea94002e33f38df6b0a1fc54cf7e93b1862dd52) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - buildPptx APIの入力をPOMNode[]からXML文字列に変更。parseXml、inputPomNodeSchema、POMNode型を公開APIから削除し内部に降格。./schemaエクスポートパスを削除。
+
+### Minor Changes
+
+- [#225](https://github.com/hirokisakabe/pom/pull/225) [`d2953f8`](https://github.com/hirokisakabe/pom/commit/d2953f840e783f1858d4f94ef0a05d8ca48b7d2b) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - parseXmlのバリデーション・エラーメッセージを改善。未知の属性名検出（Did you mean?提案付き）、Zodスキーマによるセマンティックバリデーション（enum値、数値範囲、必須属性）、リーフノードへの不正な子要素検出、複数エラーの一括報告に対応。ParseXmlErrorクラスを新規exportし、プログラム的なエラーハンドリングが可能に。
+
+- [#212](https://github.com/hirokisakabe/pom/pull/212) [`eb345fd`](https://github.com/hirokisakabe/pom/commit/eb345fd6888a8c630600b4f63535468078aea095) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: XML子要素記法のサポートを追加（Chart, Table, Flow, Tree, Timeline, Matrix, ProcessArrow）
+
+### Patch Changes
+
+- [#224](https://github.com/hirokisakabe/pom/pull/224) [`b5ab195`](https://github.com/hirokisakabe/pom/commit/b5ab195f7837f6529e44f41a203fd1fd6abe7ea3) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - LLM 向けコンパクト XML リファレンス（docs/llm-xml-reference.md）を追加
+
+- [#226](https://github.com/hirokisakabe/pom/pull/226) [`17d7810`](https://github.com/hirokisakabe/pom/commit/17d781003ee0f0026d121aa078e7aa7585f737cc) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - ドキュメント・サンプルを XML ベースに書き直し、llm-integration.md を XML リファレンスに一本化
+
 ## 1.4.0
 
 ### Minor Changes
