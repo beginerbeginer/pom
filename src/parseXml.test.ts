@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseXml } from "./parseXml.ts";
+import { parseXml, ParseXmlError } from "./parseXml.ts";
 
 describe("parseXml", () => {
   // ===== 基本的なノード変換 =====
@@ -1206,6 +1206,217 @@ describe("parseXml", () => {
             ],
           },
         ]);
+      });
+    });
+  });
+
+  // ===== バリデーション改善 =====
+  describe("バリデーション改善", () => {
+    describe("未知の属性名の検出", () => {
+      it("未知の属性でエラーをスローする", () => {
+        expect(() => parseXml('<Text fonPx="32">test</Text>')).toThrow(
+          ParseXmlError,
+        );
+        try {
+          parseXml('<Text fonPx="32">test</Text>');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors).toHaveLength(1);
+          expect(err.errors[0]).toContain('Unknown attribute "fonPx"');
+          expect(err.errors[0]).toContain('Did you mean "fontPx"');
+        }
+      });
+
+      it("類似候補がない場合もエラーをスローする", () => {
+        expect(() => parseXml('<Text zzzzz="32">test</Text>')).toThrow(
+          ParseXmlError,
+        );
+        try {
+          parseXml('<Text zzzzz="32">test</Text>');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors[0]).toContain('Unknown attribute "zzzzz"');
+          expect(err.errors[0]).not.toContain("Did you mean");
+        }
+      });
+
+      it("子要素の未知属性もエラーをスローする", () => {
+        const xml = `
+          <ProcessArrow>
+            <Step labl="A" />
+          </ProcessArrow>
+        `;
+        expect(() => parseXml(xml)).toThrow(ParseXmlError);
+        try {
+          parseXml(xml);
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(
+            err.errors.some((e) => e.includes('Unknown attribute "labl"')),
+          ).toBe(true);
+        }
+      });
+
+      it("x/y 属性は許可される（Layer 子要素用）", () => {
+        const xml = '<Text x="10" y="20">test</Text>';
+        const result = parseXml(xml);
+        expect(result[0]).toHaveProperty("x", 10);
+        expect(result[0]).toHaveProperty("y", 20);
+      });
+    });
+
+    describe("属性値の型不一致", () => {
+      it("enum 不一致でエラーをスローする", () => {
+        expect(() => parseXml('<Text alignText="LEFT">test</Text>')).toThrow(
+          ParseXmlError,
+        );
+        try {
+          parseXml('<Text alignText="LEFT">test</Text>');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors.some((e) => e.includes("alignText"))).toBe(true);
+        }
+      });
+
+      it("数値範囲違反でエラーをスローする", () => {
+        expect(() => parseXml('<Text opacity="2">test</Text>')).toThrow(
+          ParseXmlError,
+        );
+        try {
+          parseXml('<Text opacity="2">test</Text>');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors.some((e) => e.includes("opacity"))).toBe(true);
+        }
+      });
+
+      it("不正な shapeType でエラーをスローする", () => {
+        expect(() =>
+          parseXml('<Shape shapeType="invalid_shape" w="100" h="100" />'),
+        ).toThrow(ParseXmlError);
+        try {
+          parseXml('<Shape shapeType="invalid_shape" w="100" h="100" />');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors.some((e) => e.includes("shapeType"))).toBe(true);
+        }
+      });
+    });
+
+    describe("必須属性の欠落", () => {
+      it("Image の src 欠落でエラーをスローする", () => {
+        expect(() => parseXml('<Image w="400" h="300" />')).toThrow(
+          ParseXmlError,
+        );
+        try {
+          parseXml('<Image w="400" h="300" />');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(err.errors.some((e) => e.includes('"src"'))).toBe(true);
+        }
+      });
+
+      it("Line の座標欠落でエラーをスローする", () => {
+        expect(() => parseXml('<Line x1="0" y1="0" />')).toThrow(ParseXmlError);
+        try {
+          parseXml('<Line x1="0" y1="0" />');
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(
+            err.errors.some((e) => e.includes('"x2"') || e.includes('"y2"')),
+          ).toBe(true);
+        }
+      });
+    });
+
+    describe("不正な子要素の検出", () => {
+      it("リーフノードに子要素があるとエラーをスローする", () => {
+        const xml = "<Image><Text>x</Text></Image>";
+        expect(() => parseXml(xml)).toThrow(ParseXmlError);
+        try {
+          parseXml(xml);
+        } catch (e) {
+          const err = e as ParseXmlError;
+          expect(
+            err.errors.some((e) =>
+              e.includes("does not accept child elements"),
+            ),
+          ).toBe(true);
+        }
+      });
+    });
+
+    describe("複数エラーの一括報告", () => {
+      it("1つの XML に複数のエラーがある場合すべて報告する", () => {
+        const xml = `
+          <VStack>
+            <Text fonPx="32" alignText="LEFT">A</Text>
+            <Image w="400" />
+          </VStack>
+        `;
+        expect(() => parseXml(xml)).toThrow(ParseXmlError);
+        try {
+          parseXml(xml);
+        } catch (e) {
+          const err = e as ParseXmlError;
+          // 少なくとも2つ以上のエラーが報告される
+          expect(err.errors.length).toBeGreaterThanOrEqual(2);
+          // Unknown attribute fonPx
+          expect(err.errors.some((e) => e.includes("fonPx"))).toBe(true);
+          // Missing src on Image
+          expect(err.errors.some((e) => e.includes("src"))).toBe(true);
+        }
+      });
+
+      it("ParseXmlError の errors プロパティでプログラム的にアクセスできる", () => {
+        expect.assertions(4);
+        try {
+          parseXml('<Image w="400" />');
+        } catch (e) {
+          expect(e).toBeInstanceOf(ParseXmlError);
+          const err = e as ParseXmlError;
+          expect(Array.isArray(err.errors)).toBe(true);
+          expect(err.errors.length).toBeGreaterThan(0);
+          expect(err.message).toContain("XML validation failed");
+        }
+      });
+    });
+
+    describe("正常な XML は引き続き動作する", () => {
+      it("有効な属性のみの場合エラーにならない", () => {
+        const xml = `
+          <VStack gap="16" padding="32">
+            <Text fontPx="32" bold="true" color="FF0000">Hello</Text>
+            <Image src="test.png" w="400" h="300" />
+            <Shape shapeType="rect" w="200" h="100">Label</Shape>
+          </VStack>
+        `;
+        expect(() => parseXml(xml)).not.toThrow();
+      });
+
+      it("opacity の有効な範囲の値は通る", () => {
+        expect(() => parseXml('<Text opacity="0">test</Text>')).not.toThrow();
+        expect(() => parseXml('<Text opacity="1">test</Text>')).not.toThrow();
+        expect(() => parseXml('<Text opacity="0.5">test</Text>')).not.toThrow();
+      });
+    });
+
+    describe("ネストデータのバリデーション", () => {
+      it("Tree の data 内でネストした必須項目欠落をエラーにする", () => {
+        const data = JSON.stringify({
+          label: "root",
+          children: [{}],
+        });
+        expect(() => parseXml(`<Tree data='${data}' />`)).toThrow(
+          ParseXmlError,
+        );
+      });
+
+      it("Chart の data 内で labels 欠落をエラーにする", () => {
+        const data = JSON.stringify([{ name: "S", values: [1] }]);
+        expect(() =>
+          parseXml(`<Chart chartType="bar" data='${data}' />`),
+        ).toThrow(ParseXmlError);
       });
     });
   });
