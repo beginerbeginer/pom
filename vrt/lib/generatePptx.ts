@@ -1,4 +1,4 @@
-import { POMNode, buildPptx, parseXml } from "../../src";
+import { buildPptx } from "../../src";
 
 const palette = {
   background: "F8FAFC",
@@ -16,4468 +16,1407 @@ const palette = {
 // Page 1: Text Node Test
 // テスト対象: fontPx, color, alignText, bold, italic, underline, strike, highlight, fontFamily, lineSpacingMultiple
 // ============================================================
-const page1Text: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 1: Text Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // fontPx variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "fontPx:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              { type: "text", text: "12px", fontPx: 12 },
-              { type: "text", text: "18px", fontPx: 18 },
-              { type: "text", text: "24px", fontPx: 24 },
-              { type: "text", text: "36px", fontPx: 36 },
-            ],
-          },
-        ],
-      },
-    },
-    // color variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "color:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "center",
-            children: [
-              {
-                type: "text",
-                text: "charcoal",
-                fontPx: 16,
-                color: palette.charcoal,
-              },
-              { type: "text", text: "blue", fontPx: 16, color: palette.blue },
-              { type: "text", text: "red", fontPx: 16, color: palette.red },
-              { type: "text", text: "green", fontPx: 16, color: palette.green },
-            ],
-          },
-        ],
-      },
-    },
-    // alignText variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "alignText:", fontPx: 14, bold: true },
-          {
-            type: "vstack",
-            gap: 4,
-            children: [
-              {
-                type: "box",
-                w: "100%",
-                backgroundColor: palette.lightBlue,
-                padding: 8,
-                children: {
-                  type: "text",
-                  text: "left (default)",
-                  fontPx: 14,
-                  alignText: "left",
-                },
-              },
-              {
-                type: "box",
-                w: "100%",
-                backgroundColor: palette.lightBlue,
-                padding: 8,
-                children: {
-                  type: "text",
-                  text: "center",
-                  fontPx: 14,
-                  alignText: "center",
-                },
-              },
-              {
-                type: "box",
-                w: "100%",
-                backgroundColor: palette.lightBlue,
-                padding: 8,
-                children: {
-                  type: "text",
-                  text: "right",
-                  fontPx: 14,
-                  alignText: "right",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // bold variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "bold:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "center",
-            children: [
-              { type: "text", text: "Normal text", fontPx: 16 },
-              { type: "text", text: "Bold text", fontPx: 16, bold: true },
-            ],
-          },
-        ],
-      },
-    },
-    // italic variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "italic:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "center",
-            children: [
-              { type: "text", text: "Normal text", fontPx: 16 },
-              { type: "text", text: "Italic text", fontPx: 16, italic: true },
-            ],
-          },
-        ],
-      },
-    },
-    // underline variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "underline:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "center",
-            children: [
-              { type: "text", text: "Normal", fontPx: 16 },
-              {
-                type: "text",
-                text: "Underline (bool)",
-                fontPx: 16,
-                underline: true,
-              },
-              {
-                type: "text",
-                text: "Underline (wavy)",
-                fontPx: 16,
-                underline: { style: "wavy" },
-              },
-              {
-                type: "text",
-                text: "Underline (dbl + color)",
-                fontPx: 16,
-                underline: { style: "dbl", color: "DC2626" },
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // strike & highlight variations
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "strike:", fontPx: 14, bold: true },
-              {
-                type: "hstack",
-                gap: 24,
-                alignItems: "center",
-                children: [
-                  { type: "text", text: "Normal", fontPx: 16 },
-                  {
-                    type: "text",
-                    text: "Strike text",
-                    fontPx: 16,
-                    strike: true,
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "highlight:", fontPx: 14, bold: true },
-              {
-                type: "hstack",
-                gap: 24,
-                alignItems: "center",
-                children: [
-                  { type: "text", text: "Normal", fontPx: 16 },
-                  {
-                    type: "text",
-                    text: "Yellow highlight",
-                    fontPx: 16,
-                    highlight: "FFFF00",
-                  },
-                  {
-                    type: "text",
-                    text: "Cyan highlight",
-                    fontPx: 16,
-                    highlight: "00FFFF",
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-    // fontFamily & lineSpacingMultiple
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "fontFamily:", fontPx: 14, bold: true },
-              {
-                type: "text",
-                text: "Noto Sans JP",
-                fontPx: 16,
-                fontFamily: "Noto Sans JP",
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "lineSpacingMultiple:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "text",
-                text: "Line 1\nLine 2\nLine 3",
-                fontPx: 14,
-                lineSpacingMultiple: 1.5,
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page1TextXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 1: Text Node Test</Text>
+  <!-- fontPx variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">fontPx:</Text>
+      <HStack gap="24" alignItems="end">
+        <Text fontPx="12">12px</Text>
+        <Text fontPx="18">18px</Text>
+        <Text fontPx="24">24px</Text>
+        <Text fontPx="36">36px</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- color variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">color:</Text>
+      <HStack gap="24" alignItems="center">
+        <Text fontPx="16" color="${palette.charcoal}">charcoal</Text>
+        <Text fontPx="16" color="${palette.blue}">blue</Text>
+        <Text fontPx="16" color="${palette.red}">red</Text>
+        <Text fontPx="16" color="${palette.green}">green</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- alignText variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">alignText:</Text>
+      <VStack gap="4">
+        <Box w="100%" backgroundColor="${palette.lightBlue}" padding="8">
+          <Text fontPx="14" alignText="left">left (default)</Text>
+        </Box>
+        <Box w="100%" backgroundColor="${palette.lightBlue}" padding="8">
+          <Text fontPx="14" alignText="center">center</Text>
+        </Box>
+        <Box w="100%" backgroundColor="${palette.lightBlue}" padding="8">
+          <Text fontPx="14" alignText="right">right</Text>
+        </Box>
+      </VStack>
+    </VStack>
+  </Box>
+  <!-- bold variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">bold:</Text>
+      <HStack gap="24" alignItems="center">
+        <Text fontPx="16">Normal text</Text>
+        <Text fontPx="16" bold="true">Bold text</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- italic variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">italic:</Text>
+      <HStack gap="24" alignItems="center">
+        <Text fontPx="16">Normal text</Text>
+        <Text fontPx="16" italic="true">Italic text</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- underline variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">underline:</Text>
+      <HStack gap="24" alignItems="center">
+        <Text fontPx="16">Normal</Text>
+        <Text fontPx="16" underline="true">Underline (bool)</Text>
+        <Text fontPx="16" underline='{"style":"wavy"}'>Underline (wavy)</Text>
+        <Text fontPx="16" underline='{"style":"dbl","color":"DC2626"}'>Underline (dbl + color)</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- strike & highlight variations -->
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">strike:</Text>
+        <HStack gap="24" alignItems="center">
+          <Text fontPx="16">Normal</Text>
+          <Text fontPx="16" strike="true">Strike text</Text>
+        </HStack>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">highlight:</Text>
+        <HStack gap="24" alignItems="center">
+          <Text fontPx="16">Normal</Text>
+          <Text fontPx="16" highlight="FFFF00">Yellow highlight</Text>
+          <Text fontPx="16" highlight="00FFFF">Cyan highlight</Text>
+        </HStack>
+      </VStack>
+    </Box>
+  </HStack>
+  <!-- fontFamily & lineSpacingMultiple -->
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">fontFamily:</Text>
+        <Text fontPx="16" fontFamily="Noto Sans JP">Noto Sans JP</Text>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">lineSpacingMultiple:</Text>
+        <Text fontPx="14" lineSpacingMultiple="1.5">Line 1\nLine 2\nLine 3</Text>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 2: Bullet Test
 // テスト対象: bullet: true, type, numberType, numberStartAt
 // ============================================================
-const page2Bullet: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 2: Bullet Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "bullet: true",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "text",
-                text: "Item A\nItem B\nItem C",
-                fontPx: 14,
-                bullet: true,
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: 'type: "number"',
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "text",
-                text: "First\nSecond\nThird",
-                fontPx: 14,
-                bullet: { type: "number" },
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "alphaLcPeriod (a. b. c.)",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "text",
-                text: "Alpha\nBeta\nGamma",
-                fontPx: 14,
-                bullet: { type: "number", numberType: "alphaLcPeriod" },
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "romanLcPeriod (i. ii. iii.)",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "text",
-                text: "Roman I\nRoman II\nRoman III",
-                fontPx: 14,
-                bullet: { type: "number", numberType: "romanLcPeriod" },
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          {
-            type: "text",
-            text: "numberStartAt: 5",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "text",
-            text: "Starts at 5\nContinues 6\nAnd 7",
-            fontPx: 14,
-            bullet: { type: "number", numberStartAt: 5 },
-          },
-        ],
-      },
-    },
-  ],
-};
+const page2BulletXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 2: Bullet Test</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">bullet: true</Text>
+        <Text fontPx="14" bullet="true">Item A\nItem B\nItem C</Text>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">type: "number"</Text>
+        <Text fontPx="14" bullet='{"type":"number"}'>First\nSecond\nThird</Text>
+      </VStack>
+    </Box>
+  </HStack>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">alphaLcPeriod (a. b. c.)</Text>
+        <Text fontPx="14" bullet='{"type":"number","numberType":"alphaLcPeriod"}'>Alpha\nBeta\nGamma</Text>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">romanLcPeriod (i. ii. iii.)</Text>
+        <Text fontPx="14" bullet='{"type":"number","numberType":"romanLcPeriod"}'>Roman I\nRoman II\nRoman III</Text>
+      </VStack>
+    </Box>
+  </HStack>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">numberStartAt: 5</Text>
+      <Text fontPx="14" bullet='{"type":"number","numberStartAt":5}'>Starts at 5\nContinues 6\nAnd 7</Text>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 3: Image Test
 // テスト対象: src, w, h
 // ============================================================
-const page3Image: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 3: Image Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Size variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                    w: 60,
-                    h: 60,
-                  },
-                  { type: "text", text: "60x60", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_1.png",
-                    w: 120,
-                    h: 90,
-                  },
-                  { type: "text", text: "120x90", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                    w: 180,
-                    h: 135,
-                  },
-                  { type: "text", text: "180x135", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Image with container styling:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "start",
-            children: [
-              {
-                type: "box",
-                padding: 12,
-                backgroundColor: palette.lightBlue,
-                border: { color: palette.blue, width: 2 },
-                children: {
-                  type: "image",
-                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                  w: 80,
-                  h: 80,
-                },
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                children: [
-                  {
-                    type: "text",
-                    text: "Image in styled Box",
-                    fontPx: 16,
-                    bold: true,
-                  },
-                  {
-                    type: "text",
-                    text: "Box with padding, backgroundColor, border",
-                    fontPx: 12,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page3ImageXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 3: Image Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Size variations:</Text>
+      <HStack gap="24" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="60" h="60" />
+          <Text fontPx="12">60x60</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_1.png" w="120" h="90" />
+          <Text fontPx="12">120x90</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="180" h="135" />
+          <Text fontPx="12">180x135</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Image with container styling:</Text>
+      <HStack gap="16" alignItems="start">
+        <Box padding="12" backgroundColor="${palette.lightBlue}" border='{"color":"${palette.blue}","width":2}'>
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="80" h="80" />
+        </Box>
+        <VStack gap="4">
+          <Text fontPx="16" bold="true">Image in styled Box</Text>
+          <Text fontPx="12">Box with padding, backgroundColor, border</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 3b: Image Sizing Test
 // テスト対象: sizing (contain, cover, crop)
 // ============================================================
-const page3bImageSizing: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 3b: Image Sizing Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Sizing modes:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                    w: 150,
-                    h: 150,
-                    sizing: { type: "contain" },
-                  },
-                  { type: "text", text: "contain", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                    w: 150,
-                    h: 150,
-                    sizing: { type: "cover" },
-                  },
-                  { type: "text", text: "cover", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "image",
-                    src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                    w: 150,
-                    h: 150,
-                    sizing: { type: "crop", w: 100, h: 100, x: 10, y: 10 },
-                  },
-                  { type: "text", text: "crop (100x100)", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page3bImageSizingXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 3b: Image Sizing Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Sizing modes:</Text>
+      <HStack gap="24" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="150" h="150" sizing='{"type":"contain"}' />
+          <Text fontPx="12">contain</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="150" h="150" sizing='{"type":"cover"}' />
+          <Text fontPx="12">cover</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Image src="https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png" w="150" h="150" sizing='{"type":"crop","w":100,"h":100,"x":10,"y":10}' />
+          <Text fontPx="12">crop (100x100)</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 4: Table Test
 // テスト対象: columns, rows, defaultRowHeight, セルプロパティ
 // ============================================================
-const page4Table: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 4: Table Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Basic table (header + data rows):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "table",
-            defaultRowHeight: 32,
-            columns: [{ width: 100 }, { width: 200 }, { width: 100 }],
-            rows: [
-              {
-                cells: [
-                  {
-                    text: "ID",
-                    fontPx: 14,
-                    bold: true,
-                    backgroundColor: palette.lightBlue,
-                  },
-                  {
-                    text: "Name",
-                    fontPx: 14,
-                    bold: true,
-                    backgroundColor: palette.lightBlue,
-                  },
-                  {
-                    text: "Status",
-                    fontPx: 14,
-                    bold: true,
-                    backgroundColor: palette.lightBlue,
-                  },
-                ],
-              },
-              {
-                cells: [
-                  { text: "001", fontPx: 13 },
-                  { text: "Item Alpha", fontPx: 13 },
-                  { text: "Active", fontPx: 13 },
-                ],
-              },
-              {
-                cells: [
-                  { text: "002", fontPx: 13 },
-                  { text: "Item Beta", fontPx: 13 },
-                  { text: "Pending", fontPx: 13 },
-                ],
-              },
-              {
-                cells: [
-                  { text: "003", fontPx: 13 },
-                  { text: "Item Gamma", fontPx: 13 },
-                  { text: "Done", fontPx: 13 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Cell alignText (left / center / right):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "table",
-            defaultRowHeight: 32,
-            columns: [{ width: 150 }, { width: 150 }, { width: 150 }],
-            rows: [
-              {
-                cells: [
-                  {
-                    text: "Left",
-                    fontPx: 13,
-                    alignText: "left",
-                    backgroundColor: palette.lightBlue,
-                  },
-                  {
-                    text: "Center",
-                    fontPx: 13,
-                    alignText: "center",
-                    backgroundColor: palette.lightBlue,
-                  },
-                  {
-                    text: "Right",
-                    fontPx: 13,
-                    alignText: "right",
-                    backgroundColor: palette.lightBlue,
-                  },
-                ],
-              },
-              {
-                cells: [
-                  { text: "Aligned left", fontPx: 13, alignText: "left" },
-                  { text: "Aligned center", fontPx: 13, alignText: "center" },
-                  { text: "Aligned right", fontPx: 13, alignText: "right" },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Cell backgroundColor & color:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "table",
-            defaultRowHeight: 32,
-            columns: [{ width: 150 }, { width: 150 }, { width: 150 }],
-            rows: [
-              {
-                cells: [
-                  {
-                    text: "Light Blue BG",
-                    fontPx: 13,
-                    backgroundColor: palette.lightBlue,
-                  },
-                  {
-                    text: "Navy BG + White",
-                    fontPx: 13,
-                    backgroundColor: palette.navy,
-                    color: "FFFFFF",
-                  },
-                  {
-                    text: "Blue text",
-                    fontPx: 13,
-                    color: palette.blue,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Column width omitted (auto equal split):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "table",
-            w: 450,
-            defaultRowHeight: 32,
-            columns: [{}, {}, {}],
-            rows: [
-              {
-                cells: [
-                  {
-                    text: "Col 1",
-                    fontPx: 13,
-                    backgroundColor: palette.lightBlue,
-                    bold: true,
-                  },
-                  {
-                    text: "Col 2",
-                    fontPx: 13,
-                    backgroundColor: palette.lightBlue,
-                    bold: true,
-                  },
-                  {
-                    text: "Col 3",
-                    fontPx: 13,
-                    backgroundColor: palette.lightBlue,
-                    bold: true,
-                  },
-                ],
-              },
-              {
-                cells: [
-                  { text: "150px each", fontPx: 13 },
-                  { text: "150px each", fontPx: 13 },
-                  { text: "150px each", fontPx: 13 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page4TableXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 4: Table Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Basic table (header + data rows):</Text>
+      <Table defaultRowHeight="32">
+        <Column width="100" />
+        <Column width="200" />
+        <Column width="100" />
+        <Row>
+          <Cell fontPx="14" bold="true" backgroundColor="${palette.lightBlue}">ID</Cell>
+          <Cell fontPx="14" bold="true" backgroundColor="${palette.lightBlue}">Name</Cell>
+          <Cell fontPx="14" bold="true" backgroundColor="${palette.lightBlue}">Status</Cell>
+        </Row>
+        <Row>
+          <Cell fontPx="13">001</Cell>
+          <Cell fontPx="13">Item Alpha</Cell>
+          <Cell fontPx="13">Active</Cell>
+        </Row>
+        <Row>
+          <Cell fontPx="13">002</Cell>
+          <Cell fontPx="13">Item Beta</Cell>
+          <Cell fontPx="13">Pending</Cell>
+        </Row>
+        <Row>
+          <Cell fontPx="13">003</Cell>
+          <Cell fontPx="13">Item Gamma</Cell>
+          <Cell fontPx="13">Done</Cell>
+        </Row>
+      </Table>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Cell alignText (left / center / right):</Text>
+      <Table defaultRowHeight="32">
+        <Column width="150" />
+        <Column width="150" />
+        <Column width="150" />
+        <Row>
+          <Cell fontPx="13" alignText="left" backgroundColor="${palette.lightBlue}">Left</Cell>
+          <Cell fontPx="13" alignText="center" backgroundColor="${palette.lightBlue}">Center</Cell>
+          <Cell fontPx="13" alignText="right" backgroundColor="${palette.lightBlue}">Right</Cell>
+        </Row>
+        <Row>
+          <Cell fontPx="13" alignText="left">Aligned left</Cell>
+          <Cell fontPx="13" alignText="center">Aligned center</Cell>
+          <Cell fontPx="13" alignText="right">Aligned right</Cell>
+        </Row>
+      </Table>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Cell backgroundColor &amp; color:</Text>
+      <Table defaultRowHeight="32">
+        <Column width="150" />
+        <Column width="150" />
+        <Column width="150" />
+        <Row>
+          <Cell fontPx="13" backgroundColor="${palette.lightBlue}">Light Blue BG</Cell>
+          <Cell fontPx="13" backgroundColor="${palette.navy}" color="FFFFFF">Navy BG + White</Cell>
+          <Cell fontPx="13" color="${palette.blue}">Blue text</Cell>
+        </Row>
+      </Table>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Column width omitted (auto equal split):</Text>
+      <Table w="450" defaultRowHeight="32">
+        <Column />
+        <Column />
+        <Column />
+        <Row>
+          <Cell fontPx="13" backgroundColor="${palette.lightBlue}" bold="true">Col 1</Cell>
+          <Cell fontPx="13" backgroundColor="${palette.lightBlue}" bold="true">Col 2</Cell>
+          <Cell fontPx="13" backgroundColor="${palette.lightBlue}" bold="true">Col 3</Cell>
+        </Row>
+        <Row>
+          <Cell fontPx="13">150px each</Cell>
+          <Cell fontPx="13">150px each</Cell>
+          <Cell fontPx="13">150px each</Cell>
+        </Row>
+      </Table>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 5: Shape Test
 // テスト対象: shapeType, fill, line, shadow, text
 // ============================================================
-const page5Shape: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 5: Shape Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "shapeType variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.lightBlue },
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "rect", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "ellipse",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.lightBlue },
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "ellipse", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "triangle",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.lightBlue },
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "triangle", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "roundRect",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.lightBlue },
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "roundRect", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "fill & line combinations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.blue },
-                  },
-                  { type: "text", text: "fill only", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 60,
-                    h: 40,
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "line only", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 60,
-                    h: 40,
-                    fill: { color: palette.lightBlue },
-                    line: { color: palette.blue, width: 2 },
-                  },
-                  { type: "text", text: "fill + line", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "line.dashType variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 80,
-                    h: 40,
-                    line: {
-                      color: palette.charcoal,
-                      width: 2,
-                      dashType: "solid",
-                    },
-                  },
-                  { type: "text", text: "solid", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 80,
-                    h: 40,
-                    line: {
-                      color: palette.charcoal,
-                      width: 2,
-                      dashType: "dash",
-                    },
-                  },
-                  { type: "text", text: "dash", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 80,
-                    h: 40,
-                    line: {
-                      color: palette.charcoal,
-                      width: 2,
-                      dashType: "dashDot",
-                    },
-                  },
-                  { type: "text", text: "dashDot", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Shape with text:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 24,
-            alignItems: "center",
-            children: [
-              {
-                type: "shape",
-                shapeType: "ellipse",
-                w: 80,
-                h: 80,
-                text: "Circle",
-                fontPx: 14,
-                fill: { color: palette.lightBlue },
-                line: { color: palette.blue, width: 2 },
-              },
-              {
-                type: "shape",
-                shapeType: "rect",
-                w: 100,
-                h: 50,
-                text: "Rectangle",
-                fontPx: 14,
-                bold: true,
-                fill: { color: palette.navy },
-                color: "FFFFFF",
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page5ShapeXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 5: Shape Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">shapeType variations:</Text>
+      <HStack gap="24" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">rect</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="ellipse" w="60" h="40" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">ellipse</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="triangle" w="60" h="40" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">triangle</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="roundRect" w="60" h="40" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">roundRect</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">fill &amp; line combinations:</Text>
+      <HStack gap="24" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
+          <Text fontPx="12">fill only</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="60" h="40" line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">line only</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}' />
+          <Text fontPx="12">fill + line</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">line.dashType variations:</Text>
+      <HStack gap="24" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="80" h="40" line='{"color":"${palette.charcoal}","width":2,"dashType":"solid"}' />
+          <Text fontPx="12">solid</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="80" h="40" line='{"color":"${palette.charcoal}","width":2,"dashType":"dash"}' />
+          <Text fontPx="12">dash</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Shape shapeType="rect" w="80" h="40" line='{"color":"${palette.charcoal}","width":2,"dashType":"dashDot"}' />
+          <Text fontPx="12">dashDot</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Shape with text:</Text>
+      <HStack gap="24" alignItems="center">
+        <Shape shapeType="ellipse" w="80" h="80" fontPx="14" fill='{"color":"${palette.lightBlue}"}' line='{"color":"${palette.blue}","width":2}'>Circle</Shape>
+        <Shape shapeType="rect" w="100" h="50" fontPx="14" bold="true" fill='{"color":"${palette.navy}"}' color="FFFFFF">Rectangle</Shape>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 6: Chart Test
 // テスト対象: chartType, data, showLegend, showTitle, chartColors
 // ============================================================
-const page6Chart: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 6: Chart Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "Bar Chart", fontPx: 14, bold: true },
-              {
-                type: "chart",
-                chartType: "bar",
-                w: 400,
-                h: 180,
-                data: [
-                  {
-                    name: "Sales",
-                    labels: ["Q1", "Q2", "Q3", "Q4"],
-                    values: [100, 200, 150, 300],
-                  },
-                  {
-                    name: "Profit",
-                    labels: ["Q1", "Q2", "Q3", "Q4"],
-                    values: [30, 60, 45, 90],
-                  },
-                ],
-                showLegend: true,
-                chartColors: ["0088CC", "00AA00"],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "Line Chart", fontPx: 14, bold: true },
-              {
-                type: "chart",
-                chartType: "line",
-                w: 400,
-                h: 180,
-                data: [
-                  {
-                    name: "Revenue",
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                    values: [50, 80, 60, 120, 100, 150],
-                  },
-                ],
-                showLegend: true,
-                chartColors: [palette.blue],
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "Pie Chart (with title)",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "chart",
-                chartType: "pie",
-                w: 400,
-                h: 180,
-                data: [
-                  {
-                    name: "Share",
-                    labels: ["A", "B", "C", "D"],
-                    values: [40, 30, 20, 10],
-                  },
-                ],
-                showLegend: true,
-                showTitle: true,
-                title: "Market Share",
-                chartColors: ["0088CC", "00AA00", "FF6600", "888888"],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              {
-                type: "text",
-                text: "Bar Chart (with title)",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "chart",
-                chartType: "bar",
-                w: 400,
-                h: 180,
-                data: [
-                  {
-                    name: "2023",
-                    labels: ["N", "S", "E", "W"],
-                    values: [250, 180, 220, 150],
-                  },
-                  {
-                    name: "2024",
-                    labels: ["N", "S", "E", "W"],
-                    values: [300, 200, 250, 180],
-                  },
-                ],
-                showLegend: true,
-                showTitle: true,
-                title: "Regional Sales",
-                chartColors: [palette.blue, palette.accent],
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page6ChartXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 6: Chart Test</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Bar Chart</Text>
+        <Chart chartType="bar" w="400" h="180" showLegend="true" chartColors='["0088CC","00AA00"]'>
+          <Series name="Sales">
+            <DataPoint label="Q1" value="100" />
+            <DataPoint label="Q2" value="200" />
+            <DataPoint label="Q3" value="150" />
+            <DataPoint label="Q4" value="300" />
+          </Series>
+          <Series name="Profit">
+            <DataPoint label="Q1" value="30" />
+            <DataPoint label="Q2" value="60" />
+            <DataPoint label="Q3" value="45" />
+            <DataPoint label="Q4" value="90" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Line Chart</Text>
+        <Chart chartType="line" w="400" h="180" showLegend="true" chartColors='["${palette.blue}"]'>
+          <Series name="Revenue">
+            <DataPoint label="Jan" value="50" />
+            <DataPoint label="Feb" value="80" />
+            <DataPoint label="Mar" value="60" />
+            <DataPoint label="Apr" value="120" />
+            <DataPoint label="May" value="100" />
+            <DataPoint label="Jun" value="150" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+  </HStack>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Pie Chart (with title)</Text>
+        <Chart chartType="pie" w="400" h="180" showLegend="true" showTitle="true" title="Market Share" chartColors='["0088CC","00AA00","FF6600","888888"]'>
+          <Series name="Share">
+            <DataPoint label="A" value="40" />
+            <DataPoint label="B" value="30" />
+            <DataPoint label="C" value="20" />
+            <DataPoint label="D" value="10" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Bar Chart (with title)</Text>
+        <Chart chartType="bar" w="400" h="180" showLegend="true" showTitle="true" title="Regional Sales" chartColors='["${palette.blue}","${palette.accent}"]'>
+          <Series name="2023">
+            <DataPoint label="N" value="250" />
+            <DataPoint label="S" value="180" />
+            <DataPoint label="E" value="220" />
+            <DataPoint label="W" value="150" />
+          </Series>
+          <Series name="2024">
+            <DataPoint label="N" value="300" />
+            <DataPoint label="S" value="200" />
+            <DataPoint label="E" value="250" />
+            <DataPoint label="W" value="180" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 7: Layout Test (VStack / HStack / Box)
 // テスト対象: gap, alignItems, justifyContent
 // ============================================================
-const page7Layout: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 7: Layout Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          { type: "text", text: "HStack gap:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 8,
-            alignItems: "stretch",
-            children: [
-              {
-                type: "box",
-                padding: 8,
-                backgroundColor: palette.lightBlue,
-                children: {
-                  type: "hstack",
-                  gap: 8,
-                  children: [
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                  ],
-                },
-              },
-              { type: "text", text: "gap: 8", fontPx: 12 },
-              {
-                type: "box",
-                padding: 8,
-                backgroundColor: palette.lightBlue,
-                children: {
-                  type: "hstack",
-                  gap: 32,
-                  children: [
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                    {
-                      type: "box",
-                      w: 40,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                  ],
-                },
-              },
-              { type: "text", text: "gap: 32", fontPx: 12 },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "HStack alignItems:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "stretch",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 120,
-                    h: 60,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      alignItems: "start",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 20,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 40,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "start", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 120,
-                    h: 60,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      alignItems: "center",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 20,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 40,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "center", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 120,
-                    h: 60,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      alignItems: "end",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 20,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 40,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "end", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 120,
-                    h: 60,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      alignItems: "stretch",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "stretch", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "HStack justifyContent:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "stretch",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 140,
-                    h: 40,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      justifyContent: "start",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "start", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 140,
-                    h: 40,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      justifyContent: "center",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "center", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 140,
-                    h: 40,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      gap: 4,
-                      justifyContent: "end",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "end", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 140,
-                    h: 40,
-                    padding: 4,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "hstack",
-                      justifyContent: "spaceBetween",
-                      children: [
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                        {
-                          type: "box",
-                          w: 30,
-                          h: 30,
-                          backgroundColor: palette.blue,
-                          children: { type: "text", text: "" },
-                        },
-                      ],
-                    },
-                  },
-                  { type: "text", text: "spaceBetween", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page7LayoutXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 7: Layout Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">HStack gap:</Text>
+      <HStack gap="8" alignItems="stretch">
+        <Box padding="8" backgroundColor="${palette.lightBlue}">
+          <HStack gap="8">
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          </HStack>
+        </Box>
+        <Text fontPx="12">gap: 8</Text>
+        <Box padding="8" backgroundColor="${palette.lightBlue}">
+          <HStack gap="32">
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            <Box w="40" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          </HStack>
+        </Box>
+        <Text fontPx="12">gap: 32</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">HStack alignItems:</Text>
+      <HStack gap="16" alignItems="stretch">
+        <VStack gap="4" alignItems="center">
+          <Box w="120" h="60" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" alignItems="start">
+              <Box w="30" h="20" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="40" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">start</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="120" h="60" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" alignItems="center">
+              <Box w="30" h="20" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="40" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">center</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="120" h="60" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" alignItems="end">
+              <Box w="30" h="20" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="40" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">end</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="120" h="60" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" alignItems="stretch">
+              <Box w="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">stretch</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">HStack justifyContent:</Text>
+      <HStack gap="16" alignItems="stretch">
+        <VStack gap="4" alignItems="center">
+          <Box w="140" h="40" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" justifyContent="start">
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">start</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="140" h="40" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" justifyContent="center">
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">center</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="140" h="40" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack gap="4" justifyContent="end">
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">end</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="140" h="40" padding="4" backgroundColor="${palette.lightBlue}">
+            <HStack justifyContent="spaceBetween">
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+              <Box w="30" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+            </HStack>
+          </Box>
+          <Text fontPx="12">spaceBetween</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 8: Common Properties Test
 // テスト対象: w/h, padding, backgroundColor, border
 // ============================================================
-const page8Common: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 8: Common Properties Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "w/h variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "end",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 80,
-                    h: 40,
-                    backgroundColor: palette.blue,
-                    children: { type: "text", text: "" },
-                  },
-                  { type: "text", text: "w:80, h:40", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: "30%",
-                    h: 40,
-                    backgroundColor: palette.blue,
-                    children: { type: "text", text: "" },
-                  },
-                  { type: "text", text: 'w:"30%"', fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "padding variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "start",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    padding: 8,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "box",
-                      w: 60,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                  },
-                  { type: "text", text: "padding: 8", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    padding: 24,
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "box",
-                      w: 60,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                  },
-                  { type: "text", text: "padding: 24", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    padding: { top: 20, right: 8, bottom: 4, left: 8 },
-                    backgroundColor: palette.lightBlue,
-                    children: {
-                      type: "box",
-                      w: 60,
-                      h: 30,
-                      backgroundColor: palette.blue,
-                      children: { type: "text", text: "" },
-                    },
-                  },
-                  { type: "text", text: "top:20, bottom:4", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "border variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "center",
-            children: [
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 80,
-                    h: 40,
-                    border: { color: palette.charcoal, width: 1 },
-                    children: { type: "text", text: "" },
-                  },
-                  { type: "text", text: "width: 1", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 80,
-                    h: 40,
-                    border: { color: palette.charcoal, width: 3 },
-                    children: { type: "text", text: "" },
-                  },
-                  { type: "text", text: "width: 3", fontPx: 12 },
-                ],
-              },
-              {
-                type: "vstack",
-                gap: 4,
-                alignItems: "center",
-                children: [
-                  {
-                    type: "box",
-                    w: 80,
-                    h: 40,
-                    border: { color: palette.blue, width: 2 },
-                    children: { type: "text", text: "" },
-                  },
-                  { type: "text", text: "color: blue", fontPx: 12 },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "backgroundColor variations:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "center",
-            children: [
-              {
-                type: "box",
-                w: 80,
-                h: 40,
-                backgroundColor: palette.lightBlue,
-                children: { type: "text", text: "" },
-              },
-              {
-                type: "box",
-                w: 80,
-                h: 40,
-                backgroundColor: palette.navy,
-                borderRadius: 8,
-                children: { type: "text", text: "" },
-              },
-              {
-                type: "box",
-                w: 80,
-                h: 40,
-                backgroundColor: palette.blue,
-                borderRadius: 16,
-                children: { type: "text", text: "" },
-              },
-              {
-                type: "box",
-                w: 80,
-                h: 40,
-                backgroundColor: palette.green,
-                borderRadius: 20,
-                children: { type: "text", text: "" },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page8CommonXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 8: Common Properties Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">w/h variations:</Text>
+      <HStack gap="16" alignItems="end">
+        <VStack gap="4" alignItems="center">
+          <Box w="80" h="40" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          <Text fontPx="12">w:80, h:40</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="30%" h="40" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          <Text fontPx="12">w:"30%"</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">padding variations:</Text>
+      <HStack gap="16" alignItems="start">
+        <VStack gap="4" alignItems="center">
+          <Box padding="8" backgroundColor="${palette.lightBlue}">
+            <Box w="60" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          </Box>
+          <Text fontPx="12">padding: 8</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box padding="24" backgroundColor="${palette.lightBlue}">
+            <Box w="60" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          </Box>
+          <Text fontPx="12">padding: 24</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box padding='{"top":20,"right":8,"bottom":4,"left":8}' backgroundColor="${palette.lightBlue}">
+            <Box w="60" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
+          </Box>
+          <Text fontPx="12">top:20, bottom:4</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">border variations:</Text>
+      <HStack gap="16" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Box w="80" h="40" border='{"color":"${palette.charcoal}","width":1}'><Text text=""></Text></Box>
+          <Text fontPx="12">width: 1</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="80" h="40" border='{"color":"${palette.charcoal}","width":3}'><Text text=""></Text></Box>
+          <Text fontPx="12">width: 3</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Box w="80" h="40" border='{"color":"${palette.blue}","width":2}'><Text text=""></Text></Box>
+          <Text fontPx="12">color: blue</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">backgroundColor variations:</Text>
+      <HStack gap="16" alignItems="center">
+        <Box w="80" h="40" backgroundColor="${palette.lightBlue}"><Text text=""></Text></Box>
+        <Box w="80" h="40" backgroundColor="${palette.navy}" borderRadius="8"><Text text=""></Text></Box>
+        <Box w="80" h="40" backgroundColor="${palette.blue}" borderRadius="16"><Text text=""></Text></Box>
+        <Box w="80" h="40" backgroundColor="${palette.green}" borderRadius="20"><Text text=""></Text></Box>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 9: Timeline Test
 // テスト対象: direction (horizontal/vertical), items, color
 // ============================================================
-const page9Timeline: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 9: Timeline Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Horizontal Timeline (Roadmap):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "timeline",
-            direction: "horizontal",
-            w: 1100,
-            h: 120,
-            items: [
-              {
-                date: "2025/Q1",
-                title: "Phase 1",
-                description: "基盤構築",
-                color: "4CAF50",
-              },
-              {
-                date: "2025/Q2",
-                title: "Phase 2",
-                description: "機能開発",
-                color: "2196F3",
-              },
-              {
-                date: "2025/Q3",
-                title: "Phase 3",
-                description: "テスト",
-                color: "FF9800",
-              },
-              {
-                date: "2025/Q4",
-                title: "Phase 4",
-                description: "リリース",
-                color: "E91E63",
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Vertical Timeline (Project Plan):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "timeline",
-                direction: "vertical",
-                w: 500,
-                h: 300,
-                items: [
-                  {
-                    date: "Week 1",
-                    title: "Planning",
-                    description: "要件定義・設計",
-                    color: palette.blue,
-                  },
-                  {
-                    date: "Week 2-3",
-                    title: "Development",
-                    description: "実装・レビュー",
-                    color: palette.accent,
-                  },
-                  {
-                    date: "Week 4",
-                    title: "Release",
-                    description: "デプロイ・監視",
-                    color: palette.green,
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Milestones (Default color):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "timeline",
-                direction: "vertical",
-                w: 500,
-                h: 300,
-                items: [
-                  { date: "Jan", title: "Kickoff" },
-                  { date: "Mar", title: "MVP Launch" },
-                  { date: "Jun", title: "GA Release" },
-                  { date: "Dec", title: "v2.0" },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page9TimelineXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 9: Timeline Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Horizontal Timeline (Roadmap):</Text>
+      <Timeline direction="horizontal" w="1100" h="120">
+        <TimelineItem date="2025/Q1" title="Phase 1" description="基盤構築" color="4CAF50" />
+        <TimelineItem date="2025/Q2" title="Phase 2" description="機能開発" color="2196F3" />
+        <TimelineItem date="2025/Q3" title="Phase 3" description="テスト" color="FF9800" />
+        <TimelineItem date="2025/Q4" title="Phase 4" description="リリース" color="E91E63" />
+      </Timeline>
+    </VStack>
+  </Box>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Vertical Timeline (Project Plan):</Text>
+        <Timeline direction="vertical" w="500" h="300">
+          <TimelineItem date="Week 1" title="Planning" description="要件定義・設計" color="${palette.blue}" />
+          <TimelineItem date="Week 2-3" title="Development" description="実装・レビュー" color="${palette.accent}" />
+          <TimelineItem date="Week 4" title="Release" description="デプロイ・監視" color="${palette.green}" />
+        </Timeline>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Milestones (Default color):</Text>
+        <Timeline direction="vertical" w="500" h="300">
+          <TimelineItem date="Jan" title="Kickoff" />
+          <TimelineItem date="Mar" title="MVP Launch" />
+          <TimelineItem date="Jun" title="GA Release" />
+          <TimelineItem date="Dec" title="v2.0" />
+        </Timeline>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 10: Additional Chart Types Test
 // テスト対象: area, doughnut, radar
 // ============================================================
-const page10ChartAdditional: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 10: Additional Chart Types",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "33%",
-          padding: 12,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "Area Chart", fontPx: 14, bold: true },
-              {
-                type: "chart",
-                chartType: "area",
-                w: 350,
-                h: 200,
-                data: [
-                  {
-                    name: "Revenue",
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-                    values: [30, 50, 40, 70, 60],
-                  },
-                ],
-                showLegend: true,
-                chartColors: ["0088CC"],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "33%",
-          padding: 12,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "Doughnut Chart", fontPx: 14, bold: true },
-              {
-                type: "chart",
-                chartType: "doughnut",
-                w: 350,
-                h: 200,
-                data: [
-                  {
-                    name: "Share",
-                    labels: ["A", "B", "C", "D"],
-                    values: [35, 25, 25, 15],
-                  },
-                ],
-                showLegend: true,
-                chartColors: ["0088CC", "00AA00", "FF6600", "888888"],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "33%",
-          padding: 12,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "Radar Chart", fontPx: 14, bold: true },
-              {
-                type: "chart",
-                chartType: "radar",
-                w: 350,
-                h: 200,
-                data: [
-                  {
-                    name: "Skills",
-                    labels: ["Tech", "Design", "PM", "Sales", "Support"],
-                    values: [80, 60, 70, 50, 90],
-                  },
-                ],
-                showLegend: true,
-                chartColors: ["0088CC"],
-                radarStyle: "filled",
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page10ChartAdditionalXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 10: Additional Chart Types</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Area Chart</Text>
+        <Chart chartType="area" w="350" h="200" showLegend="true" chartColors='["0088CC"]'>
+          <Series name="Revenue">
+            <DataPoint label="Jan" value="30" />
+            <DataPoint label="Feb" value="50" />
+            <DataPoint label="Mar" value="40" />
+            <DataPoint label="Apr" value="70" />
+            <DataPoint label="May" value="60" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+    <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Doughnut Chart</Text>
+        <Chart chartType="doughnut" w="350" h="200" showLegend="true" chartColors='["0088CC","00AA00","FF6600","888888"]'>
+          <Series name="Share">
+            <DataPoint label="A" value="35" />
+            <DataPoint label="B" value="25" />
+            <DataPoint label="C" value="25" />
+            <DataPoint label="D" value="15" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+    <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="8">
+        <Text fontPx="14" bold="true">Radar Chart</Text>
+        <Chart chartType="radar" w="350" h="200" showLegend="true" chartColors='["0088CC"]' radarStyle="filled">
+          <Series name="Skills">
+            <DataPoint label="Tech" value="80" />
+            <DataPoint label="Design" value="60" />
+            <DataPoint label="PM" value="70" />
+            <DataPoint label="Sales" value="50" />
+            <DataPoint label="Support" value="90" />
+          </Series>
+        </Chart>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 11: Matrix Test
 // テスト対象: axes, quadrants, items, coordinate system
 // ============================================================
-const page11Matrix: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 11: Matrix Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Cost-Effectiveness Matrix (with quadrants):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "matrix",
-                w: 500,
-                h: 400,
-                axes: { x: "コスト", y: "効果" },
-                quadrants: {
-                  topLeft: "低コスト高効果\n（優先実施）",
-                  topRight: "高コスト高効果\n（検討）",
-                  bottomLeft: "低コスト低効果\n（様子見）",
-                  bottomRight: "高コスト低効果\n（見送り）",
-                },
-                items: [
-                  { label: "施策A", x: 0.2, y: 0.8, color: "4CAF50" },
-                  { label: "施策B", x: 0.7, y: 0.6, color: "2196F3" },
-                  { label: "施策C", x: 0.3, y: 0.3, color: "FF9800" },
-                  { label: "施策D", x: 0.8, y: 0.2, color: "E91E63" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Impact-Effort Matrix (without quadrants):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "matrix",
-                w: 500,
-                h: 400,
-                axes: { x: "Effort", y: "Impact" },
-                items: [
-                  { label: "Quick Win", x: 0.15, y: 0.85 },
-                  { label: "Major Project", x: 0.75, y: 0.75 },
-                  { label: "Fill-In", x: 0.25, y: 0.25 },
-                  { label: "Time Sink", x: 0.85, y: 0.15 },
-                  { label: "Feature X", x: 0.5, y: 0.5 },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page11MatrixXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 11: Matrix Test</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Cost-Effectiveness Matrix (with quadrants):</Text>
+        <Matrix w="500" h="400">
+          <Axes x="コスト" y="効果" />
+          <Quadrants topLeft="低コスト高効果\n（優先実施）" topRight="高コスト高効果\n（検討）" bottomLeft="低コスト低効果\n（様子見）" bottomRight="高コスト低効果\n（見送り）" />
+          <MatrixItem label="施策A" x="0.2" y="0.8" color="4CAF50" />
+          <MatrixItem label="施策B" x="0.7" y="0.6" color="2196F3" />
+          <MatrixItem label="施策C" x="0.3" y="0.3" color="FF9800" />
+          <MatrixItem label="施策D" x="0.8" y="0.2" color="E91E63" />
+        </Matrix>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Impact-Effort Matrix (without quadrants):</Text>
+        <Matrix w="500" h="400">
+          <Axes x="Effort" y="Impact" />
+          <MatrixItem label="Quick Win" x="0.15" y="0.85" />
+          <MatrixItem label="Major Project" x="0.75" y="0.75" />
+          <MatrixItem label="Fill-In" x="0.25" y="0.25" />
+          <MatrixItem label="Time Sink" x="0.85" y="0.15" />
+          <MatrixItem label="Feature X" x="0.5" y="0.5" />
+        </Matrix>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 12: Tree Node Test
 // テスト対象: TreeNode - layout, nodeShape, data, connectorStyle
 // ============================================================
-const page12Tree: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 12: Tree Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Vertical Tree (Organization Chart):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "tree",
-                layout: "vertical",
-                nodeShape: "roundRect",
-                w: 550,
-                h: 350,
-                data: {
-                  label: "CEO",
-                  color: "1D4ED8",
-                  children: [
-                    {
-                      label: "CTO",
-                      color: "0EA5E9",
-                      children: [
-                        { label: "Engineer A" },
-                        { label: "Engineer B" },
-                      ],
-                    },
-                    {
-                      label: "CFO",
-                      color: "16A34A",
-                      children: [{ label: "Accountant" }],
-                    },
-                  ],
-                },
-                connectorStyle: { color: "333333", width: 2 },
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Horizontal Tree (Decision Tree):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "tree",
-                layout: "horizontal",
-                nodeShape: "rect",
-                w: 550,
-                h: 350,
-                data: {
-                  label: "Start",
-                  children: [
-                    {
-                      label: "Option A",
-                      children: [{ label: "Result 1" }, { label: "Result 2" }],
-                    },
-                    {
-                      label: "Option B",
-                      children: [{ label: "Result 3" }],
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Ellipse Nodes:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "tree",
-                layout: "vertical",
-                nodeShape: "ellipse",
-                w: 550,
-                h: 200,
-                nodeWidth: 100,
-                nodeHeight: 50,
-                data: {
-                  label: "Root",
-                  color: "DC2626",
-                  children: [
-                    { label: "Child 1", color: "2563EB" },
-                    { label: "Child 2", color: "16A34A" },
-                    { label: "Child 3", color: "CA8A04" },
-                  ],
-                },
-                connectorStyle: { color: "64748B", width: 1 },
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Custom Spacing:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "tree",
-                layout: "horizontal",
-                nodeShape: "roundRect",
-                w: 550,
-                h: 200,
-                nodeWidth: 80,
-                nodeHeight: 30,
-                levelGap: 80,
-                siblingGap: 10,
-                data: {
-                  label: "A",
-                  children: [
-                    { label: "B", children: [{ label: "D" }, { label: "E" }] },
-                    { label: "C", children: [{ label: "F" }] },
-                  ],
-                },
-                connectorStyle: { color: "0EA5E9", width: 3 },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page12TreeXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 12: Tree Node Test</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Vertical Tree (Organization Chart):</Text>
+        <Tree layout="vertical" nodeShape="roundRect" w="550" h="350" connectorStyle='{"color":"333333","width":2}'>
+          <TreeItem label="CEO" color="1D4ED8">
+            <TreeItem label="CTO" color="0EA5E9">
+              <TreeItem label="Engineer A" />
+              <TreeItem label="Engineer B" />
+            </TreeItem>
+            <TreeItem label="CFO" color="16A34A">
+              <TreeItem label="Accountant" />
+            </TreeItem>
+          </TreeItem>
+        </Tree>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Horizontal Tree (Decision Tree):</Text>
+        <Tree layout="horizontal" nodeShape="rect" w="550" h="350">
+          <TreeItem label="Start">
+            <TreeItem label="Option A">
+              <TreeItem label="Result 1" />
+              <TreeItem label="Result 2" />
+            </TreeItem>
+            <TreeItem label="Option B">
+              <TreeItem label="Result 3" />
+            </TreeItem>
+          </TreeItem>
+        </Tree>
+      </VStack>
+    </Box>
+  </HStack>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Ellipse Nodes:</Text>
+        <Tree layout="vertical" nodeShape="ellipse" w="550" h="200" nodeWidth="100" nodeHeight="50" connectorStyle='{"color":"64748B","width":1}'>
+          <TreeItem label="Root" color="DC2626">
+            <TreeItem label="Child 1" color="2563EB" />
+            <TreeItem label="Child 2" color="16A34A" />
+            <TreeItem label="Child 3" color="CA8A04" />
+          </TreeItem>
+        </Tree>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Custom Spacing:</Text>
+        <Tree layout="horizontal" nodeShape="roundRect" w="550" h="200" nodeWidth="80" nodeHeight="30" levelGap="80" siblingGap="10" connectorStyle='{"color":"0EA5E9","width":3}'>
+          <TreeItem label="A">
+            <TreeItem label="B">
+              <TreeItem label="D" />
+              <TreeItem label="E" />
+            </TreeItem>
+            <TreeItem label="C">
+              <TreeItem label="F" />
+            </TreeItem>
+          </TreeItem>
+        </Tree>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 13: Flow Node Test
 // テスト対象: FlowNode - direction, nodes, connections, connectorStyle
 // ============================================================
-const page13Flow: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 13: Flow Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Horizontal Flow (Basic Process):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "flow",
-                direction: "horizontal",
-                w: 550,
-                h: 150,
-                nodes: [
-                  { id: "start", shape: "flowChartTerminator", text: "開始" },
-                  { id: "process1", shape: "flowChartProcess", text: "処理A" },
-                  { id: "process2", shape: "flowChartProcess", text: "処理B" },
-                  { id: "end", shape: "flowChartTerminator", text: "終了" },
-                ],
-                connections: [
-                  { from: "start", to: "process1" },
-                  { from: "process1", to: "process2" },
-                  { from: "process2", to: "end" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Vertical Flow (Simple):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "flow",
-                direction: "vertical",
-                w: 550,
-                h: 300,
-                nodes: [
-                  {
-                    id: "start",
-                    shape: "flowChartTerminator",
-                    text: "開始",
-                    color: "4CAF50",
-                  },
-                  {
-                    id: "input",
-                    shape: "flowChartInputOutput",
-                    text: "データ入力",
-                  },
-                  { id: "process", shape: "flowChartProcess", text: "処理" },
-                  {
-                    id: "end",
-                    shape: "flowChartTerminator",
-                    text: "終了",
-                    color: "E91E63",
-                  },
-                ],
-                connections: [
-                  { from: "start", to: "input" },
-                  { from: "input", to: "process" },
-                  { from: "process", to: "end" },
-                ],
-                connectorStyle: { color: "333333", width: 2 },
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Flow with Decision:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "flow",
-                direction: "horizontal",
-                w: 550,
-                h: 150,
-                nodes: [
-                  { id: "start", shape: "flowChartTerminator", text: "開始" },
-                  {
-                    id: "decision",
-                    shape: "flowChartDecision",
-                    text: "条件?",
-                    color: "FF9800",
-                  },
-                  {
-                    id: "yes",
-                    shape: "flowChartProcess",
-                    text: "Yes処理",
-                    color: "4CAF50",
-                  },
-                  { id: "end", shape: "flowChartTerminator", text: "終了" },
-                ],
-                connections: [
-                  { from: "start", to: "decision" },
-                  { from: "decision", to: "yes", label: "Yes" },
-                  { from: "yes", to: "end" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Custom Node Colors:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "flow",
-                direction: "horizontal",
-                w: 550,
-                h: 150,
-                nodes: [
-                  {
-                    id: "doc",
-                    shape: "flowChartDocument",
-                    text: "ドキュメント",
-                    color: "2196F3",
-                  },
-                  {
-                    id: "db",
-                    shape: "flowChartMagneticDisk",
-                    text: "DB",
-                    color: "9C27B0",
-                  },
-                  {
-                    id: "prep",
-                    shape: "flowChartPreparation",
-                    text: "準備",
-                    color: "009688",
-                  },
-                ],
-                connections: [
-                  { from: "doc", to: "db" },
-                  { from: "db", to: "prep" },
-                ],
-                connectorStyle: {
-                  color: "64748B",
-                  width: 2,
-                  arrowType: "arrow",
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page13FlowXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 13: Flow Node Test</Text>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Horizontal Flow (Basic Process):</Text>
+        <Flow direction="horizontal" w="550" h="150">
+          <FlowNode id="start" shape="flowChartTerminator" text="開始" />
+          <FlowNode id="process1" shape="flowChartProcess" text="処理A" />
+          <FlowNode id="process2" shape="flowChartProcess" text="処理B" />
+          <FlowNode id="end" shape="flowChartTerminator" text="終了" />
+          <Connection from="start" to="process1" />
+          <Connection from="process1" to="process2" />
+          <Connection from="process2" to="end" />
+        </Flow>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Vertical Flow (Simple):</Text>
+        <Flow direction="vertical" w="550" h="300" connectorStyle='{"color":"333333","width":2}'>
+          <FlowNode id="start" shape="flowChartTerminator" text="開始" color="4CAF50" />
+          <FlowNode id="input" shape="flowChartInputOutput" text="データ入力" />
+          <FlowNode id="process" shape="flowChartProcess" text="処理" />
+          <FlowNode id="end" shape="flowChartTerminator" text="終了" color="E91E63" />
+          <Connection from="start" to="input" />
+          <Connection from="input" to="process" />
+          <Connection from="process" to="end" />
+        </Flow>
+      </VStack>
+    </Box>
+  </HStack>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Flow with Decision:</Text>
+        <Flow direction="horizontal" w="550" h="150">
+          <FlowNode id="start" shape="flowChartTerminator" text="開始" />
+          <FlowNode id="decision" shape="flowChartDecision" text="条件?" color="FF9800" />
+          <FlowNode id="yes" shape="flowChartProcess" text="Yes処理" color="4CAF50" />
+          <FlowNode id="end" shape="flowChartTerminator" text="終了" />
+          <Connection from="start" to="decision" />
+          <Connection from="decision" to="yes" label="Yes" />
+          <Connection from="yes" to="end" />
+        </Flow>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Custom Node Colors:</Text>
+        <Flow direction="horizontal" w="550" h="150" connectorStyle='{"color":"64748B","width":2,"arrowType":"arrow"}'>
+          <FlowNode id="doc" shape="flowChartDocument" text="ドキュメント" color="2196F3" />
+          <FlowNode id="db" shape="flowChartMagneticDisk" text="DB" color="9C27B0" />
+          <FlowNode id="prep" shape="flowChartPreparation" text="準備" color="009688" />
+          <Connection from="doc" to="db" />
+          <Connection from="db" to="prep" />
+        </Flow>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 14: ProcessArrow Node Test
 // テスト対象: ProcessArrowNode - direction, steps, itemWidth, itemHeight, gap
 // ============================================================
-const page14ProcessArrow: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 14: ProcessArrow Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Horizontal Process Arrow (5 steps with colors):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "processArrow",
-            direction: "horizontal",
-            w: 1100,
-            h: 80,
-            steps: [
-              { label: "企画", color: "#4472C4" },
-              { label: "設計", color: "#5B9BD5" },
-              { label: "開発", color: "#70AD47" },
-              { label: "テスト", color: "#FFC000" },
-              { label: "リリース", color: "#ED7D31" },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "3 Steps (Auto width):",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "processArrow",
-                direction: "horizontal",
-                w: 500,
-                h: 60,
-                steps: [
-                  { label: "Input" },
-                  { label: "Process" },
-                  { label: "Output" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Single Step:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "processArrow",
-                direction: "horizontal",
-                w: 500,
-                h: 60,
-                steps: [{ label: "Only One Step", color: "#E91E63" }],
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Custom itemWidth, itemHeight & fontPx:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "processArrow",
-            direction: "horizontal",
-            w: 1100,
-            h: 100,
-            itemWidth: 200,
-            itemHeight: 80,
-            fontPx: 18,
-            bold: true,
-            steps: [
-              { label: "Step 1", color: "#2196F3" },
-              { label: "Step 2", color: "#00BCD4" },
-              { label: "Step 3", color: "#009688" },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Vertical Process Arrow:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "processArrow",
-                direction: "vertical",
-                w: 200,
-                h: 250,
-                steps: [
-                  { label: "Phase 1", color: "#4CAF50" },
-                  { label: "Phase 2", color: "#2196F3" },
-                  { label: "Phase 3", color: "#9C27B0" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Custom textColor:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "processArrow",
-                direction: "horizontal",
-                w: 500,
-                h: 60,
-                steps: [
-                  { label: "Light BG", color: "#FFEB3B", textColor: "#333333" },
-                  { label: "Dark BG", color: "#1E293B", textColor: "#FFFFFF" },
-                  { label: "Blue BG", color: "#1D4ED8", textColor: "#FFFFFF" },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+const page14ProcessArrowXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 14: ProcessArrow Node Test</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Horizontal Process Arrow (5 steps with colors):</Text>
+      <ProcessArrow direction="horizontal" w="1100" h="80">
+        <Step label="企画" color="#4472C4" />
+        <Step label="設計" color="#5B9BD5" />
+        <Step label="開発" color="#70AD47" />
+        <Step label="テスト" color="#FFC000" />
+        <Step label="リリース" color="#ED7D31" />
+      </ProcessArrow>
+    </VStack>
+  </Box>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">3 Steps (Auto width):</Text>
+        <ProcessArrow direction="horizontal" w="500" h="60">
+          <Step label="Input" />
+          <Step label="Process" />
+          <Step label="Output" />
+        </ProcessArrow>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Single Step:</Text>
+        <ProcessArrow direction="horizontal" w="500" h="60">
+          <Step label="Only One Step" color="#E91E63" />
+        </ProcessArrow>
+      </VStack>
+    </Box>
+  </HStack>
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Custom itemWidth, itemHeight &amp; fontPx:</Text>
+      <ProcessArrow direction="horizontal" w="1100" h="100" itemWidth="200" itemHeight="80" fontPx="18" bold="true">
+        <Step label="Step 1" color="#2196F3" />
+        <Step label="Step 2" color="#00BCD4" />
+        <Step label="Step 3" color="#009688" />
+      </ProcessArrow>
+    </VStack>
+  </Box>
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Vertical Process Arrow:</Text>
+        <ProcessArrow direction="vertical" w="200" h="250">
+          <Step label="Phase 1" color="#4CAF50" />
+          <Step label="Phase 2" color="#2196F3" />
+          <Step label="Phase 3" color="#9C27B0" />
+        </ProcessArrow>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Custom textColor:</Text>
+        <ProcessArrow direction="horizontal" w="500" h="60">
+          <Step label="Light BG" color="#FFEB3B" textColor="#333333" />
+          <Step label="Dark BG" color="#1E293B" textColor="#FFFFFF" />
+          <Step label="Blue BG" color="#1D4ED8" textColor="#FFFFFF" />
+        </ProcessArrow>
+      </VStack>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 15: Line Node Test
 // テスト対象: LineNode - x1, y1, x2, y2, color, lineWidth, dashType, beginArrow, endArrow
 // ============================================================
-const page15Line: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 16,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 15: Line Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // 水平線・垂直線・斜線
-    {
-      type: "line",
-      x1: 100,
-      y1: 100,
-      x2: 300,
-      y2: 100,
-      color: "FF0000",
-      lineWidth: 2,
-    },
-    {
-      type: "line",
-      x1: 100,
-      y1: 120,
-      x2: 100,
-      y2: 250,
-      color: "00FF00",
-      lineWidth: 2,
-    },
-    {
-      type: "line",
-      x1: 150,
-      y1: 120,
-      x2: 300,
-      y2: 250,
-      color: "0000FF",
-      lineWidth: 2,
-    },
-    {
-      type: "line",
-      x1: 350,
-      y1: 120,
-      x2: 200,
-      y2: 250,
-      color: "FF00FF",
-      lineWidth: 2,
-    },
-    // 矢印付き線
-    {
-      type: "line",
-      x1: 400,
-      y1: 100,
-      x2: 600,
-      y2: 100,
-      color: "333333",
-      lineWidth: 2,
-      endArrow: true,
-    },
-    {
-      type: "line",
-      x1: 400,
-      y1: 130,
-      x2: 600,
-      y2: 130,
-      color: "333333",
-      lineWidth: 2,
-      beginArrow: true,
-      endArrow: true,
-    },
-    // 矢印タイプ指定
-    {
-      type: "line",
-      x1: 400,
-      y1: 160,
-      x2: 600,
-      y2: 160,
-      color: "1D4ED8",
-      lineWidth: 2,
-      endArrow: { type: "diamond" },
-    },
-    {
-      type: "line",
-      x1: 400,
-      y1: 190,
-      x2: 600,
-      y2: 190,
-      color: "16A34A",
-      lineWidth: 2,
-      endArrow: { type: "stealth" },
-    },
-    {
-      type: "line",
-      x1: 400,
-      y1: 220,
-      x2: 600,
-      y2: 220,
-      color: "DC2626",
-      lineWidth: 2,
-      endArrow: { type: "oval" },
-    },
-    // 破線
-    {
-      type: "line",
-      x1: 650,
-      y1: 100,
-      x2: 850,
-      y2: 100,
-      color: "333333",
-      lineWidth: 2,
-      dashType: "dash",
-    },
-    {
-      type: "line",
-      x1: 650,
-      y1: 130,
-      x2: 850,
-      y2: 130,
-      color: "333333",
-      lineWidth: 2,
-      dashType: "dashDot",
-    },
-    {
-      type: "line",
-      x1: 650,
-      y1: 160,
-      x2: 850,
-      y2: 160,
-      color: "333333",
-      lineWidth: 2,
-      dashType: "lgDash",
-    },
-    // 太さのバリエーション
-    {
-      type: "line",
-      x1: 650,
-      y1: 200,
-      x2: 850,
-      y2: 200,
-      color: "0F172A",
-      lineWidth: 1,
-    },
-    {
-      type: "line",
-      x1: 650,
-      y1: 220,
-      x2: 850,
-      y2: 220,
-      color: "0F172A",
-      lineWidth: 3,
-    },
-    {
-      type: "line",
-      x1: 650,
-      y1: 245,
-      x2: 850,
-      y2: 245,
-      color: "0F172A",
-      lineWidth: 6,
-    },
-    // 斜線 + 矢印（4方向）
-    {
-      type: "line",
-      x1: 900,
-      y1: 100,
-      x2: 1050,
-      y2: 200,
-      color: palette.blue,
-      lineWidth: 2,
-      endArrow: true,
-    },
-    {
-      type: "line",
-      x1: 1100,
-      y1: 100,
-      x2: 950,
-      y2: 200,
-      color: palette.red,
-      lineWidth: 2,
-      endArrow: true,
-    },
-    {
-      type: "line",
-      x1: 900,
-      y1: 250,
-      x2: 1050,
-      y2: 150,
-      color: palette.green,
-      lineWidth: 2,
-      endArrow: true,
-    },
-    {
-      type: "line",
-      x1: 1100,
-      y1: 250,
-      x2: 950,
-      y2: 150,
-      color: "FF6600",
-      lineWidth: 2,
-      endArrow: true,
-    },
-  ],
-};
+const page15LineXml = `
+<VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 15: Line Node Test</Text>
+  <!-- 水平線・垂直線・斜線 -->
+  <Line x1="100" y1="100" x2="300" y2="100" color="FF0000" lineWidth="2" />
+  <Line x1="100" y1="120" x2="100" y2="250" color="00FF00" lineWidth="2" />
+  <Line x1="150" y1="120" x2="300" y2="250" color="0000FF" lineWidth="2" />
+  <Line x1="350" y1="120" x2="200" y2="250" color="FF00FF" lineWidth="2" />
+  <!-- 矢印付き線 -->
+  <Line x1="400" y1="100" x2="600" y2="100" color="333333" lineWidth="2" endArrow="true" />
+  <Line x1="400" y1="130" x2="600" y2="130" color="333333" lineWidth="2" beginArrow="true" endArrow="true" />
+  <!-- 矢印タイプ指定 -->
+  <Line x1="400" y1="160" x2="600" y2="160" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
+  <Line x1="400" y1="190" x2="600" y2="190" color="16A34A" lineWidth="2" endArrow='{"type":"stealth"}' />
+  <Line x1="400" y1="220" x2="600" y2="220" color="DC2626" lineWidth="2" endArrow='{"type":"oval"}' />
+  <!-- 破線 -->
+  <Line x1="650" y1="100" x2="850" y2="100" color="333333" lineWidth="2" dashType="dash" />
+  <Line x1="650" y1="130" x2="850" y2="130" color="333333" lineWidth="2" dashType="dashDot" />
+  <Line x1="650" y1="160" x2="850" y2="160" color="333333" lineWidth="2" dashType="lgDash" />
+  <!-- 太さのバリエーション -->
+  <Line x1="650" y1="200" x2="850" y2="200" color="0F172A" lineWidth="1" />
+  <Line x1="650" y1="220" x2="850" y2="220" color="0F172A" lineWidth="3" />
+  <Line x1="650" y1="245" x2="850" y2="245" color="0F172A" lineWidth="6" />
+  <!-- 斜線 + 矢印（4方向） -->
+  <Line x1="900" y1="100" x2="1050" y2="200" color="${palette.blue}" lineWidth="2" endArrow="true" />
+  <Line x1="1100" y1="100" x2="950" y2="200" color="${palette.red}" lineWidth="2" endArrow="true" />
+  <Line x1="900" y1="250" x2="1050" y2="150" color="${palette.green}" lineWidth="2" endArrow="true" />
+  <Line x1="1100" y1="250" x2="950" y2="150" color="FF6600" lineWidth="2" endArrow="true" />
+</VStack>
+`;
 
 // ============================================================
 // Page 16: Layer Node Test
 // テスト対象: LayerNode - 絶対配置、子要素のオーバーラップ、layer in VStack
 // ============================================================
-const page16Layer: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 16: Layer Node Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // 基本的な絶対配置（重なり合う図形）
-    {
-      type: "hstack",
-      gap: 16,
-      alignItems: "stretch",
-      children: [
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "Overlapping Shapes:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "layer",
-                w: 500,
-                h: 200,
-                backgroundColor: "F0F4F8",
-                children: [
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 120,
-                    h: 100,
-                    x: 30,
-                    y: 30,
-                    fill: { color: palette.blue },
-                    text: "Back",
-                    color: "FFFFFF",
-                    fontPx: 14,
-                  },
-                  {
-                    type: "shape",
-                    shapeType: "rect",
-                    w: 120,
-                    h: 100,
-                    x: 80,
-                    y: 60,
-                    fill: { color: palette.red },
-                    text: "Front",
-                    color: "FFFFFF",
-                    fontPx: 14,
-                  },
-                  {
-                    type: "text",
-                    text: "Shapes overlap (red is on top)",
-                    x: 220,
-                    y: 80,
-                    fontPx: 12,
-                    color: palette.charcoal,
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "box",
-          w: "50%",
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          children: {
-            type: "vstack",
-            gap: 12,
-            children: [
-              {
-                type: "text",
-                text: "VStack inside Layer:",
-                fontPx: 14,
-                bold: true,
-              },
-              {
-                type: "layer",
-                w: 500,
-                h: 200,
-                backgroundColor: "F0F4F8",
-                children: [
-                  {
-                    type: "vstack",
-                    x: 20,
-                    y: 20,
-                    w: 180,
-                    gap: 8,
-                    padding: 12,
-                    backgroundColor: "FFFFFF",
-                    border: { color: palette.border, width: 1 },
-                    children: [
-                      {
-                        type: "text",
-                        text: "Left VStack",
-                        fontPx: 12,
-                        bold: true,
-                      },
-                      { type: "text", text: "Item 1", fontPx: 11 },
-                      { type: "text", text: "Item 2", fontPx: 11 },
-                    ],
-                  },
-                  {
-                    type: "vstack",
-                    x: 260,
-                    y: 20,
-                    w: 180,
-                    gap: 8,
-                    padding: 12,
-                    backgroundColor: "FFFFFF",
-                    border: { color: palette.border, width: 1 },
-                    children: [
-                      {
-                        type: "text",
-                        text: "Right VStack",
-                        fontPx: 12,
-                        bold: true,
-                      },
-                      { type: "text", text: "Item A", fontPx: 11 },
-                      { type: "text", text: "Item B", fontPx: 11 },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-    // Line ノードとの組み合わせ
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Layer with Line (connection diagram):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "layer",
-            w: 1100,
-            h: 200,
-            backgroundColor: "F8FAFC",
-            children: [
-              // 左のボックス
-              {
-                type: "shape",
-                shapeType: "roundRect",
-                w: 150,
-                h: 80,
-                x: 50,
-                y: 60,
-                fill: { color: palette.blue },
-                text: "Service A",
-                color: "FFFFFF",
-                fontPx: 14,
-              },
-              // 中央のボックス
-              {
-                type: "shape",
-                shapeType: "roundRect",
-                w: 150,
-                h: 80,
-                x: 350,
-                y: 60,
-                fill: { color: palette.green },
-                text: "Service B",
-                color: "FFFFFF",
-                fontPx: 14,
-              },
-              // 右のボックス
-              {
-                type: "shape",
-                shapeType: "roundRect",
-                w: 150,
-                h: 80,
-                x: 650,
-                y: 60,
-                fill: { color: palette.accent },
-                text: "Service C",
-                color: "FFFFFF",
-                fontPx: 14,
-              },
-              // 接続線
-              {
-                type: "line",
-                x1: 200,
-                y1: 100,
-                x2: 350,
-                y2: 100,
-                color: "333333",
-                lineWidth: 2,
-                endArrow: true,
-              },
-              {
-                type: "line",
-                x1: 500,
-                y1: 100,
-                x2: 650,
-                y2: 100,
-                color: "333333",
-                lineWidth: 2,
-                endArrow: true,
-              },
-              // ラベル
-              {
-                type: "text",
-                text: "API Call",
-                x: 240,
-                y: 70,
-                fontPx: 10,
-                color: palette.charcoal,
-              },
-              {
-                type: "text",
-                text: "Event",
-                x: 550,
-                y: 70,
-                fontPx: 10,
-                color: palette.charcoal,
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // ネストした layer
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Nested Layer:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "layer",
-            w: 600,
-            h: 150,
-            backgroundColor: "E3F2FD",
-            children: [
-              {
-                type: "text",
-                text: "Outer Layer",
-                x: 10,
-                y: 10,
-                fontPx: 12,
-                bold: true,
-              },
-              {
-                type: "layer",
-                x: 50,
-                y: 40,
-                w: 200,
-                h: 80,
-                backgroundColor: "FFF3E0",
-                children: [
-                  {
-                    type: "text",
-                    text: "Inner Layer 1",
-                    x: 10,
-                    y: 30,
-                    fontPx: 11,
-                  },
-                ],
-              },
-              {
-                type: "layer",
-                x: 280,
-                y: 40,
-                w: 200,
-                h: 80,
-                backgroundColor: "E8F5E9",
-                children: [
-                  {
-                    type: "text",
-                    text: "Inner Layer 2",
-                    x: 10,
-                    y: 30,
-                    fontPx: 11,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page16LayerXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 16: Layer Node Test</Text>
+  <!-- 基本的な絶対配置（重なり合う図形） -->
+  <HStack gap="16" alignItems="stretch">
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">Overlapping Shapes:</Text>
+        <Layer w="500" h="200" backgroundColor="F0F4F8">
+          <Shape shapeType="rect" w="120" h="100" x="30" y="30" fill='{"color":"${palette.blue}"}' color="FFFFFF" fontPx="14">Back</Shape>
+          <Shape shapeType="rect" w="120" h="100" x="80" y="60" fill='{"color":"${palette.red}"}' color="FFFFFF" fontPx="14">Front</Shape>
+          <Text x="220" y="80" fontPx="12" color="${palette.charcoal}">Shapes overlap (red is on top)</Text>
+        </Layer>
+      </VStack>
+    </Box>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <VStack gap="12">
+        <Text fontPx="14" bold="true">VStack inside Layer:</Text>
+        <Layer w="500" h="200" backgroundColor="F0F4F8">
+          <VStack x="20" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+            <Text fontPx="12" bold="true">Left VStack</Text>
+            <Text fontPx="11">Item 1</Text>
+            <Text fontPx="11">Item 2</Text>
+          </VStack>
+          <VStack x="260" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+            <Text fontPx="12" bold="true">Right VStack</Text>
+            <Text fontPx="11">Item A</Text>
+            <Text fontPx="11">Item B</Text>
+          </VStack>
+        </Layer>
+      </VStack>
+    </Box>
+  </HStack>
+  <!-- Line ノードとの組み合わせ -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Layer with Line (connection diagram):</Text>
+      <Layer w="1100" h="200" backgroundColor="F8FAFC">
+        <!-- 左のボックス -->
+        <Shape shapeType="roundRect" w="150" h="80" x="50" y="60" fill='{"color":"${palette.blue}"}' color="FFFFFF" fontPx="14">Service A</Shape>
+        <!-- 中央のボックス -->
+        <Shape shapeType="roundRect" w="150" h="80" x="350" y="60" fill='{"color":"${palette.green}"}' color="FFFFFF" fontPx="14">Service B</Shape>
+        <!-- 右のボックス -->
+        <Shape shapeType="roundRect" w="150" h="80" x="650" y="60" fill='{"color":"${palette.accent}"}' color="FFFFFF" fontPx="14">Service C</Shape>
+        <!-- 接続線 -->
+        <Line x1="200" y1="100" x2="350" y2="100" color="333333" lineWidth="2" endArrow="true" />
+        <Line x1="500" y1="100" x2="650" y2="100" color="333333" lineWidth="2" endArrow="true" />
+        <!-- ラベル -->
+        <Text x="240" y="70" fontPx="10" color="${palette.charcoal}">API Call</Text>
+        <Text x="550" y="70" fontPx="10" color="${palette.charcoal}">Event</Text>
+      </Layer>
+    </VStack>
+  </Box>
+  <!-- ネストした layer -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">Nested Layer:</Text>
+      <Layer w="600" h="150" backgroundColor="E3F2FD">
+        <Text x="10" y="10" fontPx="12" bold="true">Outer Layer</Text>
+        <Layer x="50" y="40" w="200" h="80" backgroundColor="FFF3E0">
+          <Text x="10" y="30" fontPx="11">Inner Layer 1</Text>
+        </Layer>
+        <Layer x="280" y="40" w="200" h="80" backgroundColor="E8F5E9">
+          <Text x="10" y="30" fontPx="11">Inner Layer 2</Text>
+        </Layer>
+      </Layer>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ===================== Page 17: HStack + Table 幅計算 =====================
-const page17HStackTable: POMNode = {
-  type: "vstack",
-  gap: 16,
-  padding: 48,
-  children: [
-    {
-      type: "text",
-      text: "17. HStack + Table Width Calculation",
-      fontPx: 22,
-      bold: true,
-    },
-    // テーブルが固有サイズを保持するケース
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "HStack with table (table should keep intrinsic width):",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            children: [
-              {
-                type: "text",
-                text: "Left text",
-                fontPx: 14,
-              },
-              {
-                type: "table",
-                defaultRowHeight: 28,
-                columns: [{ width: 80 }, { width: 120 }, { width: 80 }],
-                rows: [
-                  {
-                    cells: [
-                      {
-                        text: "A",
-                        fontPx: 12,
-                        bold: true,
-                        backgroundColor: palette.lightBlue,
-                      },
-                      {
-                        text: "B",
-                        fontPx: 12,
-                        bold: true,
-                        backgroundColor: palette.lightBlue,
-                      },
-                      {
-                        text: "C",
-                        fontPx: 12,
-                        bold: true,
-                        backgroundColor: palette.lightBlue,
-                      },
-                    ],
-                  },
-                  {
-                    cells: [
-                      { text: "1", fontPx: 12 },
-                      { text: "Data", fontPx: 12 },
-                      { text: "OK", fontPx: 12 },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: "text",
-                text: "Right text",
-                fontPx: 14,
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page17HStackTableXml = `
+<VStack gap="16" padding="48">
+  <Text fontPx="22" bold="true">17. HStack + Table Width Calculation</Text>
+  <!-- テーブルが固有サイズを保持するケース -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="14" bold="true">HStack with table (table should keep intrinsic width):</Text>
+      <HStack gap="16">
+        <Text fontPx="14">Left text</Text>
+        <Table defaultRowHeight="28">
+          <Column width="80" />
+          <Column width="120" />
+          <Column width="80" />
+          <Row>
+            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">A</Cell>
+            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">B</Cell>
+            <Cell fontPx="12" bold="true" backgroundColor="${palette.lightBlue}">C</Cell>
+          </Row>
+          <Row>
+            <Cell fontPx="12">1</Cell>
+            <Cell fontPx="12">Data</Cell>
+            <Cell fontPx="12">OK</Cell>
+          </Row>
+        </Table>
+        <Text fontPx="14">Right text</Text>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 18: Opacity Test
 // テスト対象: opacity（背景色の透過度）
 // ============================================================
-const page18Opacity: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 18: Opacity Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // opacity variations
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          { type: "text", text: "opacity:", fontPx: 14, bold: true },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "stretch",
-            children: [
-              {
-                type: "box",
-                w: 150,
-                h: 80,
-                backgroundColor: palette.blue,
-                opacity: 1.0,
-                children: {
-                  type: "text",
-                  text: "opacity: 1.0",
-                  fontPx: 12,
-                  color: "FFFFFF",
-                },
-              },
-              {
-                type: "box",
-                w: 150,
-                h: 80,
-                backgroundColor: palette.blue,
-                opacity: 0.8,
-                children: {
-                  type: "text",
-                  text: "opacity: 0.8",
-                  fontPx: 12,
-                  color: "FFFFFF",
-                },
-              },
-              {
-                type: "box",
-                w: 150,
-                h: 80,
-                backgroundColor: palette.blue,
-                opacity: 0.5,
-                children: {
-                  type: "text",
-                  text: "opacity: 0.5",
-                  fontPx: 12,
-                  color: "FFFFFF",
-                },
-              },
-              {
-                type: "box",
-                w: 150,
-                h: 80,
-                backgroundColor: palette.blue,
-                opacity: 0.2,
-                children: {
-                  type: "text",
-                  text: "opacity: 0.2",
-                  fontPx: 12,
-                  color: "FFFFFF",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // Layer + opacity overlay
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          {
-            type: "text",
-            text: "Layer + opacity overlay:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "layer",
-            w: 400,
-            h: 120,
-            children: [
-              {
-                type: "box",
-                x: 0,
-                y: 0,
-                w: 400,
-                h: 120,
-                backgroundColor: palette.navy,
-                children: {
-                  type: "text",
-                  text: "Background",
-                  fontPx: 16,
-                  color: "FFFFFF",
-                },
-              },
-              {
-                type: "box",
-                x: 0,
-                y: 0,
-                w: 400,
-                h: 120,
-                backgroundColor: palette.red,
-                opacity: 0.4,
-                children: {
-                  type: "text",
-                  text: "Overlay (opacity: 0.4)",
-                  fontPx: 14,
-                  color: "FFFFFF",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // Different node types with opacity
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 8,
-        children: [
-          {
-            type: "text",
-            text: "Different nodes with opacity:",
-            fontPx: 14,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            alignItems: "stretch",
-            children: [
-              {
-                type: "text",
-                text: "Text with opacity",
-                fontPx: 14,
-                backgroundColor: palette.green,
-                opacity: 0.5,
-                color: "FFFFFF",
-                w: 180,
-                h: 60,
-              },
-              {
-                type: "vstack",
-                w: 180,
-                h: 60,
-                backgroundColor: palette.accent,
-                opacity: 0.5,
-                children: [
-                  {
-                    type: "text",
-                    text: "VStack with opacity",
-                    fontPx: 14,
-                    color: "FFFFFF",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+const page18OpacityXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 18: Opacity Test</Text>
+  <!-- opacity variations -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">opacity:</Text>
+      <HStack gap="16" alignItems="stretch">
+        <Box w="150" h="80" backgroundColor="${palette.blue}" opacity="1.0">
+          <Text fontPx="12" color="FFFFFF">opacity: 1.0</Text>
+        </Box>
+        <Box w="150" h="80" backgroundColor="${palette.blue}" opacity="0.8">
+          <Text fontPx="12" color="FFFFFF">opacity: 0.8</Text>
+        </Box>
+        <Box w="150" h="80" backgroundColor="${palette.blue}" opacity="0.5">
+          <Text fontPx="12" color="FFFFFF">opacity: 0.5</Text>
+        </Box>
+        <Box w="150" h="80" backgroundColor="${palette.blue}" opacity="0.2">
+          <Text fontPx="12" color="FFFFFF">opacity: 0.2</Text>
+        </Box>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- Layer + opacity overlay -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Layer + opacity overlay:</Text>
+      <Layer w="400" h="120">
+        <Box x="0" y="0" w="400" h="120" backgroundColor="${palette.navy}">
+          <Text fontPx="16" color="FFFFFF">Background</Text>
+        </Box>
+        <Box x="0" y="0" w="400" h="120" backgroundColor="${palette.red}" opacity="0.4">
+          <Text fontPx="14" color="FFFFFF">Overlay (opacity: 0.4)</Text>
+        </Box>
+      </Layer>
+    </VStack>
+  </Box>
+  <!-- Different node types with opacity -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Different nodes with opacity:</Text>
+      <HStack gap="16" alignItems="stretch">
+        <Text fontPx="14" backgroundColor="${palette.green}" opacity="0.5" color="FFFFFF" w="180" h="60">Text with opacity</Text>
+        <VStack w="180" h="60" backgroundColor="${palette.accent}" opacity="0.5">
+          <Text fontPx="14" color="FFFFFF">VStack with opacity</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
 
 // ============================================================
 // Page 19: Shadow Test
 // テスト対象: Box shadow, Image shadow, Shape shadow
 // ============================================================
-const page19Shadow: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 19: Shadow Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // Box with outer shadow
-    {
-      type: "hstack",
-      gap: 24,
-      alignItems: "start",
-      children: [
-        {
-          type: "box",
-          w: 200,
-          h: 100,
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          borderRadius: 8,
-          shadow: {
-            type: "outer",
-            color: "000000",
-            blur: 6,
-            offset: 3,
-            angle: 315,
-            opacity: 0.3,
-          },
-          children: {
-            type: "text",
-            text: "Box: outer shadow",
-            fontPx: 14,
-            color: palette.charcoal,
-          },
-        },
-        // Box with inner shadow
-        {
-          type: "box",
-          w: 200,
-          h: 100,
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          borderRadius: 8,
-          shadow: {
-            type: "inner",
-            color: "000000",
-            blur: 4,
-            offset: 2,
-            angle: 315,
-            opacity: 0.2,
-          },
-          children: {
-            type: "text",
-            text: "Box: inner shadow",
-            fontPx: 14,
-            color: palette.charcoal,
-          },
-        },
-        // Box with shadow + border
-        {
-          type: "box",
-          w: 200,
-          h: 100,
-          padding: 16,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.blue, width: 2 },
-          borderRadius: 8,
-          shadow: {
-            type: "outer",
-            color: palette.blue,
-            blur: 8,
-            offset: 4,
-            angle: 315,
-            opacity: 0.4,
-          },
-          children: {
-            type: "text",
-            text: "Box: shadow + border",
-            fontPx: 14,
-            color: palette.charcoal,
-          },
-        },
-      ],
-    },
-    // Shape with shadow (various shape types)
-    {
-      type: "hstack",
-      gap: 24,
-      alignItems: "start",
-      children: [
-        {
-          type: "shape",
-          shapeType: "ellipse",
-          w: 150,
-          h: 100,
-          fill: { color: palette.lightBlue },
-          shadow: {
-            type: "outer",
-            color: "000000",
-            blur: 6,
-            offset: 3,
-            angle: 315,
-            opacity: 0.3,
-          },
-          text: "Ellipse shadow",
-          fontPx: 12,
-          color: palette.charcoal,
-        },
-        {
-          type: "shape",
-          shapeType: "roundRect",
-          w: 150,
-          h: 100,
-          fill: { color: palette.lightBlue },
-          shadow: {
-            type: "outer",
-            color: palette.navy,
-            blur: 10,
-            offset: 5,
-            angle: 270,
-            opacity: 0.5,
-          },
-          text: "RoundRect shadow",
-          fontPx: 12,
-          color: palette.charcoal,
-        },
-      ],
-    },
-    // Image with shadow
-    {
-      type: "hstack",
-      gap: 24,
-      alignItems: "start",
-      children: [
-        {
-          type: "box",
-          w: 180,
-          h: 120,
-          children: {
-            type: "image",
-            src: "https://placehold.co/180x120/DBEAFE/1D4ED8?text=Shadow",
-            w: 180,
-            h: 120,
-            shadow: {
-              type: "outer",
-              color: "000000",
-              blur: 8,
-              offset: 4,
-              angle: 315,
-              opacity: 0.4,
-            },
-          },
-        },
-      ],
-    },
-    // Box with shadow only (no background, no border)
-    {
-      type: "hstack",
-      gap: 24,
-      alignItems: "start",
-      children: [
-        {
-          type: "box",
-          w: 200,
-          h: 80,
-          padding: 16,
-          shadow: {
-            type: "outer",
-            color: "000000",
-            blur: 6,
-            offset: 3,
-            angle: 315,
-            opacity: 0.3,
-          },
-          children: {
-            type: "text",
-            text: "Shadow only (no bg)",
-            fontPx: 14,
-            color: palette.charcoal,
-          },
-        },
-      ],
-    },
-  ],
-};
+const page19ShadowXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 19: Shadow Test</Text>
+  <!-- Box with outer shadow -->
+  <HStack gap="24" alignItems="start">
+    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow='{"type":"outer","color":"000000","blur":6,"offset":3,"angle":315,"opacity":0.3}'>
+      <Text fontPx="14" color="${palette.charcoal}">Box: outer shadow</Text>
+    </Box>
+    <!-- Box with inner shadow -->
+    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow='{"type":"inner","color":"000000","blur":4,"offset":2,"angle":315,"opacity":0.2}'>
+      <Text fontPx="14" color="${palette.charcoal}">Box: inner shadow</Text>
+    </Box>
+    <!-- Box with shadow + border -->
+    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.blue}","width":2}' borderRadius="8" shadow='{"type":"outer","color":"${palette.blue}","blur":8,"offset":4,"angle":315,"opacity":0.4}'>
+      <Text fontPx="14" color="${palette.charcoal}">Box: shadow + border</Text>
+    </Box>
+  </HStack>
+  <!-- Shape with shadow (various shape types) -->
+  <HStack gap="24" alignItems="start">
+    <Shape shapeType="ellipse" w="150" h="100" fill='{"color":"${palette.lightBlue}"}' shadow='{"type":"outer","color":"000000","blur":6,"offset":3,"angle":315,"opacity":0.3}' fontPx="12" color="${palette.charcoal}">Ellipse shadow</Shape>
+    <Shape shapeType="roundRect" w="150" h="100" fill='{"color":"${palette.lightBlue}"}' shadow='{"type":"outer","color":"${palette.navy}","blur":10,"offset":5,"angle":270,"opacity":0.5}' fontPx="12" color="${palette.charcoal}">RoundRect shadow</Shape>
+  </HStack>
+  <!-- Image with shadow -->
+  <HStack gap="24" alignItems="start">
+    <Box w="180" h="120">
+      <Image src="https://placehold.co/180x120/DBEAFE/1D4ED8?text=Shadow" w="180" h="120" shadow='{"type":"outer","color":"000000","blur":8,"offset":4,"angle":315,"opacity":0.4}' />
+    </Box>
+  </HStack>
+  <!-- Box with shadow only (no background, no border) -->
+  <HStack gap="24" alignItems="start">
+    <Box w="200" h="80" padding="16" shadow='{"type":"outer","color":"000000","blur":6,"offset":3,"angle":315,"opacity":0.3}'>
+      <Text fontPx="14" color="${palette.charcoal}">Shadow only (no bg)</Text>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 20: Background Image Test
 // テスト対象: backgroundImage (cover / contain)
 // ============================================================
-const page20BackgroundImage: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 20,
-  alignItems: "stretch",
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Page 20: Background Image Test",
-      fontPx: 28,
-      color: palette.charcoal,
-      bold: true,
-    },
-    // backgroundImage sizing modes
-    {
-      type: "box",
-      padding: 16,
-      backgroundColor: "FFFFFF",
-      border: { color: palette.border, width: 1 },
-      children: {
-        type: "vstack",
-        gap: 12,
-        children: [
-          {
-            type: "text",
-            text: "Background Image Sizing Modes:",
-            fontPx: 16,
-            color: palette.charcoal,
-            bold: true,
-          },
-          {
-            type: "hstack",
-            gap: 16,
-            children: [
-              // cover モード
-              {
-                type: "box",
-                w: 280,
-                h: 180,
-                backgroundImage: {
-                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                  sizing: "cover",
-                },
-                border: { color: palette.border, width: 2 },
-                children: {
-                  type: "text",
-                  text: "cover",
-                  fontPx: 16,
-                  color: "FFFFFF",
-                  bold: true,
-                },
-              },
-              // contain モード
-              {
-                type: "box",
-                w: 280,
-                h: 180,
-                backgroundImage: {
-                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-                  sizing: "contain",
-                },
-                backgroundColor: "333333",
-                border: { color: palette.border, width: 2 },
-                children: {
-                  type: "text",
-                  text: "contain (with backgroundColor)",
-                  fontPx: 16,
-                  color: "FFFFFF",
-                  bold: true,
-                },
-              },
-              // デフォルト（cover）
-              {
-                type: "box",
-                w: 280,
-                h: 180,
-                backgroundImage: {
-                  src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_1.png",
-                },
-                border: { color: palette.border, width: 2 },
-                children: {
-                  type: "text",
-                  text: "default (cover)",
-                  fontPx: 16,
-                  color: "FFFFFF",
-                  bold: true,
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-    // VStack with backgroundImage
-    {
-      type: "vstack",
-      gap: 8,
-      padding: 16,
-      backgroundImage: {
-        src: "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png",
-        sizing: "cover",
-      },
-      border: { color: palette.border, width: 1 },
-      children: [
-        {
-          type: "text",
-          text: "VStack with backgroundImage",
-          fontPx: 16,
-          color: "FFFFFF",
-          bold: true,
-        },
-        {
-          type: "text",
-          text: "Background image on VStack container",
-          fontPx: 14,
-          color: "FFFFFF",
-        },
-      ],
-    },
-  ],
-};
+const page20BackgroundImageXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 20: Background Image Test</Text>
+  <!-- backgroundImage sizing modes -->
+  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <VStack gap="12">
+      <Text fontPx="16" color="${palette.charcoal}" bold="true">Background Image Sizing Modes:</Text>
+      <HStack gap="16">
+        <!-- cover モード -->
+        <Box w="280" h="180" backgroundImage='{"src":"https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png","sizing":"cover"}' border='{"color":"${palette.border}","width":2}'>
+          <Text fontPx="16" color="FFFFFF" bold="true">cover</Text>
+        </Box>
+        <!-- contain モード -->
+        <Box w="280" h="180" backgroundImage='{"src":"https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png","sizing":"contain"}' backgroundColor="333333" border='{"color":"${palette.border}","width":2}'>
+          <Text fontPx="16" color="FFFFFF" bold="true">contain (with backgroundColor)</Text>
+        </Box>
+        <!-- デフォルト（cover） -->
+        <Box w="280" h="180" backgroundImage='{"src":"https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_1.png"}' border='{"color":"${palette.border}","width":2}'>
+          <Text fontPx="16" color="FFFFFF" bold="true">default (cover)</Text>
+        </Box>
+      </HStack>
+    </VStack>
+  </Box>
+  <!-- VStack with backgroundImage -->
+  <VStack gap="8" padding="16" backgroundImage='{"src":"https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png","sizing":"cover"}' border='{"color":"${palette.border}","width":1}'>
+    <Text fontPx="16" color="FFFFFF" bold="true">VStack with backgroundImage</Text>
+    <Text fontPx="14" color="FFFFFF">Background image on VStack container</Text>
+  </VStack>
+</VStack>
+`;
 
 // ============================================================
 // Page 21: XML Child Element Notation Test
 // テスト対象: parseXml の子要素記法（Chart, Table, Timeline, ProcessArrow, Tree）
 // ============================================================
-const page21XmlChildElements: POMNode = parseXml(`
-  <VStack gap="8" padding="48" backgroundColor="${palette.background}">
-    <Text fontPx="28" bold="true" color="${palette.navy}">XML Child Element Notation</Text>
-    <HStack gap="16" alignItems="start">
-      <VStack gap="8" w="380">
-        <Text fontPx="14" bold="true" color="${palette.charcoal}">Chart (Series/DataPoint)</Text>
-        <Chart chartType="bar" w="380" h="140">
-          <Series name="Q1">
-            <DataPoint label="Jan" value="100" />
-            <DataPoint label="Feb" value="120" />
-            <DataPoint label="Mar" value="90" />
-          </Series>
-        </Chart>
-        <Text fontPx="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
-        <Table w="380">
-          <Column width="190" />
-          <Column width="190" />
-          <Row>
-            <Cell bold="true" backgroundColor="${palette.lightBlue}">Name</Cell>
-            <Cell bold="true" backgroundColor="${palette.lightBlue}">Score</Cell>
-          </Row>
-          <Row>
-            <Cell>Alice</Cell>
-            <Cell>95</Cell>
-          </Row>
-          <Row>
-            <Cell>Bob</Cell>
-            <Cell>87</Cell>
-          </Row>
-        </Table>
-      </VStack>
-      <VStack gap="8" w="380">
-        <Text fontPx="14" bold="true" color="${palette.charcoal}">Timeline (TimelineItem)</Text>
-        <Timeline direction="horizontal" w="380" h="120">
-          <TimelineItem date="2024-01" title="Plan" color="${palette.blue}" />
-          <TimelineItem date="2024-04" title="Build" color="${palette.accent}" />
-          <TimelineItem date="2024-07" title="Launch" color="${palette.green}" />
-        </Timeline>
-        <Text fontPx="14" bold="true" color="${palette.charcoal}">ProcessArrow (Step)</Text>
-        <ProcessArrow direction="horizontal" w="380" h="60">
-          <Step label="Plan" color="${palette.blue}" />
-          <Step label="Build" color="${palette.accent}" />
-          <Step label="Launch" color="${palette.green}" />
-        </ProcessArrow>
-        <Text fontPx="14" bold="true" color="${palette.charcoal}">Tree (TreeItem)</Text>
-        <Tree layout="vertical" w="380" h="140">
-          <TreeItem label="CEO" color="${palette.navy}">
-            <TreeItem label="CTO" color="${palette.blue}">
-              <TreeItem label="Dev" />
-            </TreeItem>
-            <TreeItem label="CFO" color="${palette.accent}" />
+const page21XmlChildElementsXml = `
+<VStack gap="8" padding="48" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">XML Child Element Notation</Text>
+  <HStack gap="16" alignItems="start">
+    <VStack gap="8" w="380">
+      <Text fontPx="14" bold="true" color="${palette.charcoal}">Chart (Series/DataPoint)</Text>
+      <Chart chartType="bar" w="380" h="140">
+        <Series name="Q1">
+          <DataPoint label="Jan" value="100" />
+          <DataPoint label="Feb" value="120" />
+          <DataPoint label="Mar" value="90" />
+        </Series>
+      </Chart>
+      <Text fontPx="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
+      <Table w="380">
+        <Column width="190" />
+        <Column width="190" />
+        <Row>
+          <Cell bold="true" backgroundColor="${palette.lightBlue}">Name</Cell>
+          <Cell bold="true" backgroundColor="${palette.lightBlue}">Score</Cell>
+        </Row>
+        <Row>
+          <Cell>Alice</Cell>
+          <Cell>95</Cell>
+        </Row>
+        <Row>
+          <Cell>Bob</Cell>
+          <Cell>87</Cell>
+        </Row>
+      </Table>
+    </VStack>
+    <VStack gap="8" w="380">
+      <Text fontPx="14" bold="true" color="${palette.charcoal}">Timeline (TimelineItem)</Text>
+      <Timeline direction="horizontal" w="380" h="120">
+        <TimelineItem date="2024-01" title="Plan" color="${palette.blue}" />
+        <TimelineItem date="2024-04" title="Build" color="${palette.accent}" />
+        <TimelineItem date="2024-07" title="Launch" color="${palette.green}" />
+      </Timeline>
+      <Text fontPx="14" bold="true" color="${palette.charcoal}">ProcessArrow (Step)</Text>
+      <ProcessArrow direction="horizontal" w="380" h="60">
+        <Step label="Plan" color="${palette.blue}" />
+        <Step label="Build" color="${palette.accent}" />
+        <Step label="Launch" color="${palette.green}" />
+      </ProcessArrow>
+      <Text fontPx="14" bold="true" color="${palette.charcoal}">Tree (TreeItem)</Text>
+      <Tree layout="vertical" w="380" h="140">
+        <TreeItem label="CEO" color="${palette.navy}">
+          <TreeItem label="CTO" color="${palette.blue}">
+            <TreeItem label="Dev" />
           </TreeItem>
-        </Tree>
-      </VStack>
-    </HStack>
-  </VStack>
-`)[0] as POMNode;
+          <TreeItem label="CFO" color="${palette.accent}" />
+        </TreeItem>
+      </Tree>
+    </VStack>
+  </HStack>
+</VStack>
+`;
 
 export async function generatePptx(outputPath: string): Promise<void> {
+  const allPagesXml = [
+    page1TextXml,
+    page2BulletXml,
+    page3ImageXml,
+    page3bImageSizingXml,
+    page4TableXml,
+    page5ShapeXml,
+    page6ChartXml,
+    page7LayoutXml,
+    page8CommonXml,
+    page9TimelineXml,
+    page10ChartAdditionalXml,
+    page11MatrixXml,
+    page12TreeXml,
+    page13FlowXml,
+    page14ProcessArrowXml,
+    page15LineXml,
+    page16LayerXml,
+    page17HStackTableXml,
+    page18OpacityXml,
+    page19ShadowXml,
+    page20BackgroundImageXml,
+    page21XmlChildElementsXml,
+  ].join("\n");
+
   const pptx = await buildPptx(
-    [
-      page1Text,
-      page2Bullet,
-      page3Image,
-      page3bImageSizing,
-      page4Table,
-      page5Shape,
-      page6Chart,
-      page7Layout,
-      page8Common,
-      page9Timeline,
-      page10ChartAdditional,
-      page11Matrix,
-      page12Tree,
-      page13Flow,
-      page14ProcessArrow,
-      page15Line,
-      page16Layer,
-      page17HStackTable,
-      page18Opacity,
-      page19Shadow,
-      page20BackgroundImage,
-      page21XmlChildElements,
-    ],
+    allPagesXml,
     {
       w: 1280,
       h: 720,

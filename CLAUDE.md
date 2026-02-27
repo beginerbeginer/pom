@@ -28,9 +28,9 @@ npm run preview:docker    # プレビュー（main.tsのPPTXをPNG化）
 src/
 ├── index.ts              # 公開API
 ├── types.ts              # 型定義
-├── inputSchema.ts        # LLM用入力スキーマ（Zod）
-├── parseXml.ts           # XML入力パーサー（fast-xml-parser）
-├── buildPptx.ts          # メイン処理（3段階パイプライン）
+├── inputSchema.ts        # 入力スキーマ（Zod、内部用）
+├── parseXml.ts           # XML入力パーサー（fast-xml-parser、内部用）
+├── buildPptx.ts          # メイン処理（XML → parseXml → レイアウト → PPTX）
 ├── calcYogaLayout/       # レイアウト計算（yoga-layout）
 ├── toPositioned/         # 絶対座標変換
 ├── renderPptx/           # PPTX描画（pptxgenjs）
@@ -48,33 +48,17 @@ PPTX 生成は3段階のパイプライン:
 2. **toPositioned** (`src/toPositioned/`) - 計算済みレイアウトから絶対座標を持つ PositionedNode ツリーを生成
 3. **renderPptx** (`src/renderPptx/`) - PositionedNode を pptxgenjs API に変換してスライド描画
 
-### 主要な型
+### 公開API
 
-- `POMNode` - 入力ノード型（Text, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Line, Layer, Box, VStack, HStack）
-- `PositionedNode` - 位置情報付きノード（x, y, w, h を持つ）
-- `SlideMasterOptions` - スライドマスター設定（title, background, margin, objects, slideNumber）
-- `ChartNode` - グラフノード（bar, line, pie, area, doughnut, radar をサポート）
-- `TimelineNode` - タイムラインノード（direction, items をサポート）
-- `MatrixNode` - マトリクスノード（axes, quadrants, items をサポート）
-- `TreeNode` - ツリーノード（layout, nodeShape, data, connectorStyle をサポート）
-- `FlowNode` - フローチャートノード（direction, nodes, edges をサポート）
-- `ProcessArrowNode` - プロセスアローノード（direction, steps をサポート）
-- `LineNode` - 線ノード（x1, y1, x2, y2, color, lineWidth, dashType, beginArrow, endArrow をサポート）
-- `LayerNode` - 絶対配置コンテナ（children に x, y を指定して自由配置）
-- `ImageSizing` - 画像サイズ調整設定（type: contain/cover/crop, w, h, x, y）
-- `BackgroundImage` - 背景画像設定（src, sizing: cover/contain）
-- `BulletOptions` - 箇条書き設定（type, indent, numberType, numberStartAt）
-- `ShadowStyle` - 影設定（type: outer/inner, color, blur, offset, angle, opacity）
+- `buildPptx(xml: string, slideSize, options?)` - XML 文字列を受け取り PPTX を生成するメイン関数
 - `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
-- `BasePOMNode` - 全ノード共通プロパティ（w, h, padding, backgroundColor, backgroundImage, border, borderRadius, opacity）
-- `parseXml` - XML 文字列を POMNode 配列に変換する関数（タグ名は PascalCase、属性値は Zod スキーマで型変換、未知タグはエラー）
+- `SlideMasterOptions` - スライドマスター設定（title, background, margin, objects, slideNumber）
 
-### 入力スキーマ（LLM連携用）
+### 主要な内部型
 
-`inputSchema.ts` に Zod スキーマを定義。LLM が生成した JSON を検証するために使用。
-
-- `inputPomNodeSchema` - メインの入力スキーマ
-- `inputSlideMasterOptionsSchema` - スライドマスター設定用
+- `POMNode` - 入力ノード型（内部型。Text, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Line, Layer, Box, VStack, HStack）
+- `PositionedNode` - 位置情報付きノード（x, y, w, h を持つ）
+- `parseXml` - XML 文字列を POMNode 配列に変換する内部関数（タグ名は PascalCase、属性値は Zod スキーマで型変換、未知タグはエラー）
 
 ### 単位変換
 
@@ -99,16 +83,17 @@ PPTX 生成は3段階のパイプライン:
 新しいプロパティや機能を追加する際は、以下のファイルを更新すること：
 
 1. **型定義**: `src/types.ts` - 新しい型やプロパティを追加
-2. **入力スキーマ**: `src/inputSchema.ts` - Zod スキーマを追加（LLM 連携用）
-3. **描画処理**: `src/renderPptx/` 配下 - pptxgenjs への変換処理を実装
-4. **VRT テストデータ**: `vrt/lib/generatePptx.ts` - 新機能のテストケースを追加
-5. **VRT ベースライン更新**: `npm run vrt:docker:update` を実行
-6. **ドキュメント更新**:
+2. **入力スキーマ**: `src/inputSchema.ts` - Zod スキーマを追加（内部バリデーション用）
+3. **XMLパーサー**: `src/parseXml.ts` - XML タグ/属性の変換処理を追加
+4. **描画処理**: `src/renderPptx/` 配下 - pptxgenjs への変換処理を実装
+5. **VRT テストデータ**: `vrt/lib/generatePptx.ts` - 新機能のテストケースを追加
+6. **VRT ベースライン更新**: `npm run vrt:docker:update` を実行
+7. **ドキュメント更新**:
    - `README.md` - ユーザー向けドキュメント
    - `docs/nodes.md` - ノードリファレンス
    - `docs/llm-integration.md` - LLM 向けガイド
    - `CLAUDE.md` - 主要な型セクションに追加
-7. **changeset 追加**: PR 作成前に `npx changeset add` を実行
+8. **changeset 追加**: PR 作成前に `npx changeset add` を実行
 
 ## プレビューワークフロー（Claude Code用）
 

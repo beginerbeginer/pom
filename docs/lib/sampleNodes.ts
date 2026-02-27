@@ -1,4 +1,3 @@
-import type { POMNode } from "../../src/types.js";
 import type { NodeType } from "./config.js";
 
 const palette = {
@@ -13,1032 +12,313 @@ const palette = {
   green: "16A34A",
 };
 
-export const textSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Text Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 40,
-      children: [
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            { type: "text", text: "Font Sizes", fontPx: 14, bold: true },
-            { type: "text", text: "12px text", fontPx: 12 },
-            { type: "text", text: "18px text", fontPx: 18 },
-            { type: "text", text: "24px text", fontPx: 24 },
-          ],
-        },
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            { type: "text", text: "Colors", fontPx: 14, bold: true },
-            { type: "text", text: "Navy color", color: palette.navy },
-            { type: "text", text: "Blue color", color: palette.blue },
-            { type: "text", text: "Red color", color: palette.red },
-          ],
-        },
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            { type: "text", text: "Alignment", fontPx: 14, bold: true },
-            {
-              type: "text",
-              text: "Left aligned",
-              alignText: "left",
-              w: 150,
-              backgroundColor: palette.lightBlue,
-            },
-            {
-              type: "text",
-              text: "Center aligned",
-              alignText: "center",
-              w: 150,
-              backgroundColor: palette.lightBlue,
-            },
-            {
-              type: "text",
-              text: "Right aligned",
-              alignText: "right",
-              w: 150,
-              backgroundColor: palette.lightBlue,
-            },
-          ],
-        },
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            { type: "text", text: "Bullet List", fontPx: 14, bold: true },
-            {
-              type: "text",
-              text: "Item 1\nItem 2\nItem 3",
-              fontPx: 14,
-              bullet: true,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const textSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Text Node Example</Text>
+  <HStack gap="40">
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Font Sizes</Text>
+      <Text fontPx="12">12px text</Text>
+      <Text fontPx="18">18px text</Text>
+      <Text fontPx="24">24px text</Text>
+    </VStack>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Colors</Text>
+      <Text color="${palette.navy}">Navy color</Text>
+      <Text color="${palette.blue}">Blue color</Text>
+      <Text color="${palette.red}">Red color</Text>
+    </VStack>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Alignment</Text>
+      <Text alignText="left" w="150" backgroundColor="${palette.lightBlue}">Left aligned</Text>
+      <Text alignText="center" w="150" backgroundColor="${palette.lightBlue}">Center aligned</Text>
+      <Text alignText="right" w="150" backgroundColor="${palette.lightBlue}">Right aligned</Text>
+    </VStack>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Bullet List</Text>
+      <Text fontPx="14" bullet="true">Item 1\nItem 2\nItem 3</Text>
+    </VStack>
+  </HStack>
+</VStack>
+`;
 
 const sampleImageUrl =
   "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png";
 
-export const imageSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Image Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 40,
-      alignItems: "center",
-      children: [
-        {
-          type: "box",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: {
-            type: "image",
-            src: sampleImageUrl,
-            w: 200,
-            h: 150,
-          },
-        },
-        {
-          type: "box",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          borderRadius: 8,
-          padding: 16,
-          children: {
-            type: "image",
-            src: sampleImageUrl,
-            w: 150,
-            h: 150,
-          },
-        },
-        {
-          type: "box",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          borderRadius: 16,
-          padding: 16,
-          children: {
-            type: "image",
-            src: sampleImageUrl,
-            w: 180,
-            h: 120,
-          },
-        },
-      ],
-    },
-  ],
-};
+export const imageSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Image Node Example</Text>
+  <HStack gap="40" alignItems="center">
+    <Box backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Image src="${sampleImageUrl}" w="200" h="150" />
+    </Box>
+    <Box backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' borderRadius="8" padding="16">
+      <Image src="${sampleImageUrl}" w="150" h="150" />
+    </Box>
+    <Box backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' borderRadius="16" padding="16">
+      <Image src="${sampleImageUrl}" w="180" h="120" />
+    </Box>
+  </HStack>
+</VStack>
+`;
 
-export const tableSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Table Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "table",
-      defaultRowHeight: 36,
-      columns: [{ width: 80 }, { width: 200 }, { width: 100 }, { width: 120 }],
-      rows: [
-        {
-          cells: [
-            {
-              text: "ID",
-              bold: true,
-              backgroundColor: palette.navy,
-              color: "FFFFFF",
-              alignText: "center",
-            },
-            {
-              text: "Name",
-              bold: true,
-              backgroundColor: palette.navy,
-              color: "FFFFFF",
-              alignText: "center",
-            },
-            {
-              text: "Status",
-              bold: true,
-              backgroundColor: palette.navy,
-              color: "FFFFFF",
-              alignText: "center",
-            },
-            {
-              text: "Progress",
-              bold: true,
-              backgroundColor: palette.navy,
-              color: "FFFFFF",
-              alignText: "center",
-            },
-          ],
-        },
-        {
-          cells: [
-            { text: "001", alignText: "center" },
-            { text: "Project Alpha" },
-            { text: "Active", color: palette.green },
-            { text: "75%", alignText: "right" },
-          ],
-        },
-        {
-          cells: [
-            { text: "002", alignText: "center" },
-            { text: "Project Beta" },
-            { text: "Pending", color: palette.accent },
-            { text: "30%", alignText: "right" },
-          ],
-        },
-        {
-          cells: [
-            { text: "003", alignText: "center" },
-            { text: "Project Gamma" },
-            { text: "Complete", color: palette.blue },
-            { text: "100%", alignText: "right" },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const tableSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Table Node Example</Text>
+  <Table defaultRowHeight="36">
+    <Column width="80" />
+    <Column width="200" />
+    <Column width="100" />
+    <Column width="120" />
+    <Row>
+      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">ID</Cell>
+      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Name</Cell>
+      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Status</Cell>
+      <Cell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Progress</Cell>
+    </Row>
+    <Row>
+      <Cell alignText="center">001</Cell>
+      <Cell>Project Alpha</Cell>
+      <Cell color="${palette.green}">Active</Cell>
+      <Cell alignText="right">75%</Cell>
+    </Row>
+    <Row>
+      <Cell alignText="center">002</Cell>
+      <Cell>Project Beta</Cell>
+      <Cell color="${palette.accent}">Pending</Cell>
+      <Cell alignText="right">30%</Cell>
+    </Row>
+    <Row>
+      <Cell alignText="center">003</Cell>
+      <Cell>Project Gamma</Cell>
+      <Cell color="${palette.blue}">Complete</Cell>
+      <Cell alignText="right">100%</Cell>
+    </Row>
+  </Table>
+</VStack>
+`;
 
-export const shapeSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Shape Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 32,
-      alignItems: "center",
-      children: [
-        {
-          type: "shape",
-          shapeType: "rect",
-          w: 120,
-          h: 80,
-          fill: { color: palette.blue },
-          text: "Rectangle",
-          color: "FFFFFF",
-          fontPx: 14,
-          alignText: "center",
-        },
-        {
-          type: "shape",
-          shapeType: "roundRect",
-          w: 120,
-          h: 80,
-          fill: { color: palette.green },
-          text: "Rounded",
-          color: "FFFFFF",
-          fontPx: 14,
-          alignText: "center",
-        },
-        {
-          type: "shape",
-          shapeType: "ellipse",
-          w: 100,
-          h: 100,
-          fill: { color: palette.accent },
-          text: "Ellipse",
-          color: "FFFFFF",
-          fontPx: 14,
-          alignText: "center",
-        },
-        {
-          type: "shape",
-          shapeType: "diamond",
-          w: 100,
-          h: 100,
-          fill: { color: palette.red },
-          text: "Diamond",
-          color: "FFFFFF",
-          fontPx: 12,
-          alignText: "center",
-        },
-        {
-          type: "shape",
-          shapeType: "rightArrow",
-          w: 140,
-          h: 60,
-          fill: { color: palette.navy },
-          text: "Arrow",
-          color: "FFFFFF",
-          fontPx: 14,
-          alignText: "center",
-        },
-      ],
-    },
-  ],
-};
+export const shapeSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Shape Node Example</Text>
+  <HStack gap="32" alignItems="center">
+    <Shape shapeType="rect" w="120" h="80" fill='{"color":"${palette.blue}"}' text="Rectangle" color="FFFFFF" fontPx="14" alignText="center" />
+    <Shape shapeType="roundRect" w="120" h="80" fill='{"color":"${palette.green}"}' text="Rounded" color="FFFFFF" fontPx="14" alignText="center" />
+    <Shape shapeType="ellipse" w="100" h="100" fill='{"color":"${palette.accent}"}' text="Ellipse" color="FFFFFF" fontPx="14" alignText="center" />
+    <Shape shapeType="diamond" w="100" h="100" fill='{"color":"${palette.red}"}' text="Diamond" color="FFFFFF" fontPx="12" alignText="center" />
+    <Shape shapeType="rightArrow" w="140" h="60" fill='{"color":"${palette.navy}"}' text="Arrow" color="FFFFFF" fontPx="14" alignText="center" />
+  </HStack>
+</VStack>
+`;
 
-export const chartSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Chart Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 32,
-      children: [
-        {
-          type: "chart",
-          chartType: "bar",
-          w: 350,
-          h: 250,
-          showTitle: true,
-          title: "Bar Chart",
-          showLegend: true,
-          chartColors: [palette.blue, palette.green, palette.red],
-          data: [
-            { name: "Q1", labels: ["Jan", "Feb", "Mar"], values: [30, 45, 60] },
-            { name: "Q2", labels: ["Jan", "Feb", "Mar"], values: [40, 55, 70] },
-          ],
-        },
-        {
-          type: "chart",
-          chartType: "pie",
-          w: 300,
-          h: 250,
-          showTitle: true,
-          title: "Pie Chart",
-          showLegend: true,
-          chartColors: [
-            palette.blue,
-            palette.green,
-            palette.accent,
-            palette.red,
-          ],
-          data: [
-            {
-              labels: ["Category A", "Category B", "Category C", "Category D"],
-              values: [35, 25, 25, 15],
-            },
-          ],
-        },
-        {
-          type: "chart",
-          chartType: "line",
-          w: 350,
-          h: 250,
-          showTitle: true,
-          title: "Line Chart",
-          showLegend: true,
-          chartColors: [palette.blue, palette.red],
-          data: [
-            {
-              name: "2023",
-              labels: ["Q1", "Q2", "Q3", "Q4"],
-              values: [20, 35, 45, 60],
-            },
-            {
-              name: "2024",
-              labels: ["Q1", "Q2", "Q3", "Q4"],
-              values: [30, 50, 55, 75],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const chartSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
+  <HStack gap="32">
+    <Chart chartType="bar" w="350" h="250" showTitle="true" title="Bar Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.red}"]'>
+      <Series name="Q1">
+        <DataPoint label="Jan" value="30" />
+        <DataPoint label="Feb" value="45" />
+        <DataPoint label="Mar" value="60" />
+      </Series>
+      <Series name="Q2">
+        <DataPoint label="Jan" value="40" />
+        <DataPoint label="Feb" value="55" />
+        <DataPoint label="Mar" value="70" />
+      </Series>
+    </Chart>
+    <Chart chartType="pie" w="300" h="250" showTitle="true" title="Pie Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.accent}","${palette.red}"]'>
+      <Series>
+        <DataPoint label="Category A" value="35" />
+        <DataPoint label="Category B" value="25" />
+        <DataPoint label="Category C" value="25" />
+        <DataPoint label="Category D" value="15" />
+      </Series>
+    </Chart>
+    <Chart chartType="line" w="350" h="250" showTitle="true" title="Line Chart" showLegend="true" chartColors='["${palette.blue}","${palette.red}"]'>
+      <Series name="2023">
+        <DataPoint label="Q1" value="20" />
+        <DataPoint label="Q2" value="35" />
+        <DataPoint label="Q3" value="45" />
+        <DataPoint label="Q4" value="60" />
+      </Series>
+      <Series name="2024">
+        <DataPoint label="Q1" value="30" />
+        <DataPoint label="Q2" value="50" />
+        <DataPoint label="Q3" value="55" />
+        <DataPoint label="Q4" value="75" />
+      </Series>
+    </Chart>
+  </HStack>
+</VStack>
+`;
 
-export const timelineSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Timeline Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "timeline",
-      direction: "horizontal",
-      w: "100%",
-      h: 200,
-      items: [
-        {
-          date: "2024 Q1",
-          title: "Phase 1",
-          description: "Planning & Research",
-          color: palette.blue,
-        },
-        {
-          date: "2024 Q2",
-          title: "Phase 2",
-          description: "Development",
-          color: palette.green,
-        },
-        {
-          date: "2024 Q3",
-          title: "Phase 3",
-          description: "Testing",
-          color: palette.accent,
-        },
-        {
-          date: "2024 Q4",
-          title: "Phase 4",
-          description: "Launch",
-          color: palette.red,
-        },
-      ],
-    },
-  ],
-};
+export const timelineSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Timeline Node Example</Text>
+  <Timeline direction="horizontal" w="100%" h="200">
+    <TimelineItem date="2024 Q1" title="Phase 1" description="Planning &amp; Research" color="${palette.blue}" />
+    <TimelineItem date="2024 Q2" title="Phase 2" description="Development" color="${palette.green}" />
+    <TimelineItem date="2024 Q3" title="Phase 3" description="Testing" color="${palette.accent}" />
+    <TimelineItem date="2024 Q4" title="Phase 4" description="Launch" color="${palette.red}" />
+  </Timeline>
+</VStack>
+`;
 
-export const matrixSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Matrix Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "matrix",
-      w: 500,
-      h: 400,
-      axes: { x: "Cost", y: "Impact" },
-      quadrants: {
-        topLeft: "Low Cost\nHigh Impact",
-        topRight: "High Cost\nHigh Impact",
-        bottomLeft: "Low Cost\nLow Impact",
-        bottomRight: "High Cost\nLow Impact",
-      },
-      items: [
-        { label: "Project A", x: 0.2, y: 0.8, color: palette.green },
-        { label: "Project B", x: 0.7, y: 0.85, color: palette.blue },
-        { label: "Project C", x: 0.3, y: 0.3, color: palette.accent },
-        { label: "Project D", x: 0.8, y: 0.2, color: palette.red },
-      ],
-    },
-  ],
-};
+export const matrixSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
+  <Matrix w="500" h="400">
+    <Axes x="Cost" y="Impact" />
+    <Quadrants topLeft="Low Cost\nHigh Impact" topRight="High Cost\nHigh Impact" bottomLeft="Low Cost\nLow Impact" bottomRight="High Cost\nLow Impact" />
+    <MatrixItem label="Project A" x="0.2" y="0.8" color="${palette.green}" />
+    <MatrixItem label="Project B" x="0.7" y="0.85" color="${palette.blue}" />
+    <MatrixItem label="Project C" x="0.3" y="0.3" color="${palette.accent}" />
+    <MatrixItem label="Project D" x="0.8" y="0.2" color="${palette.red}" />
+  </Matrix>
+</VStack>
+`;
 
-export const treeSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Tree Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "tree",
-      layout: "vertical",
-      nodeShape: "roundRect",
-      w: "100%",
-      h: 400,
-      connectorStyle: { color: palette.charcoal, width: 2 },
-      data: {
-        label: "CEO",
-        color: palette.navy,
-        children: [
-          {
-            label: "CTO",
-            color: palette.blue,
-            children: [
-              { label: "Dev Team", color: palette.accent },
-              { label: "QA Team", color: palette.accent },
-            ],
-          },
-          {
-            label: "CFO",
-            color: palette.green,
-            children: [
-              { label: "Finance", color: palette.accent },
-              { label: "Accounting", color: palette.accent },
-            ],
-          },
-          {
-            label: "COO",
-            color: palette.red,
-            children: [
-              { label: "Operations", color: palette.accent },
-              { label: "HR", color: palette.accent },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+export const treeSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Tree Node Example</Text>
+  <Tree layout="vertical" nodeShape="roundRect" w="100%" h="400" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
+    <TreeItem label="CEO" color="${palette.navy}">
+      <TreeItem label="CTO" color="${palette.blue}">
+        <TreeItem label="Dev Team" color="${palette.accent}" />
+        <TreeItem label="QA Team" color="${palette.accent}" />
+      </TreeItem>
+      <TreeItem label="CFO" color="${palette.green}">
+        <TreeItem label="Finance" color="${palette.accent}" />
+        <TreeItem label="Accounting" color="${palette.accent}" />
+      </TreeItem>
+      <TreeItem label="COO" color="${palette.red}">
+        <TreeItem label="Operations" color="${palette.accent}" />
+        <TreeItem label="HR" color="${palette.accent}" />
+      </TreeItem>
+    </TreeItem>
+  </Tree>
+</VStack>
+`;
 
-export const flowSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Flow Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "flow",
-      direction: "horizontal",
-      w: "100%",
-      h: 300,
-      connectorStyle: { color: palette.charcoal, width: 2 },
-      nodes: [
-        {
-          id: "start",
-          shape: "flowChartTerminator",
-          text: "Start",
-          color: palette.green,
-        },
-        {
-          id: "input",
-          shape: "flowChartInputOutput",
-          text: "Input Data",
-          color: palette.lightBlue,
-        },
-        {
-          id: "process",
-          shape: "flowChartProcess",
-          text: "Process",
-          color: palette.blue,
-        },
-        {
-          id: "decision",
-          shape: "flowChartDecision",
-          text: "Valid?",
-          color: palette.accent,
-        },
-        {
-          id: "end",
-          shape: "flowChartTerminator",
-          text: "End",
-          color: palette.red,
-        },
-      ],
-      connections: [
-        { from: "start", to: "input" },
-        { from: "input", to: "process" },
-        { from: "process", to: "decision" },
-        { from: "decision", to: "end", label: "Yes" },
-      ],
-    },
-  ],
-};
+export const flowSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Flow Node Example</Text>
+  <Flow direction="horizontal" w="100%" h="300" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
+    <FlowNode id="start" shape="flowChartTerminator" text="Start" color="${palette.green}" />
+    <FlowNode id="input" shape="flowChartInputOutput" text="Input Data" color="${palette.lightBlue}" />
+    <FlowNode id="process" shape="flowChartProcess" text="Process" color="${palette.blue}" />
+    <FlowNode id="decision" shape="flowChartDecision" text="Valid?" color="${palette.accent}" />
+    <FlowNode id="end" shape="flowChartTerminator" text="End" color="${palette.red}" />
+    <Connection from="start" to="input" />
+    <Connection from="input" to="process" />
+    <Connection from="process" to="decision" />
+    <Connection from="decision" to="end" label="Yes" />
+  </Flow>
+</VStack>
+`;
 
-export const processArrowSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "ProcessArrow Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "processArrow",
-      direction: "horizontal",
-      w: "100%",
-      h: 100,
-      steps: [
-        { label: "Planning", color: "4472C4" },
-        { label: "Design", color: "5B9BD5" },
-        { label: "Development", color: "70AD47" },
-        { label: "Testing", color: "FFC000" },
-        { label: "Release", color: "ED7D31" },
-      ],
-    },
-    {
-      type: "hstack",
-      gap: 32,
-      children: [
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            {
-              type: "text",
-              text: "Default Style",
-              fontPx: 14,
-              bold: true,
-            },
-            {
-              type: "processArrow",
-              direction: "horizontal",
-              w: 400,
-              h: 60,
-              steps: [
-                { label: "Input" },
-                { label: "Process" },
-                { label: "Output" },
-              ],
-            },
-          ],
-        },
-        {
-          type: "vstack",
-          gap: 8,
-          children: [
-            {
-              type: "text",
-              text: "Custom Text Color",
-              fontPx: 14,
-              bold: true,
-            },
-            {
-              type: "processArrow",
-              direction: "horizontal",
-              w: 400,
-              h: 60,
-              steps: [
-                { label: "Light BG", color: "FFEB3B", textColor: "333333" },
-                { label: "Dark BG", color: palette.navy, textColor: "FFFFFF" },
-                { label: "Blue BG", color: palette.blue, textColor: "FFFFFF" },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const processArrowSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
+  <ProcessArrow direction="horizontal" w="100%" h="100">
+    <Step label="Planning" color="4472C4" />
+    <Step label="Design" color="5B9BD5" />
+    <Step label="Development" color="70AD47" />
+    <Step label="Testing" color="FFC000" />
+    <Step label="Release" color="ED7D31" />
+  </ProcessArrow>
+  <HStack gap="32">
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Default Style</Text>
+      <ProcessArrow direction="horizontal" w="400" h="60">
+        <Step label="Input" />
+        <Step label="Process" />
+        <Step label="Output" />
+      </ProcessArrow>
+    </VStack>
+    <VStack gap="8">
+      <Text fontPx="14" bold="true">Custom Text Color</Text>
+      <ProcessArrow direction="horizontal" w="400" h="60">
+        <Step label="Light BG" color="FFEB3B" textColor="333333" />
+        <Step label="Dark BG" color="${palette.navy}" textColor="FFFFFF" />
+        <Step label="Blue BG" color="${palette.blue}" textColor="FFFFFF" />
+      </ProcessArrow>
+    </VStack>
+  </HStack>
+</VStack>
+`;
 
-export const boxSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "Box Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 32,
-      children: [
-        {
-          type: "box",
-          w: 200,
-          h: 150,
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: {
-            type: "text",
-            text: "Basic Box\nwith padding",
-            fontPx: 14,
-          },
-        },
-        {
-          type: "box",
-          w: 200,
-          h: 150,
-          backgroundColor: palette.lightBlue,
-          border: { color: palette.blue, width: 2 },
-          borderRadius: 8,
-          padding: 16,
-          children: {
-            type: "text",
-            text: "Rounded Box\nwith border",
-            fontPx: 14,
-            color: palette.navy,
-          },
-        },
-        {
-          type: "box",
-          w: 200,
-          h: 150,
-          backgroundColor: palette.navy,
-          borderRadius: 16,
-          padding: 16,
-          children: {
-            type: "text",
-            text: "Styled Box\nwith background",
-            fontPx: 14,
-            color: "FFFFFF",
-          },
-        },
-      ],
-    },
-  ],
-};
+export const boxSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Box Node Example</Text>
+  <HStack gap="32">
+    <Box w="200" h="150" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="14">Basic Box\nwith padding</Text>
+    </Box>
+    <Box w="200" h="150" backgroundColor="${palette.lightBlue}" border='{"color":"${palette.blue}","width":2}' borderRadius="8" padding="16">
+      <Text fontPx="14" color="${palette.navy}">Rounded Box\nwith border</Text>
+    </Box>
+    <Box w="200" h="150" backgroundColor="${palette.navy}" borderRadius="16" padding="16">
+      <Text fontPx="14" color="FFFFFF">Styled Box\nwith background</Text>
+    </Box>
+  </HStack>
+</VStack>
+`;
 
-export const vstackSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "VStack Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "hstack",
-      gap: 32,
-      children: [
-        {
-          type: "vstack",
-          w: 200,
-          h: 250,
-          gap: 8,
-          alignItems: "start",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            { type: "text", text: "alignItems: start", fontPx: 12, bold: true },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 100,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 80,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 120,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-        {
-          type: "vstack",
-          w: 200,
-          h: 250,
-          gap: 8,
-          alignItems: "center",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            {
-              type: "text",
-              text: "alignItems: center",
-              fontPx: 12,
-              bold: true,
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 100,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 80,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 120,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-        {
-          type: "vstack",
-          w: 200,
-          h: 250,
-          gap: 8,
-          alignItems: "end",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            { type: "text", text: "alignItems: end", fontPx: 12, bold: true },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 100,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 80,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 120,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const vstackSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
+  <HStack gap="32">
+    <VStack w="200" h="250" gap="8" alignItems="start" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true">alignItems: start</Text>
+      <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
+    </VStack>
+    <VStack w="200" h="250" gap="8" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true">alignItems: center</Text>
+      <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
+    </VStack>
+    <VStack w="200" h="250" gap="8" alignItems="end" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true">alignItems: end</Text>
+      <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
+    </VStack>
+  </HStack>
+</VStack>
+`;
 
-export const hstackSample: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 40,
-  gap: 24,
-  backgroundColor: palette.background,
-  children: [
-    {
-      type: "text",
-      text: "HStack Node Example",
-      fontPx: 28,
-      bold: true,
-      color: palette.navy,
-    },
-    {
-      type: "vstack",
-      gap: 16,
-      children: [
-        {
-          type: "hstack",
-          w: "100%",
-          h: 80,
-          gap: 16,
-          justifyContent: "start",
-          alignItems: "center",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            {
-              type: "text",
-              text: "justifyContent: start",
-              fontPx: 12,
-              bold: true,
-              w: 150,
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-        {
-          type: "hstack",
-          w: "100%",
-          h: 80,
-          gap: 16,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            {
-              type: "text",
-              text: "justifyContent: center",
-              fontPx: 12,
-              bold: true,
-              w: 150,
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-        {
-          type: "hstack",
-          w: "100%",
-          h: 80,
-          gap: 16,
-          justifyContent: "spaceBetween",
-          alignItems: "center",
-          backgroundColor: "FFFFFF",
-          border: { color: palette.border, width: 1 },
-          padding: 16,
-          children: [
-            {
-              type: "text",
-              text: "justifyContent: spaceBetween",
-              fontPx: 12,
-              bold: true,
-              w: 180,
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.blue },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.green },
-            },
-            {
-              type: "shape",
-              shapeType: "rect",
-              w: 60,
-              h: 40,
-              fill: { color: palette.red },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+export const hstackSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">HStack Node Example</Text>
+  <VStack gap="16">
+    <HStack w="100%" h="80" gap="16" justifyContent="start" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true" w="150">justifyContent: start</Text>
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
+    </HStack>
+    <HStack w="100%" h="80" gap="16" justifyContent="center" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true" w="150">justifyContent: center</Text>
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
+    </HStack>
+    <HStack w="100%" h="80" gap="16" justifyContent="spaceBetween" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
+      <Text fontPx="12" bold="true" w="180">justifyContent: spaceBetween</Text>
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
+      <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
+    </HStack>
+  </VStack>
+</VStack>
+`;
 
-export const sampleNodes: Record<NodeType, POMNode> = {
+export const sampleNodes: Record<NodeType, string> = {
   text: textSample,
   image: imageSample,
   table: tableSample,
