@@ -8,7 +8,7 @@ You can specify the text measurement method using the `textMeasurement` option i
 
 ```typescript
 const pptx = await buildPptx(
-  [slide],
+  xml,
   { w: 1280, h: 720 },
   {
     textMeasurement: "auto", // "opentype" | "fallback" | "auto"

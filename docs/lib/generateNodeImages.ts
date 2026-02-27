@@ -9,13 +9,13 @@ const SLIDE_WIDTH = 1280;
 const SLIDE_HEIGHT = 720;
 
 async function generateNodeImage(nodeType: NodeType): Promise<void> {
-  const sampleNode = sampleNodes[nodeType];
+  const sampleXml = sampleNodes[nodeType];
   const tempPptxPath = path.join(IMAGES_DIR, `${nodeType}.pptx`);
   const outputPngPath = path.join(IMAGES_DIR, `${nodeType}.png`);
 
   // PPTXを生成
   const pptx = await buildPptx(
-    [sampleNode],
+    sampleXml,
     { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
     { textMeasurement: "fallback" },
   );

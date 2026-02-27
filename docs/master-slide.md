@@ -7,8 +7,17 @@ You can define a slide master with static objects (text, images, rectangles, lin
 ```typescript
 import { buildPptx } from "@hirokisakabe/pom";
 
+const xml = `
+<VStack w="100%" h="max" padding="48">
+  <Text fontPx="32" bold="true">Page 1</Text>
+</VStack>
+<VStack w="100%" h="max" padding="48">
+  <Text fontPx="32" bold="true">Page 2</Text>
+</VStack>
+`;
+
 const pptx = await buildPptx(
-  [page1, page2, page3],
+  xml,
   { w: 1280, h: 720 },
   {
     master: {

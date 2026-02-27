@@ -21,39 +21,23 @@ npm install @hirokisakabe/pom
 ## Quick Start
 
 ```typescript
-import { buildPptx, POMNode } from "@hirokisakabe/pom";
+import { buildPptx } from "@hirokisakabe/pom";
 
-const slide: POMNode = {
-  type: "vstack",
-  w: "100%",
-  h: "max",
-  padding: 48,
-  gap: 24,
-  alignItems: "start",
-  children: [
-    {
-      type: "text",
-      text: "Presentation Title",
-      fontPx: 48,
-      bold: true,
-    },
-    {
-      type: "text",
-      text: "Subtitle",
-      fontPx: 24,
-      color: "666666",
-    },
-  ],
-};
+const xml = `
+<VStack w="100%" h="max" padding="48" gap="24" alignItems="start">
+  <Text fontPx="48" bold="true">Presentation Title</Text>
+  <Text fontPx="24" color="666666">Subtitle</Text>
+</VStack>
+`;
 
-const pptx = await buildPptx([slide], { w: 1280, h: 720 });
+const pptx = await buildPptx(xml, { w: 1280, h: 720 });
 await pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
 ## Features
 
 - **Type-safe**: Strict type definitions with TypeScript
-- **Declarative**: Describe slides with JSON-like objects
+- **Declarative**: Describe slides with XML
 - **PowerPoint First**: Native support for Shape features
 - **Flexible Layout**: Automatic layout with VStack/HStack/Box
 - **Pixel Units**: Intuitive pixel-based sizing (internally converted to inches)
@@ -82,10 +66,10 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ## XML Input
 
-`parseXml` allows you to describe slides in XML instead of JSON. XML tags (PascalCase) are mapped to POM node types, and attribute values are automatically type-coerced using Zod schemas.
+`buildPptx` accepts XML strings. XML tags (PascalCase) are mapped to POM node types, and attribute values are automatically type-coerced using Zod schemas.
 
 ```typescript
-import { parseXml, buildPptx } from "@hirokisakabe/pom";
+import { buildPptx } from "@hirokisakabe/pom";
 
 const xml = `
 <VStack gap="16" padding="32">
@@ -99,8 +83,7 @@ const xml = `
 </VStack>
 `;
 
-const nodes = parseXml(xml);
-const pptx = await buildPptx(nodes, { w: 1280, h: 720 });
+const pptx = await buildPptx(xml, { w: 1280, h: 720 });
 ```
 
 Unknown tags will throw an error.

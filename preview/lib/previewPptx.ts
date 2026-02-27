@@ -2,27 +2,10 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { pptxToPng } from "../../vrt/lib/pptxToPng";
-import { POMNode, buildPptx } from "../../src";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PREVIEW_DIR = path.dirname(__dirname);
 const OUTPUT_DIR = path.join(PREVIEW_DIR, "output");
-
-// main.ts と同じサンプルデータを動的にインポート
-async function loadMainTs(): Promise<POMNode[]> {
-  const mainPath = path.join(PREVIEW_DIR, "..", "main.ts");
-  const mainContent = fs.readFileSync(mainPath, "utf-8");
-
-  // main.ts の page 変数を抽出して評価
-  // 注: この方法は簡易的なもの。より堅牢な方法が必要な場合は別途検討
-  const pageMatch = mainContent.match(/const page: POMNode = ({[\s\S]*?});/);
-  if (!pageMatch) {
-    throw new Error("Could not find page definition in main.ts");
-  }
-
-  // eval を使わず、main.ts を直接実行して PPTX を生成し、それをコピーする方式に変更
-  return [];
-}
 
 async function main() {
   // 出力ディレクトリを作成

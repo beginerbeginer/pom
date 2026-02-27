@@ -3,14 +3,15 @@ import {
   setTextMeasurementMode,
   TextMeasurementMode,
 } from "./calcYogaLayout/measureText.ts";
+import { parseXml } from "./parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { toPositioned } from "./toPositioned/toPositioned.ts";
-import { POMNode, PositionedNode, SlideMasterOptions } from "./types.ts";
+import { PositionedNode, SlideMasterOptions } from "./types.ts";
 
 export type { TextMeasurementMode };
 
 export async function buildPptx(
-  nodes: POMNode[],
+  xml: string,
   slideSize: { w: number; h: number },
   options?: {
     master?: SlideMasterOptions;
@@ -24,6 +25,7 @@ export async function buildPptx(
     setTextMeasurementMode("auto");
   }
 
+  const nodes = parseXml(xml);
   const positionedPages: PositionedNode[] = [];
 
   for (const node of nodes) {

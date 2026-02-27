@@ -1,4 +1,4 @@
-import { buildPptx, parseXml } from "./src";
+import { buildPptx } from "./src";
 
 const xml = `
 <VStack w="1280" h="720" padding='{"top":24,"bottom":24,"left":48,"right":48}' gap="24" backgroundColor="F8FAFC">
@@ -73,10 +73,8 @@ const xml = `
 </VStack>
 `;
 
-const nodes = parseXml(xml);
-
 async function main() {
-  const pptx = await buildPptx(nodes, {
+  const pptx = await buildPptx(xml, {
     w: 1280,
     h: 720,
   });
