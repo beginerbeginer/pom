@@ -1,6 +1,6 @@
 # Serverless Environments
 
-pom uses `opentype.js` with bundled Noto Sans JP fonts to measure text width and determine line break positions. This approach works consistently in both Node.js and browser environments, including serverless platforms like Vercel or AWS Lambda.
+pom uses `opentype.js` with bundled Noto Sans JP fonts to measure text width and determine line break positions. This approach works consistently across Node.js environments, including serverless platforms like Vercel or AWS Lambda.
 
 ## textMeasurement Option
 
