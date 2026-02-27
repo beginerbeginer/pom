@@ -6,35 +6,22 @@ This document provides a complete reference for all node types available in pom.
 
 Layout attributes that all nodes can have.
 
-```typescript
-{
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  minW?: number;
-  maxW?: number;
-  minH?: number;
-  maxH?: number;
-  padding?: number;
-  backgroundColor?: string;
-  backgroundImage?: {
-    src: string;
-    sizing?: "cover" | "contain";
-  };
-  border?: {
-    color?: string;
-    width?: number;
-    dashType?: "solid" | "dash" | "dashDot" | "lgDash" | "lgDashDot" | "lgDashDotDot" | "sysDash" | "sysDot";
-  };
-  borderRadius?: number;
-  opacity?: number;
-}
-```
+| Attribute         | Type                               | Description                       |
+| ----------------- | ---------------------------------- | --------------------------------- |
+| `w`               | number / `"max"` / `"50%"`         | Width                             |
+| `h`               | number / `"max"` / `"50%"`         | Height                            |
+| `minW` `maxW`     | number                             | Min/Max width                     |
+| `minH` `maxH`     | number                             | Min/Max height                    |
+| `padding`         | number / `'{"top":8,"bottom":8}'`  | Padding                           |
+| `backgroundColor` | hex                                | Background color (e.g., `F8F9FA`) |
+| `backgroundImage` | `'{"src":"url","sizing":"cover"}'` | Background image                  |
+| `border`          | `'{"color":"333","width":1}'`      | Border                            |
+| `borderRadius`    | number                             | Corner radius (px)                |
+| `opacity`         | 0-1                                | Background transparency           |
 
-- `backgroundColor` applies a fill to the entire node (e.g., `"F8F9FA"`).
-- `backgroundImage` sets a background image on the node. `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
-- `border.width` is specified in px and can be combined with color and `dashType` to control the border.
-- `borderRadius` specifies the corner radius in px. When specified, the background/border shape becomes a rounded rectangle.
-- `opacity` specifies the transparency of the background color (0 = fully transparent, 1 = fully opaque). Useful for semi-transparent overlays with Layer nodes.
+- `backgroundImage`: `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
+- `border`: Can be combined with `color`, `width`, and `dashType` (`"solid"` / `"dash"` / `"dashDot"` / `"lgDash"` / `"lgDashDot"` / `"lgDashDotDot"` / `"sysDash"` / `"sysDot"`).
+- `opacity`: 0 = fully transparent, 1 = fully opaque. Useful for semi-transparent overlays with Layer nodes.
 
 ## Node List
 
@@ -44,38 +31,23 @@ A node for displaying text.
 
 ![Text Node Example](./images/text.png)
 
-```typescript
-{
-  type: "text";
-  text: string;
-  fontPx?: number;
-  color?: string;
-  alignText?: "left" | "center" | "right";
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean | { style?: UnderlineStyle; color?: string };
-  strike?: boolean;
-  highlight?: string;
-  fontFamily?: string;
-  lineSpacingMultiple?: number;
-  bullet?: boolean | BulletOptions;
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Text fontPx="24" bold="true" color="333333" alignText="center">Title</Text>
 ```
 
-- `color` specifies the text color as a hex color code (e.g., `"FF0000"`).
-- `bold` enables bold text.
-- `italic` enables italic text.
-- `underline` enables underline. Use `true` for single underline, or an object for detailed settings (e.g., `{ style: "wavy", color: "FF0000" }`).
-- `strike` enables strikethrough text.
-- `highlight` specifies the text highlight color as a hex color code (e.g., `"FFFF00"` for yellow).
-- `fontFamily` specifies the font family (default: `"Noto Sans JP"`).
-- `lineSpacingMultiple` specifies the line spacing multiplier (default: `1.3`).
-- `bullet` enables bullet points. Use `true` for default bullets, or an object for detailed settings.
+| Attribute                | Type / Values                                                                       |
+| ------------------------ | ----------------------------------------------------------------------------------- |
+| `fontPx`                 | number (default: 24)                                                                |
+| `color`                  | hex (text color)                                                                    |
+| `alignText`              | `left` / `center` / `right`                                                         |
+| `bold` `italic` `strike` | `true` / `false`                                                                    |
+| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'`                                      |
+| `highlight`              | hex (highlight color)                                                               |
+| `fontFamily`             | string (default: `Noto Sans JP`)                                                    |
+| `lineSpacingMultiple`    | number (default: 1.3)                                                               |
+| `bullet`                 | `true` / `'{"type":"number"}'` / `'{"type":"number","numberType":"alphaLcPeriod"}'` |
+
+Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
 **UnderlineStyle:**
 
@@ -83,18 +55,12 @@ A node for displaying text.
 
 **BulletOptions:**
 
-```typescript
-{
-  type?: "bullet" | "number";  // "bullet": symbol, "number": numbered
-  indent?: number;             // Indent level
-  numberType?: "alphaLcParenBoth" | "alphaLcParenR" | "alphaLcPeriod" |
-               "alphaUcParenBoth" | "alphaUcParenR" | "alphaUcPeriod" |
-               "arabicParenBoth" | "arabicParenR" | "arabicPeriod" | "arabicPlain" |
-               "romanLcParenBoth" | "romanLcParenR" | "romanLcPeriod" |
-               "romanUcParenBoth" | "romanUcParenR" | "romanUcPeriod";
-  numberStartAt?: number;      // Starting number
-}
-```
+| Property        | Type / Values                                                                                                                |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `type`          | `"bullet"` (symbol) / `"number"` (numbered)                                                                                  |
+| `indent`        | number (indent level)                                                                                                        |
+| `numberType`    | `alphaLcPeriod` / `alphaUcPeriod` / `arabicParenR` / `arabicPeriod` / `arabicPlain` / `romanLcPeriod` / `romanUcPeriod` etc. |
+| `numberStartAt` | number (starting number)                                                                                                     |
 
 **Usage Examples:**
 
@@ -126,39 +92,22 @@ A node for displaying images.
 
 ![Image Node Example](./images/image.png)
 
-- If `w` and `h` are not specified, the actual image size is automatically used
-- If size is specified, the image is displayed at that size (aspect ratio is not preserved)
+```xml
+<Image src="https://example.com/img.png" w="200" h="150" />
+```
+
+| Attribute | Type / Values                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| `src`     | string (URL / path / base64)                                                                    |
+| `sizing`  | `'{"type":"contain"}'` / `'{"type":"cover"}'` / `'{"type":"crop","x":0,"y":0,"w":100,"h":100}'` |
+| `shadow`  | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                          |
+
+- If `w` and `h` are not specified, the actual image size is automatically used.
+- If size is specified, the image is displayed at that size (aspect ratio is not preserved).
 - Use `sizing` to control how the image fits within its bounds:
   - `contain`: Maintains aspect ratio, fits within the specified size
   - `cover`: Maintains aspect ratio, covers the entire specified size
   - `crop`: Crops the image to the specified region
-
-```typescript
-{
-  type: "image";
-  src: string;  // Image path (local path, URL, or base64 data)
-  sizing?: {
-    type: "contain" | "cover" | "crop";
-    w?: number;   // Sizing width (defaults to node width)
-    h?: number;   // Sizing height (defaults to node height)
-    x?: number;   // Crop X offset (crop only)
-    y?: number;   // Crop Y offset (crop only)
-  };
-  shadow?: {
-    type: "outer" | "inner";
-    opacity?: number;
-    blur?: number;
-    angle?: number;
-    offset?: number;
-    color?: string;
-  };
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
-```
 
 ### 3. Table
 
@@ -166,48 +115,13 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 ![Table Node Example](./images/table.png)
 
-```typescript
-{
-  type: "table";
-  columns: { width?: number }[];
-  rows: {
-    height?: number;
-    cells: {
-      text: string;
-      fontPx?: number;
-      color?: string;
-      bold?: boolean;
-      italic?: boolean;
-      underline?: boolean | { style?: UnderlineStyle; color?: string };
-      strike?: boolean;
-      highlight?: string;
-      alignText?: "left" | "center" | "right";
-      backgroundColor?: string;
-    }[];
-  }[];
-  defaultRowHeight?: number;
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
-```
-
-- If `columns[].width` is omitted, columns are evenly distributed across the table width.
-- The sum of `columns` becomes the natural width of the table (can be overridden with `w` if needed).
-- If `rows` `height` is omitted, `defaultRowHeight` is applied (32px if unspecified).
-- Cell background and font decoration can be specified individually for each element in `cells`.
-
-**XML Child Element Notation:**
-
 ```xml
 <Table>
   <Column width="200" />
   <Column width="100" />
   <Row>
-    <Cell bold="true">Name</Cell>
-    <Cell bold="true">Score</Cell>
+    <Cell bold="true" backgroundColor="DBEAFE">Name</Cell>
+    <Cell bold="true" backgroundColor="DBEAFE">Score</Cell>
   </Row>
   <Row>
     <Cell>Alice</Cell>
@@ -216,49 +130,32 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 </Table>
 ```
 
+- `<Column>`: `width` (omit for even distribution)
+- `<Row>`: `height` (omit to apply `defaultRowHeight`, default 32)
+- `<Cell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor`
+
+| Attribute          | Type / Values        |
+| ------------------ | -------------------- |
+| `defaultRowHeight` | number (default: 32) |
+
 ### 4. Shape
 
 A node for drawing shapes. Different representations are possible with or without text, supporting complex visual effects.
 
 ![Shape Node Example](./images/shape.png)
 
-```typescript
-{
-  type: "shape";
-  shapeType: PptxGenJS.SHAPE_NAME;  // e.g., "roundRect", "ellipse", "cloud", "star5"
-  text?: string;                     // Text to display inside the shape (optional)
-  fill?: {
-    color?: string;
-    transparency?: number;
-  };
-  line?: {
-    color?: string;
-    width?: number;
-    dashType?: "solid" | "dash" | "dashDot" | "lgDash" | "lgDashDot" | "lgDashDotDot" | "sysDash" | "sysDot";
-  };
-  shadow?: {
-    type: "outer" | "inner";
-    opacity?: number;
-    blur?: number;
-    angle?: number;
-    offset?: number;
-    color?: string;
-  };
-  fontPx?: number;
-  color?: string;
-  alignText?: "left" | "center" | "right";
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean | { style?: UnderlineStyle; color?: string };
-  strike?: boolean;
-  highlight?: string;
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Shape shapeType="roundRect" w="200" h="60" text="Button" fontPx="16" fill='{"color":"1D4ED8"}' color="FFFFFF" />
 ```
+
+| Attribute       | Type / Values                                                                        |
+| --------------- | ------------------------------------------------------------------------------------ |
+| `shapeType`     | `rect` / `roundRect` / `ellipse` / `triangle` / `star5` / `cloud` / `downArrow` etc. |
+| `text`          | string (text inside the shape)                                                       |
+| `fill`          | `'{"color":"hex","transparency":0.5}'`                                               |
+| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                      |
+| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                               |
+| Text attributes | `fontPx` `color` `alignText` `bold` `italic` `underline` `strike` `highlight`        |
 
 **Common Shape Types:**
 
@@ -272,32 +169,21 @@ A node for drawing shapes. Different representations are possible with or withou
 
 ### 5. Box
 
-A generic container that wraps a single child element.
+A generic container that wraps a single child element. Used for grouping with padding or fixed size.
 
 ![Box Node Example](./images/box.png)
 
-- Only **one** child element
-- Used for grouping with padding or fixed size
-
-```typescript
-{
-  type: "box";
-  children: POMNode;
-  shadow?: {
-    type: "outer" | "inner";
-    opacity?: number;
-    blur?: number;
-    angle?: number;
-    offset?: number;
-    color?: string;
-  };
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Box w="50%" padding="20" backgroundColor="FFFFFF">
+  <Text>Content</Text>
+</Box>
 ```
+
+| Attribute | Type | Description                                            |
+| --------- | ---- | ------------------------------------------------------ |
+| `shadow`  | JSON | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'` |
+
+- Only **one** child element.
 
 ### 6. VStack
 
@@ -305,20 +191,18 @@ Arranges child elements **vertically**.
 
 ![VStack Node Example](./images/vstack.png)
 
-```typescript
-{
-  type: "vstack";
-  children: POMNode[];
-  alignItems: "start" | "center" | "end" | "stretch";
-  justifyContent: "start" | "center" | "end" | "spaceBetween";
-  gap?: number;
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<VStack gap="16" alignItems="stretch" justifyContent="start">
+  <Text>A</Text>
+  <Text>B</Text>
+</VStack>
 ```
+
+| Attribute        | Values                                                                      |
+| ---------------- | --------------------------------------------------------------------------- |
+| `gap`            | number (gap between children)                                               |
+| `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
+| `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 
 ### 7. HStack
 
@@ -326,20 +210,18 @@ Arranges child elements **horizontally**.
 
 ![HStack Node Example](./images/hstack.png)
 
-```typescript
-{
-  type: "hstack";
-  children: POMNode[];
-  alignItems: "start" | "center" | "end" | "stretch";
-  justifyContent: "start" | "center" | "end" | "spaceBetween";
-  gap?: number;
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<HStack gap="16" alignItems="center" justifyContent="start">
+  <Text>A</Text>
+  <Text>B</Text>
+</HStack>
 ```
+
+| Attribute        | Values                                                                      |
+| ---------------- | --------------------------------------------------------------------------- |
+| `gap`            | number (gap between children)                                               |
+| `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
+| `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 
 ### 8. Chart
 
@@ -347,27 +229,23 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 
 ![Chart Node Example](./images/chart.png)
 
-```typescript
-{
-  type: "chart";
-  chartType: "bar" | "line" | "pie" | "area" | "doughnut" | "radar";
-  data: {
-    name?: string;           // Series name
-    labels: string[];        // Category labels
-    values: number[];        // Values
-  }[];
-  showLegend?: boolean;      // Show legend (default: false)
-  showTitle?: boolean;       // Show title (default: false)
-  title?: string;            // Title string
-  chartColors?: string[];    // Data color array (hex color codes)
-  radarStyle?: "standard" | "marker" | "filled";  // Radar-only: chart style
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Chart chartType="bar" w="500" h="300" showLegend="true" chartColors='["0088CC","00AA00"]'>
+  <Series name="Sales">
+    <DataPoint label="Jan" value="100" />
+    <DataPoint label="Feb" value="150" />
+  </Series>
+</Chart>
 ```
+
+| Attribute     | Type / Values                                          |
+| ------------- | ------------------------------------------------------ |
+| `chartType`   | `bar` / `line` / `pie` / `area` / `doughnut` / `radar` |
+| `showLegend`  | boolean                                                |
+| `showTitle`   | boolean                                                |
+| `title`       | string                                                 |
+| `chartColors` | JSON array `'["hex1","hex2"]'`                         |
+| `radarStyle`  | `standard` / `marker` / `filled` (radar only)          |
 
 **Usage Examples:**
 
@@ -413,46 +291,24 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 </Chart>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<Chart chartType="bar" w="600" h="400" showLegend="true">
-  <Series name="Sales">
-    <DataPoint label="Jan" value="100" />
-    <DataPoint label="Feb" value="200" />
-    <DataPoint label="Mar" value="150" />
-  </Series>
-  <Series name="Profit">
-    <DataPoint label="Jan" value="30" />
-    <DataPoint label="Feb" value="60" />
-    <DataPoint label="Mar" value="45" />
-  </Series>
-</Chart>
-```
-
 ### 9. Timeline
 
 A node for creating timeline/roadmap visualizations. Supports horizontal and vertical layouts.
 
 ![Timeline Node Example](./images/timeline.png)
 
-```typescript
-{
-  type: "timeline";
-  direction?: "horizontal" | "vertical";  // Default: "horizontal"
-  items: {
-    date: string;           // Date/period label
-    title: string;          // Item title
-    description?: string;   // Optional description
-    color?: string;         // Node color (hex, default: "1D4ED8")
-  }[];
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Timeline direction="horizontal" w="1000" h="120">
+  <TimelineItem date="Q1" title="Phase 1" description="Foundation" color="4CAF50" />
+  <TimelineItem date="Q2" title="Phase 2" description="Development" color="2196F3" />
+</Timeline>
 ```
+
+| Attribute   | Values                    |
+| ----------- | ------------------------- |
+| `direction` | `horizontal` / `vertical` |
+
+`<TimelineItem>`: `date` (required) `title` (required) `description` `color`
 
 **Usage Examples:**
 
@@ -473,50 +329,25 @@ A node for creating timeline/roadmap visualizations. Supports horizontal and ver
 </Timeline>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<Timeline direction="horizontal" w="1000" h="120">
-  <TimelineItem date="2025/Q1" title="Phase 1" description="Foundation" color="4CAF50" />
-  <TimelineItem date="2025/Q2" title="Phase 2" description="Development" color="2196F3" />
-  <TimelineItem date="2025/Q3" title="Phase 3" description="Release" color="E91E63" />
-</Timeline>
-```
-
 ### 10. Matrix
 
 A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiveness analysis, impact-effort prioritization, etc.
 
 ![Matrix Node Example](./images/matrix.png)
 
-```typescript
-{
-  type: "matrix";
-  axes: {
-    x: string;  // X-axis label (e.g., "Cost")
-    y: string;  // Y-axis label (e.g., "Effect")
-  };
-  quadrants?: {
-    topLeft: string;     // Top-left quadrant label
-    topRight: string;    // Top-right quadrant label
-    bottomLeft: string;  // Bottom-left quadrant label
-    bottomRight: string; // Bottom-right quadrant label
-  };
-  items: {
-    label: string;       // Item label
-    x: number;           // X coordinate (0-1, relative)
-    y: number;           // Y coordinate (0-1, relative)
-    color?: string;      // Item color (hex, default: "1D4ED8")
-  }[];
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Matrix w="600" h="500">
+  <Axes x="Cost" y="Effect" />
+  <Quadrants topLeft="Quick Wins" topRight="Strategic" bottomLeft="Low Priority" bottomRight="Avoid" />
+  <MatrixItem label="Initiative A" x="0.2" y="0.8" color="4CAF50" />
+  <MatrixItem label="Initiative B" x="0.7" y="0.6" />
+</Matrix>
 ```
 
-**Note:** The coordinate system uses (0, 0) as bottom-left and (1, 1) as top-right (mathematical coordinate system).
+- Coordinates: (0,0)=bottom-left, (1,1)=top-right (mathematical coordinate system)
+- `<Axes>`: `x` `y` (axis labels, required)
+- `<Quadrants>`: `topLeft` `topRight` `bottomLeft` `bottomRight`
+- `<MatrixItem>`: `label` `x` `y` (required) `color`
 
 **Usage Examples:**
 
@@ -545,49 +376,34 @@ A node for creating 2x2 matrix/positioning maps. Commonly used for cost-effectiv
 </Matrix>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<Matrix w="600" h="500">
-  <Axes x="Cost" y="Effect" />
-  <Quadrants topLeft="Low Cost / High Effect" topRight="High Cost / High Effect"
-    bottomLeft="Low Cost / Low Effect" bottomRight="High Cost / Low Effect" />
-  <MatrixItem label="Initiative A" x="0.2" y="0.8" color="4CAF50" />
-  <MatrixItem label="Initiative B" x="0.7" y="0.6" color="2196F3" />
-</Matrix>
-```
-
 ### 11. Tree
 
 A node for creating tree structures such as organization charts, decision trees, and hierarchical diagrams.
 
 ![Tree Node Example](./images/tree.png)
 
-```typescript
-{
-  type: "tree";
-  layout?: "vertical" | "horizontal";  // Tree direction (default: "vertical")
-  nodeShape?: "rect" | "roundRect" | "ellipse";  // Node shape (default: "rect")
-  data: {
-    label: string;       // Node label
-    color?: string;      // Node color (hex, default: "1D4ED8")
-    children?: TreeDataItem[];  // Child nodes
-  };
-  connectorStyle?: {
-    color?: string;      // Connector line color (default: "333333")
-    width?: number;      // Connector line width (default: 2)
-  };
-  nodeWidth?: number;    // Node width in px (default: 120)
-  nodeHeight?: number;   // Node height in px (default: 40)
-  levelGap?: number;     // Gap between levels in px (default: 60)
-  siblingGap?: number;   // Gap between siblings in px (default: 20)
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Tree layout="vertical" nodeShape="roundRect" w="600" h="400">
+  <TreeItem label="CEO" color="1D4ED8">
+    <TreeItem label="CTO" color="0EA5E9">
+      <TreeItem label="Engineer A" />
+    </TreeItem>
+    <TreeItem label="CFO" color="16A34A" />
+  </TreeItem>
+</Tree>
 ```
+
+| Attribute        | Type / Values                    |
+| ---------------- | -------------------------------- |
+| `layout`         | `vertical` / `horizontal`        |
+| `nodeShape`      | `rect` / `roundRect` / `ellipse` |
+| `nodeWidth`      | number (default: 120)            |
+| `nodeHeight`     | number (default: 40)             |
+| `levelGap`       | number (default: 60)             |
+| `siblingGap`     | number (default: 20)             |
+| `connectorStyle` | `'{"color":"333","width":2}'`    |
+
+`<TreeItem>` can be nested recursively. The root must have exactly one `<TreeItem>`.
 
 **Usage Examples:**
 
@@ -620,67 +436,36 @@ A node for creating tree structures such as organization charts, decision trees,
 </Tree>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<Tree layout="vertical" nodeShape="roundRect" w="600" h="400">
-  <TreeItem label="CEO" color="1D4ED8">
-    <TreeItem label="CTO" color="0EA5E9">
-      <TreeItem label="Engineer A" />
-      <TreeItem label="Engineer B" />
-    </TreeItem>
-    <TreeItem label="CFO" color="16A34A">
-      <TreeItem label="Accountant" />
-    </TreeItem>
-  </TreeItem>
-</Tree>
-```
-
-Note: `<Tree>` must have exactly one `<TreeItem>` root child. `<TreeItem>` can be nested recursively.
-
 ### 12. Flow
 
 A node for creating flowcharts. Supports various node shapes and automatic layout.
 
 ![Flow Node Example](./images/flow.png)
 
-```typescript
-{
-  type: "flow";
-  direction?: "horizontal" | "vertical";  // Layout direction (default: "vertical")
-  nodes: {
-    id: string;           // Unique node identifier
-    shape: "flowChartTerminator" | "flowChartProcess" | "flowChartDecision"
-      | "flowChartInputOutput" | "flowChartDocument" | "flowChartPredefinedProcess"
-      | "flowChartConnector" | "flowChartPreparation" | "flowChartManualInput"
-      | "flowChartManualOperation" | "flowChartDelay" | "flowChartMagneticDisk";  // Node shape
-    text: string;         // Node text
-    color?: string;       // Node color (hex)
-    textColor?: string;   // Text color (hex)
-    width?: number;       // Node width in px
-    height?: number;      // Node height in px
-  }[];
-  connections: {
-    from: string;         // Source node ID
-    to: string;           // Target node ID
-    label?: string;       // Connection label
-    color?: string;       // Connection color (hex)
-  }[];
-  connectorStyle?: {
-    color?: string;       // Connector color (hex)
-    width?: number;       // Connector width in px
-    arrowType?: "none" | "arrow" | "diamond" | "oval" | "stealth" | "triangle";  // Arrow type
-  };
-  nodeWidth?: number;     // Default node width in px (default: 120)
-  nodeHeight?: number;    // Default node height in px (default: 40)
-  nodeGap?: number;       // Gap between nodes in px (default: 60)
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Flow direction="horizontal" w="500" h="300">
+  <FlowNode id="start" shape="flowChartTerminator" text="Start" color="4CAF50" />
+  <FlowNode id="process" shape="flowChartProcess" text="Process" />
+  <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
+  <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
+  <Connection from="start" to="process" />
+  <Connection from="process" to="decision" />
+  <Connection from="decision" to="end" label="Yes" />
+</Flow>
 ```
+
+| Attribute        | Type / Values                                     |
+| ---------------- | ------------------------------------------------- |
+| `direction`      | `horizontal` / `vertical`                         |
+| `nodeWidth`      | number (default: 120)                             |
+| `nodeHeight`     | number (default: 60)                              |
+| `nodeGap`        | number (default: 80)                              |
+| `connectorStyle` | `'{"color":"hex","width":2,"arrowType":"arrow"}'` |
+
+`<FlowNode>` shapes:
+`flowChartTerminator` / `flowChartProcess` / `flowChartDecision` / `flowChartInputOutput` / `flowChartDocument` / `flowChartPredefinedProcess` / `flowChartConnector` / `flowChartPreparation` / `flowChartManualInput` / `flowChartManualOperation` / `flowChartDelay` / `flowChartMagneticDisk`
+
+`<Connection>`: `from` `to` (required) `label` `color`
 
 **Usage Examples:**
 
@@ -708,51 +493,31 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 </Flow>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<Flow direction="vertical" w="400" h="300">
-  <FlowNode id="start" shape="flowChartTerminator" text="Start" color="4CAF50" />
-  <FlowNode id="process" shape="flowChartProcess" text="Process" />
-  <FlowNode id="decision" shape="flowChartDecision" text="OK?" color="FF9800" />
-  <FlowNode id="end" shape="flowChartTerminator" text="End" color="E91E63" />
-  <Connection from="start" to="process" />
-  <Connection from="process" to="decision" />
-  <Connection from="decision" to="end" label="Yes" />
-</Flow>
-```
-
 ### 13. ProcessArrow
 
 A node for creating chevron-style process diagrams. Commonly used for visualizing sequential steps in a workflow.
 
 ![ProcessArrow Node Example](./images/processArrow.png)
 
-```typescript
-{
-  type: "processArrow";
-  direction?: "horizontal" | "vertical";  // Default: "horizontal"
-  steps: {
-    label: string;       // Step label
-    color?: string;      // Step color (hex, default: "4472C4")
-    textColor?: string;  // Text color (hex, default: "FFFFFF")
-  }[];
-  itemWidth?: number;    // Step width in px (default: 150)
-  itemHeight?: number;   // Step height in px (default: 60)
-  gap?: number;          // Gap between steps in px (default: -15, negative for overlap)
-  fontPx?: number;       // Font size (default: 14)
-  bold?: boolean;        // Bold text (default: false)
-  italic?: boolean;      // Italic text (default: false)
-  underline?: boolean | { style?: UnderlineStyle; color?: string };
-  strike?: boolean;      // Strikethrough text (default: false)
-  highlight?: string;    // Text highlight color (hex)
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<ProcessArrow direction="horizontal" w="1000" h="80">
+  <Step label="Planning" color="4472C4" />
+  <Step label="Design" color="5B9BD5" />
+  <Step label="Development" color="70AD47" />
+  <Step label="Release" color="ED7D31" />
+</ProcessArrow>
 ```
+
+| Attribute                | Type / Values                               |
+| ------------------------ | ------------------------------------------- |
+| `direction`              | `horizontal` / `vertical`                   |
+| `itemWidth`              | number (default: 150)                       |
+| `itemHeight`             | number (default: 60)                        |
+| `gap`                    | number (default: -15, negative for overlap) |
+| `fontPx`                 | number (default: 14)                        |
+| `bold` `italic` `strike` | boolean                                     |
+
+`<Step>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
 
 **Usage Examples:**
 
@@ -782,53 +547,25 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 </ProcessArrow>
 ```
 
-**XML Child Element Notation:**
-
-```xml
-<ProcessArrow direction="horizontal" w="1000" h="80">
-  <Step label="Planning" color="4472C4" />
-  <Step label="Design" color="5B9BD5" />
-  <Step label="Development" color="70AD47" />
-  <Step label="Testing" color="FFC000" />
-  <Step label="Release" color="ED7D31" />
-</ProcessArrow>
-```
-
 ### 14. Line
 
 A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) for start and end points.
 
 ![Line Node Example](./images/line.png)
 
-```typescript
-{
-  type: "line";
-  x1: number;      // Start point X (px)
-  y1: number;      // Start point Y (px)
-  x2: number;      // End point X (px)
-  y2: number;      // End point Y (px)
-  color?: string;  // Line color (hex, default: "000000")
-  lineWidth?: number;  // Line width (px, default: 1)
-  dashType?: "solid" | "dash" | "dashDot" | "lgDash" | "lgDashDot" | "lgDashDotDot" | "sysDash" | "sysDot";
-  beginArrow?: boolean | ArrowOptions;  // Arrow at start point
-  endArrow?: boolean | ArrowOptions;    // Arrow at end point
-
-  // Common properties (optional, not typically used with line)
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Line x1="100" y1="100" x2="300" y2="100" color="333333" lineWidth="2" endArrow="true" />
 ```
 
-**ArrowOptions:**
+| Attribute                 | Type / Values                                                                     |
+| ------------------------- | --------------------------------------------------------------------------------- |
+| `x1` `y1` `x2` `y2`       | number (absolute coordinates, required)                                           |
+| `color`                   | hex (default: `000000`)                                                           |
+| `lineWidth`               | number (default: 1)                                                               |
+| `dashType`                | `solid` / `dash` / `dashDot` / `lgDash` / `sysDash` etc.                          |
+| `beginArrow` / `endArrow` | `true` / `'{"type":"triangle"}'` (type: none/arrow/triangle/diamond/oval/stealth) |
 
-```typescript
-{
-  type?: "none" | "arrow" | "triangle" | "diamond" | "oval" | "stealth";
-}
-```
-
-**Note:** Line nodes use absolute coordinates on the slide and are not affected by Yoga layout calculations. They are drawn at the exact positions specified by x1, y1, x2, y2.
+Note: Line nodes use absolute coordinates on the slide and are not affected by Yoga layout calculations.
 
 **Usage Examples:**
 
@@ -858,23 +595,17 @@ A container for absolute positioning of child elements. Child elements are posit
 
 ![Layer Node Example](./images/layer.png)
 
-```typescript
-{
-  type: "layer";
-  children: (POMNode & { x: number; y: number })[];
-
-  // Common properties
-  w?: number | "max" | `${number}%`;
-  h?: number | "max" | `${number}%`;
-  ...
-}
+```xml
+<Layer w="600" h="400">
+  <Shape shapeType="roundRect" x="50" y="50" w="120" h="80" fill='{"color":"1D4ED8"}' text="A" color="FFFFFF" />
+  <Line x1="170" y1="90" x2="300" y2="90" endArrow="true" />
+</Layer>
 ```
 
-- Child elements are positioned absolutely within the layer using `x` and `y` coordinates
-- `x`, `y` are relative to the layer's top-left corner
-- Drawing order follows array order (later elements are drawn on top)
-- Layer itself participates in Flexbox layout (can be placed in VStack/HStack)
-- Layers can be nested
+- Child elements can have `x` `y` attributes (relative to layer's top-left corner, defaults to `0`).
+- Drawing order follows document order (later elements are drawn on top).
+- Layer itself participates in Flexbox layout (can be placed in VStack/HStack).
+- Layers can be nested.
 
 **Usage Examples:**
 
