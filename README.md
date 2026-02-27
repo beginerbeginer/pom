@@ -6,11 +6,7 @@
 
 ## Requirements
 
-- Node.js 18 or higher (for Node.js environments)
-- Modern browser with ES2020+ support (for browser environments)
-
-> [!NOTE]
-> pom works in both Node.js and browser environments. Text measurement uses opentype.js with bundled Noto Sans JP fonts, ensuring consistent layout across all environments.
+- Node.js 18 or higher
 
 ## Installation
 
