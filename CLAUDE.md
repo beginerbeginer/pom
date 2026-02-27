@@ -17,9 +17,11 @@ npm run typecheck         # 型チェック
 npm run test:run          # テスト実行
 npm run test              # テスト（watchモード）
 npx tsx main.ts           # サンプル実行（sample.pptx生成）
-npm run vrt:docker        # VRT実行（Docker環境）
-npm run vrt:docker:update # VRTベースライン更新（Docker環境）
-npm run preview:docker    # プレビュー（main.tsのPPTXをPNG化）
+npm run vrt:docker              # VRT実行（Docker環境）
+npm run vrt:docker:update       # VRTベースライン更新（Docker環境）
+npm run preview:docker          # プレビュー（main.tsのPPTXをPNG化）
+npm run docs:images:docker        # ドキュメント用ノード画像生成（Docker環境）
+npm run docs:images:docker:update # ドキュメント用ノード画像リビルド＆生成
 ```
 
 ## ディレクトリ構造
@@ -41,6 +43,15 @@ src/
 
 vrt/                      # Visual Regression Test
 preview/                  # プレビュー基盤（Claude Code用）
+
+docs/
+├── nodes.md                    # ノードリファレンス（画像付き）
+├── llm-integration.md          # LLM向けXMLリファレンス
+├── images/                     # ノードタイプ別サンプル画像（自動生成）
+└── lib/                        # 画像生成スクリプト
+    ├── generateNodeImages.ts   # メイン実行スクリプト
+    ├── config.ts               # ノードタイプ一覧・出力先設定
+    └── sampleNodes.ts          # 各ノードのサンプルXML
 ```
 
 ## アーキテクチャ
@@ -96,7 +107,11 @@ PPTX 生成は3段階のパイプライン:
    - `docs/nodes.md` - ノードリファレンス
    - `docs/llm-integration.md` - LLM 向け XML リファレンス（プロンプト用）
    - `CLAUDE.md` - 主要な型セクションに追加
-8. **changeset 追加**: PR 作成前に `npx changeset add` を実行
+8. **ドキュメント画像更新**（新ノードタイプ追加時）:
+   - `docs/lib/config.ts` の `NODE_TYPES` に追加
+   - `docs/lib/sampleNodes.ts` にサンプル XML を定義
+   - `npm run docs:images:docker:update` を実行
+9. **changeset 追加**: PR 作成前に `npx changeset add` を実行
 
 ## プレビューワークフロー（Claude Code用）
 
