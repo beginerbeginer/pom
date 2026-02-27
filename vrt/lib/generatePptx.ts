@@ -2,7 +2,7 @@ import { buildPptx } from "../../src";
 import {
   palette,
   page1TextXml,
-  page2BulletXml,
+  page2ListXml,
   page3ImageXml,
   page3bImageSizingXml,
   page4TableXml,
@@ -28,7 +28,7 @@ import {
 export async function generatePptx(outputPath: string): Promise<void> {
   const allPagesXml = [
     page1TextXml,
-    page2BulletXml,
+    page2ListXml,
     page3ImageXml,
     page3bImageSizingXml,
     page4TableXml,

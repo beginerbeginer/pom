@@ -3,6 +3,9 @@ import { z } from "zod";
 import type { POMNode } from "../types.ts";
 import {
   inputTextNodeSchema,
+  inputUlNodeSchema,
+  inputOlNodeSchema,
+  inputLiNodeSchema,
   inputImageNodeSchema,
   inputTableNodeSchema,
   inputShapeNodeSchema,
@@ -54,6 +57,8 @@ const TAG_TO_TYPE: Record<string, string> = {
   Tree: "tree",
   Flow: "flow",
   ProcessArrow: "processArrow",
+  Ul: "ul",
+  Ol: "ol",
   Line: "line",
   Box: "box",
   VStack: "vstack",
@@ -87,6 +92,8 @@ const leafNodeShapes: Record<string, ShapeRecord> = {
   flow: extractShape(inputFlowNodeSchema),
   processArrow: extractShape(inputProcessArrowNodeSchema),
   line: extractShape(inputLineNodeSchema),
+  ul: extractShape(inputUlNodeSchema),
+  ol: extractShape(inputOlNodeSchema),
 };
 
 const containerShapes: Record<string, ShapeRecord> = {
@@ -180,6 +187,8 @@ const leafNodeValidationSchemas: Record<string, z.ZodTypeAny> = {
   flow: inputFlowNodeSchema,
   processArrow: inputProcessArrowNodeSchema,
   line: inputLineNodeSchema,
+  ul: inputUlNodeSchema,
+  ol: inputOlNodeSchema,
 };
 
 function formatZodIssue(
@@ -246,6 +255,8 @@ const CHILD_ELEMENT_PROPS: Record<string, Set<string>> = {
   matrix: new Set(["axes", "items", "quadrants"]),
   processArrow: new Set(["steps"]),
   tree: new Set(["data"]),
+  ul: new Set(["items"]),
+  ol: new Set(["items"]),
 };
 
 function validateLeafNode(
@@ -513,6 +524,7 @@ const childElementShapes: Record<string, ShapeRecord> = {
   Connection: extractShape(flowConnectionSchema),
   Column: extractShape(tableColumnSchema),
   Cell: extractShape(tableCellSchema),
+  Li: extractShape(inputLiNodeSchema),
 };
 
 function coerceChildAttrs(
@@ -853,7 +865,41 @@ function convertTreeChildren(
   result.data = convertTreeItem(child, errors);
 }
 
+function convertListChildren(
+  parentTag: string,
+  childElements: XmlElement[],
+  result: Record<string, unknown>,
+  errors: string[],
+): void {
+  const items: Record<string, unknown>[] = [];
+  for (const child of childElements) {
+    const tag = getTagName(child);
+    if (tag !== "Li") {
+      errors.push(
+        `Unknown child element <${tag}> inside <${parentTag}>. Expected: <Li>`,
+      );
+      continue;
+    }
+    const attrs = coerceChildAttrs(
+      parentTag,
+      tag,
+      getAttributes(child),
+      errors,
+    );
+    const textContent = getTextContent(child);
+    if (textContent !== undefined && !("text" in attrs)) {
+      attrs.text = textContent;
+    }
+    items.push(attrs);
+  }
+  result.items = items;
+}
+
 const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
+  ul: (childElements, result, errors) =>
+    convertListChildren("Ul", childElements, result, errors),
+  ol: (childElements, result, errors) =>
+    convertListChildren("Ol", childElements, result, errors),
   processArrow: convertProcessArrowChildren,
   timeline: convertTimelineChildren,
   matrix: convertMatrixChildren,

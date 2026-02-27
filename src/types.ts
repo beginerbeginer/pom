@@ -49,7 +49,7 @@ export const shadowStyleSchema = z.object({
   color: z.string().optional(),
 });
 
-const bulletNumberTypeSchema = z.enum([
+export const bulletNumberTypeSchema = z.enum([
   "alphaLcParenBoth",
   "alphaLcParenR",
   "alphaLcPeriod",
@@ -67,13 +67,6 @@ const bulletNumberTypeSchema = z.enum([
   "romanUcParenR",
   "romanUcPeriod",
 ]);
-
-export const bulletOptionsSchema = z.object({
-  type: z.enum(["bullet", "number"]).optional(),
-  indent: z.number().optional(),
-  numberType: bulletNumberTypeSchema.optional(),
-  numberStartAt: z.number().optional(),
-});
 
 export const underlineStyleSchema = z.enum([
   "dash",
@@ -295,7 +288,7 @@ export const shapeTypeSchema = z.enum([
 
 // ===== TypeScript Types (defined early for recursive references) =====
 export type ShadowStyle = z.infer<typeof shadowStyleSchema>;
-export type BulletOptions = z.infer<typeof bulletOptionsSchema>;
+export type BulletNumberType = z.infer<typeof bulletNumberTypeSchema>;
 export type AlignItems = z.infer<typeof alignItemsSchema>;
 export type JustifyContent = z.infer<typeof justifyContentSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
@@ -342,7 +335,50 @@ const textNodeSchema = basePOMNodeSchema.extend({
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
   lineSpacingMultiple: z.number().optional(),
-  bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
+});
+
+export const liNodeSchema = z.object({
+  text: z.string(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
+  color: z.string().optional(),
+  fontPx: z.number().optional(),
+  fontFamily: z.string().optional(),
+});
+
+const ulNodeSchema = basePOMNodeSchema.extend({
+  type: z.literal("ul"),
+  items: z.array(liNodeSchema),
+  fontPx: z.number().optional(),
+  color: z.string().optional(),
+  alignText: z.enum(["left", "center", "right"]).optional(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
+  fontFamily: z.string().optional(),
+  lineSpacingMultiple: z.number().optional(),
+});
+
+const olNodeSchema = basePOMNodeSchema.extend({
+  type: z.literal("ol"),
+  items: z.array(liNodeSchema),
+  fontPx: z.number().optional(),
+  color: z.string().optional(),
+  alignText: z.enum(["left", "center", "right"]).optional(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
+  fontFamily: z.string().optional(),
+  lineSpacingMultiple: z.number().optional(),
+  numberType: bulletNumberTypeSchema.optional(),
+  numberStartAt: z.number().optional(),
 });
 
 const imageSizingSchema = z.object({
@@ -438,6 +474,9 @@ const chartNodeSchema = basePOMNodeSchema.extend({
 });
 
 export type TextNode = z.infer<typeof textNodeSchema>;
+export type LiNode = z.infer<typeof liNodeSchema>;
+export type UlNode = z.infer<typeof ulNodeSchema>;
+export type OlNode = z.infer<typeof olNodeSchema>;
 export type ImageNode = z.infer<typeof imageNodeSchema>;
 export type TableNode = z.infer<typeof tableNodeSchema>;
 export type ShapeNode = z.infer<typeof shapeNodeSchema>;
@@ -685,6 +724,8 @@ export type LayerNode = BasePOMNode & {
 
 export type POMNode =
   | TextNode
+  | UlNode
+  | OlNode
   | ImageNode
   | TableNode
   | BoxNode
@@ -740,6 +781,8 @@ const layerNodeSchemaBase = basePOMNodeSchema.extend({
 const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
   z.discriminatedUnion("type", [
     textNodeSchema,
+    ulNodeSchema,
+    olNodeSchema,
     imageNodeSchema,
     tableNodeSchema,
     boxNodeSchemaBase,
@@ -775,6 +818,8 @@ export type PositionedLayerChild = PositionedNode & {
 
 export type PositionedNode =
   | (TextNode & PositionedBase)
+  | (UlNode & PositionedBase)
+  | (OlNode & PositionedBase)
   | (ImageNode & PositionedBase & { imageData?: string })
   | (TableNode & PositionedBase)
   | (BoxNode & PositionedBase & { children: PositionedNode })
@@ -802,6 +847,8 @@ const positionedLayerChildSchema: z.ZodType<PositionedLayerChild> = z.lazy(() =>
 const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
   z.union([
     textNodeSchema.merge(positionedBaseSchema),
+    ulNodeSchema.merge(positionedBaseSchema),
+    olNodeSchema.merge(positionedBaseSchema),
     imageNodeSchema.merge(positionedBaseSchema).extend({
       imageData: z.string().optional(),
     }),

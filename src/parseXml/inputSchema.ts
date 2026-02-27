@@ -20,8 +20,9 @@ import {
   tableRowSchema,
   chartTypeSchema,
   chartDataSchema,
-  bulletOptionsSchema,
+  liNodeSchema,
   radarStyleSchema,
+  bulletNumberTypeSchema,
   timelineDirectionSchema,
   timelineItemSchema,
   matrixAxisSchema,
@@ -77,7 +78,40 @@ export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
   lineSpacingMultiple: z.number().optional(),
-  bullet: z.union([z.boolean(), bulletOptionsSchema]).optional(),
+});
+
+export const inputLiNodeSchema = liNodeSchema;
+
+export const inputUlNodeSchema = inputBaseNodeSchema.extend({
+  type: z.literal("ul"),
+  items: z.array(inputLiNodeSchema),
+  fontPx: z.number().optional(),
+  color: z.string().optional(),
+  alignText: z.enum(["left", "center", "right"]).optional(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
+  fontFamily: z.string().optional(),
+  lineSpacingMultiple: z.number().optional(),
+});
+
+export const inputOlNodeSchema = inputBaseNodeSchema.extend({
+  type: z.literal("ol"),
+  items: z.array(inputLiNodeSchema),
+  fontPx: z.number().optional(),
+  color: z.string().optional(),
+  alignText: z.enum(["left", "center", "right"]).optional(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+  underline: underlineSchema.optional(),
+  strike: z.boolean().optional(),
+  highlight: z.string().optional(),
+  fontFamily: z.string().optional(),
+  lineSpacingMultiple: z.number().optional(),
+  numberType: bulletNumberTypeSchema.optional(),
+  numberStartAt: z.number().optional(),
 });
 
 const inputImageSizingSchema = z.object({
@@ -206,6 +240,8 @@ export const inputLineNodeSchema = inputBaseNodeSchema.extend({
 });
 
 type InputTextNode = z.infer<typeof inputTextNodeSchema>;
+type InputUlNode = z.infer<typeof inputUlNodeSchema>;
+type InputOlNode = z.infer<typeof inputOlNodeSchema>;
 type InputImageNode = z.infer<typeof inputImageNodeSchema>;
 type InputTableNode = z.infer<typeof inputTableNodeSchema>;
 type InputShapeNode = z.infer<typeof inputShapeNodeSchema>;
@@ -253,6 +289,8 @@ type InputLayerNode = InputBaseNode & {
 
 type InputPOMNode =
   | InputTextNode
+  | InputUlNode
+  | InputOlNode
   | InputImageNode
   | InputTableNode
   | InputBoxNode
@@ -309,6 +347,8 @@ const inputLayerNodeSchemaBase = inputBaseNodeSchema.extend({
 const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
   z.discriminatedUnion("type", [
     inputTextNodeSchema,
+    inputUlNodeSchema,
+    inputOlNodeSchema,
     inputImageNodeSchema,
     inputTableNodeSchema,
     inputBoxNodeSchemaBase,
