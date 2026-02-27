@@ -26,17 +26,6 @@
 
 ---
 
-<table>
-  <tr>
-    <td><img src="./docs/images/chart.png" alt="Chart" width="400"></td>
-    <td><img src="./docs/images/flow.png" alt="Flow" width="400"></td>
-  </tr>
-  <tr>
-    <td><img src="./docs/images/tree.png" alt="Tree" width="400"></td>
-    <td><img src="./docs/images/timeline.png" alt="Timeline" width="400"></td>
-  </tr>
-</table>
-
 ## Table of Contents
 
 - [Features](#features)
