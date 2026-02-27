@@ -44,21 +44,18 @@ export function renderPyramidNode(
 
     const layerY = startY + i * (layerHeight + gap);
 
-    // direction="up": i=0 が最上段（最も狭い）、i=levelCount-1 が最下段（最も広い）
-    // direction="down": i=0 が最上段（最も広い）、i=levelCount-1 が最下段（最も狭い）
-    // 頂点側には最小幅比率 0.15 を設け、テキストが収まるようにする
-    const minRatio = 0.15;
+    // direction="up": i=0 が最上段（最も狭い＝三角形）、i=levelCount-1 が最下段（最も広い）
+    // direction="down": i=0 が最上段（最も広い）、i=levelCount-1 が最下段（最も狭い＝三角形）
+    // 頂点層の上辺は幅0（三角形）、それ以外は台形
     let topWidthRatio: number;
     let bottomWidthRatio: number;
 
     if (direction === "up") {
-      topWidthRatio = minRatio + ((1 - minRatio) * i) / levelCount;
-      bottomWidthRatio = minRatio + ((1 - minRatio) * (i + 1)) / levelCount;
+      topWidthRatio = i / levelCount;
+      bottomWidthRatio = (i + 1) / levelCount;
     } else {
-      topWidthRatio =
-        minRatio + ((1 - minRatio) * (levelCount - i)) / levelCount;
-      bottomWidthRatio =
-        minRatio + ((1 - minRatio) * (levelCount - i - 1)) / levelCount;
+      topWidthRatio = (levelCount - i) / levelCount;
+      bottomWidthRatio = (levelCount - i - 1) / levelCount;
     }
 
     const topWidth = baseWidth * topWidthRatio;
@@ -82,7 +79,7 @@ export function renderPyramidNode(
       { close: true as const },
     ];
 
-    // 台形の図形を描画
+    // 図形を描画（頂点層は三角形、それ以外は台形）
     ctx.slide.addShape("custGeom" as never, {
       x: pxToIn(bboxX),
       y: pxToIn(layerY),
@@ -93,7 +90,7 @@ export function renderPyramidNode(
       line: { type: "none" as const },
     });
 
-    // テキストを台形の中央に重ねて描画
+    // テキストを図形の中央に重ねて描画
     ctx.slide.addText(level.label, {
       x: pxToIn(bboxX),
       y: pxToIn(layerY),
@@ -105,6 +102,7 @@ export function renderPyramidNode(
       bold: node.bold ?? false,
       align: "center",
       valign: "middle",
+      autoFit: true,
     });
   }
 }
