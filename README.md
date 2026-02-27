@@ -98,6 +98,7 @@ For more details, see [LLM Integration - XML Format](./docs/llm-integration.md#x
 | [Master Slide](./docs/master-slide.md)           | Headers, footers, and page numbers      |
 | [Serverless Environments](./docs/serverless.md)  | Text measurement options for serverless |
 | [LLM Integration](./docs/llm-integration.md)     | Guide for generating slides with AI/LLM |
+| [LLM XML Reference](./docs/llm-xml-reference.md) | Compact XML reference for LLM prompts   |
 | [Playground](https://pom-playground.vercel.app/) | Try pom XML in the browser              |
 
 ## License
