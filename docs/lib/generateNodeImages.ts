@@ -23,7 +23,7 @@ async function generateNodeImage(nodeType: NodeType): Promise<void> {
   const pptxBuffer = await pptx.write({ outputType: "nodebuffer" });
 
   // PPTXファイルを保存
-  fs.writeFileSync(tempPptxPath, Buffer.from(pptxBuffer));
+  fs.writeFileSync(tempPptxPath, Buffer.from(pptxBuffer as Uint8Array));
 
   // PPTX → PNG変換
   await pptxToPng(tempPptxPath, IMAGES_DIR, [nodeType]);

@@ -1,4 +1,4 @@
-import { palette } from "./palette";
+import { palette } from "./palette.js";
 
 // ============================================================
 // Page 11: Matrix Test

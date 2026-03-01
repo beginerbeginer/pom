@@ -1,4 +1,4 @@
-import { buildPptx } from "./src";
+import { buildPptx } from "./src/index.js";
 
 const xml = `
 <VStack w="1280" h="720" padding='{"top":24,"bottom":24,"left":48,"right":48}' gap="24" backgroundColor="F8FAFC">

@@ -1,4 +1,4 @@
-import { buildPptx } from "../../src";
+import { buildPptx } from "../../src/index.js";
 import {
   palette,
   page1TextXml,
@@ -26,7 +26,7 @@ import {
   page22CompositeScaleToFitXml,
   page23TableColspanRowspanXml,
   page24PyramidXml,
-} from "./slides";
+} from "./slides/index.js";
 
 export async function generatePptx(outputPath: string): Promise<void> {
   const allPagesXml = [

@@ -47,7 +47,7 @@
     "fmt:check": "prettier --check .",
     "knip": "knip",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",

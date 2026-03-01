@@ -7,10 +7,10 @@ import {
   ACTUAL_DIR,
   DIFF_DIR,
   PAGE_NAMES,
-} from "./lib/config";
-import { generatePptx } from "./lib/generatePptx";
-import { pptxToPng } from "./lib/pptxToPng";
-import { comparePng } from "./lib/comparePng";
+} from "./lib/config.js";
+import { generatePptx } from "./lib/generatePptx.js";
+import { pptxToPng } from "./lib/pptxToPng.js";
+import { comparePng } from "./lib/comparePng.js";
 
 async function main() {
   const updateBaseline = process.argv.includes("--update");
