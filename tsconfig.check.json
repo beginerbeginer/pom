@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": [
+    "src/**/*",
+    "preview/**/*",
+    "vrt/**/*",
+    "docs/lib/**/*",
+    "main.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

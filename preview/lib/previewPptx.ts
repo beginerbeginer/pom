@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { pptxToPng } from "../../vrt/lib/pptxToPng";
+import { pptxToPng } from "../../vrt/lib/pptxToPng.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PREVIEW_DIR = path.dirname(__dirname);

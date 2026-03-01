@@ -1,7 +1,7 @@
 import fs from "fs";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
-import { THRESHOLD } from "./config";
+import { THRESHOLD } from "./config.js";
 
 export function comparePng(
   actualPath: string,
