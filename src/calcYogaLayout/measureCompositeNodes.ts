@@ -7,6 +7,11 @@ import type {
   PyramidNode,
   TreeDataItem,
 } from "../types.ts";
+import {
+  ARROW_DEPTH_RATIO,
+  DEFAULT_PROCESS_ARROW_ITEM_WIDTH,
+  DEFAULT_PROCESS_ARROW_ITEM_HEIGHT,
+} from "../shared/processArrowConstants.ts";
 
 /**
  * ProcessArrow ノードの intrinsic size を計算する
@@ -20,9 +25,10 @@ export function measureProcessArrow(node: ProcessArrowNode): {
     return { width: 0, height: 0 };
   }
 
-  const itemWidth = node.itemWidth ?? 150;
-  const itemHeight = node.itemHeight ?? 60;
-  const gap = node.gap ?? -15;
+  const itemWidth = node.itemWidth ?? DEFAULT_PROCESS_ARROW_ITEM_WIDTH;
+  const itemHeight = node.itemHeight ?? DEFAULT_PROCESS_ARROW_ITEM_HEIGHT;
+  const arrowDepth = itemHeight * ARROW_DEPTH_RATIO;
+  const gap = node.gap ?? -arrowDepth;
   const direction = node.direction ?? "horizontal";
 
   if (direction === "horizontal") {

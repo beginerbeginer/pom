@@ -4,6 +4,11 @@ import { pxToIn, pxToPt } from "../units.ts";
 import { convertUnderline, convertStrike } from "../textOptions.ts";
 import { measureProcessArrow } from "../../calcYogaLayout/measureCompositeNodes.ts";
 import { calcScaleFactor } from "../utils/scaleToFit.ts";
+import {
+  ARROW_DEPTH_RATIO,
+  DEFAULT_PROCESS_ARROW_ITEM_WIDTH,
+  DEFAULT_PROCESS_ARROW_ITEM_HEIGHT,
+} from "../../shared/processArrowConstants.ts";
 
 type ProcessArrowPositionedNode = Extract<
   PositionedNode,
@@ -22,9 +27,10 @@ export function renderProcessArrowNode(
 
   const defaultColor = "4472C4"; // PowerPoint標準の青
   const defaultTextColor = "FFFFFF";
-  const itemWidth = node.itemWidth ?? 150;
-  const itemHeight = node.itemHeight ?? 60;
-  const gap = node.gap ?? -15; // 負の値でシェブロンを重ねる
+  const itemWidth = node.itemWidth ?? DEFAULT_PROCESS_ARROW_ITEM_WIDTH;
+  const itemHeight = node.itemHeight ?? DEFAULT_PROCESS_ARROW_ITEM_HEIGHT;
+  const arrowDepth = itemHeight * ARROW_DEPTH_RATIO;
+  const gap = node.gap ?? -arrowDepth;
 
   // スケール係数を計算
   const intrinsic = measureProcessArrow(node);
@@ -39,6 +45,7 @@ export function renderProcessArrowNode(
   const scaledItemWidth = itemWidth * scaleFactor;
   const scaledItemHeight = itemHeight * scaleFactor;
   const scaledGap = gap * scaleFactor;
+  const scaledArrowDepth = arrowDepth * scaleFactor;
 
   if (direction === "horizontal") {
     renderHorizontalProcessArrow(
@@ -49,6 +56,7 @@ export function renderProcessArrowNode(
       scaledItemWidth,
       scaledItemHeight,
       scaledGap,
+      scaledArrowDepth,
       defaultColor,
       defaultTextColor,
       scaleFactor,
@@ -62,6 +70,7 @@ export function renderProcessArrowNode(
       scaledItemWidth,
       scaledItemHeight,
       scaledGap,
+      scaledArrowDepth,
       defaultColor,
       defaultTextColor,
       scaleFactor,
@@ -77,6 +86,7 @@ function renderHorizontalProcessArrow(
   itemWidth: number,
   itemHeight: number,
   gap: number,
+  arrowDepth: number,
   defaultColor: string,
   defaultTextColor: string,
   scaleFactor: number,
@@ -91,18 +101,48 @@ function renderHorizontalProcessArrow(
     const fillColor = step.color?.replace("#", "") ?? defaultColor;
     const textColor = step.textColor?.replace("#", "") ?? defaultTextColor;
 
-    // 最初のステップは homePlate、以降は chevron
-    const shapeType =
-      index === 0 ? ctx.pptx.ShapeType.homePlate : ctx.pptx.ShapeType.chevron;
+    // custGeom でシェブロン形状を描画
+    const isFirst = index === 0;
+    const points = isFirst
+      ? [
+          // homePlate 風: 左辺フラット、右辺が矢印
+          { x: 0, y: 0 },
+          { x: pxToIn(itemWidth - arrowDepth), y: 0 },
+          { x: pxToIn(itemWidth), y: pxToIn(itemHeight / 2) },
+          { x: pxToIn(itemWidth - arrowDepth), y: pxToIn(itemHeight) },
+          { x: 0, y: pxToIn(itemHeight) },
+          { close: true as const },
+        ]
+      : [
+          // chevron 風: 左辺に切り欠き、右辺が矢印
+          { x: 0, y: 0 },
+          { x: pxToIn(itemWidth - arrowDepth), y: 0 },
+          { x: pxToIn(itemWidth), y: pxToIn(itemHeight / 2) },
+          { x: pxToIn(itemWidth - arrowDepth), y: pxToIn(itemHeight) },
+          { x: 0, y: pxToIn(itemHeight) },
+          { x: pxToIn(arrowDepth), y: pxToIn(itemHeight / 2) },
+          { close: true as const },
+        ];
 
-    ctx.slide.addText(step.label, {
+    ctx.slide.addShape("custGeom" as never, {
       x: pxToIn(stepX),
       y: pxToIn(stepY),
       w: pxToIn(itemWidth),
       h: pxToIn(itemHeight),
-      shape: shapeType,
+      points,
       fill: { color: fillColor },
       line: { type: "none" as const },
+    });
+
+    // テキストを図形の中央（矢印部分を除いた領域）に配置
+    const textOffsetLeft = isFirst ? 0 : arrowDepth;
+    const textWidth = Math.max(1, itemWidth - arrowDepth - textOffsetLeft);
+
+    ctx.slide.addText(step.label, {
+      x: pxToIn(stepX + textOffsetLeft),
+      y: pxToIn(stepY),
+      w: pxToIn(textWidth),
+      h: pxToIn(itemHeight),
       fontSize: pxToPt((node.fontPx ?? 14) * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
@@ -125,6 +165,7 @@ function renderVerticalProcessArrow(
   itemWidth: number,
   itemHeight: number,
   gap: number,
+  arrowDepth: number,
   defaultColor: string,
   defaultTextColor: string,
   scaleFactor: number,
@@ -139,18 +180,47 @@ function renderVerticalProcessArrow(
     const fillColor = step.color?.replace("#", "") ?? defaultColor;
     const textColor = step.textColor?.replace("#", "") ?? defaultTextColor;
 
-    // 垂直方向では pentagon を使用（下向き矢印風）
-    const shapeType =
-      index === 0 ? ctx.pptx.ShapeType.rect : ctx.pptx.ShapeType.pentagon;
+    const isFirst = index === 0;
+    const points = isFirst
+      ? [
+          // rect 風: 上辺フラット、下辺が矢印
+          { x: 0, y: 0 },
+          { x: pxToIn(itemWidth), y: 0 },
+          { x: pxToIn(itemWidth), y: pxToIn(itemHeight - arrowDepth) },
+          { x: pxToIn(itemWidth / 2), y: pxToIn(itemHeight) },
+          { x: 0, y: pxToIn(itemHeight - arrowDepth) },
+          { close: true as const },
+        ]
+      : [
+          // pentagon 風: 上辺に切り欠き、下辺が矢印
+          { x: pxToIn(itemWidth / 2), y: 0 },
+          { x: pxToIn(itemWidth), y: pxToIn(arrowDepth) },
+          { x: pxToIn(itemWidth), y: pxToIn(itemHeight - arrowDepth) },
+          { x: pxToIn(itemWidth / 2), y: pxToIn(itemHeight) },
+          { x: 0, y: pxToIn(itemHeight - arrowDepth) },
+          { x: 0, y: pxToIn(arrowDepth) },
+          { close: true as const },
+        ];
 
-    ctx.slide.addText(step.label, {
+    ctx.slide.addShape("custGeom" as never, {
       x: pxToIn(stepX),
       y: pxToIn(stepY),
       w: pxToIn(itemWidth),
       h: pxToIn(itemHeight),
-      shape: shapeType,
+      points,
       fill: { color: fillColor },
       line: { type: "none" as const },
+    });
+
+    // テキストを図形の中央（矢印部分を除いた領域）に配置
+    const textOffsetTop = isFirst ? 0 : arrowDepth;
+    const textHeight = Math.max(1, itemHeight - arrowDepth - textOffsetTop);
+
+    ctx.slide.addText(step.label, {
+      x: pxToIn(stepX),
+      y: pxToIn(stepY + textOffsetTop),
+      w: pxToIn(itemWidth),
+      h: pxToIn(textHeight),
       fontSize: pxToPt((node.fontPx ?? 14) * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
