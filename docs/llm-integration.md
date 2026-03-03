@@ -347,16 +347,16 @@ Ul の全属性に加えて:
 </ProcessArrow>
 ```
 
-| 属性                     | 型 / 値                                        |
-| ------------------------ | ---------------------------------------------- |
-| `direction`              | `horizontal` / `vertical`                      |
-| `itemWidth`              | number（デフォルト: 150）                      |
-| `itemHeight`             | number（デフォルト: 60）                       |
-| `gap`                    | number（デフォルト: -15、負で重なり）          |
-| `fontPx`                 | number（デフォルト: 14）                       |
-| `bold` `italic` `strike` | boolean                                        |
-| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
-| `highlight`              | hex（ハイライト色）                            |
+| 属性                     | 型 / 値                                              |
+| ------------------------ | ---------------------------------------------------- |
+| `direction`              | `horizontal` / `vertical`                            |
+| `itemWidth`              | number（デフォルト: 150）                            |
+| `itemHeight`             | number（デフォルト: 80）                             |
+| `gap`                    | number（デフォルト: -(itemHeight×0.35)、負で重なり） |
+| `fontPx`                 | number（デフォルト: 14）                             |
+| `bold` `italic` `strike` | boolean                                              |
+| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'`       |
+| `highlight`              | hex（ハイライト色）                                  |
 
 `<ProcessArrowStep>`: `label`（必須）`color`（デフォルト: `4472C4`）`textColor`（デフォルト: `FFFFFF`）
 
