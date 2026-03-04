@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 4.1.0
+
+### Minor Changes
+
+- [#266](https://github.com/hirokisakabe/pom/pull/266) [`a5a2089`](https://github.com/hirokisakabe/pom/commit/a5a208914f9ff6366614b4c4ab63ba4767df0235) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - ProcessArrow のデザインを改善: custGeom によるカスタムジオメトリで矢印をより鋭利に、デフォルト高さを 60px → 80px に変更
+
 ## 4.0.0
 
 ### Major Changes
