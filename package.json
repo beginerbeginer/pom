@@ -1,7 +1,7 @@
 {
   "name": "@hirokisakabe/pom",
   "version": "4.0.0",
-  "description": "PowerPoint Object Model - A declarative TypeScript library for creating PowerPoint presentations",
+  "description": "AI-friendly PowerPoint generation with a Flexbox layout engine.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

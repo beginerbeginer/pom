@@ -1,6 +1,6 @@
 <h1 align="center">pom</h1>
 <p align="center">
-  Declarative PowerPoint generation from XML — built for AI
+  AI-friendly PowerPoint generation with a Flexbox layout engine.
 </p>
 
 <p align="center">
@@ -10,8 +10,7 @@
 </p>
 
 <p align="center">
-  <b>pom (PowerPoint Object Model)</b> is a TypeScript library that converts XML into PowerPoint files (.pptx).<br>
-  Flexbox-style layout powered by <a href="https://www.yogalayout.dev/">yoga-layout</a>, rendered with <a href="https://github.com/nicktomlin/pptxgenjs">pptxgenjs</a>.
+  <b>pom (PowerPoint Object Model)</b> is a TypeScript library that converts XML into editable PowerPoint files (.pptx).
 </p>
 
 <p align="center">
