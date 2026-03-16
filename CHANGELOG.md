@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 4.1.1
+
+### Patch Changes
+
+- [#275](https://github.com/hirokisakabe/pom/pull/275) [`4e863b0`](https://github.com/hirokisakabe/pom/commit/4e863b051f96601a4a9500f8c0723d00d8282de6) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Text ノードのスペースのみテキストコンテンツが消える問題を修正
+
 ## 4.1.0
 
 ### Minor Changes
