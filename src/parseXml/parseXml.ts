@@ -493,7 +493,7 @@ function getAttributes(node: XmlElement): Record<string, string> {
   if (rawAttrs) {
     for (const [key, value] of Object.entries(rawAttrs)) {
       const attrName = key.startsWith("@_") ? key.slice(2) : key;
-      attrs[attrName] = value;
+      attrs[attrName] = value.trim();
     }
   }
   return attrs;
@@ -1078,7 +1078,7 @@ export function parseXml(xmlString: string): POMNode[] {
     attributeNamePrefix: "@_",
     parseAttributeValue: false,
     parseTagValue: false,
-    trimValues: true,
+    trimValues: false,
   });
 
   const wrappedXml = `<__root__>${xmlString}</__root__>`;
