@@ -1531,4 +1531,34 @@ describe("parseXml", () => {
       });
     });
   });
+
+  // ===== テキストコンテンツの空白保持 =====
+  describe("テキストコンテンツの空白処理", () => {
+    it("スペースのみのテキストコンテンツを保持する", () => {
+      const result = parseXml('<Text fontPx="1" color="D61E1E"> </Text>');
+      expect(result).toEqual([
+        { type: "text", fontPx: 1, color: "D61E1E", text: " " },
+      ]);
+    });
+
+    it("通常のテキストコンテンツを正しくパースする", () => {
+      const result = parseXml(
+        '<Text fontPx="34" bold="true" color="FFFFFF">Hello World</Text>',
+      );
+      expect(result).toEqual([
+        {
+          type: "text",
+          fontPx: 34,
+          bold: true,
+          color: "FFFFFF",
+          text: "Hello World",
+        },
+      ]);
+    });
+
+    it("属性値の前後空白は trim される", () => {
+      const result = parseXml('<Text fontPx="32">test</Text>');
+      expect((result[0] as Record<string, unknown>).fontPx).toBe(32);
+    });
+  });
 });
