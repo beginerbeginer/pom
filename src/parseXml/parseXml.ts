@@ -1189,6 +1189,15 @@ function convertPomNode(
     validateLeafNode(nodeType, result, errors);
   }
 
+  // Normalize icon color: add # prefix if missing
+  if (
+    nodeType === "icon" &&
+    typeof result.color === "string" &&
+    !result.color.startsWith("#")
+  ) {
+    result.color = `#${result.color}`;
+  }
+
   return result;
 }
 
