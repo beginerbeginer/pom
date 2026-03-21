@@ -66,7 +66,6 @@ export async function generatePptx(outputPath: string): Promise<void> {
       h: 720,
     },
     {
-      autoFit: false,
       master: {
         title: "VRT_MASTER",
         objects: [
