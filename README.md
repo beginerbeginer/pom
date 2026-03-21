@@ -196,6 +196,23 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 <img src="./docs/images/pyramid.png" alt="Pyramid example" width="600">
 
+## Auto-Fit
+
+When content exceeds the slide height, pom automatically adjusts it to fit within the slide. This is enabled by default.
+
+Adjustments are applied in the following priority order:
+
+1. Reduce table row heights
+2. Reduce text font sizes
+3. Reduce gap / padding
+4. Uniform scaling (fallback)
+
+To disable:
+
+```typescript
+const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
+```
+
 ## Documentation
 
 | Document                                         | Description                             |
