@@ -1,16 +1,27 @@
 import fs from "fs";
 import path from "path";
 import { buildPptx } from "../../src/index.js";
+import { comparePng } from "../../vrt/lib/comparePng.js";
 import { pptxToPng } from "../../vrt/lib/pptxToPng.js";
-import { IMAGES_DIR, NODE_TYPES, type NodeType } from "./config.js";
+import {
+  ACTUAL_DIR,
+  DIFF_DIR,
+  IMAGES_DIR,
+  NODE_TYPES,
+  OUTPUT_DIR,
+  type NodeType,
+} from "./config.js";
 import { sampleNodes } from "./sampleNodes.js";
 
 const SLIDE_WIDTH = 1280;
 const SLIDE_HEIGHT = 720;
 
-async function generateNodeImage(nodeType: NodeType): Promise<void> {
+async function generateNodeImage(
+  nodeType: NodeType,
+  outputDir: string,
+): Promise<void> {
   const sampleXml = sampleNodes[nodeType];
-  const tempPptxPath = path.join(IMAGES_DIR, `${nodeType}.pptx`);
+  const tempPptxPath = path.join(outputDir, `${nodeType}.pptx`);
 
   // PPTXを生成
   const pptx = await buildPptx(
@@ -26,7 +37,7 @@ async function generateNodeImage(nodeType: NodeType): Promise<void> {
   fs.writeFileSync(tempPptxPath, Buffer.from(pptxBuffer as Uint8Array));
 
   // PPTX → PNG変換
-  await pptxToPng(tempPptxPath, IMAGES_DIR, [nodeType]);
+  await pptxToPng(tempPptxPath, outputDir, [nodeType]);
 
   // 一時PPTXファイルを削除
   fs.unlinkSync(tempPptxPath);
@@ -34,20 +45,84 @@ async function generateNodeImage(nodeType: NodeType): Promise<void> {
   console.log(`Generated: ${nodeType}.png`);
 }
 
-async function main(): Promise<void> {
+async function runCheck(): Promise<void> {
+  console.log("=== Docs Images VRT: Visual Regression Testing ===\n");
+
+  // 1. 一時ディレクトリに画像を生成
+  console.log("1. Generating images to temporary directory...");
+  fs.mkdirSync(ACTUAL_DIR, { recursive: true });
+  fs.mkdirSync(DIFF_DIR, { recursive: true });
+
+  for (const nodeType of NODE_TYPES) {
+    await generateNodeImage(nodeType, ACTUAL_DIR);
+  }
+
+  // 2. docs/images/*.png（ベースライン）と比較
+  console.log("\n2. Comparing with docs/images...");
+
+  const failedImages: { name: string; diffPixels: number }[] = [];
+
+  console.log("\nResults:");
+  for (const nodeType of NODE_TYPES) {
+    const actualPath = path.join(ACTUAL_DIR, `${nodeType}.png`);
+    const expectedPath = path.join(IMAGES_DIR, `${nodeType}.png`);
+    const diffPath = path.join(DIFF_DIR, `${nodeType}.png`);
+
+    if (!fs.existsSync(expectedPath)) {
+      console.log(`  ? ${nodeType} (baseline not found)`);
+      failedImages.push({ name: nodeType, diffPixels: -1 });
+      continue;
+    }
+
+    const diffPixels = comparePng(actualPath, expectedPath, diffPath);
+
+    if (diffPixels > 0) {
+      console.log(`  x ${nodeType} (${diffPixels} pixels differ)`);
+      failedImages.push({ name: nodeType, diffPixels });
+    } else {
+      if (fs.existsSync(diffPath)) {
+        fs.unlinkSync(diffPath);
+      }
+      console.log(`  o ${nodeType}`);
+    }
+  }
+
+  if (failedImages.length > 0) {
+    console.error(
+      `\nFAILED: ${failedImages.length} of ${NODE_TYPES.length} images differ.`,
+    );
+    console.error(`Diff images saved in: ${DIFF_DIR}`);
+    console.error(
+      "Run 'npm run docs:images:docker' to update docs/images/*.png",
+    );
+    process.exit(1);
+  }
+
+  console.log(
+    `\nNo visual differences found. (${NODE_TYPES.length} images checked)`,
+  );
+}
+
+async function runGenerate(): Promise<void> {
   console.log("Generating node images for documentation...\n");
 
-  // 出力ディレクトリを作成
   if (!fs.existsSync(IMAGES_DIR)) {
     fs.mkdirSync(IMAGES_DIR, { recursive: true });
   }
 
-  // 各ノードタイプの画像を生成
   for (const nodeType of NODE_TYPES) {
-    await generateNodeImage(nodeType);
+    await generateNodeImage(nodeType, IMAGES_DIR);
   }
 
   console.log(`\nAll images generated in: ${IMAGES_DIR}`);
+}
+
+async function main(): Promise<void> {
+  if (process.argv.includes("--check")) {
+    await runCheck();
+  } else {
+    await runGenerate();
+  }
 }
 
 main().catch((error) => {

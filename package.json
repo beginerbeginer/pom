@@ -60,6 +60,8 @@
     "docs:images": "tsx docs/lib/generateNodeImages.ts",
     "docs:images:docker": "docker compose run --rm docs-images",
     "docs:images:docker:update": "docker compose build docs-images && docker compose run --rm docs-images",
+    "docs:images:vrt": "tsx docs/lib/generateNodeImages.ts --check",
+    "docs:images:vrt:docker": "docker compose build docs-images-vrt && docker compose run --rm docs-images-vrt",
     "release": "changeset publish"
   },
   "publishConfig": {
