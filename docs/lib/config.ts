@@ -5,7 +5,6 @@ const DOCS_DIR = path.dirname(LIB_DIR);
 export const IMAGES_DIR = path.join(DOCS_DIR, "images");
 
 // VRT用ディレクトリ
-export const EXPECTED_DIR = path.join(IMAGES_DIR, "expected");
 export const OUTPUT_DIR = path.join(IMAGES_DIR, "output");
 export const ACTUAL_DIR = path.join(OUTPUT_DIR, "actual");
 export const DIFF_DIR = path.join(OUTPUT_DIR, "diff");

@@ -6,7 +6,6 @@ import { pptxToPng } from "../../vrt/lib/pptxToPng.js";
 import {
   ACTUAL_DIR,
   DIFF_DIR,
-  EXPECTED_DIR,
   IMAGES_DIR,
   NODE_TYPES,
   OUTPUT_DIR,
@@ -46,14 +45,6 @@ async function generateNodeImage(
   console.log(`Generated: ${nodeType}.png`);
 }
 
-async function generateImages(outputDir: string): Promise<void> {
-  fs.mkdirSync(outputDir, { recursive: true });
-
-  for (const nodeType of NODE_TYPES) {
-    await generateNodeImage(nodeType, outputDir);
-  }
-}
-
 async function runCheck(): Promise<void> {
   console.log("=== Docs Images VRT: Visual Regression Testing ===\n");
 
@@ -66,21 +57,15 @@ async function runCheck(): Promise<void> {
     await generateNodeImage(nodeType, ACTUAL_DIR);
   }
 
-  // 2. ベースラインと比較
-  console.log("\n2. Comparing with baseline...");
-
-  if (!fs.existsSync(EXPECTED_DIR)) {
-    console.error(`\nExpected directory not found: ${EXPECTED_DIR}`);
-    console.error("Run with --update to create baseline");
-    process.exit(1);
-  }
+  // 2. docs/images/*.png（ベースライン）と比較
+  console.log("\n2. Comparing with docs/images...");
 
   const failedImages: { name: string; diffPixels: number }[] = [];
 
   console.log("\nResults:");
   for (const nodeType of NODE_TYPES) {
     const actualPath = path.join(ACTUAL_DIR, `${nodeType}.png`);
-    const expectedPath = path.join(EXPECTED_DIR, `${nodeType}.png`);
+    const expectedPath = path.join(IMAGES_DIR, `${nodeType}.png`);
     const diffPath = path.join(DIFF_DIR, `${nodeType}.png`);
 
     if (!fs.existsSync(expectedPath)) {
@@ -107,6 +92,9 @@ async function runCheck(): Promise<void> {
       `\nFAILED: ${failedImages.length} of ${NODE_TYPES.length} images differ.`,
     );
     console.error(`Diff images saved in: ${DIFF_DIR}`);
+    console.error(
+      "Run 'npm run docs:images:docker' to update docs/images/*.png",
+    );
     process.exit(1);
   }
 
@@ -115,42 +103,23 @@ async function runCheck(): Promise<void> {
   );
 }
 
-async function runUpdate(): Promise<void> {
-  console.log("Updating docs images baseline...\n");
-
-  // 一時ディレクトリに画像を生成
-  fs.mkdirSync(ACTUAL_DIR, { recursive: true });
-
-  for (const nodeType of NODE_TYPES) {
-    await generateNodeImage(nodeType, ACTUAL_DIR);
-  }
-
-  // ベースラインディレクトリにコピー
-  fs.mkdirSync(EXPECTED_DIR, { recursive: true });
-  for (const nodeType of NODE_TYPES) {
-    const src = path.join(ACTUAL_DIR, `${nodeType}.png`);
-    const dst = path.join(EXPECTED_DIR, `${nodeType}.png`);
-    fs.copyFileSync(src, dst);
-  }
-
-  console.log(`\nBaseline updated: ${EXPECTED_DIR}`);
-}
-
 async function runGenerate(): Promise<void> {
   console.log("Generating node images for documentation...\n");
 
-  await generateImages(IMAGES_DIR);
+  if (!fs.existsSync(IMAGES_DIR)) {
+    fs.mkdirSync(IMAGES_DIR, { recursive: true });
+  }
+
+  for (const nodeType of NODE_TYPES) {
+    await generateNodeImage(nodeType, IMAGES_DIR);
+  }
 
   console.log(`\nAll images generated in: ${IMAGES_DIR}`);
 }
 
 async function main(): Promise<void> {
-  const args = process.argv.slice(2);
-
-  if (args.includes("--check")) {
+  if (process.argv.includes("--check")) {
     await runCheck();
-  } else if (args.includes("--update")) {
-    await runUpdate();
   } else {
     await runGenerate();
   }
