@@ -96,7 +96,7 @@ export function renderPyramidNode(
       y: pxToIn(layerY),
       w: pxToIn(bboxW),
       h: pxToIn(layerHeight),
-      fontSize: pxToPt((node.fontPx ?? 14) * scaleFactor),
+      fontSize: pxToPt((node.fontSize ?? 14) * scaleFactor),
       fontFace: "Noto Sans JP",
       color: textColor,
       bold: node.bold ?? false,

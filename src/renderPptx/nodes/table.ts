@@ -16,14 +16,14 @@ export function renderTableNode(
   const tableRows = node.rows.map((row) =>
     row.cells.map((cell) => {
       const cellOptions = {
-        fontSize: pxToPt(cell.fontPx ?? 18),
+        fontSize: pxToPt(cell.fontSize ?? 18),
         color: cell.color,
         bold: cell.bold,
         italic: cell.italic,
         underline: convertUnderline(cell.underline),
         strike: convertStrike(cell.strike),
         highlight: cell.highlight,
-        align: cell.alignText ?? "left",
+        align: cell.textAlign ?? "left",
         fill: cell.backgroundColor
           ? { color: cell.backgroundColor }
           : undefined,

@@ -29,9 +29,9 @@ export function convertStrike(
 }
 
 export function createTextOptions(node: TextNode) {
-  const fontSizePx = node.fontPx ?? 24;
+  const fontSizePx = node.fontSize ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
-  const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
+  const lineHeight = node.lineHeight ?? 1.3;
 
   return {
     x: pxToIn(node.x),
@@ -40,10 +40,10 @@ export function createTextOptions(node: TextNode) {
     h: pxToIn(node.h),
     fontSize: pxToPt(fontSizePx),
     fontFace: fontFamily,
-    align: node.alignText ?? "left",
+    align: node.textAlign ?? "left",
     valign: "top" as const,
     margin: 0,
-    lineSpacingMultiple,
+    lineSpacingMultiple: lineHeight,
     color: node.color,
     bold: node.bold,
     italic: node.italic,

@@ -45,7 +45,7 @@ export function renderShapeNode(
     ctx.slide.addText(node.text, {
       ...shapeOptions,
       shape: node.shapeType,
-      fontSize: pxToPt(node.fontPx ?? 24),
+      fontSize: pxToPt(node.fontSize ?? 24),
       fontFace: node.fontFamily ?? "Noto Sans JP",
       color: node.color,
       bold: node.bold,
@@ -53,9 +53,9 @@ export function renderShapeNode(
       underline: convertUnderline(node.underline),
       strike: convertStrike(node.strike),
       highlight: node.highlight,
-      align: node.alignText ?? "center",
+      align: node.textAlign ?? "center",
       valign: "middle" as const,
-      lineSpacingMultiple: node.lineSpacingMultiple ?? 1.3,
+      lineSpacingMultiple: node.lineHeight ?? 1.3,
     });
   } else {
     // テキストがない場合：addShapeを使用

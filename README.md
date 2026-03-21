@@ -59,8 +59,8 @@ import { buildPptx } from "@hirokisakabe/pom";
 
 const xml = `
 <VStack w="100%" h="max" padding="48" gap="24" alignItems="start">
-  <Text fontPx="48" bold="true">Presentation Title</Text>
-  <Text fontPx="24" color="666666">Subtitle</Text>
+  <Text fontSize="48" bold="true">Presentation Title</Text>
+  <Text fontSize="24" color="666666">Subtitle</Text>
 </VStack>
 `;
 

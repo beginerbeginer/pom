@@ -6,10 +6,10 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page9TimelineXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 9: Timeline Test</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 9: Timeline Test</Text>
   <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
     <VStack gap="12">
-      <Text fontPx="14" bold="true">Horizontal Timeline (Roadmap):</Text>
+      <Text fontSize="14" bold="true">Horizontal Timeline (Roadmap):</Text>
       <Timeline direction="horizontal" w="1100" h="120">
         <TimelineItem date="2025/Q1" title="Phase 1" description="基盤構築" color="4CAF50" />
         <TimelineItem date="2025/Q2" title="Phase 2" description="機能開発" color="2196F3" />
@@ -21,7 +21,7 @@ export const page9TimelineXml = `
   <HStack gap="16" alignItems="stretch">
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
-        <Text fontPx="14" bold="true">Vertical Timeline (Project Plan):</Text>
+        <Text fontSize="14" bold="true">Vertical Timeline (Project Plan):</Text>
         <Timeline direction="vertical" w="500" h="300">
           <TimelineItem date="Week 1" title="Planning" description="要件定義・設計" color="${palette.blue}" />
           <TimelineItem date="Week 2-3" title="Development" description="実装・レビュー" color="${palette.accent}" />
@@ -31,7 +31,7 @@ export const page9TimelineXml = `
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
-        <Text fontPx="14" bold="true">Milestones (Default color):</Text>
+        <Text fontSize="14" bold="true">Milestones (Default color):</Text>
         <Timeline direction="vertical" w="500" h="300">
           <TimelineItem date="Jan" title="Kickoff" />
           <TimelineItem date="Mar" title="MVP Launch" />

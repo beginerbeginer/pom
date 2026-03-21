@@ -9,10 +9,10 @@ import { buildPptx } from "@hirokisakabe/pom";
 
 const xml = `
 <VStack w="100%" h="max" padding="48">
-  <Text fontPx="32" bold="true">Page 1</Text>
+  <Text fontSize="32" bold="true">Page 1</Text>
 </VStack>
 <VStack w="100%" h="max" padding="48">
-  <Text fontPx="32" bold="true">Page 2</Text>
+  <Text fontSize="32" bold="true">Page 2</Text>
 </VStack>
 `;
 
@@ -41,7 +41,7 @@ const pptx = await buildPptx(
           y: 12,
           w: 200,
           h: 28,
-          fontPx: 14,
+          fontSize: 14,
           color: "FFFFFF",
         },
         // Header text (right) - date
@@ -52,9 +52,9 @@ const pptx = await buildPptx(
           y: 12,
           w: 200,
           h: 28,
-          fontPx: 12,
+          fontSize: 12,
           color: "E2E8F0",
-          alignText: "right",
+          textAlign: "right",
         },
         // Footer text
         {
@@ -64,7 +64,7 @@ const pptx = await buildPptx(
           y: 682,
           w: 200,
           h: 30,
-          fontPx: 10,
+          fontSize: 10,
           color: "1E293B",
         },
       ],
@@ -74,7 +74,7 @@ const pptx = await buildPptx(
         y: 682,
         w: 200,
         h: 30,
-        fontPx: 10,
+        fontSize: 10,
         color: "1E293B",
       },
     },
@@ -112,11 +112,11 @@ type MasterTextObject = {
   y: number;
   w: number;
   h: number;
-  fontPx?: number;
+  fontSize?: number;
   fontFamily?: string;
   color?: string;
   bold?: boolean;
-  alignText?: "left" | "center" | "right";
+  textAlign?: "left" | "center" | "right";
 };
 
 type MasterImageObject = {
@@ -152,7 +152,7 @@ type SlideNumberOptions = {
   y: number;
   w?: number;
   h?: number;
-  fontPx?: number;
+  fontSize?: number;
   fontFamily?: string;
   color?: string;
 };
