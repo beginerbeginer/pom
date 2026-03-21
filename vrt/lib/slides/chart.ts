@@ -6,11 +6,11 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page6ChartXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 6: Chart Test</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 6: Chart Test</Text>
   <HStack gap="16" alignItems="stretch">
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Bar Chart</Text>
+        <Text fontSize="14" bold="true">Bar Chart</Text>
         <Chart chartType="bar" w="400" h="180" showLegend="true" chartColors='["0088CC","00AA00"]'>
           <ChartSeries name="Sales">
             <ChartDataPoint label="Q1" value="100" />
@@ -29,7 +29,7 @@ export const page6ChartXml = `
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Line Chart</Text>
+        <Text fontSize="14" bold="true">Line Chart</Text>
         <Chart chartType="line" w="400" h="180" showLegend="true" chartColors='["${palette.blue}"]'>
           <ChartSeries name="Revenue">
             <ChartDataPoint label="Jan" value="50" />
@@ -46,7 +46,7 @@ export const page6ChartXml = `
   <HStack gap="16" alignItems="stretch">
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Pie Chart (with title)</Text>
+        <Text fontSize="14" bold="true">Pie Chart (with title)</Text>
         <Chart chartType="pie" w="400" h="180" showLegend="true" showTitle="true" title="Market Share" chartColors='["0088CC","00AA00","FF6600","888888"]'>
           <ChartSeries name="Share">
             <ChartDataPoint label="A" value="40" />
@@ -59,7 +59,7 @@ export const page6ChartXml = `
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Bar Chart (with title)</Text>
+        <Text fontSize="14" bold="true">Bar Chart (with title)</Text>
         <Chart chartType="bar" w="400" h="180" showLegend="true" showTitle="true" title="Regional Sales" chartColors='["${palette.blue}","${palette.accent}"]'>
           <ChartSeries name="2023">
             <ChartDataPoint label="N" value="250" />
@@ -86,11 +86,11 @@ export const page6ChartXml = `
 // ============================================================
 export const page10ChartAdditionalXml = `
 <VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 10: Additional Chart Types</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 10: Additional Chart Types</Text>
   <HStack gap="16" alignItems="stretch">
     <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Area Chart</Text>
+        <Text fontSize="14" bold="true">Area Chart</Text>
         <Chart chartType="area" w="350" h="200" showLegend="true" chartColors='["0088CC"]'>
           <ChartSeries name="Revenue">
             <ChartDataPoint label="Jan" value="30" />
@@ -104,7 +104,7 @@ export const page10ChartAdditionalXml = `
     </Box>
     <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Doughnut Chart</Text>
+        <Text fontSize="14" bold="true">Doughnut Chart</Text>
         <Chart chartType="doughnut" w="350" h="200" showLegend="true" chartColors='["0088CC","00AA00","FF6600","888888"]'>
           <ChartSeries name="Share">
             <ChartDataPoint label="A" value="35" />
@@ -117,7 +117,7 @@ export const page10ChartAdditionalXml = `
     </Box>
     <Box w="33%" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="8">
-        <Text fontPx="14" bold="true">Radar Chart</Text>
+        <Text fontSize="14" bold="true">Radar Chart</Text>
         <Chart chartType="radar" w="350" h="200" showLegend="true" chartColors='["0088CC"]' radarStyle="filled">
           <ChartSeries name="Skills">
             <ChartDataPoint label="Tech" value="80" />

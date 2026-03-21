@@ -72,16 +72,16 @@ type InputBaseNode = z.infer<typeof inputBaseNodeSchema>;
 export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("text"),
   text: z.string(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 export const inputLiNodeSchema = liNodeSchema;
@@ -89,31 +89,31 @@ export const inputLiNodeSchema = liNodeSchema;
 export const inputUlNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("ul"),
   items: z.array(inputLiNodeSchema),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 export const inputOlNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("ol"),
   items: z.array(inputLiNodeSchema),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
   numberType: bulletNumberTypeSchema.optional(),
   numberStartAt: z.number().optional(),
 });
@@ -154,16 +154,16 @@ export const inputShapeNodeSchema = inputBaseNodeSchema.extend({
   fill: fillStyleSchema.optional(),
   line: borderStyleSchema.optional(),
   shadow: shadowStyleSchema.optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 export const inputChartNodeSchema = inputBaseNodeSchema.extend({
@@ -229,7 +229,7 @@ export const inputProcessArrowNodeSchema = inputBaseNodeSchema.extend({
   itemWidth: z.number().optional(),
   itemHeight: z.number().optional(),
   gap: z.number().optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
@@ -241,7 +241,7 @@ export const inputPyramidNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("pyramid"),
   direction: pyramidDirectionSchema.optional(),
   levels: z.array(pyramidLevelSchema).min(1),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   bold: z.boolean().optional(),
 });
 

@@ -79,7 +79,7 @@ export function measureTextWidth(
 /**
  * フォントの自然な行高さ比率を取得する
  *
- * PowerPoint の lineSpacingMultiple はフォントサイズではなく、
+ * PowerPoint の lineHeight はフォントサイズではなく、
  * フォントメトリクス（ascent + descent）に対する倍率として適用される。
  * この関数は fontSizePx に対する自然な行高さの比率を返す。
  *

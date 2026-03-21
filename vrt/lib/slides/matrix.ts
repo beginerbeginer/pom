@@ -6,11 +6,11 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page11MatrixXml = `
 <VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 11: Matrix Test</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 11: Matrix Test</Text>
   <HStack gap="16" alignItems="stretch">
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
-        <Text fontPx="14" bold="true">Cost-Effectiveness Matrix (with quadrants):</Text>
+        <Text fontSize="14" bold="true">Cost-Effectiveness Matrix (with quadrants):</Text>
         <Matrix w="500" h="400">
           <MatrixAxes x="コスト" y="効果" />
           <MatrixQuadrants topLeft="低コスト高効果\n（優先実施）" topRight="高コスト高効果\n（検討）" bottomLeft="低コスト低効果\n（様子見）" bottomRight="高コスト低効果\n（見送り）" />
@@ -23,7 +23,7 @@ export const page11MatrixXml = `
     </Box>
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
-        <Text fontPx="14" bold="true">Impact-Effort Matrix (without quadrants):</Text>
+        <Text fontSize="14" bold="true">Impact-Effort Matrix (without quadrants):</Text>
         <Matrix w="500" h="400">
           <MatrixAxes x="Effort" y="Impact" />
           <MatrixItem label="Quick Win" x="0.15" y="0.85" />

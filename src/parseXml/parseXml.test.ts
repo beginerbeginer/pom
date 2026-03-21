@@ -5,9 +5,9 @@ describe("parseXml", () => {
   // ===== 基本的なノード変換 =====
   describe("ノードタイプ変換", () => {
     it("Text ノードを変換する", () => {
-      const result = parseXml('<Text fontPx="32" bold="true">Hello</Text>');
+      const result = parseXml('<Text fontSize="32" bold="true">Hello</Text>');
       expect(result).toEqual([
-        { type: "text", text: "Hello", fontPx: 32, bold: true },
+        { type: "text", text: "Hello", fontSize: 32, bold: true },
       ]);
     });
 
@@ -253,7 +253,7 @@ describe("parseXml", () => {
     it("Layer で children を配列として変換する", () => {
       const xml = `
         <Layer w="800" h="600">
-          <Text x="10" y="20" fontPx="32">Hello</Text>
+          <Text x="10" y="20" fontSize="32">Hello</Text>
           <Image x="100" y="200" src="img.png" />
         </Layer>
       `;
@@ -264,7 +264,7 @@ describe("parseXml", () => {
           w: 800,
           h: 600,
           children: [
-            { type: "text", x: 10, y: 20, fontPx: 32, text: "Hello" },
+            { type: "text", x: 10, y: 20, fontSize: 32, text: "Hello" },
             { type: "image", x: 100, y: 200, src: "img.png" },
           ],
         },
@@ -275,9 +275,9 @@ describe("parseXml", () => {
   // ===== 属性値の型変換 =====
   describe("属性値の型変換", () => {
     it("number 型に変換する", () => {
-      const result = parseXml('<Text fontPx="24">test</Text>');
-      expect(result[0]).toHaveProperty("fontPx", 24);
-      expect(typeof (result[0] as Record<string, unknown>).fontPx).toBe(
+      const result = parseXml('<Text fontSize="24">test</Text>');
+      expect(result[0]).toHaveProperty("fontSize", 24);
+      expect(typeof (result[0] as Record<string, unknown>).fontSize).toBe(
         "number",
       );
     });
@@ -343,23 +343,23 @@ describe("parseXml", () => {
 
     it("Ul + Li を正しくパースする", () => {
       const result = parseXml(
-        '<Ul fontPx="14"><Li>Item A</Li><Li>Item B</Li></Ul>',
+        '<Ul fontSize="14"><Li>Item A</Li><Li>Item B</Li></Ul>',
       );
       expect(result).toHaveLength(1);
       const node = result[0] as Record<string, unknown>;
       expect(node.type).toBe("ul");
-      expect(node.fontPx).toBe(14);
+      expect(node.fontSize).toBe(14);
       expect(node.items).toEqual([{ text: "Item A" }, { text: "Item B" }]);
     });
 
     it("Ol + Li を正しくパースする", () => {
       const result = parseXml(
-        '<Ol fontPx="14" numberType="alphaLcPeriod" numberStartAt="3"><Li>A</Li><Li>B</Li></Ol>',
+        '<Ol fontSize="14" numberType="alphaLcPeriod" numberStartAt="3"><Li>A</Li><Li>B</Li></Ol>',
       );
       expect(result).toHaveLength(1);
       const node = result[0] as Record<string, unknown>;
       expect(node.type).toBe("ol");
-      expect(node.fontPx).toBe(14);
+      expect(node.fontSize).toBe(14);
       expect(node.numberType).toBe("alphaLcPeriod");
       expect(node.numberStartAt).toBe(3);
       expect(node.items).toEqual([{ text: "A" }, { text: "B" }]);
@@ -377,8 +377,8 @@ describe("parseXml", () => {
     });
 
     it("enum 型をそのまま文字列として保持する", () => {
-      const result = parseXml('<Text alignText="center">test</Text>');
-      expect((result[0] as Record<string, unknown>).alignText).toBe("center");
+      const result = parseXml('<Text textAlign="center">test</Text>');
+      expect((result[0] as Record<string, unknown>).textAlign).toBe("center");
     });
 
     it("padding の number 変換", () => {
@@ -421,7 +421,7 @@ describe("parseXml", () => {
     });
 
     it("self-closing の Text で text 属性を使用する", () => {
-      const result = parseXml('<Text text="hello" fontPx="16" />');
+      const result = parseXml('<Text text="hello" fontSize="16" />');
       expect(result[0]).toHaveProperty("text", "hello");
     });
   });
@@ -431,10 +431,10 @@ describe("parseXml", () => {
     it("深いネスト構造を正しく変換する", () => {
       const xml = `
         <VStack gap="16" padding="32">
-          <Text fontPx="32" bold="true">Title</Text>
+          <Text fontSize="32" bold="true">Title</Text>
           <HStack gap="16">
-            <Text fontPx="18" color="00AA00">Left</Text>
-            <Text fontPx="18">Right</Text>
+            <Text fontSize="18" color="00AA00">Left</Text>
+            <Text fontSize="18">Right</Text>
           </HStack>
         </VStack>
       `;
@@ -445,13 +445,13 @@ describe("parseXml", () => {
           gap: 16,
           padding: 32,
           children: [
-            { type: "text", text: "Title", fontPx: 32, bold: true },
+            { type: "text", text: "Title", fontSize: 32, bold: true },
             {
               type: "hstack",
               gap: 16,
               children: [
-                { type: "text", text: "Left", fontPx: 18, color: "00AA00" },
-                { type: "text", text: "Right", fontPx: 18 },
+                { type: "text", text: "Left", fontSize: 18, color: "00AA00" },
+                { type: "text", text: "Right", fontSize: 18 },
               ],
             },
           ],
@@ -581,12 +581,12 @@ describe("parseXml", () => {
     it("Issue の比較例（XML）を正しく変換する", () => {
       const xml = `
         <VStack gap="16" padding="32">
-          <Text fontPx="32" bold="true">売上レポート</Text>
+          <Text fontSize="32" bold="true">売上レポート</Text>
           <HStack gap="16">
             <Chart chartType="bar" w="400" h="300"
               data='[{ "name": "Q1", "labels": ["1月","2月","3月"], "values": [100,120,90] }]'
             />
-            <Text fontPx="18" color="00AA00">前年比 +15%</Text>
+            <Text fontSize="18" color="00AA00">前年比 +15%</Text>
           </HStack>
         </VStack>
       `;
@@ -600,7 +600,7 @@ describe("parseXml", () => {
             {
               type: "text",
               text: "売上レポート",
-              fontPx: 32,
+              fontSize: 32,
               bold: true,
             },
             {
@@ -623,7 +623,7 @@ describe("parseXml", () => {
                 {
                   type: "text",
                   text: "前年比 +15%",
-                  fontPx: 18,
+                  fontSize: 18,
                   color: "00AA00",
                 },
               ],
@@ -1076,12 +1076,12 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("TableCell に属性（fontPx, bold等）を設定する", () => {
+      it("TableCell に属性（fontSize, bold等）を設定する", () => {
         const xml = `
           <Table>
             <TableColumn width="200" />
             <TableRow>
-              <TableCell fontPx="14" bold="true" color="FF0000">Header</TableCell>
+              <TableCell fontSize="14" bold="true" color="FF0000">Header</TableCell>
             </TableRow>
           </Table>
         `;
@@ -1093,7 +1093,7 @@ describe("parseXml", () => {
         const cells = rows[0].cells as Record<string, unknown>[];
         expect(cells[0]).toEqual({
           text: "Header",
-          fontPx: 14,
+          fontSize: 14,
           bold: true,
           color: "FF0000",
         });
@@ -1291,7 +1291,7 @@ describe("parseXml", () => {
       it("VStack 内で Chart の子要素記法を使用できる", () => {
         const xml = `
           <VStack gap="16">
-            <Text fontPx="24" bold="true">売上</Text>
+            <Text fontSize="24" bold="true">売上</Text>
             <Chart chartType="bar" w="400" h="300">
               <ChartSeries name="Q1">
                 <ChartDataPoint label="1月" value="100" />
@@ -1305,7 +1305,7 @@ describe("parseXml", () => {
             type: "vstack",
             gap: 16,
             children: [
-              { type: "text", text: "売上", fontPx: 24, bold: true },
+              { type: "text", text: "売上", fontSize: 24, bold: true },
               {
                 type: "chart",
                 chartType: "bar",
@@ -1355,12 +1355,12 @@ describe("parseXml", () => {
           ParseXmlError,
         );
         try {
-          parseXml('<Text fonPx="32">test</Text>');
+          parseXml('<Text fontSiz="32">test</Text>');
         } catch (e) {
           const err = e as ParseXmlError;
           expect(err.errors).toHaveLength(1);
-          expect(err.errors[0]).toContain('Unknown attribute "fonPx"');
-          expect(err.errors[0]).toContain('Did you mean "fontPx"');
+          expect(err.errors[0]).toContain('Unknown attribute "fontSiz"');
+          expect(err.errors[0]).toContain('Did you mean "fontSize"');
         }
       });
 
@@ -1404,14 +1404,14 @@ describe("parseXml", () => {
 
     describe("属性値の型不一致", () => {
       it("enum 不一致でエラーをスローする", () => {
-        expect(() => parseXml('<Text alignText="LEFT">test</Text>')).toThrow(
+        expect(() => parseXml('<Text textAlign="LEFT">test</Text>')).toThrow(
           ParseXmlError,
         );
         try {
-          parseXml('<Text alignText="LEFT">test</Text>');
+          parseXml('<Text textAlign="LEFT">test</Text>');
         } catch (e) {
           const err = e as ParseXmlError;
-          expect(err.errors.some((e) => e.includes("alignText"))).toBe(true);
+          expect(err.errors.some((e) => e.includes("textAlign"))).toBe(true);
         }
       });
 
@@ -1487,7 +1487,7 @@ describe("parseXml", () => {
       it("1つの XML に複数のエラーがある場合すべて報告する", () => {
         const xml = `
           <VStack>
-            <Text fonPx="32" alignText="LEFT">A</Text>
+            <Text fonPx="32" textAlign="LEFT">A</Text>
             <Image w="400" />
           </VStack>
         `;
@@ -1523,7 +1523,7 @@ describe("parseXml", () => {
       it("有効な属性のみの場合エラーにならない", () => {
         const xml = `
           <VStack gap="16" padding="32">
-            <Text fontPx="32" bold="true" color="FF0000">Hello</Text>
+            <Text fontSize="32" bold="true" color="FF0000">Hello</Text>
             <Image src="test.png" w="400" h="300" />
             <Shape shapeType="rect" w="200" h="100">Label</Shape>
           </VStack>
@@ -1561,20 +1561,20 @@ describe("parseXml", () => {
   // ===== テキストコンテンツの空白保持 =====
   describe("テキストコンテンツの空白処理", () => {
     it("スペースのみのテキストコンテンツを保持する", () => {
-      const result = parseXml('<Text fontPx="1" color="D61E1E"> </Text>');
+      const result = parseXml('<Text fontSize="1" color="D61E1E"> </Text>');
       expect(result).toEqual([
-        { type: "text", fontPx: 1, color: "D61E1E", text: " " },
+        { type: "text", fontSize: 1, color: "D61E1E", text: " " },
       ]);
     });
 
     it("通常のテキストコンテンツを正しくパースする", () => {
       const result = parseXml(
-        '<Text fontPx="34" bold="true" color="FFFFFF">Hello World</Text>',
+        '<Text fontSize="34" bold="true" color="FFFFFF">Hello World</Text>',
       );
       expect(result).toEqual([
         {
           type: "text",
-          fontPx: 34,
+          fontSize: 34,
           bold: true,
           color: "FFFFFF",
           text: "Hello World",
@@ -1583,8 +1583,8 @@ describe("parseXml", () => {
     });
 
     it("属性値の前後空白は trim される", () => {
-      const result = parseXml('<Text fontPx="32">test</Text>');
-      expect((result[0] as Record<string, unknown>).fontPx).toBe(32);
+      const result = parseXml('<Text fontSize="32">test</Text>');
+      expect((result[0] as Record<string, unknown>).fontSize).toBe(32);
     });
   });
 });

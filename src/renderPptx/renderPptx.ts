@@ -67,7 +67,7 @@ function convertMasterObject(
             y: pxToIn(obj.y),
             w: pxToIn(obj.w),
             h: pxToIn(obj.h),
-            fontSize: obj.fontPx ? pxToPt(obj.fontPx) : undefined,
+            fontSize: obj.fontSize ? pxToPt(obj.fontSize) : undefined,
             fontFace: obj.fontFamily,
             color: obj.color,
             bold: obj.bold,
@@ -75,7 +75,7 @@ function convertMasterObject(
             underline: convertUnderline(obj.underline),
             strike: convertStrike(obj.strike),
             highlight: obj.highlight,
-            align: obj.alignText,
+            align: obj.textAlign,
           },
         },
       };
@@ -184,8 +184,8 @@ function defineSlideMasterFromOptions(
       y: pxToIn(master.slideNumber.y),
       w: master.slideNumber.w ? pxToIn(master.slideNumber.w) : undefined,
       h: master.slideNumber.h ? pxToIn(master.slideNumber.h) : undefined,
-      fontSize: master.slideNumber.fontPx
-        ? pxToPt(master.slideNumber.fontPx)
+      fontSize: master.slideNumber.fontSize
+        ? pxToPt(master.slideNumber.fontSize)
         : undefined,
       fontFace: master.slideNumber.fontFamily,
       color: master.slideNumber.color,

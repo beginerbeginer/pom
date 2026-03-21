@@ -1065,7 +1065,7 @@ function convertPomNode(
  *
  * const xml = `
  *   <VStack gap="16" padding="32">
- *     <Text fontPx="32" bold="true">売上レポート</Text>
+ *     <Text fontSize="32" bold="true">売上レポート</Text>
  *   </VStack>
  * `;
  *

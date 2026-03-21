@@ -6,10 +6,10 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page21XmlChildElementsXml = `
 <VStack gap="8" padding="48" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">XML Child Element Notation</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">XML Child Element Notation</Text>
   <HStack gap="16" alignItems="start">
     <VStack gap="8" w="380">
-      <Text fontPx="14" bold="true" color="${palette.charcoal}">Chart (Series/DataPoint)</Text>
+      <Text fontSize="14" bold="true" color="${palette.charcoal}">Chart (Series/DataPoint)</Text>
       <Chart chartType="bar" w="380" h="140">
         <ChartSeries name="Q1">
           <ChartDataPoint label="Jan" value="100" />
@@ -17,7 +17,7 @@ export const page21XmlChildElementsXml = `
           <ChartDataPoint label="Mar" value="90" />
         </ChartSeries>
       </Chart>
-      <Text fontPx="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
+      <Text fontSize="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
       <Table w="380">
         <TableColumn width="190" />
         <TableColumn width="190" />
@@ -36,19 +36,19 @@ export const page21XmlChildElementsXml = `
       </Table>
     </VStack>
     <VStack gap="8" w="380">
-      <Text fontPx="14" bold="true" color="${palette.charcoal}">Timeline (TimelineItem)</Text>
+      <Text fontSize="14" bold="true" color="${palette.charcoal}">Timeline (TimelineItem)</Text>
       <Timeline direction="horizontal" w="380" h="120">
         <TimelineItem date="2024-01" title="Plan" color="${palette.blue}" />
         <TimelineItem date="2024-04" title="Build" color="${palette.accent}" />
         <TimelineItem date="2024-07" title="Launch" color="${palette.green}" />
       </Timeline>
-      <Text fontPx="14" bold="true" color="${palette.charcoal}">ProcessArrow (Step)</Text>
+      <Text fontSize="14" bold="true" color="${palette.charcoal}">ProcessArrow (Step)</Text>
       <ProcessArrow direction="horizontal" w="380" h="60">
         <ProcessArrowStep label="Plan" color="${palette.blue}" />
         <ProcessArrowStep label="Build" color="${palette.accent}" />
         <ProcessArrowStep label="Launch" color="${palette.green}" />
       </ProcessArrow>
-      <Text fontPx="14" bold="true" color="${palette.charcoal}">Tree (TreeItem)</Text>
+      <Text fontSize="14" bold="true" color="${palette.charcoal}">Tree (TreeItem)</Text>
       <Tree layout="vertical" w="380" h="140">
         <TreeItem label="CEO" color="${palette.navy}">
           <TreeItem label="CTO" color="${palette.blue}">

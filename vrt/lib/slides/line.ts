@@ -6,7 +6,7 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page15LineXml = `
 <VStack w="100%" h="max" padding="48" gap="16" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 15: Line Node Test</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 15: Line Node Test</Text>
   <!-- 水平線・垂直線・斜線 -->
   <Line x1="100" y1="100" x2="300" y2="100" color="FF0000" lineWidth="2" />
   <Line x1="100" y1="120" x2="100" y2="250" color="00FF00" lineWidth="2" />

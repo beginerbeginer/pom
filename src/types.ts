@@ -325,16 +325,16 @@ type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
 const textNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("text"),
   text: z.string(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 export const liNodeSchema = z.object({
@@ -345,38 +345,38 @@ export const liNodeSchema = z.object({
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   color: z.string().optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   fontFamily: z.string().optional(),
 });
 
 const ulNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("ul"),
   items: z.array(liNodeSchema),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 const olNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("ol"),
   items: z.array(liNodeSchema),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
   numberType: bulletNumberTypeSchema.optional(),
   numberStartAt: z.number().optional(),
 });
@@ -418,14 +418,14 @@ export type IconNode = z.infer<typeof iconNodeSchema> & {
 
 export const tableCellSchema = z.object({
   text: z.string(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   backgroundColor: z.string().optional(),
   colspan: z.number().int().min(1).optional(),
   rowspan: z.number().int().min(1).optional(),
@@ -454,16 +454,16 @@ const shapeNodeSchema = basePOMNodeSchema.extend({
   fill: fillStyleSchema.optional(),
   line: borderStyleSchema.optional(),
   shadow: shadowStyleSchema.optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   color: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
   fontFamily: z.string().optional(),
-  lineSpacingMultiple: z.number().optional(),
+  lineHeight: z.number().optional(),
 });
 
 export const chartTypeSchema = z.enum([
@@ -607,7 +607,7 @@ export const processArrowNodeSchema = basePOMNodeSchema.extend({
   itemWidth: z.number().optional(),
   itemHeight: z.number().optional(),
   gap: z.number().optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
@@ -630,7 +630,7 @@ export const pyramidNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("pyramid"),
   direction: pyramidDirectionSchema.optional(),
   levels: z.array(pyramidLevelSchema).min(1),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   bold: z.boolean().optional(),
 });
 
@@ -935,7 +935,7 @@ const masterTextObjectSchema = z.object({
   y: z.number(),
   w: z.number(),
   h: z.number(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   fontFamily: z.string().optional(),
   color: z.string().optional(),
   bold: z.boolean().optional(),
@@ -943,7 +943,7 @@ const masterTextObjectSchema = z.object({
   underline: underlineSchema.optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
-  alignText: z.enum(["left", "center", "right"]).optional(),
+  textAlign: z.enum(["left", "center", "right"]).optional(),
 });
 
 const masterImageObjectSchema = z.object({
@@ -986,7 +986,7 @@ const slideNumberOptionsSchema = z.object({
   y: z.number(),
   w: z.number().optional(),
   h: z.number().optional(),
-  fontPx: z.number().optional(),
+  fontSize: z.number().optional(),
   fontFamily: z.string().optional(),
   color: z.string().optional(),
 });

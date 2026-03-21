@@ -6,11 +6,11 @@ import { palette } from "./palette.js";
 // ============================================================
 export const page22CompositeScaleToFitXml = `
 <VStack w="100%" h="max" padding="48" gap="12" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontPx="28" color="${palette.charcoal}" bold="true">Page 22: Composite Scale to Fit</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 22: Composite Scale to Fit</Text>
   <HStack gap="12" alignItems="stretch">
     <Box w="33%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">Tree (shrunk in container):</Text>
+        <Text fontSize="10" bold="true">Tree (shrunk in container):</Text>
         <Tree layout="vertical" nodeShape="roundRect">
           <TreeItem label="CEO" color="1D4ED8">
             <TreeItem label="CTO" color="0EA5E9">
@@ -26,7 +26,7 @@ export const page22CompositeScaleToFitXml = `
     </Box>
     <Box w="33%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">ProcessArrow (shrunk in container):</Text>
+        <Text fontSize="10" bold="true">ProcessArrow (shrunk in container):</Text>
         <ProcessArrow direction="horizontal">
           <ProcessArrowStep label="Plan" color="#4472C4" />
           <ProcessArrowStep label="Design" color="#5B9BD5" />
@@ -38,7 +38,7 @@ export const page22CompositeScaleToFitXml = `
     </Box>
     <Box w="34%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">Timeline (shrunk in container):</Text>
+        <Text fontSize="10" bold="true">Timeline (shrunk in container):</Text>
         <Timeline direction="horizontal">
           <TimelineItem date="Q1" title="Alpha" color="4CAF50" />
           <TimelineItem date="Q2" title="Beta" color="2196F3" />
@@ -51,7 +51,7 @@ export const page22CompositeScaleToFitXml = `
   <HStack gap="12" alignItems="stretch">
     <Box w="25%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">Matrix (shrunk):</Text>
+        <Text fontSize="10" bold="true">Matrix (shrunk):</Text>
         <Matrix>
           <MatrixAxes x="Impact" y="Effort" />
           <MatrixItem label="A" x="0.2" y="0.8" color="4CAF50" />
@@ -61,7 +61,7 @@ export const page22CompositeScaleToFitXml = `
     </Box>
     <Box w="40%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">Flow (shrunk in container):</Text>
+        <Text fontSize="10" bold="true">Flow (shrunk in container):</Text>
         <Flow direction="horizontal">
           <FlowNode id="s" shape="flowChartTerminator" text="Start" />
           <FlowNode id="p" shape="flowChartProcess" text="Process" />
@@ -75,7 +75,7 @@ export const page22CompositeScaleToFitXml = `
     </Box>
     <Box w="35%" padding="8" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="4">
-        <Text fontPx="10" bold="true">Tree (explicit w/h, no shrink):</Text>
+        <Text fontSize="10" bold="true">Tree (explicit w/h, no shrink):</Text>
         <Tree layout="vertical" nodeShape="roundRect" w="380" h="200">
           <TreeItem label="Root" color="1D4ED8">
             <TreeItem label="A" />

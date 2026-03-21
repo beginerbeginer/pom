@@ -8,7 +8,7 @@ type OlPositionedNode = Extract<PositionedNode, { type: "ol" }>;
 
 function resolveStyle(li: LiNode, parent: UlPositionedNode | OlPositionedNode) {
   return {
-    fontPx: li.fontPx ?? parent.fontPx ?? 24,
+    fontSize: li.fontSize ?? parent.fontSize ?? 24,
     color: li.color ?? parent.color,
     bold: li.bold ?? parent.bold,
     italic: li.italic ?? parent.italic,
@@ -22,7 +22,7 @@ function resolveStyle(li: LiNode, parent: UlPositionedNode | OlPositionedNode) {
 function hasItemStyleOverride(items: LiNode[]): boolean {
   return items.some(
     (li) =>
-      li.fontPx !== undefined ||
+      li.fontSize !== undefined ||
       li.color !== undefined ||
       li.bold !== undefined ||
       li.italic !== undefined ||
@@ -34,9 +34,9 @@ function hasItemStyleOverride(items: LiNode[]): boolean {
 }
 
 export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
-  const fontSizePx = node.fontPx ?? 24;
+  const fontSizePx = node.fontSize ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
-  const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
+  const lineHeight = node.lineHeight ?? 1.3;
 
   if (hasItemStyleOverride(node.items)) {
     // Li に個別スタイルがある場合は配列形式を使用
@@ -45,7 +45,7 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
       return {
         text: i < node.items.length - 1 ? li.text + "\n" : li.text,
         options: {
-          fontSize: pxToPt(style.fontPx),
+          fontSize: pxToPt(style.fontSize),
           fontFace: style.fontFamily,
           color: style.color,
           bold: style.bold,
@@ -63,10 +63,10 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
       y: pxToIn(node.y),
       w: pxToIn(node.w),
       h: pxToIn(node.h),
-      align: node.alignText ?? "left",
+      align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
-      lineSpacingMultiple,
+      lineSpacingMultiple: lineHeight,
     });
   } else {
     // Li にスタイルオーバーライドがない場合は単一文字列形式を使用
@@ -79,10 +79,10 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
       h: pxToIn(node.h),
       fontSize: pxToPt(fontSizePx),
       fontFace: fontFamily,
-      align: node.alignText ?? "left",
+      align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
-      lineSpacingMultiple,
+      lineSpacingMultiple: lineHeight,
       color: node.color,
       bold: node.bold,
       italic: node.italic,
@@ -95,9 +95,9 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
 }
 
 export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
-  const fontSizePx = node.fontPx ?? 24;
+  const fontSizePx = node.fontSize ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
-  const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
+  const lineHeight = node.lineHeight ?? 1.3;
 
   const bulletOptions: Record<string, unknown> = { type: "number" };
   if (node.numberType !== undefined) {
@@ -113,7 +113,7 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
       return {
         text: i < node.items.length - 1 ? li.text + "\n" : li.text,
         options: {
-          fontSize: pxToPt(style.fontPx),
+          fontSize: pxToPt(style.fontSize),
           fontFace: style.fontFamily,
           color: style.color,
           bold: style.bold,
@@ -131,10 +131,10 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
       y: pxToIn(node.y),
       w: pxToIn(node.w),
       h: pxToIn(node.h),
-      align: node.alignText ?? "left",
+      align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
-      lineSpacingMultiple,
+      lineSpacingMultiple: lineHeight,
     });
   } else {
     const text = node.items.map((li) => li.text).join("\n");
@@ -146,10 +146,10 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
       h: pxToIn(node.h),
       fontSize: pxToPt(fontSizePx),
       fontFace: fontFamily,
-      align: node.alignText ?? "left",
+      align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
-      lineSpacingMultiple,
+      lineSpacingMultiple: lineHeight,
       color: node.color,
       bold: node.bold,
       italic: node.italic,

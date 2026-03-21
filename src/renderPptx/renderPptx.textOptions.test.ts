@@ -11,9 +11,9 @@ describe("createTextOptions", () => {
       y: 34,
       w: 200,
       h: 100,
-      fontPx: 32,
+      fontSize: 32,
       color: "FF00FF",
-      alignText: "center",
+      textAlign: "center",
     });
 
     expect(options.x).toBe(pxToIn(12));

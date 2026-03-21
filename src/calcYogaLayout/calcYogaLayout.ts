@@ -261,7 +261,7 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
     case "text":
       {
         const text = node.text;
-        const fontSizePx = node.fontPx ?? 24;
+        const fontSizePx = node.fontSize ?? 24;
         const fontFamily = "Noto Sans JP";
         const fontWeight = node.bold ? "bold" : "normal";
         const lineHeight = 1.3;
@@ -296,15 +296,15 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
     case "ol":
       {
         const combinedText = node.items.map((item) => item.text).join("\n");
-        const fontSizePx = node.fontPx ?? 24;
+        const fontSizePx = node.fontSize ?? 24;
         const fontFamily = "Noto Sans JP";
         const fontWeight = node.bold ? "bold" : "normal";
-        const lineSpacingMultiple = node.lineSpacingMultiple ?? 1.3;
+        const spacingMultiple = node.lineHeight ?? 1.3;
 
-        // PowerPoint の lineSpacingMultiple はフォントメトリクス（ascent + descent）に
-        // 対する倍率。fontSizePx × fontMetricsRatio × lineSpacingMultiple で計算する。
+        // PowerPoint の lineHeight はフォントメトリクス（ascent + descent）に
+        // 対する倍率。fontSizePx × fontMetricsRatio × spacingMultiple で計算する。
         const fontMetricsRatio = measureFontLineHeightRatio(fontWeight);
-        const lineHeight = fontMetricsRatio * lineSpacingMultiple;
+        const lineHeight = fontMetricsRatio * spacingMultiple;
 
         // バレット/番号のインデント幅（pptxgenjs DEF_BULLET_MARGIN = 27pt = 36px @96dpi）
         const bulletIndentPx = 36;
@@ -386,10 +386,10 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
         if (node.text) {
           // テキストがある場合、テキストサイズを測定
           const text = node.text;
-          const fontSizePx = node.fontPx ?? 24;
+          const fontSizePx = node.fontSize ?? 24;
           const fontFamily = node.fontFamily ?? "Noto Sans JP";
           const fontWeight = node.bold ? "bold" : "normal";
-          const lineHeight = node.lineSpacingMultiple ?? 1.3;
+          const lineHeight = node.lineHeight ?? 1.3;
 
           yn.setMeasureFunc((width, widthMode) => {
             const maxWidthPx = (() => {

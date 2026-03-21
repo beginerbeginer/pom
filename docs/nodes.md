@@ -32,19 +32,19 @@ A node for displaying text.
 ![Text Node Example](./images/text.png)
 
 ```xml
-<Text fontPx="24" bold="true" color="333333" alignText="center">Title</Text>
+<Text fontSize="24" bold="true" color="333333" textAlign="center">Title</Text>
 ```
 
 | Attribute                | Type / Values                                  |
 | ------------------------ | ---------------------------------------------- |
-| `fontPx`                 | number (default: 24)                           |
+| `fontSize`               | number (default: 24)                           |
 | `color`                  | hex (text color)                               |
-| `alignText`              | `left` / `center` / `right`                    |
+| `textAlign`              | `left` / `center` / `right`                    |
 | `bold` `italic` `strike` | `true` / `false`                               |
 | `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
 | `highlight`              | hex (highlight color)                          |
 | `fontFamily`             | string (default: `Noto Sans JP`)               |
-| `lineSpacingMultiple`    | number (default: 1.3)                          |
+| `lineHeight`             | number (default: 1.3)                          |
 
 Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
@@ -57,7 +57,7 @@ Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 A node for displaying bullet-point lists. Use `<Li>` child elements to define list items.
 
 ```xml
-<Ul fontPx="14" color="333333">
+<Ul fontSize="14" color="333333">
   <Li>Item A</Li>
   <Li>Item B</Li>
   <Li bold="true">Item C (bold)</Li>
@@ -68,20 +68,20 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 
 | Attribute                | Type / Values                    |
 | ------------------------ | -------------------------------- |
-| `fontPx`                 | number (default: 24)             |
+| `fontSize`               | number (default: 24)             |
 | `color`                  | hex (text color)                 |
-| `alignText`              | `left` / `center` / `right`      |
+| `textAlign`              | `left` / `center` / `right`      |
 | `bold` `italic` `strike` | `true` / `false`                 |
 | `underline`              | `true` / underline options       |
 | `highlight`              | hex (highlight color)            |
 | `fontFamily`             | string (default: `Noto Sans JP`) |
-| `lineSpacingMultiple`    | number (default: 1.3)            |
+| `lineHeight`             | number (default: 1.3)            |
 
 **Li Attributes (overrides parent Ul/Ol style):**
 
 | Attribute                | Type / Values              |
 | ------------------------ | -------------------------- |
-| `fontPx`                 | number                     |
+| `fontSize`               | number                     |
 | `color`                  | hex (text color)           |
 | `bold` `italic` `strike` | `true` / `false`           |
 | `underline`              | `true` / underline options |
@@ -93,7 +93,7 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 A node for displaying numbered lists. Has all Ul attributes plus the following:
 
 ```xml
-<Ol fontPx="14" numberType="alphaLcPeriod" numberStartAt="3">
+<Ol fontSize="14" numberType="alphaLcPeriod" numberStartAt="3">
   <Li>Item A</Li>
   <Li>Item B</Li>
 </Ol>
@@ -152,7 +152,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 - `<TableColumn>`: `width` (omit for even distribution)
 - `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<TableCell>`: Text content + `fontPx` `color` `bold` `italic` `underline` `strike` `highlight` `alignText` `backgroundColor` `colspan` `rowspan`
+- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`
 
 | Attribute          | Type / Values        |
 | ------------------ | -------------------- |
@@ -165,17 +165,17 @@ A node for drawing shapes. Different representations are possible with or withou
 ![Shape Node Example](./images/shape.png)
 
 ```xml
-<Shape shapeType="roundRect" w="200" h="60" text="Button" fontPx="16" fill='{"color":"1D4ED8"}' color="FFFFFF" />
+<Shape shapeType="roundRect" w="200" h="60" text="Button" fontSize="16" fill='{"color":"1D4ED8"}' color="FFFFFF" />
 ```
 
-| Attribute       | Type / Values                                                                                                    |
-| --------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `shapeType`     | Shape type (178 types — see list below)                                                                          |
-| `text`          | string (text inside the shape)                                                                                   |
-| `fill`          | `'{"color":"hex","transparency":0.5}'`                                                                           |
-| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                                                  |
-| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                                           |
-| Text attributes | `fontPx` `color` `alignText` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineSpacingMultiple` |
+| Attribute       | Type / Values                                                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------- |
+| `shapeType`     | Shape type (178 types — see list below)                                                                   |
+| `text`          | string (text inside the shape)                                                                            |
+| `fill`          | `'{"color":"hex","transparency":0.5}'`                                                                    |
+| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                                           |
+| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                                    |
+| Text attributes | `fontSize` `color` `textAlign` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineHeight` |
 
 **Common Shape Types:**
 
@@ -581,7 +581,7 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 | `itemWidth`              | number (default: 150)                                      |
 | `itemHeight`             | number (default: 80)                                       |
 | `gap`                    | number (default: -(itemHeight×0.35), negative for overlap) |
-| `fontPx`                 | number (default: 14)                                       |
+| `fontSize`               | number (default: 14)                                       |
 | `bold` `italic` `strike` | boolean                                                    |
 | `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'`             |
 | `highlight`              | hex (highlight color)                                      |
@@ -609,7 +609,7 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 
 <!-- Custom styling -->
 <ProcessArrow direction="horizontal" w="600" h="80"
-  itemWidth="180" itemHeight="70" fontPx="16" bold="true">
+  itemWidth="180" itemHeight="70" fontSize="16" bold="true">
   <ProcessArrowStep label="Input" color="2196F3" />
   <ProcessArrowStep label="Process" color="00BCD4" />
   <ProcessArrowStep label="Output" color="009688" />
@@ -633,7 +633,7 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 | Attribute   | Type / Values           |
 | ----------- | ----------------------- |
 | `direction` | `up` (default) / `down` |
-| `fontPx`    | number (default: 14)    |
+| `fontSize`  | number (default: 14)    |
 | `bold`      | boolean                 |
 
 `<PyramidLevel>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
@@ -659,7 +659,7 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 </Pyramid>
 
 <!-- Maslow's hierarchy with custom text colors -->
-<Pyramid direction="up" w="800" h="400" fontPx="16" bold="true">
+<Pyramid direction="up" w="800" h="400" fontSize="16" bold="true">
   <PyramidLevel label="Self-actualization" color="F44336" textColor="FFFFFF" />
   <PyramidLevel label="Esteem" color="FF9800" textColor="333333" />
   <PyramidLevel label="Love/Belonging" color="FFEB3B" textColor="333333" />
@@ -742,12 +742,12 @@ A container for absolute positioning of child elements. Child elements are posit
 <!-- Layer with VStack children for free-form layout -->
 <Layer w="800" h="300" backgroundColor="F8FAFC">
   <VStack x="20" y="20" w="200" gap="8" padding="12" backgroundColor="FFFFFF">
-    <Text fontPx="14" bold="true">Left Column</Text>
-    <Text fontPx="12">Content A</Text>
+    <Text fontSize="14" bold="true">Left Column</Text>
+    <Text fontSize="12">Content A</Text>
   </VStack>
   <VStack x="300" y="20" w="200" gap="8" padding="12" backgroundColor="FFFFFF">
-    <Text fontPx="14" bold="true">Right Column</Text>
-    <Text fontPx="12">Content B</Text>
+    <Text fontSize="14" bold="true">Right Column</Text>
+    <Text fontSize="12">Content B</Text>
   </VStack>
 </Layer>
 
@@ -756,14 +756,14 @@ A container for absolute positioning of child elements. Child elements are posit
   <Shape shapeType="roundRect" x="50" y="60" w="150" h="80" fill='{"color":"1D4ED8"}' text="Service A" color="FFFFFF" />
   <Shape shapeType="roundRect" x="350" y="60" w="150" h="80" fill='{"color":"16A34A"}' text="Service B" color="FFFFFF" />
   <Line x1="200" y1="100" x2="350" y2="100" color="333333" lineWidth="2" endArrow="true" />
-  <Text x="240" y="70" fontPx="10">API Call</Text>
+  <Text x="240" y="70" fontSize="10">API Call</Text>
 </Layer>
 
 <!-- Nested layers -->
 <Layer w="600" h="150" backgroundColor="E3F2FD">
-  <Text x="10" y="10" fontPx="12" bold="true">Outer Layer</Text>
+  <Text x="10" y="10" fontSize="12" bold="true">Outer Layer</Text>
   <Layer x="50" y="40" w="200" h="80" backgroundColor="FFF3E0">
-    <Text x="10" y="30" fontPx="11">Inner Layer</Text>
+    <Text x="10" y="30" fontSize="11">Inner Layer</Text>
   </Layer>
 </Layer>
 ```

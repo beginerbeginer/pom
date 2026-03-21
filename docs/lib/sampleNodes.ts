@@ -14,29 +14,29 @@ const palette = {
 
 const textSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Text Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Text Node Example</Text>
   <HStack gap="40">
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Font Sizes</Text>
-      <Text fontPx="12">12px text</Text>
-      <Text fontPx="18">18px text</Text>
-      <Text fontPx="24">24px text</Text>
+      <Text fontSize="14" bold="true">Font Sizes</Text>
+      <Text fontSize="12">12px text</Text>
+      <Text fontSize="18">18px text</Text>
+      <Text fontSize="24">24px text</Text>
     </VStack>
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Colors</Text>
+      <Text fontSize="14" bold="true">Colors</Text>
       <Text color="${palette.navy}">Navy color</Text>
       <Text color="${palette.blue}">Blue color</Text>
       <Text color="${palette.red}">Red color</Text>
     </VStack>
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Alignment</Text>
-      <Text alignText="left" w="150" backgroundColor="${palette.lightBlue}">Left aligned</Text>
-      <Text alignText="center" w="150" backgroundColor="${palette.lightBlue}">Center aligned</Text>
-      <Text alignText="right" w="150" backgroundColor="${palette.lightBlue}">Right aligned</Text>
+      <Text fontSize="14" bold="true">Alignment</Text>
+      <Text textAlign="left" w="150" backgroundColor="${palette.lightBlue}">Left aligned</Text>
+      <Text textAlign="center" w="150" backgroundColor="${palette.lightBlue}">Center aligned</Text>
+      <Text textAlign="right" w="150" backgroundColor="${palette.lightBlue}">Right aligned</Text>
     </VStack>
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Bullet List</Text>
-      <Ul fontPx="14"><Li>Item 1</Li><Li>Item 2</Li><Li>Item 3</Li></Ul>
+      <Text fontSize="14" bold="true">Bullet List</Text>
+      <Ul fontSize="14"><Li>Item 1</Li><Li>Item 2</Li><Li>Item 3</Li></Ul>
     </VStack>
   </HStack>
 </VStack>
@@ -47,7 +47,7 @@ const sampleImageUrl =
 
 const imageSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Image Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Image Node Example</Text>
   <HStack gap="40" alignItems="center">
     <Box backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
       <Image src="${sampleImageUrl}" w="200" h="150" />
@@ -64,35 +64,35 @@ const imageSample = `
 
 const tableSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Table Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Table Node Example</Text>
   <Table defaultRowHeight="36">
     <TableColumn width="80" />
     <TableColumn width="200" />
     <TableColumn width="100" />
     <TableColumn width="120" />
     <TableRow>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">ID</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Name</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Status</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" alignText="center">Progress</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">ID</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Name</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Status</TableCell>
+      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Progress</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell alignText="center">001</TableCell>
+      <TableCell textAlign="center">001</TableCell>
       <TableCell>Project Alpha</TableCell>
       <TableCell color="${palette.green}">Active</TableCell>
-      <TableCell alignText="right">75%</TableCell>
+      <TableCell textAlign="right">75%</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell alignText="center">002</TableCell>
+      <TableCell textAlign="center">002</TableCell>
       <TableCell>Project Beta</TableCell>
       <TableCell color="${palette.accent}">Pending</TableCell>
-      <TableCell alignText="right">30%</TableCell>
+      <TableCell textAlign="right">30%</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell alignText="center">003</TableCell>
+      <TableCell textAlign="center">003</TableCell>
       <TableCell>Project Gamma</TableCell>
       <TableCell color="${palette.blue}">Complete</TableCell>
-      <TableCell alignText="right">100%</TableCell>
+      <TableCell textAlign="right">100%</TableCell>
     </TableRow>
   </Table>
 </VStack>
@@ -100,20 +100,20 @@ const tableSample = `
 
 const shapeSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Shape Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Shape Node Example</Text>
   <HStack gap="32" alignItems="center">
-    <Shape shapeType="rect" w="120" h="80" fill='{"color":"${palette.blue}"}' text="Rectangle" color="FFFFFF" fontPx="14" alignText="center" />
-    <Shape shapeType="roundRect" w="120" h="80" fill='{"color":"${palette.green}"}' text="Rounded" color="FFFFFF" fontPx="14" alignText="center" />
-    <Shape shapeType="ellipse" w="100" h="100" fill='{"color":"${palette.accent}"}' text="Ellipse" color="FFFFFF" fontPx="14" alignText="center" />
-    <Shape shapeType="diamond" w="100" h="100" fill='{"color":"${palette.red}"}' text="Diamond" color="FFFFFF" fontPx="12" alignText="center" />
-    <Shape shapeType="rightArrow" w="140" h="60" fill='{"color":"${palette.navy}"}' text="Arrow" color="FFFFFF" fontPx="14" alignText="center" />
+    <Shape shapeType="rect" w="120" h="80" fill='{"color":"${palette.blue}"}' text="Rectangle" color="FFFFFF" fontSize="14" textAlign="center" />
+    <Shape shapeType="roundRect" w="120" h="80" fill='{"color":"${palette.green}"}' text="Rounded" color="FFFFFF" fontSize="14" textAlign="center" />
+    <Shape shapeType="ellipse" w="100" h="100" fill='{"color":"${palette.accent}"}' text="Ellipse" color="FFFFFF" fontSize="14" textAlign="center" />
+    <Shape shapeType="diamond" w="100" h="100" fill='{"color":"${palette.red}"}' text="Diamond" color="FFFFFF" fontSize="12" textAlign="center" />
+    <Shape shapeType="rightArrow" w="140" h="60" fill='{"color":"${palette.navy}"}' text="Arrow" color="FFFFFF" fontSize="14" textAlign="center" />
   </HStack>
 </VStack>
 `;
 
 const chartSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
   <HStack gap="32">
     <Chart chartType="bar" w="350" h="250" showTitle="true" title="Bar Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.red}"]'>
       <ChartSeries name="Q1">
@@ -155,7 +155,7 @@ const chartSample = `
 
 const timelineSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Timeline Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Timeline Node Example</Text>
   <Timeline direction="horizontal" w="100%" h="200">
     <TimelineItem date="2024 Q1" title="Phase 1" description="Planning &amp; Research" color="${palette.blue}" />
     <TimelineItem date="2024 Q2" title="Phase 2" description="Development" color="${palette.green}" />
@@ -167,7 +167,7 @@ const timelineSample = `
 
 const matrixSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
   <Matrix w="500" h="400">
     <MatrixAxes x="Cost" y="Impact" />
     <MatrixQuadrants topLeft="Low Cost\nHigh Impact" topRight="High Cost\nHigh Impact" bottomLeft="Low Cost\nLow Impact" bottomRight="High Cost\nLow Impact" />
@@ -181,7 +181,7 @@ const matrixSample = `
 
 const treeSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Tree Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Tree Node Example</Text>
   <Tree layout="vertical" nodeShape="roundRect" w="100%" h="400" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
     <TreeItem label="CEO" color="${palette.navy}">
       <TreeItem label="CTO" color="${palette.blue}">
@@ -203,7 +203,7 @@ const treeSample = `
 
 const flowSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Flow Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Flow Node Example</Text>
   <Flow direction="horizontal" w="100%" h="300" connectorStyle='{"color":"${palette.charcoal}","width":2}'>
     <FlowNode id="start" shape="flowChartTerminator" text="Start" color="${palette.green}" />
     <FlowNode id="input" shape="flowChartInputOutput" text="Input Data" color="${palette.lightBlue}" />
@@ -220,7 +220,7 @@ const flowSample = `
 
 const processArrowSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
   <ProcessArrow direction="horizontal" w="100%" h="100">
     <ProcessArrowStep label="Planning" color="4472C4" />
     <ProcessArrowStep label="Design" color="5B9BD5" />
@@ -230,7 +230,7 @@ const processArrowSample = `
   </ProcessArrow>
   <HStack gap="32">
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Default Style</Text>
+      <Text fontSize="14" bold="true">Default Style</Text>
       <ProcessArrow direction="horizontal" w="400" h="60">
         <ProcessArrowStep label="Input" />
         <ProcessArrowStep label="Process" />
@@ -238,7 +238,7 @@ const processArrowSample = `
       </ProcessArrow>
     </VStack>
     <VStack gap="8">
-      <Text fontPx="14" bold="true">Custom Text Color</Text>
+      <Text fontSize="14" bold="true">Custom Text Color</Text>
       <ProcessArrow direction="horizontal" w="400" h="60">
         <ProcessArrowStep label="Light BG" color="FFEB3B" textColor="333333" />
         <ProcessArrowStep label="Dark BG" color="${palette.navy}" textColor="FFFFFF" />
@@ -251,10 +251,10 @@ const processArrowSample = `
 
 const pyramidSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Pyramid Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Pyramid Node Example</Text>
   <HStack gap="32">
     <VStack gap="8">
-      <Text fontPx="14" bold="true">direction: up (default)</Text>
+      <Text fontSize="14" bold="true">direction: up (default)</Text>
       <Pyramid direction="up" w="400" h="250">
         <PyramidLevel label="Vision" color="${palette.navy}" />
         <PyramidLevel label="Strategy" color="${palette.blue}" />
@@ -263,7 +263,7 @@ const pyramidSample = `
       </Pyramid>
     </VStack>
     <VStack gap="8">
-      <Text fontPx="14" bold="true">direction: down</Text>
+      <Text fontSize="14" bold="true">direction: down</Text>
       <Pyramid direction="down" w="400" h="250">
         <PyramidLevel label="Executive" color="${palette.navy}" />
         <PyramidLevel label="Management" color="${palette.blue}" />
@@ -277,16 +277,16 @@ const pyramidSample = `
 
 const boxSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Box Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Box Node Example</Text>
   <HStack gap="32">
     <Box w="200" h="150" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="14">Basic Box\nwith padding</Text>
+      <Text fontSize="14">Basic Box\nwith padding</Text>
     </Box>
     <Box w="200" h="150" backgroundColor="${palette.lightBlue}" border='{"color":"${palette.blue}","width":2}' borderRadius="8" padding="16">
-      <Text fontPx="14" color="${palette.navy}">Rounded Box\nwith border</Text>
+      <Text fontSize="14" color="${palette.navy}">Rounded Box\nwith border</Text>
     </Box>
     <Box w="200" h="150" backgroundColor="${palette.navy}" borderRadius="16" padding="16">
-      <Text fontPx="14" color="FFFFFF">Styled Box\nwith background</Text>
+      <Text fontSize="14" color="FFFFFF">Styled Box\nwith background</Text>
     </Box>
   </HStack>
 </VStack>
@@ -294,22 +294,22 @@ const boxSample = `
 
 const vstackSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
   <HStack gap="32">
     <VStack w="200" h="250" gap="8" alignItems="start" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true">alignItems: start</Text>
+      <Text fontSize="12" bold="true">alignItems: start</Text>
       <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
     </VStack>
     <VStack w="200" h="250" gap="8" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true">alignItems: center</Text>
+      <Text fontSize="12" bold="true">alignItems: center</Text>
       <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
     </VStack>
     <VStack w="200" h="250" gap="8" alignItems="end" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true">alignItems: end</Text>
+      <Text fontSize="12" bold="true">alignItems: end</Text>
       <Shape shapeType="rect" w="100" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="80" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="120" h="40" fill='{"color":"${palette.red}"}' />
@@ -320,22 +320,22 @@ const vstackSample = `
 
 const hstackSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">HStack Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">HStack Node Example</Text>
   <VStack gap="16">
     <HStack w="100%" h="80" gap="16" justifyContent="start" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true" w="150">justifyContent: start</Text>
+      <Text fontSize="12" bold="true" w="150">justifyContent: start</Text>
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
     </HStack>
     <HStack w="100%" h="80" gap="16" justifyContent="center" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true" w="150">justifyContent: center</Text>
+      <Text fontSize="12" bold="true" w="150">justifyContent: center</Text>
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
     </HStack>
     <HStack w="100%" h="80" gap="16" justifyContent="spaceBetween" alignItems="center" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' padding="16">
-      <Text fontPx="12" bold="true" w="180">justifyContent: spaceBetween</Text>
+      <Text fontSize="12" bold="true" w="180">justifyContent: spaceBetween</Text>
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.blue}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.green}"}' />
       <Shape shapeType="rect" w="60" h="40" fill='{"color":"${palette.red}"}' />
@@ -346,10 +346,10 @@ const hstackSample = `
 
 const iconSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontPx="28" bold="true" color="${palette.navy}">Icon Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}">Icon Node Example</Text>
   <HStack gap="24">
     <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
-      <Text fontPx="14" bold="true">Basic Icons</Text>
+      <Text fontSize="14" bold="true">Basic Icons</Text>
       <HStack gap="16" alignItems="center">
         <Icon name="cpu" size="32" color="#${palette.blue}" />
         <Icon name="database" size="32" color="#${palette.green}" />
@@ -359,7 +359,7 @@ const iconSample = `
       </HStack>
     </VStack>
     <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
-      <Text fontPx="14" bold="true">Size Variations</Text>
+      <Text fontSize="14" bold="true">Size Variations</Text>
       <HStack gap="12" alignItems="end">
         <Icon name="star" size="16" color="#${palette.navy}" />
         <Icon name="star" size="24" color="#${palette.navy}" />
@@ -368,7 +368,7 @@ const iconSample = `
       </HStack>
     </VStack>
     <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
-      <Text fontPx="14" bold="true">Color Variations</Text>
+      <Text fontSize="14" bold="true">Color Variations</Text>
       <HStack gap="16" alignItems="center">
         <Icon name="heart" size="32" color="#${palette.navy}" />
         <Icon name="heart" size="32" color="#${palette.blue}" />

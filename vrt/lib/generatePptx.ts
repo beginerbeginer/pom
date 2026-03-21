@@ -86,7 +86,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
             y: 12,
             w: 200,
             h: 28,
-            fontPx: 14,
+            fontSize: 14,
             color: "FFFFFF",
           },
           // ヘッダーテキスト（右）- 日付は固定値
@@ -97,9 +97,9 @@ export async function generatePptx(outputPath: string): Promise<void> {
             y: 12,
             w: 200,
             h: 28,
-            fontPx: 12,
+            fontSize: 12,
             color: "E2E8F0",
-            alignText: "right",
+            textAlign: "right",
           },
           // フッターテキスト（左）
           {
@@ -109,7 +109,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
             y: 682,
             w: 200,
             h: 30,
-            fontPx: 10,
+            fontSize: 10,
             color: palette.charcoal,
           },
         ],
@@ -118,7 +118,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
           y: 682,
           w: 200,
           h: 30,
-          fontPx: 10,
+          fontSize: 10,
           color: palette.charcoal,
         },
       },
