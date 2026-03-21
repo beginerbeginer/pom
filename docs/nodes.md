@@ -6,18 +6,18 @@ This document provides a complete reference for all node types available in pom.
 
 Layout attributes that all nodes can have.
 
-| Attribute         | Type                               | Description                       |
-| ----------------- | ---------------------------------- | --------------------------------- |
-| `w`               | number / `"max"` / `"50%"`         | Width                             |
-| `h`               | number / `"max"` / `"50%"`         | Height                            |
-| `minW` `maxW`     | number                             | Min/Max width                     |
-| `minH` `maxH`     | number                             | Min/Max height                    |
-| `padding`         | number / `'{"top":8,"bottom":8}'`  | Padding                           |
-| `backgroundColor` | hex                                | Background color (e.g., `F8F9FA`) |
-| `backgroundImage` | `'{"src":"url","sizing":"cover"}'` | Background image                  |
-| `border`          | `'{"color":"333","width":1}'`      | Border                            |
-| `borderRadius`    | number                             | Corner radius (px)                |
-| `opacity`         | 0-1                                | Background transparency           |
+| Attribute         | Type                                                       | Description                       |
+| ----------------- | ---------------------------------------------------------- | --------------------------------- |
+| `w`               | number / `"max"` / `"50%"`                                 | Width                             |
+| `h`               | number / `"max"` / `"50%"`                                 | Height                            |
+| `minW` `maxW`     | number                                                     | Min/Max width                     |
+| `minH` `maxH`     | number                                                     | Min/Max height                    |
+| `padding`         | number / `padding.top="8" padding.bottom="8"`              | Padding                           |
+| `backgroundColor` | hex                                                        | Background color (e.g., `F8F9FA`) |
+| `backgroundImage` | `backgroundImage.src="url" backgroundImage.sizing="cover"` | Background image                  |
+| `border`          | `border.color="333" border.width="1"`                      | Border                            |
+| `borderRadius`    | number                                                     | Corner radius (px)                |
+| `opacity`         | 0-1                                                        | Background transparency           |
 
 - `backgroundImage`: `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
 - `border`: Can be combined with `color`, `width`, and `dashType` (`"solid"` / `"dash"` / `"dashDot"` / `"lgDash"` / `"lgDashDot"` / `"lgDashDotDot"` / `"sysDash"` / `"sysDot"`).
@@ -35,16 +35,16 @@ A node for displaying text.
 <Text fontSize="24" bold="true" color="333333" textAlign="center">Title</Text>
 ```
 
-| Attribute                | Type / Values                                  |
-| ------------------------ | ---------------------------------------------- |
-| `fontSize`               | number (default: 24)                           |
-| `color`                  | hex (text color)                               |
-| `textAlign`              | `left` / `center` / `right`                    |
-| `bold` `italic` `strike` | `true` / `false`                               |
-| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'` |
-| `highlight`              | hex (highlight color)                          |
-| `fontFamily`             | string (default: `Noto Sans JP`)               |
-| `lineHeight`             | number (default: 1.3)                          |
+| Attribute                | Type / Values                                              |
+| ------------------------ | ---------------------------------------------------------- |
+| `fontSize`               | number (default: 24)                                       |
+| `color`                  | hex (text color)                                           |
+| `textAlign`              | `left` / `center` / `right`                                |
+| `bold` `italic` `strike` | `true` / `false`                                           |
+| `underline`              | `true` / `underline.style="wavy" underline.color="FF0000"` |
+| `highlight`              | hex (highlight color)                                      |
+| `fontFamily`             | string (default: `Noto Sans JP`)                           |
+| `lineHeight`             | number (default: 1.3)                                      |
 
 Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
@@ -120,7 +120,7 @@ A node for displaying images.
 | --------- | ----------------------------------------------------------------------------------------------- |
 | `src`     | string (URL / path / base64)                                                                    |
 | `sizing`  | `'{"type":"contain"}'` / `'{"type":"cover"}'` / `'{"type":"crop","x":0,"y":0,"w":100,"h":100}'` |
-| `shadow`  | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                          |
+| `shadow`  | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`                      |
 
 - If `w` and `h` are not specified, the actual image size is automatically used.
 - If size is specified, the image is displayed at that size (aspect ratio is not preserved).
@@ -165,16 +165,16 @@ A node for drawing shapes. Different representations are possible with or withou
 ![Shape Node Example](./images/shape.png)
 
 ```xml
-<Shape shapeType="roundRect" w="200" h="60" text="Button" fontSize="16" fill='{"color":"1D4ED8"}' color="FFFFFF" />
+<Shape shapeType="roundRect" w="200" h="60" text="Button" fontSize="16" fill.color="1D4ED8" color="FFFFFF" />
 ```
 
 | Attribute       | Type / Values                                                                                             |
 | --------------- | --------------------------------------------------------------------------------------------------------- |
 | `shapeType`     | Shape type (178 types — see list below)                                                                   |
 | `text`          | string (text inside the shape)                                                                            |
-| `fill`          | `'{"color":"hex","transparency":0.5}'`                                                                    |
-| `line`          | `'{"color":"hex","width":2,"dashType":"dash"}'`                                                           |
-| `shadow`        | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'`                                                    |
+| `fill`          | `fill.color="hex" fill.transparency="0.5"`                                                                |
+| `line`          | `line.color="hex" line.width="2" line.dashType="dash"`                                                    |
+| `shadow`        | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`                                |
 | Text attributes | `fontSize` `color` `textAlign` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineHeight` |
 
 **Common Shape Types:**
@@ -237,9 +237,9 @@ A generic container that wraps a single child element. Used for grouping with pa
 </Box>
 ```
 
-| Attribute | Type | Description                                            |
-| --------- | ---- | ------------------------------------------------------ |
-| `shadow`  | JSON | `'{"type":"outer","blur":4,"offset":2,"color":"000"}'` |
+| Attribute | Type         | Description                                                                |
+| --------- | ------------ | -------------------------------------------------------------------------- |
+| `shadow`  | dot notation | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` |
 
 - Only **one** child element.
 
@@ -451,15 +451,15 @@ A node for creating tree structures such as organization charts, decision trees,
 </Tree>
 ```
 
-| Attribute        | Type / Values                    |
-| ---------------- | -------------------------------- |
-| `layout`         | `vertical` / `horizontal`        |
-| `nodeShape`      | `rect` / `roundRect` / `ellipse` |
-| `nodeWidth`      | number (default: 120)            |
-| `nodeHeight`     | number (default: 40)             |
-| `levelGap`       | number (default: 60)             |
-| `siblingGap`     | number (default: 20)             |
-| `connectorStyle` | `'{"color":"333","width":2}'`    |
+| Attribute        | Type / Values                                         |
+| ---------------- | ----------------------------------------------------- |
+| `layout`         | `vertical` / `horizontal`                             |
+| `nodeShape`      | `rect` / `roundRect` / `ellipse`                      |
+| `nodeWidth`      | number (default: 120)                                 |
+| `nodeHeight`     | number (default: 40)                                  |
+| `levelGap`       | number (default: 60)                                  |
+| `siblingGap`     | number (default: 20)                                  |
+| `connectorStyle` | `connectorStyle.color="333" connectorStyle.width="2"` |
 
 `<TreeItem>` can be nested recursively. The root must have exactly one `<TreeItem>`.
 
@@ -468,7 +468,7 @@ A node for creating tree structures such as organization charts, decision trees,
 ```xml
 <!-- Vertical Organization Chart -->
 <Tree layout="vertical" nodeShape="roundRect" w="600" h="400"
-  connectorStyle='{"color":"333333","width":2}'>
+  connectorStyle.color="333333" connectorStyle.width="2">
   <TreeItem label="CEO" color="1D4ED8">
     <TreeItem label="CTO" color="0EA5E9">
       <TreeItem label="Engineer A" />
@@ -512,13 +512,13 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 </Flow>
 ```
 
-| Attribute        | Type / Values                                     |
-| ---------------- | ------------------------------------------------- |
-| `direction`      | `horizontal` / `vertical`                         |
-| `nodeWidth`      | number (default: 120)                             |
-| `nodeHeight`     | number (default: 60)                              |
-| `nodeGap`        | number (default: 80)                              |
-| `connectorStyle` | `'{"color":"hex","width":2,"arrowType":"arrow"}'` |
+| Attribute        | Type / Values                                                                          |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| `direction`      | `horizontal` / `vertical`                                                              |
+| `nodeWidth`      | number (default: 120)                                                                  |
+| `nodeHeight`     | number (default: 60)                                                                   |
+| `nodeGap`        | number (default: 80)                                                                   |
+| `connectorStyle` | `connectorStyle.color="hex" connectorStyle.width="2" connectorStyle.arrowType="arrow"` |
 
 `<FlowNode>` attributes:
 
@@ -583,7 +583,7 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 | `gap`                    | number (default: -(itemHeight×0.35), negative for overlap) |
 | `fontSize`               | number (default: 14)                                       |
 | `bold` `italic` `strike` | boolean                                                    |
-| `underline`              | `true` / `'{"style":"wavy","color":"FF0000"}'`             |
+| `underline`              | `true` / `underline.style="wavy" underline.color="FF0000"` |
 | `highlight`              | hex (highlight color)                                      |
 
 `<ProcessArrowStep>`: `label` (required) `color` (default: `4472C4`) `textColor` (default: `FFFFFF`)
@@ -678,13 +678,13 @@ A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) 
 <Line x1="100" y1="100" x2="300" y2="100" color="333333" lineWidth="2" endArrow="true" />
 ```
 
-| Attribute                 | Type / Values                                                                     |
-| ------------------------- | --------------------------------------------------------------------------------- |
-| `x1` `y1` `x2` `y2`       | number (absolute coordinates, required)                                           |
-| `color`                   | hex (default: `000000`)                                                           |
-| `lineWidth`               | number (default: 1)                                                               |
-| `dashType`                | `solid` / `dash` / `dashDot` / `lgDash` / `sysDash` etc.                          |
-| `beginArrow` / `endArrow` | `true` / `'{"type":"triangle"}'` (type: none/arrow/triangle/diamond/oval/stealth) |
+| Attribute                 | Type / Values                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| `x1` `y1` `x2` `y2`       | number (absolute coordinates, required)                                              |
+| `color`                   | hex (default: `000000`)                                                              |
+| `lineWidth`               | number (default: 1)                                                                  |
+| `dashType`                | `solid` / `dash` / `dashDot` / `lgDash` / `sysDash` etc.                             |
+| `beginArrow` / `endArrow` | `true` / `endArrow.type="triangle"` (type: none/arrow/triangle/diamond/oval/stealth) |
 
 Note: Line nodes use absolute coordinates on the slide and are not affected by Yoga layout calculations.
 
@@ -707,7 +707,7 @@ Note: Line nodes use absolute coordinates on the slide and are not affected by Y
 <Line x1="100" y1="250" x2="300" y2="250" color="333333" lineWidth="2" dashType="dash" />
 
 <!-- Custom arrow type (diamond) -->
-<Line x1="100" y1="300" x2="300" y2="300" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
+<Line x1="100" y1="300" x2="300" y2="300" color="1D4ED8" lineWidth="2" endArrow.type="diamond" />
 ```
 
 ### 18. Layer
@@ -718,7 +718,7 @@ A container for absolute positioning of child elements. Child elements are posit
 
 ```xml
 <Layer w="600" h="400">
-  <Shape shapeType="roundRect" x="50" y="50" w="120" h="80" fill='{"color":"1D4ED8"}' text="A" color="FFFFFF" />
+  <Shape shapeType="roundRect" x="50" y="50" w="120" h="80" fill.color="1D4ED8" text="A" color="FFFFFF" />
   <Line x1="170" y1="90" x2="300" y2="90" endArrow="true" />
 </Layer>
 ```
@@ -734,9 +734,9 @@ A container for absolute positioning of child elements. Child elements are posit
 <!-- Basic absolute positioning with overlapping shapes -->
 <Layer w="600" h="400" backgroundColor="F0F4F8">
   <!-- Back shape (drawn first) -->
-  <Shape shapeType="rect" x="50" y="50" w="120" h="100" fill='{"color":"1D4ED8"}' text="Back" color="FFFFFF" />
+  <Shape shapeType="rect" x="50" y="50" w="120" h="100" fill.color="1D4ED8" text="Back" color="FFFFFF" />
   <!-- Front shape (drawn on top) -->
-  <Shape shapeType="rect" x="100" y="80" w="120" h="100" fill='{"color":"DC2626"}' text="Front" color="FFFFFF" />
+  <Shape shapeType="rect" x="100" y="80" w="120" h="100" fill.color="DC2626" text="Front" color="FFFFFF" />
 </Layer>
 
 <!-- Layer with VStack children for free-form layout -->
@@ -753,8 +753,8 @@ A container for absolute positioning of child elements. Child elements are posit
 
 <!-- Connection diagram with lines -->
 <Layer w="800" h="200" backgroundColor="F8FAFC">
-  <Shape shapeType="roundRect" x="50" y="60" w="150" h="80" fill='{"color":"1D4ED8"}' text="Service A" color="FFFFFF" />
-  <Shape shapeType="roundRect" x="350" y="60" w="150" h="80" fill='{"color":"16A34A"}' text="Service B" color="FFFFFF" />
+  <Shape shapeType="roundRect" x="50" y="60" w="150" h="80" fill.color="1D4ED8" text="Service A" color="FFFFFF" />
+  <Shape shapeType="roundRect" x="350" y="60" w="150" h="80" fill.color="16A34A" text="Service B" color="FFFFFF" />
   <Line x1="200" y1="100" x2="350" y2="100" color="333333" lineWidth="2" endArrow="true" />
   <Text x="240" y="70" fontSize="10">API Call</Text>
 </Layer>

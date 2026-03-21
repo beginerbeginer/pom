@@ -7,7 +7,7 @@ import { palette } from "./palette.js";
 export const page25IconXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 25: Icon Test</Text>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Icon variations (default size 24px):</Text>
       <HStack gap="16" alignItems="center">
@@ -54,7 +54,7 @@ export const page25IconXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Size variations:</Text>
       <HStack gap="24" alignItems="end">
@@ -81,7 +81,7 @@ export const page25IconXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Color variations:</Text>
       <HStack gap="24" alignItems="center">
@@ -108,7 +108,7 @@ export const page25IconXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Business icons:</Text>
       <HStack gap="16" alignItems="center">

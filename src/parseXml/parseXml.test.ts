@@ -304,9 +304,10 @@ describe("parseXml", () => {
       ]);
     });
 
-    it("object 型を JSON.parse で変換する", () => {
-      const border = JSON.stringify({ color: "000000", width: 2 });
-      const result = parseXml(`<Text border='${border}'>test</Text>`);
+    it("ドット記法で object 型属性を変換する", () => {
+      const result = parseXml(
+        '<Text border.color="000000" border.width="2">test</Text>',
+      );
       expect((result[0] as Record<string, unknown>).border).toEqual({
         color: "000000",
         width: 2,
@@ -332,9 +333,10 @@ describe("parseXml", () => {
       const r1 = parseXml('<Text underline="true">test</Text>');
       expect((r1[0] as Record<string, unknown>).underline).toBe(true);
 
-      // object
-      const obj = JSON.stringify({ style: "dbl", color: "FF0000" });
-      const r2 = parseXml(`<Text underline='${obj}'>test</Text>`);
+      // object（ドット記法）
+      const r2 = parseXml(
+        '<Text underline.style="dbl" underline.color="FF0000">test</Text>',
+      );
       expect((r2[0] as Record<string, unknown>).underline).toEqual({
         style: "dbl",
         color: "FF0000",
@@ -521,10 +523,9 @@ describe("parseXml", () => {
       expect(parseXml("  ")).toEqual([]);
     });
 
-    it("backgroundImage を object として変換する", () => {
-      const bg = JSON.stringify({ src: "bg.png", sizing: "cover" });
+    it("backgroundImage をドット記法で変換する", () => {
       const result = parseXml(
-        `<VStack backgroundImage='${bg}'><Text>A</Text></VStack>`,
+        '<VStack backgroundImage.src="bg.png" backgroundImage.sizing="cover"><Text>A</Text></VStack>',
       );
       expect((result[0] as Record<string, unknown>).backgroundImage).toEqual({
         src: "bg.png",
@@ -532,20 +533,63 @@ describe("parseXml", () => {
       });
     });
 
-    it("shadow を object として変換する", () => {
-      const shadow = JSON.stringify({
-        type: "outer",
-        blur: 4,
-        offset: 2,
-        color: "000000",
-      });
-      const result = parseXml(`<Box shadow='${shadow}'><Text>A</Text></Box>`);
+    it("shadow をドット記法で変換する", () => {
+      const result = parseXml(
+        '<Box shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000"><Text>A</Text></Box>',
+      );
       expect((result[0] as Record<string, unknown>).shadow).toEqual({
         type: "outer",
         blur: 4,
         offset: 2,
         color: "000000",
       });
+    });
+
+    it("ドット記法で fill 属性を変換する", () => {
+      const result = parseXml(
+        '<Shape shapeType="rect" fill.color="1D4ED8" fill.transparency="0.5" />',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.fill).toEqual({ color: "1D4ED8", transparency: 0.5 });
+    });
+
+    it("ドット記法で connectorStyle 属性を変換する", () => {
+      const data = JSON.stringify({
+        label: "Root",
+        children: [{ label: "A" }],
+      });
+      const result = parseXml(
+        `<Tree layout="vertical" data='${data}' connectorStyle.color="333333" connectorStyle.width="2" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.connectorStyle).toEqual({ color: "333333", width: 2 });
+    });
+
+    it("ドット記法で endArrow（union: boolean | object）を変換する", () => {
+      const result = parseXml(
+        '<Line x1="0" y1="0" x2="100" y2="100" endArrow.type="diamond" />',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.endArrow).toEqual({ type: "diamond" });
+    });
+
+    it("ドット記法で未知のサブ属性はエラーになる", () => {
+      expect(() =>
+        parseXml('<Shape shapeType="rect" fill.unknown="value" />'),
+      ).toThrow('Unknown sub-attribute "fill.unknown"');
+    });
+
+    it("ドット記法と通常属性の競合でエラーになる", () => {
+      const border = JSON.stringify({ color: "000000", width: 2 });
+      expect(() =>
+        parseXml(`<Text border='${border}' border.color="FF0000">test</Text>`),
+      ).toThrow("conflicts with dot-notation");
+    });
+
+    it("ドット記法で未知のベース属性はエラーになる", () => {
+      expect(() => parseXml('<Text unknown.color="value">test</Text>')).toThrow(
+        'Unknown attribute "unknown"',
+      );
     });
 
     it("Chart の showLegend, showTitle を boolean に変換する", () => {

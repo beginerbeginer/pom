@@ -479,6 +479,78 @@ function coerceFallback(value: string): unknown {
   return value;
 }
 
+// ===== Dot notation expansion =====
+function expandDotNotation(attrs: Record<string, string>): {
+  regular: Record<string, string>;
+  dotGroups: Record<string, Record<string, string>>;
+} {
+  const regular: Record<string, string> = {};
+  const dotGroups: Record<string, Record<string, string>> = {};
+
+  for (const [key, value] of Object.entries(attrs)) {
+    const dotIndex = key.indexOf(".");
+    if (dotIndex > 0) {
+      const prefix = key.substring(0, dotIndex);
+      const suffix = key.substring(dotIndex + 1);
+      if (!dotGroups[prefix]) dotGroups[prefix] = {};
+      dotGroups[prefix][suffix] = value;
+    } else {
+      regular[key] = value;
+    }
+  }
+
+  return { regular, dotGroups };
+}
+
+function coerceDotGroup(
+  prefix: string,
+  subAttrs: Record<string, string>,
+  schema: z.ZodTypeAny,
+  tagName: string,
+  errors: string[],
+): Record<string, unknown> {
+  const unwrapped = unwrapSchema(schema);
+  const typeName = getZodType(unwrapped);
+
+  let objectSchema: z.ZodTypeAny | undefined;
+  if (typeName === "object") {
+    objectSchema = unwrapped;
+  } else if (typeName === "union") {
+    const def = getDef(unwrapped);
+    const options = def.options as z.ZodTypeAny[];
+    objectSchema = options.find(
+      (opt) => getZodType(unwrapSchema(opt)) === "object",
+    );
+    if (objectSchema) objectSchema = unwrapSchema(objectSchema);
+  }
+
+  const obj: Record<string, unknown> = {};
+  if (objectSchema) {
+    const shape = extractShape(objectSchema);
+    for (const [subKey, subValue] of Object.entries(subAttrs)) {
+      if (shape[subKey]) {
+        const coerced = coerceValue(subValue, shape[subKey]);
+        if (coerced.error !== null) {
+          errors.push(`<${tagName}>: ${prefix}.${subKey}: ${coerced.error}`);
+        } else {
+          obj[subKey] = coerced.value;
+        }
+      } else {
+        const knownSubKeys = Object.keys(shape);
+        const suggestion = findClosestMatch(subKey, knownSubKeys);
+        errors.push(
+          `<${tagName}>: Unknown sub-attribute "${prefix}.${subKey}"${suggestion ? `. Did you mean "${prefix}.${suggestion}"?` : ""}`,
+        );
+      }
+    }
+  } else {
+    errors.push(
+      `<${tagName}>: Attribute "${prefix}" does not support dot notation`,
+    );
+  }
+  return obj;
+}
+
 // ===== XML node helpers =====
 function isTextNode(node: XmlNode): node is XmlTextNode {
   return "#text" in node;
@@ -546,7 +618,41 @@ function coerceChildAttrs(
 ): Record<string, unknown> {
   const shape = childElementShapes[tagName];
   const result: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(attrs)) {
+  const { regular: regularAttrs, dotGroups } = expandDotNotation(attrs);
+
+  // Process dot-notation attributes
+  for (const [prefix, subAttrs] of Object.entries(dotGroups)) {
+    if (shape && shape[prefix]) {
+      result[prefix] = coerceDotGroup(
+        prefix,
+        subAttrs,
+        shape[prefix],
+        `${parentTagName}.${tagName}`,
+        errors,
+      );
+    } else if (shape) {
+      const knownAttrs = getKnownChildAttributes(tagName);
+      const suggestion = findClosestMatch(prefix, knownAttrs);
+      errors.push(
+        `<${parentTagName}>.<${tagName}>: Unknown attribute "${prefix}"${suggestion ? `. Did you mean "${suggestion}"?` : ""}`,
+      );
+    } else {
+      result[prefix] = {};
+      for (const [subKey, subValue] of Object.entries(subAttrs)) {
+        (result[prefix] as Record<string, unknown>)[subKey] =
+          coerceFallback(subValue);
+      }
+    }
+  }
+
+  // Process regular attributes
+  for (const [key, value] of Object.entries(regularAttrs)) {
+    if (key in dotGroups) {
+      errors.push(
+        `<${parentTagName}>.<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes. Use one or the other, not both`,
+      );
+      continue;
+    }
     if (shape && shape[key]) {
       const coerced = coerceValue(value, shape[key]);
       if (coerced.error !== null) {
@@ -976,8 +1082,42 @@ function convertPomNode(
 ): Record<string, unknown> {
   const result: Record<string, unknown> = { type: nodeType };
 
-  for (const [key, value] of Object.entries(attrs)) {
+  // Expand dot-notation attributes (e.g., fill.color="hex" → { fill: { color: "hex" } })
+  const { regular: regularAttrs, dotGroups } = expandDotNotation(attrs);
+
+  for (const [prefix, subAttrs] of Object.entries(dotGroups)) {
+    if (prefix === "type") continue;
+    const propSchema = getPropertySchema(nodeType, prefix);
+    if (propSchema) {
+      result[prefix] = coerceDotGroup(
+        prefix,
+        subAttrs,
+        propSchema,
+        tagName,
+        errors,
+      );
+    } else {
+      const knownAttrs = getKnownAttributes(nodeType);
+      const suggestion = findClosestMatch(prefix, knownAttrs);
+      if (suggestion) {
+        errors.push(
+          `<${tagName}>: Unknown attribute "${prefix}". Did you mean "${suggestion}"?`,
+        );
+      } else {
+        errors.push(`<${tagName}>: Unknown attribute "${prefix}"`);
+      }
+    }
+  }
+
+  for (const [key, value] of Object.entries(regularAttrs)) {
     if (key === "type") continue;
+    // Conflict check: dot-notation and regular attribute for the same key
+    if (key in dotGroups) {
+      errors.push(
+        `<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes (e.g., "${key}.xxx"). Use one or the other, not both`,
+      );
+      continue;
+    }
     const propSchema = getPropertySchema(nodeType, key);
     if (propSchema) {
       const coerced = coerceValue(value, propSchema);

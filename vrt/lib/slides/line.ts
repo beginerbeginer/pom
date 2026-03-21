@@ -16,9 +16,9 @@ export const page15LineXml = `
   <Line x1="400" y1="100" x2="600" y2="100" color="333333" lineWidth="2" endArrow="true" />
   <Line x1="400" y1="130" x2="600" y2="130" color="333333" lineWidth="2" beginArrow="true" endArrow="true" />
   <!-- 矢印タイプ指定 -->
-  <Line x1="400" y1="160" x2="600" y2="160" color="1D4ED8" lineWidth="2" endArrow='{"type":"diamond"}' />
-  <Line x1="400" y1="190" x2="600" y2="190" color="16A34A" lineWidth="2" endArrow='{"type":"stealth"}' />
-  <Line x1="400" y1="220" x2="600" y2="220" color="DC2626" lineWidth="2" endArrow='{"type":"oval"}' />
+  <Line x1="400" y1="160" x2="600" y2="160" color="1D4ED8" lineWidth="2" endArrow.type="diamond" />
+  <Line x1="400" y1="190" x2="600" y2="190" color="16A34A" lineWidth="2" endArrow.type="stealth" />
+  <Line x1="400" y1="220" x2="600" y2="220" color="DC2626" lineWidth="2" endArrow.type="oval" />
   <!-- 破線 -->
   <Line x1="650" y1="100" x2="850" y2="100" color="333333" lineWidth="2" dashType="dash" />
   <Line x1="650" y1="130" x2="850" y2="130" color="333333" lineWidth="2" dashType="dashDot" />

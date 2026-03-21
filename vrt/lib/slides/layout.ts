@@ -7,7 +7,7 @@ import { palette } from "./palette.js";
 export const page7LayoutXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 7: Layout Test</Text>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">HStack gap:</Text>
       <HStack gap="8" alignItems="stretch">
@@ -30,7 +30,7 @@ export const page7LayoutXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">HStack alignItems:</Text>
       <HStack gap="16" alignItems="stretch">
@@ -73,7 +73,7 @@ export const page7LayoutXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">HStack justifyContent:</Text>
       <HStack gap="16" alignItems="stretch">
@@ -128,26 +128,26 @@ export const page16LayerXml = `
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 16: Layer Node Test</Text>
   <!-- 基本的な絶対配置（重なり合う図形） -->
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="12">
         <Text fontSize="14" bold="true">Overlapping Shapes:</Text>
         <Layer w="500" h="200" backgroundColor="F0F4F8">
-          <Shape shapeType="rect" w="120" h="100" x="30" y="30" fill='{"color":"${palette.blue}"}' color="FFFFFF" fontSize="14">Back</Shape>
-          <Shape shapeType="rect" w="120" h="100" x="80" y="60" fill='{"color":"${palette.red}"}' color="FFFFFF" fontSize="14">Front</Shape>
+          <Shape shapeType="rect" w="120" h="100" x="30" y="30" fill.color="${palette.blue}" color="FFFFFF" fontSize="14">Back</Shape>
+          <Shape shapeType="rect" w="120" h="100" x="80" y="60" fill.color="${palette.red}" color="FFFFFF" fontSize="14">Front</Shape>
           <Text x="220" y="80" fontSize="12" color="${palette.charcoal}">Shapes overlap (red is on top)</Text>
         </Layer>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="12">
         <Text fontSize="14" bold="true">VStack inside Layer:</Text>
         <Layer w="500" h="200" backgroundColor="F0F4F8">
-          <VStack x="20" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+          <VStack x="20" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
             <Text fontSize="12" bold="true">Left VStack</Text>
             <Text fontSize="11">Item 1</Text>
             <Text fontSize="11">Item 2</Text>
           </VStack>
-          <VStack x="260" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+          <VStack x="260" y="20" w="180" gap="8" padding="12" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
             <Text fontSize="12" bold="true">Right VStack</Text>
             <Text fontSize="11">Item A</Text>
             <Text fontSize="11">Item B</Text>
@@ -157,16 +157,16 @@ export const page16LayerXml = `
     </Box>
   </HStack>
   <!-- Line ノードとの組み合わせ -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Layer with Line (connection diagram):</Text>
       <Layer w="1100" h="200" backgroundColor="F8FAFC">
         <!-- 左のボックス -->
-        <Shape shapeType="roundRect" w="150" h="80" x="50" y="60" fill='{"color":"${palette.blue}"}' color="FFFFFF" fontSize="14">Service A</Shape>
+        <Shape shapeType="roundRect" w="150" h="80" x="50" y="60" fill.color="${palette.blue}" color="FFFFFF" fontSize="14">Service A</Shape>
         <!-- 中央のボックス -->
-        <Shape shapeType="roundRect" w="150" h="80" x="350" y="60" fill='{"color":"${palette.green}"}' color="FFFFFF" fontSize="14">Service B</Shape>
+        <Shape shapeType="roundRect" w="150" h="80" x="350" y="60" fill.color="${palette.green}" color="FFFFFF" fontSize="14">Service B</Shape>
         <!-- 右のボックス -->
-        <Shape shapeType="roundRect" w="150" h="80" x="650" y="60" fill='{"color":"${palette.accent}"}' color="FFFFFF" fontSize="14">Service C</Shape>
+        <Shape shapeType="roundRect" w="150" h="80" x="650" y="60" fill.color="${palette.accent}" color="FFFFFF" fontSize="14">Service C</Shape>
         <!-- 接続線 -->
         <Line x1="200" y1="100" x2="350" y2="100" color="333333" lineWidth="2" endArrow="true" />
         <Line x1="500" y1="100" x2="650" y2="100" color="333333" lineWidth="2" endArrow="true" />
@@ -177,7 +177,7 @@ export const page16LayerXml = `
     </VStack>
   </Box>
   <!-- ネストした layer -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">Nested Layer:</Text>
       <Layer w="600" h="150" backgroundColor="E3F2FD">
@@ -199,7 +199,7 @@ export const page17HStackTableXml = `
 <VStack gap="16" padding="48">
   <Text fontSize="22" bold="true">17. HStack + Table Width Calculation</Text>
   <!-- テーブルが固有サイズを保持するケース -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">HStack with table (table should keep intrinsic width):</Text>
       <HStack gap="16">

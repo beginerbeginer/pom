@@ -25,7 +25,7 @@ export const page13FlowXml = `
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
         <Text fontSize="14" bold="true">Vertical Flow (Simple):</Text>
-        <Flow direction="vertical" w="550" h="300" connectorStyle='{"color":"333333","width":2}'>
+        <Flow direction="vertical" w="550" h="300" connectorStyle.color="333333" connectorStyle.width="2">
           <FlowNode id="start" shape="flowChartTerminator" text="開始" color="4CAF50" />
           <FlowNode id="input" shape="flowChartInputOutput" text="データ入力" />
           <FlowNode id="process" shape="flowChartProcess" text="処理" />
@@ -55,7 +55,7 @@ export const page13FlowXml = `
     <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
       <VStack gap="12">
         <Text fontSize="14" bold="true">Custom Node Colors:</Text>
-        <Flow direction="horizontal" w="550" h="150" connectorStyle='{"color":"64748B","width":2,"arrowType":"arrow"}'>
+        <Flow direction="horizontal" w="550" h="150" connectorStyle.color="64748B" connectorStyle.width="2" connectorStyle.arrowType="arrow">
           <FlowNode id="doc" shape="flowChartDocument" text="ドキュメント" color="2196F3" />
           <FlowNode id="db" shape="flowChartMagneticDisk" text="DB" color="9C27B0" />
           <FlowNode id="prep" shape="flowChartPreparation" text="準備" color="009688" />
