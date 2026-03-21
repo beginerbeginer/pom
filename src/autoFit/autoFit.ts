@@ -9,9 +9,6 @@ import { uniformScale } from "./strategies/uniformScale.ts";
 /** オーバーフロー判定の許容マージン（0.5%） */
 const OVERFLOW_TOLERANCE = 1.005;
 
-/** 高さ制約なしでレイアウトする際の仮の高さ上限 */
-const UNCONSTRAINED_HEIGHT = 100000;
-
 type Strategy = (node: POMNode, targetRatio: number) => boolean;
 
 const strategies: Strategy[] = [
@@ -22,14 +19,37 @@ const strategies: Strategy[] = [
 ];
 
 /**
- * 高さ制約なしでレイアウト計算し、コンテンツの自然な高さを取得する。
+ * 通常の slideSize でレイアウト計算し、コンテンツの占有高さを取得する。
+ *
+ * ルートの yogaNode の子要素の (top + height) の最大値を計算し、
+ * ルートの padding.bottom を加算してコンテンツの占有高さとする。
+ * h="max" や flexGrow の影響を受けず、正確なコンテンツ高さを返す。
  */
-async function measureNaturalHeight(
+async function measureContentHeight(
   node: POMNode,
-  slideWidth: number,
+  slideSize: { w: number; h: number },
 ): Promise<number> {
-  await calcYogaLayout(node, { w: slideWidth, h: UNCONSTRAINED_HEIGHT });
-  return node.yogaNode.getComputedHeight();
+  await calcYogaLayout(node, slideSize);
+  const rootYoga = node.yogaNode;
+
+  const childCount = rootYoga.getChildCount();
+  if (childCount === 0) {
+    return rootYoga.getComputedHeight();
+  }
+
+  let maxBottom = 0;
+  for (let i = 0; i < childCount; i++) {
+    const child = rootYoga.getChild(i);
+    const childLayout = child.getComputedLayout();
+    const bottom = childLayout.top + childLayout.height;
+    if (bottom > maxBottom) {
+      maxBottom = bottom;
+    }
+  }
+
+  // ルートの paddingBottom を加算
+  const paddingBottom = rootYoga.getComputedPadding(2); // EDGE_BOTTOM = 2
+  return maxBottom + paddingBottom;
 }
 
 /**
@@ -47,13 +67,13 @@ export async function autoFitSlide(
 ): Promise<void> {
   for (const strategy of strategies) {
     freeYogaTree(node);
-    const naturalHeight = await measureNaturalHeight(node, slideSize.w);
+    const contentHeight = await measureContentHeight(node, slideSize);
 
-    if (naturalHeight <= slideSize.h * OVERFLOW_TOLERANCE) {
+    if (contentHeight <= slideSize.h * OVERFLOW_TOLERANCE) {
       break;
     }
 
-    const ratio = slideSize.h / naturalHeight;
+    const ratio = slideSize.h / contentHeight;
     const changed = strategy(node, ratio);
 
     if (!changed) {
@@ -63,7 +83,7 @@ export async function autoFitSlide(
 
   // 最終的にオーバーフローが解消されたか確認
   freeYogaTree(node);
-  const finalHeight = await measureNaturalHeight(node, slideSize.w);
+  const finalHeight = await measureContentHeight(node, slideSize);
   if (finalHeight > slideSize.h * OVERFLOW_TOLERANCE) {
     console.warn(
       `[pom] autoFit: content height (${Math.round(finalHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,

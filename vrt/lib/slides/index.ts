@@ -24,4 +24,3 @@ export { page22CompositeScaleToFitXml } from "./compositeScaleToFit.js";
 export { page23TableColspanRowspanXml } from "./tableColspanRowspan.js";
 export { page24PyramidXml } from "./pyramid.js";
 export { page25IconXml } from "./icon.js";
-export { page26OverflowAutoFitXml } from "./overflowAutoFit.js";
