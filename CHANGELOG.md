@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 5.0.1
+
+### Patch Changes
+
+- [#293](https://github.com/hirokisakabe/pom/pull/293) [`103ce6e`](https://github.com/hirokisakabe/pom/commit/103ce6e43ebc1d455001a740a0e895822f06355d) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Icon の color 属性で `#` なし hex カラーを受け付けるように変更（`#` 付きに自動正規化）
+
 ## 5.0.0
 
 ### Major Changes
