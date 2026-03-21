@@ -1,3 +1,4 @@
+import { autoFitSlide } from "./autoFit/autoFit.ts";
 import { calcYogaLayout } from "./calcYogaLayout/calcYogaLayout.ts";
 import {
   setTextMeasurementMode,
@@ -16,6 +17,7 @@ export async function buildPptx(
   options?: {
     master?: SlideMasterOptions;
     textMeasurement?: TextMeasurementMode;
+    autoFit?: boolean;
   },
 ) {
   // テキスト計測モードを設定（デフォルトは auto）
@@ -29,7 +31,11 @@ export async function buildPptx(
   const positionedPages: PositionedNode[] = [];
 
   for (const node of nodes) {
-    await calcYogaLayout(node, slideSize);
+    if (options?.autoFit !== false) {
+      await autoFitSlide(node, slideSize);
+    } else {
+      await calcYogaLayout(node, slideSize);
+    }
     const positioned = toPositioned(node);
     positionedPages.push(positioned);
   }

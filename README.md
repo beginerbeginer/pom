@@ -196,6 +196,23 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 <img src="./docs/images/pyramid.png" alt="Pyramid example" width="600">
 
+## Auto-Fit
+
+コンテンツがスライドの縦幅を超えた場合、自動的にコンテンツを調整してスライド内に収めます。デフォルトで有効です。
+
+調整は以下の優先順で段階的に行われます:
+
+1. テーブルの行高さ縮小
+2. テキストのフォントサイズ縮小
+3. gap / padding の縮小
+4. 全体スケーリング（フォールバック）
+
+無効にする場合:
+
+```typescript
+const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
+```
+
 ## Documentation
 
 | Document                                         | Description                             |

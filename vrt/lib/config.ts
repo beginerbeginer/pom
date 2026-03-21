@@ -39,6 +39,7 @@ export const PAGE_NAMES = [
   "23-table-colspan-rowspan",
   "24-pyramid",
   "25-icon",
+  "26-overflow-auto-fit",
 ] as const;
 
 export const THRESHOLD = 0.1;
