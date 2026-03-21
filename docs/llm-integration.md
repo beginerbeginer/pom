@@ -143,14 +143,14 @@ Ul の全属性に加えて:
 プリセットアイコンを表示する（Lucide アイコンライブラリ）。
 
 ```xml
-<Icon name="cpu" size="32" color="#1D4ED8" />
+<Icon name="cpu" size="32" color="1D4ED8" />
 ```
 
-| 属性    | 型 / 値                             |
-| ------- | ----------------------------------- |
-| `name`  | アイコン名（必須）                  |
-| `size`  | number（デフォルト: 24、px 単位）   |
-| `color` | hex カラー（デフォルト: `#000000`） |
+| 属性    | 型 / 値                                         |
+| ------- | ----------------------------------------------- |
+| `name`  | アイコン名（必須）                              |
+| `size`  | number（デフォルト: 24、px 単位）               |
+| `color` | hex カラー（`#` 省略可、デフォルト: `#000000`） |
 
 利用可能なアイコン: `cpu`, `database`, `cloud`, `server`, `code`, `terminal`, `wifi`, `globe`, `user`, `users`, `contact`, `briefcase`, `building`, `bar-chart`, `line-chart`, `pie-chart`, `trending-up`, `mail`, `message-square`, `phone`, `video`, `search`, `settings`, `filter`, `download`, `upload`, `share`, `check`, `alert-triangle`, `info`, `shield`, `lock`, `unlock`, `file`, `folder`, `image`, `calendar`, `clock`, `bookmark`, `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `external-link`, `star`, `heart`, `zap`, `target`, `lightbulb`
 

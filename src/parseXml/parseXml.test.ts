@@ -170,6 +170,11 @@ describe("parseXml", () => {
       expect(() => parseXml('<Icon name="cpu" size="-1" />')).toThrow();
     });
 
+    it("Icon ノードで # なし hex color を受け付け、# 付きに正規化する", () => {
+      const result = parseXml('<Icon name="cpu" color="1D4ED8" />');
+      expect(result).toEqual([{ type: "icon", name: "cpu", color: "#1D4ED8" }]);
+    });
+
     it("Icon ノードで不正な color はエラーになる", () => {
       expect(() =>
         parseXml('<Icon name="cpu" color="not-a-color" />'),

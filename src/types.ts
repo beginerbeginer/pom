@@ -402,7 +402,7 @@ export const iconNameSchema = z.enum(
 
 export const iconColorSchema = z
   .string()
-  .regex(/^#[0-9a-fA-F]{3,8}$/)
+  .regex(/^#?[0-9a-fA-F]{3,8}$/)
   .optional();
 
 const iconNodeSchema = basePOMNodeSchema.extend({
