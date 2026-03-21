@@ -46,6 +46,8 @@ import {
   type JustifyContent,
   type TreeDataItem,
   type ShadowStyle,
+  iconNameSchema,
+  iconColorSchema,
 } from "../types.ts";
 
 // ===== Base Node Schema =====
@@ -129,6 +131,13 @@ export const inputImageNodeSchema = inputBaseNodeSchema.extend({
   src: z.string(),
   sizing: inputImageSizingSchema.optional(),
   shadow: shadowStyleSchema.optional(),
+});
+
+export const inputIconNodeSchema = inputBaseNodeSchema.extend({
+  type: z.literal("icon"),
+  name: iconNameSchema,
+  size: z.number().positive().max(1024).optional(),
+  color: iconColorSchema,
 });
 
 export const inputTableNodeSchema = inputBaseNodeSchema.extend({
@@ -263,6 +272,7 @@ type InputFlowNode = z.infer<typeof inputFlowNodeSchema>;
 type InputProcessArrowNode = z.infer<typeof inputProcessArrowNodeSchema>;
 type InputPyramidNode = z.infer<typeof inputPyramidNodeSchema>;
 type InputLineNode = z.infer<typeof inputLineNodeSchema>;
+type InputIconNode = z.infer<typeof inputIconNodeSchema>;
 
 // ===== Recursive Types =====
 type InputBoxNode = InputBaseNode & {
@@ -316,7 +326,8 @@ type InputPOMNode =
   | InputProcessArrowNode
   | InputPyramidNode
   | InputLineNode
-  | InputLayerNode;
+  | InputLayerNode
+  | InputIconNode;
 
 // ===== Recursive Node Schemas =====
 const inputBoxNodeSchemaBase = inputBaseNodeSchema.extend({
@@ -376,5 +387,6 @@ const inputPomNodeSchema: z.ZodType<InputPOMNode> = z.lazy(() =>
     inputPyramidNodeSchema,
     inputLineNodeSchema,
     inputLayerNodeSchemaBase,
+    inputIconNodeSchema,
   ]),
 ) as z.ZodType<InputPOMNode>;

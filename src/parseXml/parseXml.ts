@@ -17,6 +17,7 @@ import {
   inputProcessArrowNodeSchema,
   inputPyramidNodeSchema,
   inputLineNodeSchema,
+  inputIconNodeSchema,
   inputBaseNodeSchema,
 } from "./inputSchema.ts";
 import {
@@ -67,6 +68,7 @@ const TAG_TO_TYPE: Record<string, string> = {
   VStack: "vstack",
   HStack: "hstack",
   Layer: "layer",
+  Icon: "icon",
 };
 
 // Reverse mapping: node type → tag name
@@ -98,6 +100,7 @@ const leafNodeShapes: Record<string, ShapeRecord> = {
   line: extractShape(inputLineNodeSchema),
   ul: extractShape(inputUlNodeSchema),
   ol: extractShape(inputOlNodeSchema),
+  icon: extractShape(inputIconNodeSchema),
 };
 
 const containerShapes: Record<string, ShapeRecord> = {
@@ -194,6 +197,7 @@ const leafNodeValidationSchemas: Record<string, z.ZodTypeAny> = {
   line: inputLineNodeSchema,
   ul: inputUlNodeSchema,
   ol: inputOlNodeSchema,
+  icon: inputIconNodeSchema,
 };
 
 function formatZodIssue(

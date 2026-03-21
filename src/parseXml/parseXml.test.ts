@@ -150,6 +150,32 @@ describe("parseXml", () => {
       ]);
     });
 
+    it("Icon ノードを変換する", () => {
+      const result = parseXml('<Icon name="cpu" size="32" color="#1D4ED8" />');
+      expect(result).toEqual([
+        { type: "icon", name: "cpu", size: 32, color: "#1D4ED8" },
+      ]);
+    });
+
+    it("Icon ノードでデフォルト値を使う", () => {
+      const result = parseXml('<Icon name="star" />');
+      expect(result).toEqual([{ type: "icon", name: "star" }]);
+    });
+
+    it("Icon ノードで不正な name はエラーになる", () => {
+      expect(() => parseXml('<Icon name="invalid-icon" />')).toThrow();
+    });
+
+    it("Icon ノードで不正な size はエラーになる", () => {
+      expect(() => parseXml('<Icon name="cpu" size="-1" />')).toThrow();
+    });
+
+    it("Icon ノードで不正な color はエラーになる", () => {
+      expect(() =>
+        parseXml('<Icon name="cpu" color="not-a-color" />'),
+      ).toThrow();
+    });
+
     it("Table ノードを変換する", () => {
       const columns = JSON.stringify([{ width: 100 }, { width: 200 }]);
       const rows = JSON.stringify([{ cells: [{ text: "A" }, { text: "B" }] }]);

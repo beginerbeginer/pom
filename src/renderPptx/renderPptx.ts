@@ -44,6 +44,7 @@ import {
   renderLineNode,
   renderUlNode,
   renderOlNode,
+  renderIconNode,
 } from "./nodes/index.ts";
 
 type SlidePx = { w: number; h: number };
@@ -314,6 +315,10 @@ export function renderPptx(
 
         case "image":
           renderImageNode(node, ctx);
+          break;
+
+        case "icon":
+          renderIconNode(node, ctx);
           break;
 
         case "box":

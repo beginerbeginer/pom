@@ -165,6 +165,7 @@ async function buildPomWithYogaTree(
     case "processArrow":
     case "pyramid":
     case "line":
+    case "icon":
       // 子要素なし
       break;
   }
@@ -354,6 +355,16 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
             height: heightPx,
           };
         });
+      }
+      break;
+
+    case "icon":
+      {
+        const size = node.size ?? 24;
+        yn.setMeasureFunc(() => ({
+          width: size,
+          height: size,
+        }));
       }
       break;
 
