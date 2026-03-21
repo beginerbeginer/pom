@@ -17,7 +17,7 @@ export { page13FlowXml } from "./flow.js";
 export { page14ProcessArrowXml } from "./processArrow.js";
 export { page15LineXml } from "./line.js";
 export { page18OpacityXml } from "./opacity.js";
-export { page19ShadowXml } from "./shadow.js";
+export { page19ShadowXml, page26VStackHStackShadowXml } from "./shadow.js";
 export { page20BackgroundImageXml } from "./backgroundImage.js";
 export { page21XmlChildElementsXml } from "./xmlChildElements.js";
 export { page22CompositeScaleToFitXml } from "./compositeScaleToFit.js";

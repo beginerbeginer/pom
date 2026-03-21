@@ -38,6 +38,16 @@ export const page19ShadowXml = `
       <Text fontSize="14" color="${palette.charcoal}">Shadow only (no bg)</Text>
     </Box>
   </HStack>
+</VStack>
+`;
+
+// ============================================================
+// Page 26: VStack/HStack Shadow Test
+// テスト対象: VStack shadow, HStack shadow
+// ============================================================
+export const page26VStackHStackShadowXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 26: VStack/HStack Shadow Test</Text>
   <!-- VStack with shadow -->
   <HStack gap="24" alignItems="start">
     <VStack w="200" padding="16" gap="8" backgroundColor="FFFFFF" borderRadius="8" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
