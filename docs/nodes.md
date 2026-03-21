@@ -767,3 +767,33 @@ A container for absolute positioning of child elements. Child elements are posit
   </Layer>
 </Layer>
 ```
+
+### 19. Icon
+
+A node for displaying preset icons from the Lucide icon library. Icons are rendered as PNG images at the specified size and color.
+
+![Icon Node Example](./images/icon.png)
+
+```xml
+<Icon name="cpu" size="32" color="#1D4ED8" />
+```
+
+| Attribute | Type / Values                  |
+| --------- | ------------------------------ |
+| `name`    | icon name (required)           |
+| `size`    | number (default: 24, in px)    |
+| `color`   | hex color (default: `#000000`) |
+
+**Available Icons (47):**
+
+| Category      | Icons                                                                          |
+| ------------- | ------------------------------------------------------------------------------ |
+| Technology    | `cpu`, `database`, `cloud`, `server`, `code`, `terminal`, `wifi`, `globe`      |
+| People        | `user`, `users`, `contact`                                                     |
+| Business      | `briefcase`, `building`, `bar-chart`, `line-chart`, `pie-chart`, `trending-up` |
+| Communication | `mail`, `message-square`, `phone`, `video`                                     |
+| Action        | `search`, `settings`, `filter`, `download`, `upload`, `share`                  |
+| Status        | `check`, `alert-triangle`, `info`, `shield`, `lock`, `unlock`                  |
+| Content       | `file`, `folder`, `image`, `calendar`, `clock`, `bookmark`                     |
+| Navigation    | `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `external-link`         |
+| Other         | `star`, `heart`, `zap`, `target`, `lightbulb`                                  |

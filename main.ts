@@ -2,43 +2,35 @@ import { buildPptx } from "./src/index.js";
 
 const xml = `
 <VStack w="1280" h="720" padding='{"top":24,"bottom":24,"left":48,"right":48}' gap="24" backgroundColor="F8FAFC">
-  <Text fontPx="28" bold="true" color="1E293B">Pyramid Node Demo</Text>
+  <Text fontPx="28" bold="true" color="1E293B">Icon Preset Library Demo</Text>
 
-  <HStack gap="24" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"E2E8F0","width":1}' borderRadius="8">
-      <VStack gap="8">
-        <Text fontPx="18" bold="true" color="1E293B">Pyramid (up)</Text>
-        <Pyramid direction="up" w="500" h="300">
-          <PyramidLevel label="戦略" color="E91E63" />
-          <PyramidLevel label="戦術" color="9C27B0" />
-          <PyramidLevel label="実行" color="673AB7" />
-        </Pyramid>
-      </VStack>
-    </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"E2E8F0","width":1}' borderRadius="8">
-      <VStack gap="8">
-        <Text fontPx="18" bold="true" color="1E293B">Pyramid (down)</Text>
-        <Pyramid direction="down" w="500" h="300">
-          <PyramidLevel label="Top" color="4472C4" />
-          <PyramidLevel label="Middle" color="5B9BD5" />
-          <PyramidLevel label="Bottom" color="70AD47" />
-        </Pyramid>
-      </VStack>
-    </Box>
+  <HStack gap="24" alignItems="center">
+    <Icon name="cpu" size="48" color="#1D4ED8" />
+    <Icon name="database" size="48" color="#16A34A" />
+    <Icon name="cloud" size="48" color="#0EA5E9" />
+    <Icon name="server" size="48" color="#DC2626" />
+    <Icon name="shield" size="48" color="#0F172A" />
+    <Icon name="star" size="48" color="#F59E0B" />
+    <Icon name="heart" size="48" color="#DC2626" />
+    <Icon name="zap" size="48" color="#F59E0B" />
+    <Icon name="target" size="48" color="#16A34A" />
+    <Icon name="lightbulb" size="48" color="#1D4ED8" />
   </HStack>
 
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"E2E8F0","width":1}' borderRadius="8">
-    <VStack gap="8">
-      <Text fontPx="18" bold="true" color="1E293B">Maslow's Hierarchy (5 layers)</Text>
-      <Pyramid direction="up" w="800" h="300" fontPx="16" bold="true">
-        <PyramidLevel label="Self-actualization" color="F44336" textColor="FFFFFF" />
-        <PyramidLevel label="Esteem" color="FF9800" textColor="333333" />
-        <PyramidLevel label="Love/Belonging" color="FFEB3B" textColor="333333" />
-        <PyramidLevel label="Safety" color="4CAF50" textColor="FFFFFF" />
-        <PyramidLevel label="Physiological" color="2196F3" textColor="FFFFFF" />
-      </Pyramid>
-    </VStack>
-  </Box>
+  <HStack gap="32" alignItems="end">
+    <Icon name="briefcase" size="16" />
+    <Icon name="briefcase" size="24" />
+    <Icon name="briefcase" size="32" />
+    <Icon name="briefcase" size="48" />
+    <Icon name="briefcase" size="64" />
+  </HStack>
+
+  <HStack gap="24" alignItems="center">
+    <Icon name="trending-up" size="32" color="#16A34A" />
+    <Icon name="bar-chart" size="32" color="#1D4ED8" />
+    <Icon name="pie-chart" size="32" color="#9333EA" />
+    <Icon name="line-chart" size="32" color="#DC2626" />
+  </HStack>
 </VStack>
 `;
 
