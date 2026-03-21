@@ -27,6 +27,9 @@ export const page15LineXml = `
   <Line x1="650" y1="200" x2="850" y2="200" color="0F172A" lineWidth="1" />
   <Line x1="650" y1="220" x2="850" y2="220" color="0F172A" lineWidth="3" />
   <Line x1="650" y1="245" x2="850" y2="245" color="0F172A" lineWidth="6" />
+  <!-- endArrow="true" + endArrow.type ドット記法の共存 -->
+  <Line x1="650" y1="280" x2="850" y2="280" color="7C3AED" lineWidth="2" endArrow="true" endArrow.type="triangle" />
+  <Line x1="650" y1="310" x2="850" y2="310" color="DB2777" lineWidth="2" beginArrow="true" beginArrow.type="diamond" />
   <!-- 斜線 + 矢印（4方向） -->
   <Line x1="900" y1="100" x2="1050" y2="200" color="${palette.blue}" lineWidth="2" endArrow="true" />
   <Line x1="1100" y1="100" x2="950" y2="200" color="${palette.red}" lineWidth="2" endArrow="true" />

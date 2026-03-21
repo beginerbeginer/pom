@@ -479,6 +479,22 @@ function coerceFallback(value: string): unknown {
   return value;
 }
 
+// ===== Dot notation helpers =====
+
+/**
+ * Checks if a schema is a union containing both boolean and object types.
+ * Used to allow `endArrow="true" endArrow.type="triangle"` coexistence.
+ */
+function isBooleanObjectUnion(schema: z.ZodTypeAny): boolean {
+  const unwrapped = unwrapSchema(schema);
+  const typeName = getZodType(unwrapped);
+  if (typeName !== "union") return false;
+  const def = getDef(unwrapped);
+  const options = def.options as z.ZodTypeAny[];
+  const typeNames = options.map((opt) => getZodType(unwrapSchema(opt)));
+  return typeNames.includes("boolean") && typeNames.includes("object");
+}
+
 // ===== Dot notation expansion =====
 function expandDotNotation(attrs: Record<string, string>): {
   regular: Record<string, string>;
@@ -648,6 +664,17 @@ function coerceChildAttrs(
   // Process regular attributes
   for (const [key, value] of Object.entries(regularAttrs)) {
     if (key in dotGroups) {
+      // When the schema is a union of boolean and object,
+      // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
+      if (
+        shape &&
+        shape[key] &&
+        isBooleanObjectUnion(shape[key]) &&
+        (value === "true" || value === "false")
+      ) {
+        // Silently skip the boolean value; dot-notation takes priority
+        continue;
+      }
       errors.push(
         `<${parentTagName}>.<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes. Use one or the other, not both`,
       );
@@ -1113,6 +1140,17 @@ function convertPomNode(
     if (key === "type") continue;
     // Conflict check: dot-notation and regular attribute for the same key
     if (key in dotGroups) {
+      // When the schema is a union of boolean and object (e.g., endArrow),
+      // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
+      const propSchemaForConflict = getPropertySchema(nodeType, key);
+      if (
+        propSchemaForConflict &&
+        isBooleanObjectUnion(propSchemaForConflict) &&
+        (value === "true" || value === "false")
+      ) {
+        // Silently skip the boolean value; dot-notation takes priority
+        continue;
+      }
       errors.push(
         `<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes (e.g., "${key}.xxx"). Use one or the other, not both`,
       );
