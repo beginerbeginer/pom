@@ -38,3 +38,26 @@ services:
       # ドキュメント用画像をホストに出力するためマウント
       - ./docs/images:/app/docs/images
     command: npm run docs:images
+
+  docs-images-vrt:
+    build:
+      context: .
+      dockerfile: vrt/Dockerfile
+    image: pom-vrt:latest
+    volumes:
+      # ベースラインを常にホスト側から参照
+      - ./docs/images/expected:/app/docs/images/expected:ro
+      # VRT結果をホストに出力するため output ディレクトリをマウント
+      - ./docs/images/output:/app/docs/images/output
+    command: npm run docs:images:vrt
+
+  docs-images-vrt-update:
+    build:
+      context: .
+      dockerfile: vrt/Dockerfile
+    image: pom-vrt:latest
+    volumes:
+      # ベースラインを更新するため expected と output をマウント
+      - ./docs/images/expected:/app/docs/images/expected
+      - ./docs/images/output:/app/docs/images/output
+    command: npm run docs:images:vrt:update
