@@ -742,6 +742,7 @@ export type VStackNode = BasePOMNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
+  shadow?: ShadowStyle;
 };
 
 export type HStackNode = BasePOMNode & {
@@ -750,6 +751,7 @@ export type HStackNode = BasePOMNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
+  shadow?: ShadowStyle;
 };
 
 // Layer の子要素は x, y を必須とする
@@ -797,6 +799,7 @@ const vStackNodeSchemaBase = basePOMNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const hStackNodeSchemaBase = basePOMNodeSchema.extend({
@@ -805,6 +808,7 @@ const hStackNodeSchemaBase = basePOMNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const layerChildSchemaBase = z.lazy(() =>

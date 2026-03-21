@@ -550,6 +550,30 @@ describe("parseXml", () => {
       });
     });
 
+    it("VStack の shadow をドット記法で変換する", () => {
+      const result = parseXml(
+        '<VStack shadow.type="outer" shadow.blur="6" shadow.offset="3" shadow.color="000000"><Text>A</Text></VStack>',
+      );
+      expect((result[0] as Record<string, unknown>).shadow).toEqual({
+        type: "outer",
+        blur: 6,
+        offset: 3,
+        color: "000000",
+      });
+    });
+
+    it("HStack の shadow をドット記法で変換する", () => {
+      const result = parseXml(
+        '<HStack shadow.type="inner" shadow.blur="4" shadow.offset="2" shadow.color="333333"><Text>A</Text></HStack>',
+      );
+      expect((result[0] as Record<string, unknown>).shadow).toEqual({
+        type: "inner",
+        blur: 4,
+        offset: 2,
+        color: "333333",
+      });
+    });
+
     it("ドット記法で fill 属性を変換する", () => {
       const result = parseXml(
         '<Shape shapeType="rect" fill.color="1D4ED8" fill.transparency="0.5" />',
