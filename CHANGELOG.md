@@ -1,5 +1,17 @@
 # @hirokisakabe/pom
 
+## 5.0.0
+
+### Major Changes
+
+- [#289](https://github.com/hirokisakabe/pom/pull/289) [`6f55755`](https://github.com/hirokisakabe/pom/commit/6f55755aea3076d593a0096302127c4ed21085ba) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - プロパティ名をCSS-in-JS準拠にリネーム: fontPx→fontSize, alignText→textAlign, lineSpacingMultiple→lineHeight
+
+### Minor Changes
+
+- [#290](https://github.com/hirokisakabe/pom/pull/290) [`b2fc4ee`](https://github.com/hirokisakabe/pom/commit/b2fc4eeed3bc3a83fdd871ba5a63528fde335170) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - ネスト属性のドット記法サポートを追加（例: fill.color="1D4ED8"）。fill, border, shadow, line, backgroundImage, connectorStyle, arrow, endArrow, underline, padding が対象。
+
+- [#284](https://github.com/hirokisakabe/pom/pull/284) [`5fed8a0`](https://github.com/hirokisakabe/pom/commit/5fed8a0e3e2cecda959cc91fe8cee4d37443fec4) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - アイコンプリセットライブラリ機能を追加。`<Icon name="cpu" size="32" color="#1D4ED8" />` のようにLucideアイコンを名前指定で挿入可能に。47個のビジネス向けアイコンをプリセット。
+
 ## 4.1.1
 
 ### Patch Changes
