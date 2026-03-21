@@ -198,16 +198,16 @@ For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
 
 ## Auto-Fit
 
-コンテンツがスライドの縦幅を超えた場合、自動的にコンテンツを調整してスライド内に収めます。デフォルトで有効です。
+When content exceeds the slide height, pom automatically adjusts it to fit within the slide. This is enabled by default.
 
-調整は以下の優先順で段階的に行われます:
+Adjustments are applied in the following priority order:
 
-1. テーブルの行高さ縮小
-2. テキストのフォントサイズ縮小
-3. gap / padding の縮小
-4. 全体スケーリング（フォールバック）
+1. Reduce table row heights
+2. Reduce text font sizes
+3. Reduce gap / padding
+4. Uniform scaling (fallback)
 
-無効にする場合:
+To disable:
 
 ```typescript
 const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
