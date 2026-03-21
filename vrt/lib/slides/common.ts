@@ -7,7 +7,7 @@ import { palette } from "./palette.js";
 export const page8CommonXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 8: Common Properties Test</Text>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">w/h variations:</Text>
       <HStack gap="16" alignItems="end">
@@ -22,7 +22,7 @@ export const page8CommonXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">padding variations:</Text>
       <HStack gap="16" alignItems="start">
@@ -39,7 +39,7 @@ export const page8CommonXml = `
           <Text fontSize="12">padding: 24</Text>
         </VStack>
         <VStack gap="4" alignItems="center">
-          <Box padding='{"top":20,"right":8,"bottom":4,"left":8}' backgroundColor="${palette.lightBlue}">
+          <Box padding.top="20" padding.right="8" padding.bottom="4" padding.left="8" backgroundColor="${palette.lightBlue}">
             <Box w="60" h="30" backgroundColor="${palette.blue}"><Text text=""></Text></Box>
           </Box>
           <Text fontSize="12">top:20, bottom:4</Text>
@@ -47,26 +47,26 @@ export const page8CommonXml = `
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">border variations:</Text>
       <HStack gap="16" alignItems="center">
         <VStack gap="4" alignItems="center">
-          <Box w="80" h="40" border='{"color":"${palette.charcoal}","width":1}'><Text text=""></Text></Box>
+          <Box w="80" h="40" border.color="${palette.charcoal}" border.width="1"><Text text=""></Text></Box>
           <Text fontSize="12">width: 1</Text>
         </VStack>
         <VStack gap="4" alignItems="center">
-          <Box w="80" h="40" border='{"color":"${palette.charcoal}","width":3}'><Text text=""></Text></Box>
+          <Box w="80" h="40" border.color="${palette.charcoal}" border.width="3"><Text text=""></Text></Box>
           <Text fontSize="12">width: 3</Text>
         </VStack>
         <VStack gap="4" alignItems="center">
-          <Box w="80" h="40" border='{"color":"${palette.blue}","width":2}'><Text text=""></Text></Box>
+          <Box w="80" h="40" border.color="${palette.blue}" border.width="2"><Text text=""></Text></Box>
           <Text fontSize="12">color: blue</Text>
         </VStack>
       </HStack>
     </VStack>
   </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="12">
       <Text fontSize="14" bold="true">backgroundColor variations:</Text>
       <HStack gap="16" alignItems="center">

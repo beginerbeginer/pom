@@ -8,7 +8,7 @@ export const page1TextXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 1: Text Node Test</Text>
   <!-- fontSize variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">fontSize:</Text>
       <HStack gap="24" alignItems="end">
@@ -20,7 +20,7 @@ export const page1TextXml = `
     </VStack>
   </Box>
   <!-- color variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">color:</Text>
       <HStack gap="24" alignItems="center">
@@ -32,7 +32,7 @@ export const page1TextXml = `
     </VStack>
   </Box>
   <!-- textAlign variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">textAlign:</Text>
       <VStack gap="4">
@@ -49,7 +49,7 @@ export const page1TextXml = `
     </VStack>
   </Box>
   <!-- bold variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">bold:</Text>
       <HStack gap="24" alignItems="center">
@@ -59,7 +59,7 @@ export const page1TextXml = `
     </VStack>
   </Box>
   <!-- italic variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">italic:</Text>
       <HStack gap="24" alignItems="center">
@@ -69,20 +69,20 @@ export const page1TextXml = `
     </VStack>
   </Box>
   <!-- underline variations -->
-  <Box padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
     <VStack gap="8">
       <Text fontSize="14" bold="true">underline:</Text>
       <HStack gap="24" alignItems="center">
         <Text fontSize="16">Normal</Text>
         <Text fontSize="16" underline="true">Underline (bool)</Text>
-        <Text fontSize="16" underline='{"style":"wavy"}'>Underline (wavy)</Text>
-        <Text fontSize="16" underline='{"style":"dbl","color":"DC2626"}'>Underline (dbl + color)</Text>
+        <Text fontSize="16" underline.style="wavy">Underline (wavy)</Text>
+        <Text fontSize="16" underline.style="dbl" underline.color="DC2626">Underline (dbl + color)</Text>
       </HStack>
     </VStack>
   </Box>
   <!-- strike & highlight variations -->
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">strike:</Text>
         <HStack gap="24" alignItems="center">
@@ -91,7 +91,7 @@ export const page1TextXml = `
         </HStack>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">highlight:</Text>
         <HStack gap="24" alignItems="center">
@@ -104,13 +104,13 @@ export const page1TextXml = `
   </HStack>
   <!-- fontFamily & lineHeight -->
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">fontFamily:</Text>
         <Text fontSize="16" fontFamily="Noto Sans JP">Noto Sans JP</Text>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">lineHeight:</Text>
         <Text fontSize="14" lineHeight="1.5">Line 1\nLine 2\nLine 3</Text>
@@ -128,7 +128,7 @@ export const page2ListXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 2: List Test (Ul / Ol)</Text>
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">Ul (bullet)</Text>
         <Ul fontSize="14">
@@ -138,7 +138,7 @@ export const page2ListXml = `
         </Ul>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">Ol (number)</Text>
         <Ol fontSize="14">
@@ -150,7 +150,7 @@ export const page2ListXml = `
     </Box>
   </HStack>
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">alphaLcPeriod (a. b. c.)</Text>
         <Ol fontSize="14" numberType="alphaLcPeriod">
@@ -160,7 +160,7 @@ export const page2ListXml = `
         </Ol>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">romanLcPeriod (i. ii. iii.)</Text>
         <Ol fontSize="14" numberType="romanLcPeriod">
@@ -172,7 +172,7 @@ export const page2ListXml = `
     </Box>
   </HStack>
   <HStack gap="16" alignItems="stretch">
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">numberStartAt: 5</Text>
         <Ol fontSize="14" numberStartAt="5">
@@ -182,7 +182,7 @@ export const page2ListXml = `
         </Ol>
       </VStack>
     </Box>
-    <Box w="50%" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+    <Box w="50%" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <VStack gap="8">
         <Text fontSize="14" bold="true">Li style override</Text>
         <Ul fontSize="14" color="${palette.charcoal}">
