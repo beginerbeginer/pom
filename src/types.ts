@@ -400,8 +400,6 @@ export const iconNameSchema = z.enum(
   Object.keys(ICON_DATA) as [string, ...string[]],
 );
 
-export type IconName = z.infer<typeof iconNameSchema>;
-
 export const iconColorSchema = z
   .string()
   .regex(/^#[0-9a-fA-F]{3,8}$/)

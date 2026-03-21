@@ -3,11 +3,7 @@ import { ICON_DATA } from "./iconData.ts";
 
 const rasterCache = new Map<string, string>();
 
-export function buildIconSvg(
-  name: string,
-  size: number,
-  color: string,
-): string {
+function buildIconSvg(name: string, size: number, color: string): string {
   const pathData = ICON_DATA[name];
   if (!pathData) {
     throw new Error(`Unknown icon name: "${name}"`);
