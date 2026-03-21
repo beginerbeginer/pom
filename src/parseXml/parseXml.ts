@@ -112,6 +112,7 @@ const containerShapes: Record<string, ShapeRecord> = {
       gap: z.number().optional(),
       alignItems: alignItemsSchema.optional(),
       justifyContent: justifyContentSchema.optional(),
+      shadow: shadowStyleSchema.optional(),
     }),
   ),
   hstack: extractShape(
@@ -119,6 +120,7 @@ const containerShapes: Record<string, ShapeRecord> = {
       gap: z.number().optional(),
       alignItems: alignItemsSchema.optional(),
       justifyContent: justifyContentSchema.optional(),
+      shadow: shadowStyleSchema.optional(),
     }),
   ),
   layer: extractShape(inputBaseNodeSchema),

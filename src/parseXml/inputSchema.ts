@@ -287,6 +287,7 @@ type InputVStackNode = InputBaseNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
+  shadow?: ShadowStyle;
 };
 
 type InputHStackNode = InputBaseNode & {
@@ -295,6 +296,7 @@ type InputHStackNode = InputBaseNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
+  shadow?: ShadowStyle;
 };
 
 // Layer の子要素は x, y を必須とする
@@ -342,6 +344,7 @@ const inputVStackNodeSchemaBase = inputBaseNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const inputHStackNodeSchemaBase = inputBaseNodeSchema.extend({
@@ -350,6 +353,7 @@ const inputHStackNodeSchemaBase = inputBaseNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 const inputLayerChildSchemaBase = z.lazy(() =>

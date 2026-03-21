@@ -38,5 +38,25 @@ export const page19ShadowXml = `
       <Text fontSize="14" color="${palette.charcoal}">Shadow only (no bg)</Text>
     </Box>
   </HStack>
+  <!-- VStack with shadow -->
+  <HStack gap="24" alignItems="start">
+    <VStack w="200" padding="16" gap="8" backgroundColor="FFFFFF" borderRadius="8" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
+      <Text fontSize="14" color="${palette.charcoal}">VStack: outer shadow</Text>
+      <Text fontSize="12" color="${palette.charcoal}">Card content</Text>
+    </VStack>
+    <VStack w="200" padding="16" gap="8" backgroundColor="FFFFFF" borderRadius="8" shadow.type="inner" shadow.color="000000" shadow.blur="4" shadow.offset="2" shadow.angle="315" shadow.opacity="0.2">
+      <Text fontSize="14" color="${palette.charcoal}">VStack: inner shadow</Text>
+      <Text fontSize="12" color="${palette.charcoal}">Card content</Text>
+    </VStack>
+  </HStack>
+  <!-- HStack with shadow -->
+  <HStack gap="24" alignItems="start">
+    <HStack w="250" padding="16" gap="8" backgroundColor="FFFFFF" borderRadius="8" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3" alignItems="center">
+      <Text fontSize="14" color="${palette.charcoal}">HStack: outer shadow</Text>
+    </HStack>
+    <HStack w="250" padding="16" gap="8" backgroundColor="FFFFFF" border.color="${palette.blue}" border.width="2" borderRadius="8" shadow.type="outer" shadow.color="${palette.blue}" shadow.blur="8" shadow.offset="4" shadow.angle="315" shadow.opacity="0.4" alignItems="center">
+      <Text fontSize="14" color="${palette.charcoal}">HStack: shadow + border</Text>
+    </HStack>
+  </HStack>
 </VStack>
 `;

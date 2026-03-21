@@ -261,6 +261,7 @@ Arranges child elements **vertically**.
 | `gap`            | number (gap between children)                                               |
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
+| `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 ### 9. HStack
 
@@ -280,6 +281,7 @@ Arranges child elements **horizontally**.
 | `gap`            | number (gap between children)                                               |
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
+| `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 ### 10. Chart
 
