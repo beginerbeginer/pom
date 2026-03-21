@@ -584,6 +584,30 @@ describe("parseXml", () => {
       ).toThrow('Unknown sub-attribute "fill.unknown"');
     });
 
+    it("endArrow='true' とドット記法 endArrow.type の共存を許容する", () => {
+      const result = parseXml(
+        '<Line x1="0" y1="0" x2="100" y2="100" endArrow="true" endArrow.type="triangle" />',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.endArrow).toEqual({ type: "triangle" });
+    });
+
+    it("beginArrow='true' とドット記法 beginArrow.type の共存を許容する", () => {
+      const result = parseXml(
+        '<Line x1="0" y1="0" x2="100" y2="100" beginArrow="true" beginArrow.type="diamond" />',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.beginArrow).toEqual({ type: "diamond" });
+    });
+
+    it("endArrow='false' とドット記法 endArrow.type の共存を許容する（ドット記法優先）", () => {
+      const result = parseXml(
+        '<Line x1="0" y1="0" x2="100" y2="100" endArrow="false" endArrow.type="triangle" />',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.endArrow).toEqual({ type: "triangle" });
+    });
+
     it("ドット記法と通常属性の競合でエラーになる", () => {
       const border = JSON.stringify({ color: "000000", width: 2 });
       expect(() =>
