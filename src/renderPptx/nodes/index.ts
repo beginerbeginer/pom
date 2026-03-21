@@ -11,3 +11,4 @@ export { renderProcessArrowNode } from "./processArrow.ts";
 export { renderPyramidNode } from "./pyramid.ts";
 export { renderLineNode } from "./line.ts";
 export { renderUlNode, renderOlNode } from "./list.ts";
+export { renderIconNode } from "./icon.ts";

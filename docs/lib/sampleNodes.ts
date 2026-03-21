@@ -36,7 +36,7 @@ const textSample = `
     </VStack>
     <VStack gap="8">
       <Text fontPx="14" bold="true">Bullet List</Text>
-      <Text fontPx="14" bullet="true">Item 1\nItem 2\nItem 3</Text>
+      <Ul fontPx="14"><Li>Item 1</Li><Li>Item 2</Li><Li>Item 3</Li></Ul>
     </VStack>
   </HStack>
 </VStack>
@@ -344,6 +344,42 @@ const hstackSample = `
 </VStack>
 `;
 
+const iconSample = `
+<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
+  <Text fontPx="28" bold="true" color="${palette.navy}">Icon Node Example</Text>
+  <HStack gap="24">
+    <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <Text fontPx="14" bold="true">Basic Icons</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="cpu" size="32" color="#${palette.blue}" />
+        <Icon name="database" size="32" color="#${palette.green}" />
+        <Icon name="cloud" size="32" color="#${palette.accent}" />
+        <Icon name="server" size="32" color="#${palette.red}" />
+        <Icon name="shield" size="32" color="#${palette.navy}" />
+      </HStack>
+    </VStack>
+    <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <Text fontPx="14" bold="true">Size Variations</Text>
+      <HStack gap="12" alignItems="end">
+        <Icon name="star" size="16" color="#${palette.navy}" />
+        <Icon name="star" size="24" color="#${palette.navy}" />
+        <Icon name="star" size="32" color="#${palette.navy}" />
+        <Icon name="star" size="48" color="#${palette.navy}" />
+      </HStack>
+    </VStack>
+    <VStack gap="16" padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}'>
+      <Text fontPx="14" bold="true">Color Variations</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="heart" size="32" color="#${palette.navy}" />
+        <Icon name="heart" size="32" color="#${palette.blue}" />
+        <Icon name="heart" size="32" color="#${palette.red}" />
+        <Icon name="heart" size="32" color="#${palette.green}" />
+      </HStack>
+    </VStack>
+  </HStack>
+</VStack>
+`;
+
 export const sampleNodes: Record<NodeType, string> = {
   text: textSample,
   image: imageSample,
@@ -359,4 +395,5 @@ export const sampleNodes: Record<NodeType, string> = {
   box: boxSample,
   vstack: vstackSample,
   hstack: hstackSample,
+  icon: iconSample,
 };

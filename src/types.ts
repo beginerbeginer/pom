@@ -1,5 +1,6 @@
 import type { Node as YogaNode } from "yoga-layout";
 import { z } from "zod";
+import { ICON_DATA } from "./icons/iconData.ts";
 
 // ===== Basic Types =====
 export const lengthSchema = z.union([
@@ -395,6 +396,26 @@ const imageNodeSchema = basePOMNodeSchema.extend({
   shadow: shadowStyleSchema.optional(),
 });
 
+export const iconNameSchema = z.enum(
+  Object.keys(ICON_DATA) as [string, ...string[]],
+);
+
+export const iconColorSchema = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{3,8}$/)
+  .optional();
+
+const iconNodeSchema = basePOMNodeSchema.extend({
+  type: z.literal("icon"),
+  name: iconNameSchema,
+  size: z.number().positive().max(1024).optional(),
+  color: iconColorSchema,
+});
+
+export type IconNode = z.infer<typeof iconNodeSchema> & {
+  yogaNode?: YogaNode;
+};
+
 export const tableCellSchema = z.object({
   text: z.string(),
   fontPx: z.number().optional(),
@@ -760,7 +781,8 @@ export type POMNode =
   | ProcessArrowNode
   | PyramidNode
   | LineNode
-  | LayerNode;
+  | LayerNode
+  | IconNode;
 
 // Define schemas using passthrough to maintain type safety
 const boxNodeSchemaBase = basePOMNodeSchema.extend({
@@ -819,6 +841,7 @@ const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
     pyramidNodeSchema,
     lineNodeSchema,
     layerNodeSchemaBase,
+    iconNodeSchema,
   ]),
 ) as z.ZodType<POMNode>;
 
@@ -856,7 +879,8 @@ export type PositionedNode =
   | (ProcessArrowNode & PositionedBase)
   | (PyramidNode & PositionedBase)
   | (LineNode & PositionedBase)
-  | (LayerNode & PositionedBase & { children: PositionedLayerChild[] });
+  | (LayerNode & PositionedBase & { children: PositionedLayerChild[] })
+  | (IconNode & PositionedBase & { iconImageData: string });
 
 const positionedLayerChildSchema: z.ZodType<PositionedLayerChild> = z.lazy(() =>
   positionedNodeSchema.and(
@@ -896,6 +920,9 @@ const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
     lineNodeSchema.merge(positionedBaseSchema),
     layerNodeSchemaBase.merge(positionedBaseSchema).extend({
       children: z.array(positionedLayerChildSchema),
+    }),
+    iconNodeSchema.merge(positionedBaseSchema).extend({
+      iconImageData: z.string(),
     }),
   ]),
 ) as z.ZodType<PositionedNode>;

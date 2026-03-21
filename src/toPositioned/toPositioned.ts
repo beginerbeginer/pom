@@ -1,5 +1,6 @@
 import type { POMNode, PositionedNode } from "../types.ts";
 import { getImageData } from "../shared/measureImage.ts";
+import { rasterizeIcon } from "../icons/index.ts";
 
 /**
  * POMNode ツリーを絶対座標付きの PositionedNode ツリーに変換する
@@ -157,6 +158,26 @@ export function toPositioned(
         children: pom.children.map((child) =>
           toPositioned(child, absoluteX, absoluteY),
         ),
+      };
+    }
+    case "icon": {
+      const rasterSize = Math.max(
+        Math.ceil(layout.width),
+        Math.ceil(layout.height),
+        pom.size ?? 24,
+      );
+      const iconImageData = rasterizeIcon(
+        pom.name,
+        rasterSize,
+        pom.color ?? "#000000",
+      );
+      return {
+        ...pom,
+        x: absoluteX,
+        y: absoluteY,
+        w: layout.width,
+        h: layout.height,
+        iconImageData,
       };
     }
     case "line": {
