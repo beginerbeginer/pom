@@ -5,6 +5,7 @@ import { reduceFontSize } from "./strategies/reduceFontSize.ts";
 import { reduceGapAndPadding } from "./strategies/reduceGapAndPadding.ts";
 import { uniformScale } from "./strategies/uniformScale.ts";
 import { autoFitSlide } from "./autoFit.ts";
+import { createBuildContext } from "../buildContext.ts";
 import type { POMNode } from "../types.ts";
 
 // ===== walkTree =====
@@ -255,7 +256,7 @@ describe("autoFitSlide", () => {
       children: [{ type: "text", text: "hello", fontSize: 24 }],
       padding: 20,
     };
-    await autoFitSlide(node, slideSize);
+    await autoFitSlide(node, slideSize, createBuildContext());
     // yogaNode がセットされていること（レイアウト計算が完了）
     expect(node.yogaNode).toBeDefined();
     // fontSize は変更されていない
@@ -281,7 +282,7 @@ describe("autoFitSlide", () => {
         },
       ],
     };
-    await autoFitSlide(node, slideSize);
+    await autoFitSlide(node, slideSize, createBuildContext());
     expect(node.yogaNode).toBeDefined();
     // defaultRowHeight が縮小されていること
     const table = node.children[0];
@@ -309,7 +310,7 @@ describe("autoFitSlide", () => {
       gap: 10,
     };
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-    await autoFitSlide(node, { w: 1280, h: 200 });
+    await autoFitSlide(node, { w: 1280, h: 200 }, createBuildContext());
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining("[pom] autoFit"),
     );

@@ -1,8 +1,6 @@
 import { Resvg } from "@resvg/resvg-js";
 import { ICON_DATA } from "./iconData.ts";
 
-const rasterCache = new Map<string, string>();
-
 function buildIconSvg(name: string, size: number, color: string): string {
   const pathData = ICON_DATA[name];
   if (!pathData) {
@@ -15,9 +13,10 @@ export function rasterizeIcon(
   name: string,
   size: number,
   color: string,
+  cache: Map<string, string>,
 ): string {
   const key = `${name}|${size}|${color}`;
-  const cached = rasterCache.get(key);
+  const cached = cache.get(key);
   if (cached) return cached;
 
   const svg = buildIconSvg(name, size, color);
@@ -25,6 +24,6 @@ export function rasterizeIcon(
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
   const result = `image/png;base64,${Buffer.from(pngBuffer).toString("base64")}`;
-  rasterCache.set(key, result);
+  cache.set(key, result);
   return result;
 }

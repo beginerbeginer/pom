@@ -24,6 +24,7 @@ import type {
   SlideMasterOptions,
   MasterObject,
 } from "../types.ts";
+import type { BuildContext } from "../buildContext.ts";
 import type { RenderContext } from "./types.ts";
 import { pxToIn, pxToPt } from "./units.ts";
 import { convertUnderline, convertStrike } from "./textOptions.ts";
@@ -200,6 +201,7 @@ function defineSlideMasterFromOptions(
 export function renderPptx(
   pages: PositionedNode[],
   slidePx: SlidePx,
+  buildContext: BuildContext,
   master?: SlideMasterOptions,
 ) {
   const slideIn = { w: pxToIn(slidePx.w), h: pxToIn(slidePx.h) }; // layout(=px) → PptxGenJS(=inch) への最終変換
@@ -217,7 +219,7 @@ export function renderPptx(
   for (const data of pages) {
     // マスターが指定されている場合は masterName を使用
     const slide = masterName ? pptx.addSlide({ masterName }) : pptx.addSlide();
-    const ctx: RenderContext = { slide, pptx };
+    const ctx: RenderContext = { slide, pptx, buildContext };
 
     // ルートノードの backgroundColor はスライドの background プロパティとして適用
     // これにより、マスタースライドのオブジェクトを覆い隠さない
@@ -237,7 +239,10 @@ export function renderPptx(
     const rootBackgroundImage =
       data.type !== "line" ? data.backgroundImage : undefined;
     if (rootBackgroundImage) {
-      const cachedData = getImageData(rootBackgroundImage.src);
+      const cachedData = getImageData(
+        rootBackgroundImage.src,
+        buildContext.imageDataCache,
+      );
       if (cachedData) {
         slide.background = { data: cachedData };
       } else {

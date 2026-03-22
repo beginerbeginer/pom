@@ -10,7 +10,7 @@ export const layerNodeDef: NodeDefinition = {
   type: "layer",
   category: "absolute-child",
   // applyYogaStyle: layer は子を絶対配置するコンテナ。サイズは明示的に指定されることを期待
-  toPositioned(pom, absoluteX, absoluteY, layout) {
+  toPositioned(pom, absoluteX, absoluteY, layout, ctx) {
     const n = pom as Extract<POMNode, { type: "layer" }>;
     // layer の子要素は layer 内の相対座標（child.x, child.y）を持つ
     // layer の絶対座標に加算してスライド上の絶対座標に変換
@@ -54,6 +54,7 @@ export const layerNodeDef: NodeDefinition = {
 
         return toPositioned(
           child,
+          ctx,
           adjustedParentX,
           adjustedParentY,
         ) as PositionedLayerChild;

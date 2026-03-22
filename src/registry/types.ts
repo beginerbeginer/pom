@@ -2,6 +2,7 @@ import type { POMNode, PositionedNode } from "../types.ts";
 import type { Node as YogaNode } from "yoga-layout";
 import type { RenderContext } from "../renderPptx/types.ts";
 import type { loadYoga } from "yoga-layout/load";
+import type { BuildContext } from "../buildContext.ts";
 
 export type Yoga = Awaited<ReturnType<typeof loadYoga>>;
 
@@ -24,6 +25,7 @@ export interface NodeDefinition {
     node: POMNode,
     yn: YogaNode,
     yoga: Yoga,
+    ctx: BuildContext,
   ) => void | Promise<void>;
 
   /** POMNode → PositionedNode へのカスタム変換（未定義なら category ベースのデフォルト） */
@@ -32,6 +34,7 @@ export interface NodeDefinition {
     absoluteX: number,
     absoluteY: number,
     layout: { width: number; height: number },
+    ctx: BuildContext,
   ) => PositionedNode;
 
   /** PositionedNode をスライドにレンダリングする（リーフノード用） */

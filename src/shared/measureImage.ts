@@ -10,37 +10,40 @@ const imageSize: typeof import("image-size").default =
   imageSizeModule.default ?? imageSizeModule;
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 
-/**
- * 画像サイズのキャッシュ（事前取得した画像サイズを保持）
- */
-const imageSizeCache = new Map<string, { widthPx: number; heightPx: number }>();
-
-/**
- * 画像データのキャッシュ（Base64形式、リモート画像用）
- */
-const imageDataCache = new Map<string, string>();
+type ImageSizeCache = Map<string, { widthPx: number; heightPx: number }>;
+type ImageDataCache = Map<string, string>;
 
 /**
  * キャッシュされた画像データ（Base64）を取得する
  * @param src 画像のパス
+ * @param cache 画像データキャッシュ
  * @returns Base64形式の画像データ、またはキャッシュがない場合はundefined
  */
-export function getImageData(src: string): string | undefined {
-  return imageDataCache.get(src);
+export function getImageData(
+  src: string,
+  cache: ImageDataCache,
+): string | undefined {
+  return cache.get(src);
 }
 
 /**
  * 画像サイズを事前取得してキャッシュする（非同期）
  * HTTPS URLの画像を処理する際に使用
  * @param src 画像のパス（ローカルパス、base64データ、またはHTTPS URL）
+ * @param sizeCache 画像サイズキャッシュ
+ * @param dataCache 画像データキャッシュ
  * @returns 画像の幅と高さ（px）
  */
-export async function prefetchImageSize(src: string): Promise<{
+export async function prefetchImageSize(
+  src: string,
+  sizeCache: ImageSizeCache,
+  dataCache: ImageDataCache,
+): Promise<{
   widthPx: number;
   heightPx: number;
 }> {
   // キャッシュにあればそれを返す
-  const cached = imageSizeCache.get(src);
+  const cached = sizeCache.get(src);
   if (cached) {
     return cached;
   }
@@ -65,7 +68,7 @@ export async function prefetchImageSize(src: string): Promise<{
       // 画像データをBase64形式でキャッシュ（pptxgenjs用）
       const contentType = response.headers.get("content-type") || "image/png";
       const base64 = Buffer.from(arrayBuffer).toString("base64");
-      imageDataCache.set(src, `${contentType};base64,${base64}`);
+      dataCache.set(src, `${contentType};base64,${base64}`);
     }
     // ローカルファイルパスの場合
     else {
@@ -83,7 +86,7 @@ export async function prefetchImageSize(src: string): Promise<{
     };
 
     // キャッシュに保存
-    imageSizeCache.set(src, result);
+    sizeCache.set(src, result);
 
     return result;
   } catch (error) {
@@ -93,7 +96,7 @@ export async function prefetchImageSize(src: string): Promise<{
       widthPx: 100,
       heightPx: 100,
     };
-    imageSizeCache.set(src, result);
+    sizeCache.set(src, result);
     return result;
   }
 }
@@ -102,14 +105,18 @@ export async function prefetchImageSize(src: string): Promise<{
  * 画像ファイルのサイズを取得する（同期）
  * 事前にprefetchImageSizeでキャッシュしておくこと
  * @param src 画像のパス（ローカルパス、base64データ、またはHTTPS URL）
+ * @param sizeCache 画像サイズキャッシュ
  * @returns 画像の幅と高さ（px）
  */
-export function measureImage(src: string): {
+export function measureImage(
+  src: string,
+  sizeCache: ImageSizeCache,
+): {
   widthPx: number;
   heightPx: number;
 } {
   // キャッシュにあればそれを返す
-  const cached = imageSizeCache.get(src);
+  const cached = sizeCache.get(src);
   if (cached) {
     return cached;
   }
@@ -149,7 +156,7 @@ export function measureImage(src: string): {
     };
 
     // キャッシュに保存
-    imageSizeCache.set(src, result);
+    sizeCache.set(src, result);
 
     return result;
   } catch (error) {

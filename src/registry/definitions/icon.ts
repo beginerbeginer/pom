@@ -12,7 +12,7 @@ export const iconNodeDef: NodeDefinition = {
     const size = n.size ?? 24;
     yn.setMeasureFunc(() => ({ width: size, height: size }));
   },
-  toPositioned(pom, absoluteX, absoluteY, layout) {
+  toPositioned(pom, absoluteX, absoluteY, layout, ctx) {
     const n = pom as Extract<POMNode, { type: "icon" }>;
     const rasterSize = Math.max(
       Math.ceil(layout.width),
@@ -23,6 +23,7 @@ export const iconNodeDef: NodeDefinition = {
       n.name,
       rasterSize,
       n.color ?? "#000000",
+      ctx.iconRasterCache,
     );
     return {
       ...omitYogaNode(n),

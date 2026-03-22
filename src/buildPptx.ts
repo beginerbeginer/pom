@@ -1,9 +1,7 @@
 import { autoFitSlide } from "./autoFit/autoFit.ts";
+import { createBuildContext } from "./buildContext.ts";
 import { calcYogaLayout } from "./calcYogaLayout/calcYogaLayout.ts";
-import {
-  setTextMeasurementMode,
-  TextMeasurementMode,
-} from "./calcYogaLayout/measureText.ts";
+import type { TextMeasurementMode } from "./calcYogaLayout/measureText.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { freeYogaTree } from "./shared/freeYogaTree.ts";
@@ -21,12 +19,7 @@ export async function buildPptx(
     autoFit?: boolean;
   },
 ) {
-  // テキスト計測モードを設定（デフォルトは auto）
-  if (options?.textMeasurement) {
-    setTextMeasurementMode(options.textMeasurement);
-  } else {
-    setTextMeasurementMode("auto");
-  }
+  const ctx = createBuildContext(options?.textMeasurement ?? "auto");
 
   const nodes = parseXml(xml);
   const positionedPages: PositionedNode[] = [];
@@ -34,18 +27,18 @@ export async function buildPptx(
   for (const node of nodes) {
     try {
       if (options?.autoFit !== false) {
-        await autoFitSlide(node, slideSize);
+        await autoFitSlide(node, slideSize, ctx);
       } else {
-        await calcYogaLayout(node, slideSize);
+        await calcYogaLayout(node, slideSize, ctx);
       }
-      const positioned = toPositioned(node);
+      const positioned = toPositioned(node, ctx);
       positionedPages.push(positioned);
     } finally {
       freeYogaTree(node);
     }
   }
 
-  const pptx = renderPptx(positionedPages, slideSize, options?.master);
+  const pptx = renderPptx(positionedPages, slideSize, ctx, options?.master);
 
   return pptx;
 }

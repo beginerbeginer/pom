@@ -2,12 +2,13 @@ import type { POMNode } from "../../types.ts";
 import type { NodeDefinition, Yoga } from "../types.ts";
 import type { Node as YogaNode } from "yoga-layout";
 import { measureText } from "../../calcYogaLayout/measureText.ts";
+import type { BuildContext } from "../../buildContext.ts";
 import { renderShapeNode } from "../../renderPptx/nodes/shape.ts";
 
 export const shapeNodeDef: NodeDefinition = {
   type: "shape",
   category: "leaf",
-  applyYogaStyle(node: POMNode, yn: YogaNode, yoga: Yoga) {
+  applyYogaStyle(node: POMNode, yn: YogaNode, yoga: Yoga, ctx: BuildContext) {
     const n = node as Extract<POMNode, { type: "shape" }>;
     if (n.text) {
       const text = n.text;
@@ -27,12 +28,17 @@ export const shapeNodeDef: NodeDefinition = {
           }
         })();
 
-        const { widthPx, heightPx } = measureText(text, maxWidthPx, {
-          fontFamily,
-          fontSizePx,
-          lineHeight,
-          fontWeight,
-        });
+        const { widthPx, heightPx } = measureText(
+          text,
+          maxWidthPx,
+          {
+            fontFamily,
+            fontSizePx,
+            lineHeight,
+            fontWeight,
+          },
+          ctx.textMeasurementMode,
+        );
 
         return { width: widthPx, height: heightPx };
       });

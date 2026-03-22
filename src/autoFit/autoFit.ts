@@ -1,4 +1,5 @@
 import type { POMNode } from "../types.ts";
+import type { BuildContext } from "../buildContext.ts";
 import { calcYogaLayout } from "../calcYogaLayout/calcYogaLayout.ts";
 import { freeYogaTree } from "../shared/freeYogaTree.ts";
 import { reduceTableRowHeight } from "./strategies/reduceTableRowHeight.ts";
@@ -28,8 +29,9 @@ const strategies: Strategy[] = [
 async function measureContentHeight(
   node: POMNode,
   slideSize: { w: number; h: number },
+  ctx: BuildContext,
 ): Promise<number> {
-  await calcYogaLayout(node, slideSize);
+  await calcYogaLayout(node, slideSize, ctx);
   const rootYoga = node.yogaNode;
 
   const childCount = rootYoga.getChildCount();
@@ -64,10 +66,11 @@ async function measureContentHeight(
 export async function autoFitSlide(
   node: POMNode,
   slideSize: { w: number; h: number },
+  ctx: BuildContext,
 ): Promise<void> {
   for (const strategy of strategies) {
     freeYogaTree(node);
-    const contentHeight = await measureContentHeight(node, slideSize);
+    const contentHeight = await measureContentHeight(node, slideSize, ctx);
 
     if (contentHeight <= slideSize.h * OVERFLOW_TOLERANCE) {
       break;
@@ -83,7 +86,7 @@ export async function autoFitSlide(
 
   // 最終的にオーバーフローが解消されたか確認
   freeYogaTree(node);
-  const finalHeight = await measureContentHeight(node, slideSize);
+  const finalHeight = await measureContentHeight(node, slideSize, ctx);
   if (finalHeight > slideSize.h * OVERFLOW_TOLERANCE) {
     console.warn(
       `[pom] autoFit: content height (${Math.round(finalHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
@@ -92,5 +95,5 @@ export async function autoFitSlide(
 
   // 最終レイアウト（正しい slideSize で）
   freeYogaTree(node);
-  await calcYogaLayout(node, slideSize);
+  await calcYogaLayout(node, slideSize, ctx);
 }
