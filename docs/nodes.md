@@ -43,7 +43,7 @@ A node for displaying text.
 <Text fontSize="24" bold="true" color="333333" textAlign="center">Title</Text>
 ```
 
-| Attribute                | Type / Values                                              |
+| Attribute                | Values                                                     |
 | ------------------------ | ---------------------------------------------------------- |
 | `fontSize`               | number (default: 24)                                       |
 | `color`                  | hex (text color)                                           |
@@ -74,7 +74,7 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 
 **Ul Attributes:**
 
-| Attribute                | Type / Values                    |
+| Attribute                | Values                           |
 | ------------------------ | -------------------------------- |
 | `fontSize`               | number (default: 24)             |
 | `color`                  | hex (text color)                 |
@@ -87,7 +87,7 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 
 **Li Attributes (overrides parent Ul/Ol style):**
 
-| Attribute                | Type / Values              |
+| Attribute                | Values                     |
 | ------------------------ | -------------------------- |
 | `fontSize`               | number                     |
 | `color`                  | hex (text color)           |
@@ -109,7 +109,7 @@ A node for displaying numbered lists. Has all Ul attributes plus the following:
 
 **Additional Ol Attributes:**
 
-| Attribute       | Type / Values                                                                                                                |
+| Attribute       | Values                                                                                                                       |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `numberType`    | `alphaLcPeriod` / `alphaUcPeriod` / `arabicParenR` / `arabicPeriod` / `arabicPlain` / `romanLcPeriod` / `romanUcPeriod` etc. |
 | `numberStartAt` | number (starting number, default: 1)                                                                                         |
@@ -124,7 +124,7 @@ A node for displaying images.
 <Image src="https://example.com/img.png" w="200" h="150" />
 ```
 
-| Attribute | Type / Values                                                                                   |
+| Attribute | Values                                                                                          |
 | --------- | ----------------------------------------------------------------------------------------------- |
 | `src`     | string (URL / path / base64)                                                                    |
 | `sizing`  | `'{"type":"contain"}'` / `'{"type":"cover"}'` / `'{"type":"crop","x":0,"y":0,"w":100,"h":100}'` |
@@ -162,7 +162,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 - `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
 - `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`
 
-| Attribute          | Type / Values        |
+| Attribute          | Values               |
 | ------------------ | -------------------- |
 | `defaultRowHeight` | number (default: 32) |
 
@@ -176,7 +176,7 @@ A node for drawing shapes. Different representations are possible with or withou
 <Shape shapeType="roundRect" w="200" h="60" text="Button" fontSize="16" fill.color="1D4ED8" color="FFFFFF" />
 ```
 
-| Attribute       | Type / Values                                                                                             |
+| Attribute       | Values                                                                                                    |
 | --------------- | --------------------------------------------------------------------------------------------------------- |
 | `shapeType`     | Shape type (178 types — see list below)                                                                   |
 | `text`          | string (text inside the shape)                                                                            |
@@ -312,7 +312,7 @@ A node for drawing charts. Supports bar charts, line charts, pie charts, area ch
 </Chart>
 ```
 
-| Attribute     | Type / Values                                          |
+| Attribute     | Values                                                 |
 | ------------- | ------------------------------------------------------ |
 | `chartType`   | `bar` / `line` / `pie` / `area` / `doughnut` / `radar` |
 | `showLegend`  | boolean                                                |
@@ -467,7 +467,7 @@ A node for creating tree structures such as organization charts, decision trees,
 </Tree>
 ```
 
-| Attribute        | Type / Values                                         |
+| Attribute        | Values                                                |
 | ---------------- | ----------------------------------------------------- |
 | `layout`         | `vertical` / `horizontal`                             |
 | `nodeShape`      | `rect` / `roundRect` / `ellipse`                      |
@@ -528,7 +528,7 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 </Flow>
 ```
 
-| Attribute        | Type / Values                                                                          |
+| Attribute        | Values                                                                                 |
 | ---------------- | -------------------------------------------------------------------------------------- |
 | `direction`      | `horizontal` / `vertical`                                                              |
 | `nodeWidth`      | number (default: 120)                                                                  |
@@ -538,7 +538,7 @@ A node for creating flowcharts. Supports various node shapes and automatic layou
 
 `<FlowNode>` attributes:
 
-| Attribute   | Type / Values                                                                                                                                                                                                                                                                                     |
+| Attribute   | Values                                                                                                                                                                                                                                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`        | string (required) — unique node identifier                                                                                                                                                                                                                                                        |
 | `shape`     | `flowChartTerminator` / `flowChartProcess` / `flowChartDecision` / `flowChartInputOutput` / `flowChartDocument` / `flowChartPredefinedProcess` / `flowChartConnector` / `flowChartPreparation` / `flowChartManualInput` / `flowChartManualOperation` / `flowChartDelay` / `flowChartMagneticDisk` |
@@ -591,7 +591,7 @@ A node for creating chevron-style process diagrams. Commonly used for visualizin
 </ProcessArrow>
 ```
 
-| Attribute                | Type / Values                                              |
+| Attribute                | Values                                                     |
 | ------------------------ | ---------------------------------------------------------- |
 | `direction`              | `horizontal` / `vertical`                                  |
 | `itemWidth`              | number (default: 150)                                      |
@@ -646,7 +646,7 @@ A node for creating pyramid diagrams. Used for visualizing hierarchies, prioriti
 </Pyramid>
 ```
 
-| Attribute   | Type / Values           |
+| Attribute   | Values                  |
 | ----------- | ----------------------- |
 | `direction` | `up` (default) / `down` |
 | `fontSize`  | number (default: 14)    |
@@ -694,7 +694,7 @@ A node for drawing lines and arrows. Uses absolute coordinates (x1, y1, x2, y2) 
 <Line x1="100" y1="100" x2="300" y2="100" color="333333" lineWidth="2" endArrow="true" />
 ```
 
-| Attribute                 | Type / Values                                                                        |
+| Attribute                 | Values                                                                               |
 | ------------------------- | ------------------------------------------------------------------------------------ |
 | `x1` `y1` `x2` `y2`       | number (absolute coordinates, required)                                              |
 | `color`                   | hex (default: `000000`)                                                              |
@@ -794,7 +794,7 @@ A node for displaying preset icons from the Lucide icon library. Icons are rende
 <Icon name="cpu" size="32" color="#1D4ED8" />
 ```
 
-| Attribute | Type / Values                  |
+| Attribute | Values                         |
 | --------- | ------------------------------ |
 | `name`    | icon name (required)           |
 | `size`    | number (default: 24, in px)    |
