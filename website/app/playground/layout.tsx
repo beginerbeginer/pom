@@ -13,6 +13,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Playground",
+  description:
+    "Try pom in your browser — write XML and generate PowerPoint slides instantly",
 };
 
 export default function PlaygroundLayout({
