@@ -3,9 +3,15 @@ import type { NodeDefinition, Yoga } from "../types.ts";
 import type { Node as YogaNode } from "yoga-layout";
 import { measureText } from "../../calcYogaLayout/measureText.ts";
 import { measureFontLineHeightRatio } from "../../calcYogaLayout/fontLoader.ts";
+import type { BuildContext } from "../../buildContext.ts";
 import { renderUlNode, renderOlNode } from "../../renderPptx/nodes/list.ts";
 
-function applyListYogaStyle(node: POMNode, yn: YogaNode, yoga: Yoga) {
+function applyListYogaStyle(
+  node: POMNode,
+  yn: YogaNode,
+  yoga: Yoga,
+  ctx: BuildContext,
+) {
   const n = node as Extract<POMNode, { type: "ul" | "ol" }>;
   const combinedText = n.items.map((item) => item.text).join("\n");
   const fontSizePx = n.fontSize ?? 24;
@@ -32,12 +38,17 @@ function applyListYogaStyle(node: POMNode, yn: YogaNode, yoga: Yoga) {
 
     const textMaxWidthPx = Math.max(0, maxWidthPx - bulletIndentPx);
 
-    const { widthPx, heightPx } = measureText(combinedText, textMaxWidthPx, {
-      fontFamily,
-      fontSizePx,
-      lineHeight,
-      fontWeight,
-    });
+    const { widthPx, heightPx } = measureText(
+      combinedText,
+      textMaxWidthPx,
+      {
+        fontFamily,
+        fontSizePx,
+        lineHeight,
+        fontWeight,
+      },
+      ctx.textMeasurementMode,
+    );
 
     return {
       width: widthPx + bulletIndentPx,

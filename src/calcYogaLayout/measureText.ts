@@ -120,16 +120,6 @@ function calculateResult(
   return { widthPx: widthPx + 10, heightPx };
 }
 
-// 現在のテキスト計測モード
-let currentMode: TextMeasurementMode = "auto";
-
-/**
- * テキスト計測モードを設定する
- */
-export function setTextMeasurementMode(mode: TextMeasurementMode): void {
-  currentMode = mode;
-}
-
 /**
  * fontWeight を "normal" | "bold" に正規化する
  */
@@ -149,13 +139,14 @@ export function measureText(
   text: string,
   maxWidthPx: number,
   opts: MeasureOptions,
+  mode: TextMeasurementMode = "auto",
 ): {
   widthPx: number;
   heightPx: number;
 } {
   // 計測方法を決定
   const shouldUseFallback = (() => {
-    switch (currentMode) {
+    switch (mode) {
       case "opentype":
         return false;
       case "fallback":

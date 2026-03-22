@@ -1,4 +1,5 @@
 import type { POMNode } from "../types.ts";
+import type { BuildContext } from "../buildContext.ts";
 import { Node as YogaNode } from "yoga-layout";
 import { loadYoga } from "yoga-layout/load";
 import { prefetchImageSize } from "../shared/measureImage.ts";
@@ -10,20 +11,22 @@ import { getNodeDef } from "../registry/index.ts";
  *
  * @param root 入力 POMNode ツリーのルート
  * @param slideSize スライド全体のサイズ（px）
+ * @param ctx BuildContext
  */
 export async function calcYogaLayout(
   root: POMNode,
   slideSize: { w: number; h: number },
+  ctx: BuildContext,
 ) {
   const Yoga = await getYoga();
 
   // 事前に全画像のサイズを取得（HTTPS対応のため）
-  await prefetchAllImageSizes(root);
+  await prefetchAllImageSizes(root, ctx);
 
   const rootYoga = Yoga.Node.create();
   root.yogaNode = rootYoga;
 
-  await buildPomWithYogaTree(root, rootYoga);
+  await buildPomWithYogaTree(root, rootYoga, ctx);
 
   // スライド全体サイズを指定
   rootYoga.setWidth(slideSize.w);
@@ -35,9 +38,16 @@ export async function calcYogaLayout(
 /**
  * POMNode ツリー内のすべての画像のサイズを事前取得する
  */
-async function prefetchAllImageSizes(node: POMNode): Promise<void> {
+async function prefetchAllImageSizes(
+  node: POMNode,
+  ctx: BuildContext,
+): Promise<void> {
   const imageSources = collectImageSources(node);
-  await Promise.all(imageSources.map((src) => prefetchImageSize(src)));
+  await Promise.all(
+    imageSources.map((src) =>
+      prefetchImageSize(src, ctx.imageSizeCache, ctx.imageDataCache),
+    ),
+  );
 }
 
 /**
@@ -100,6 +110,7 @@ async function getYoga(): Promise<Yoga> {
 async function buildPomWithYogaTree(
   node: POMNode,
   parentYoga: YogaNode,
+  ctx: BuildContext,
   parentNode?: POMNode,
 ) {
   const yoga = await getYoga();
@@ -107,7 +118,7 @@ async function buildPomWithYogaTree(
   const yn = yoga.Node.create();
   node.yogaNode = yn; // 対応する YogaNode をセット
 
-  await applyStyleToYogaNode(node, yn);
+  await applyStyleToYogaNode(node, yn, ctx);
 
   // HStack/VStack の子要素に flexShrink=1 をデフォルト設定（CSS Flexbox と同じ挙動）
   // 主軸方向で %サイズ + gap がある場合の overflow を防ぐ
@@ -133,7 +144,7 @@ async function buildPomWithYogaTree(
   switch (def.category) {
     case "single-child": {
       const boxNode = node as Extract<POMNode, { type: "box" }>;
-      await buildPomWithYogaTree(boxNode.children, yn, node);
+      await buildPomWithYogaTree(boxNode.children, yn, ctx, node);
       break;
     }
     case "multi-child":
@@ -143,7 +154,7 @@ async function buildPomWithYogaTree(
         { type: "vstack" | "hstack" | "layer" }
       >;
       for (const child of containerNode.children) {
-        await buildPomWithYogaTree(child, yn, node);
+        await buildPomWithYogaTree(child, yn, ctx, node);
       }
       break;
     }
@@ -156,7 +167,11 @@ async function buildPomWithYogaTree(
 /**
  * node のスタイルを YogaNode に適用する
  */
-async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
+async function applyStyleToYogaNode(
+  node: POMNode,
+  yn: YogaNode,
+  ctx: BuildContext,
+) {
   const yoga = await getYoga();
 
   // デフォルト: 縦並び
@@ -287,6 +302,6 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
   // ノード固有のスタイル適用（measureFunc 等）
   const def = getNodeDef(node.type);
   if (def.applyYogaStyle) {
-    await def.applyYogaStyle(node, yn, yoga);
+    await def.applyYogaStyle(node, yn, yoga, ctx);
   }
 }

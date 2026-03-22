@@ -116,7 +116,10 @@ export function renderBackgroundAndBorder(
       },
     };
 
-    const cachedData = getImageData(backgroundImage.src);
+    const cachedData = getImageData(
+      backgroundImage.src,
+      ctx.buildContext.imageDataCache,
+    );
     if (cachedData) {
       ctx.slide.addImage({ ...imageOptions, data: cachedData });
     } else {
