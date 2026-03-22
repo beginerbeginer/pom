@@ -1,0 +1,90 @@
+# pom
+
+**pom (PowerPoint Object Model)** は、TypeScript で PowerPoint プレゼンテーションを宣言的に記述するためのライブラリです。XML を入力として、編集可能な PowerPoint ファイル (.pptx) を生成します。
+
+[Playground で試す →](https://pom-playground.vercel.app/)
+
+![Playground](/images/playground.png)
+
+## 特徴
+
+- **AI Friendly** — LLM のコード生成に適したシンプルな XML 構造
+- **Declarative** — XML でスライドを記述。命令的な API 呼び出し不要
+- **Flexible Layout** — yoga-layout による Flexbox スタイルのレイアウト（VStack / HStack / Box）
+- **Rich Nodes** — 15 種類の組み込みノード: チャート、フローチャート、テーブル、タイムラインなど
+- **Schema-validated** — Zod スキーマによるランタイムバリデーション
+- **PowerPoint Native** — ネイティブの PowerPoint シェイプ機能をフル活用
+- **Pixel Units** — 直感的なピクセル単位のサイズ指定（内部で 96 DPI でインチに変換）
+- **Master Slide** — ヘッダー、フッター、ページ番号を一度定義すれば全スライドに適用
+- **Accurate Text Measurement** — opentype.js とバンドルされた Noto Sans JP フォントによる正確なテキスト計測
+
+## クイックスタート
+
+Node.js 18 以上が必要です。
+
+```bash
+npm install @hirokisakabe/pom
+```
+
+```typescript
+import { buildPptx } from "@hirokisakabe/pom";
+
+const xml = `
+<VStack w="100%" h="max" padding="48" gap="24" alignItems="start">
+  <Text fontSize="48" bold="true">Presentation Title</Text>
+  <Text fontSize="24" color="666666">Subtitle</Text>
+</VStack>
+`;
+
+const pptx = await buildPptx(xml, { w: 1280, h: 720 });
+await pptx.writeFile({ fileName: "presentation.pptx" });
+```
+
+## ノード一覧
+
+| ノード       | 説明                                               |
+| ------------ | -------------------------------------------------- |
+| Text         | テキスト表示（フォントスタイル、装飾対応）         |
+| Ul           | 箇条書きリスト                                     |
+| Ol           | 番号付きリスト                                     |
+| Image        | 画像（ファイルパス、URL、base64）                  |
+| Table        | テーブル                                           |
+| Shape        | PowerPoint シェイプ（178 種類）                    |
+| Chart        | チャート（棒、折れ線、円、面、ドーナツ、レーダー） |
+| Timeline     | タイムライン / ロードマップ                        |
+| Matrix       | 2x2 マトリクス                                     |
+| Tree         | 組織図、決定木                                     |
+| Flow         | フローチャート                                     |
+| ProcessArrow | シェブロン型プロセス図                             |
+| Pyramid      | ピラミッド図                                       |
+| Line         | 線・矢印                                           |
+| Layer        | 絶対座標コンテナ                                   |
+| Box          | 単一子要素のコンテナ                               |
+| VStack       | 縦方向スタックレイアウト                           |
+| HStack       | 横方向スタックレイアウト                           |
+| Icon         | Lucide アイコン                                    |
+
+詳細は[ノードリファレンス](/nodes)をご覧ください。
+
+## Auto-Fit
+
+コンテンツがスライドの高さを超える場合、pom は自動的に収まるように調整します（デフォルトで有効）。
+
+調整の優先順位:
+
+1. テーブル行の高さを縮小
+2. テキストのフォントサイズを縮小
+3. gap / padding を縮小
+4. 均一スケーリング（フォールバック）
+
+無効にする場合:
+
+```typescript
+const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
+```
+
+## リンク
+
+- [GitHub](https://github.com/hirokisakabe/pom)
+- [npm](https://www.npmjs.com/package/@hirokisakabe/pom)
+- [Playground](https://pom-playground.vercel.app/)
