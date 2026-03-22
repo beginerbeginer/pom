@@ -51,7 +51,6 @@ export function AppLayout() {
   const editorViewRef = useRef<EditorView | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const isInitialRenderRef = useRef(true);
 
   async function handleDownload() {
     setIsDownloading(true);
@@ -106,11 +105,6 @@ export function AppLayout() {
   }
 
   useEffect(() => {
-    if (isInitialRenderRef.current) {
-      isInitialRenderRef.current = false;
-      return;
-    }
-
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
