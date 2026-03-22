@@ -99,6 +99,19 @@ describe("AppLayout", () => {
   });
 
   describe("プレビュー生成フロー", () => {
+    it("初期表示時にデバウンス後にプレビューを生成する", async () => {
+      render(<AppLayout />);
+
+      // デバウンス前は呼ばれていない
+      expect(mockPreviewPost).not.toHaveBeenCalled();
+
+      // デバウンス後
+      await vi.advanceTimersByTimeAsync(600);
+      await waitFor(() => {
+        expect(mockPreviewPost).toHaveBeenCalledTimes(1);
+      });
+    });
+
     it("XML 変更後、デバウンス待ち後に API を呼び出す", async () => {
       const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
       render(<AppLayout />);
@@ -106,9 +119,6 @@ describe("AppLayout", () => {
       const editor = screen.getByTestId("xml-editor");
       await user.clear(editor);
       await user.type(editor, "<Text>hello</Text>");
-
-      // デバウンス前は呼ばれていない（初期レンダーでは呼ばれない）
-      expect(mockPreviewPost).not.toHaveBeenCalled();
 
       // デバウンス後
       await vi.advanceTimersByTimeAsync(600);
