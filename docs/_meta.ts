@@ -1,6 +1,6 @@
 export default {
   index: "Introduction",
-  nodes: "Node Reference",
+  nodes: "Nodes",
   "master-slide": "Slide Master",
   serverless: "Serverless",
   "llm-integration": "LLM Integration",
