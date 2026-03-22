@@ -1,3 +1,5 @@
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import nextra from "nextra";
 
 const withNextra = nextra({});
@@ -7,5 +9,6 @@ export default withNextra({
   eslint: {
     ignoreDuringBuilds: true,
   },
+  outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
   serverExternalPackages: ["@resvg/resvg-js", "@hirokisakabe/pom"],
 });
