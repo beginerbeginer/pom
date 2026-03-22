@@ -2,7 +2,7 @@ import { palette } from "./palette.js";
 
 // ============================================================
 // Page 25: Icon Test
-// テスト対象: name, size, color
+// テスト対象: name, size, color, variant, bgColor
 // ============================================================
 export const page25IconXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
@@ -139,6 +139,55 @@ export const page25IconXml = `
         <VStack gap="4" alignItems="center">
           <Icon name="lightbulb" size="32" color="#${palette.navy}" />
           <Text fontSize="10">lightbulb</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Variant - circle-filled:</Text>
+      <HStack gap="16" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon name="cpu" size="32" variant="circle-filled" bgColor="#E8F0FE" color="#${palette.blue}" />
+          <Text fontSize="10">cpu</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon name="database" size="32" variant="circle-filled" bgColor="#E6F4EA" color="#${palette.green}" />
+          <Text fontSize="10">database</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon name="shield" size="32" variant="circle-filled" bgColor="#FDE7E7" color="#${palette.red}" />
+          <Text fontSize="10">shield</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Variant - circle-outlined:</Text>
+      <HStack gap="16" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon name="star" size="32" variant="circle-outlined" bgColor="#${palette.blue}" color="#${palette.blue}" />
+          <Text fontSize="10">star</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon name="heart" size="32" variant="circle-outlined" bgColor="#${palette.red}" color="#${palette.red}" />
+          <Text fontSize="10">heart</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Variant - square-filled / square-outlined:</Text>
+      <HStack gap="16" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon name="settings" size="32" variant="square-filled" bgColor="#E8F0FE" color="#${palette.blue}" />
+          <Text fontSize="10">sq-filled</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon name="lock" size="32" variant="square-outlined" bgColor="#${palette.navy}" color="#${palette.navy}" />
+          <Text fontSize="10">sq-outlined</Text>
         </VStack>
       </HStack>
     </VStack>

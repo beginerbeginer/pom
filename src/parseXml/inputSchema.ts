@@ -49,6 +49,7 @@ import {
   type ShadowStyle,
   iconNameSchema,
   iconColorSchema,
+  iconVariantSchema,
   alignSelfSchema,
   positionTypeSchema,
   flexWrapSchema,
@@ -150,6 +151,8 @@ export const inputIconNodeSchema = inputBaseNodeSchema.extend({
   name: iconNameSchema,
   size: z.number().positive().max(1024).optional(),
   color: iconColorSchema,
+  variant: iconVariantSchema,
+  bgColor: iconColorSchema,
 });
 
 export const inputTableNodeSchema = inputBaseNodeSchema.extend({

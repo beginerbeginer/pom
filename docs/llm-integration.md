@@ -156,13 +156,16 @@ Displays a preset icon (Lucide icon library).
 
 ```xml
 <Icon name="cpu" size="32" color="1D4ED8" />
+<Icon name="cpu" variant="circle-filled" bgColor="E8F0FE" color="1D4ED8" />
 ```
 
-| Attribute | Type / Values                                       |
-| --------- | --------------------------------------------------- |
-| `name`    | Icon name (required)                                |
-| `size`    | number (default: 24, in px)                         |
-| `color`   | hex color (`#` prefix optional, default: `#000000`) |
+| Attribute | Type / Values                                                            |
+| --------- | ------------------------------------------------------------------------ |
+| `name`    | Icon name (required)                                                     |
+| `size`    | number (default: 24, in px)                                              |
+| `color`   | hex color (`#` prefix optional, default: `#000000`)                      |
+| `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`   |
+| `bgColor` | hex color for background shape (`#` prefix optional, default: `#E0E0E0`) |
 
 Available icons: `cpu`, `database`, `cloud`, `server`, `code`, `terminal`, `wifi`, `globe`, `user`, `users`, `contact`, `briefcase`, `building`, `bar-chart`, `line-chart`, `pie-chart`, `trending-up`, `mail`, `message-square`, `phone`, `video`, `search`, `settings`, `filter`, `download`, `upload`, `share`, `check`, `alert-triangle`, `info`, `shield`, `lock`, `unlock`, `file`, `folder`, `image`, `calendar`, `clock`, `bookmark`, `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `external-link`, `star`, `heart`, `zap`, `target`, `lightbulb`
 
