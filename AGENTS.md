@@ -45,7 +45,7 @@ vrt/                      # Visual Regression Test
 preview/                  # Preview infrastructure (for Claude Code)
 
 docs/                             # Documentation (Single Source of Truth, symlinked from website/content)
-├── nodes.md                    # Node reference (with images)
+├── nodes.md                    # Nodes (with images)
 ├── llm-integration.md          # XML reference for LLMs
 └── images/                     # Sample images per node type (auto-generated)
 
@@ -105,7 +105,7 @@ When adding new properties or features, update the following files:
 6. **Update VRT baseline**: Run `npm run vrt:docker:update`
 7. **Documentation updates**:
    - `README.md` - User-facing documentation
-   - `docs/nodes.md` - Node reference
+   - `docs/nodes.md` - Nodes
    - `docs/llm-integration.md` - XML reference for LLMs (for prompts)
    - `CLAUDE.md` - Add to Key Internal Types section
 8. **Documentation image updates** (when adding new node types):
