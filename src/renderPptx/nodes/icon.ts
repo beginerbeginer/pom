@@ -17,10 +17,10 @@ export function renderIconNode(
 
     const shapeType = isCircle ? "ellipse" : "roundRect";
     const shapeOptions: Record<string, unknown> = {
-      x: pxToIn(node.x),
-      y: pxToIn(node.y),
-      w: pxToIn(node.w),
-      h: pxToIn(node.h),
+      x: pxToIn(node.bgX ?? node.x),
+      y: pxToIn(node.bgY ?? node.y),
+      w: pxToIn(node.bgW ?? node.w),
+      h: pxToIn(node.bgH ?? node.h),
       fill: isFilled ? { color: colorValue } : { type: "none" as const },
       line: isFilled ? undefined : { color: colorValue, width: 1.5 },
       rectRadius: isCircle ? undefined : 0.1,

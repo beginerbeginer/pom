@@ -39,10 +39,19 @@ export const iconNodeDef: NodeDefinition = {
       iconImageData,
     };
     if (n.variant) {
-      const paddingX = (layout.width - iconSize) / 2;
-      const paddingY = (layout.height - iconSize) / 2;
-      positioned.iconX = absoluteX + paddingX;
-      positioned.iconY = absoluteY + paddingY;
+      const totalSize = Math.ceil(iconSize * 1.75);
+      // 背景図形は totalSize の正方形として、layout 領域の中央に配置
+      const bgOffsetX = (layout.width - totalSize) / 2;
+      const bgOffsetY = (layout.height - totalSize) / 2;
+      positioned.bgX = absoluteX + bgOffsetX;
+      positioned.bgY = absoluteY + bgOffsetY;
+      positioned.bgW = totalSize;
+      positioned.bgH = totalSize;
+      // アイコンは背景図形の中央に配置
+      const iconOffsetX = (layout.width - iconSize) / 2;
+      const iconOffsetY = (layout.height - iconSize) / 2;
+      positioned.iconX = absoluteX + iconOffsetX;
+      positioned.iconY = absoluteY + iconOffsetY;
       positioned.iconW = iconSize;
       positioned.iconH = iconSize;
     }

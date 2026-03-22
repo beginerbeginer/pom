@@ -923,6 +923,10 @@ export type PositionedNode =
   | (IconNode &
       PositionedBase & {
         iconImageData: string;
+        bgX?: number;
+        bgY?: number;
+        bgW?: number;
+        bgH?: number;
         iconX?: number;
         iconY?: number;
         iconW?: number;
