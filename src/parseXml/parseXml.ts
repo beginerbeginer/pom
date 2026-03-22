@@ -35,6 +35,7 @@ import {
   chartDataSchema,
   tableColumnSchema,
   tableCellSchema,
+  flexWrapSchema,
 } from "../types.ts";
 
 // ===== ParseXmlError =====
@@ -113,6 +114,7 @@ const containerShapes: Record<string, ShapeRecord> = {
       alignItems: alignItemsSchema.optional(),
       justifyContent: justifyContentSchema.optional(),
       shadow: shadowStyleSchema.optional(),
+      flexWrap: flexWrapSchema.optional(),
     }),
   ),
   hstack: extractShape(
@@ -121,6 +123,7 @@ const containerShapes: Record<string, ShapeRecord> = {
       alignItems: alignItemsSchema.optional(),
       justifyContent: justifyContentSchema.optional(),
       shadow: shadowStyleSchema.optional(),
+      flexWrap: flexWrapSchema.optional(),
     }),
   ),
   layer: extractShape(inputBaseNodeSchema),

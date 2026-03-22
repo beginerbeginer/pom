@@ -247,6 +247,67 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
     }
   }
 
+  // margin
+  if (node.margin !== undefined) {
+    if (typeof node.margin === "number") {
+      yn.setMargin(yoga.EDGE_TOP, node.margin);
+      yn.setMargin(yoga.EDGE_RIGHT, node.margin);
+      yn.setMargin(yoga.EDGE_BOTTOM, node.margin);
+      yn.setMargin(yoga.EDGE_LEFT, node.margin);
+    } else {
+      if (node.margin.top !== undefined) {
+        yn.setMargin(yoga.EDGE_TOP, node.margin.top);
+      }
+      if (node.margin.right !== undefined) {
+        yn.setMargin(yoga.EDGE_RIGHT, node.margin.right);
+      }
+      if (node.margin.bottom !== undefined) {
+        yn.setMargin(yoga.EDGE_BOTTOM, node.margin.bottom);
+      }
+      if (node.margin.left !== undefined) {
+        yn.setMargin(yoga.EDGE_LEFT, node.margin.left);
+      }
+    }
+  }
+
+  // position
+  if (node.position === "absolute") {
+    yn.setPositionType(yoga.POSITION_TYPE_ABSOLUTE);
+  }
+  if (node.top !== undefined) {
+    yn.setPosition(yoga.EDGE_TOP, node.top);
+  }
+  if (node.right !== undefined) {
+    yn.setPosition(yoga.EDGE_RIGHT, node.right);
+  }
+  if (node.bottom !== undefined) {
+    yn.setPosition(yoga.EDGE_BOTTOM, node.bottom);
+  }
+  if (node.left !== undefined) {
+    yn.setPosition(yoga.EDGE_LEFT, node.left);
+  }
+
+  // alignSelf
+  if (node.alignSelf !== undefined) {
+    switch (node.alignSelf) {
+      case "auto":
+        yn.setAlignSelf(yoga.ALIGN_AUTO);
+        break;
+      case "start":
+        yn.setAlignSelf(yoga.ALIGN_FLEX_START);
+        break;
+      case "center":
+        yn.setAlignSelf(yoga.ALIGN_CENTER);
+        break;
+      case "end":
+        yn.setAlignSelf(yoga.ALIGN_FLEX_END);
+        break;
+      case "stretch":
+        yn.setAlignSelf(yoga.ALIGN_STRETCH);
+        break;
+    }
+  }
+
   switch (node.type) {
     case "box":
       // 特になし
@@ -595,6 +656,20 @@ function applyFlexProperties(
         break;
       case "spaceEvenly":
         yn.setJustifyContent(yoga.JUSTIFY_SPACE_EVENLY);
+        break;
+    }
+  }
+
+  if (node.flexWrap !== undefined) {
+    switch (node.flexWrap) {
+      case "nowrap":
+        yn.setFlexWrap(yoga.WRAP_NO_WRAP);
+        break;
+      case "wrap":
+        yn.setFlexWrap(yoga.WRAP_WRAP);
+        break;
+      case "wrapReverse":
+        yn.setFlexWrap(yoga.WRAP_WRAP_REVERSE);
         break;
     }
   }

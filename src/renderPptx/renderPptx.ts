@@ -52,6 +52,16 @@ type SlidePx = { w: number; h: number };
 const DEFAULT_MASTER_NAME = "POM_MASTER";
 
 /**
+ * zIndex でソートして描画順を制御する（安定ソート）
+ * zIndex が小さいノードが先に描画される（PowerPoint は追加順に重ねるため）
+ */
+function sortByZIndex<T extends { zIndex?: number }>(children: T[]): T[] {
+  // すべての子要素に zIndex が未設定の場合はそのまま返す
+  if (children.every((c) => c.zIndex === undefined)) return children;
+  return [...children].sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0));
+}
+
+/**
  * MasterObject を pptxgenjs の objects 形式に変換する
  */
 function convertMasterObject(
@@ -328,8 +338,8 @@ export function renderPptx(
 
         case "vstack":
         case "hstack":
-          // 子要素を再帰的に処理
-          for (const child of node.children) {
+          // zIndex でソートして描画順を制御（値が小さいものが先に描画される）
+          for (const child of sortByZIndex(node.children)) {
             renderNode(child);
           }
           break;
@@ -375,8 +385,8 @@ export function renderPptx(
           break;
 
         case "layer":
-          // layer の子要素を配列順に描画（後の要素が上に来る）
-          for (const child of node.children) {
+          // zIndex でソートして描画順を制御（値が小さいものが先に描画される）
+          for (const child of sortByZIndex(node.children)) {
             renderNode(child);
           }
           break;

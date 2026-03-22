@@ -44,10 +44,14 @@ import {
   backgroundImageSchema,
   type AlignItems,
   type JustifyContent,
+  type FlexWrap,
   type TreeDataItem,
   type ShadowStyle,
   iconNameSchema,
   iconColorSchema,
+  alignSelfSchema,
+  positionTypeSchema,
+  flexWrapSchema,
 } from "../types.ts";
 
 // ===== Base Node Schema =====
@@ -59,11 +63,19 @@ export const inputBaseNodeSchema = z.object({
   minH: z.number().optional(),
   maxH: z.number().optional(),
   padding: paddingSchema.optional(),
+  margin: paddingSchema.optional(),
   backgroundColor: z.string().optional(),
   backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
   opacity: z.number().min(0).max(1).optional(),
+  zIndex: z.number().optional(),
+  position: positionTypeSchema.optional(),
+  top: z.number().optional(),
+  right: z.number().optional(),
+  bottom: z.number().optional(),
+  left: z.number().optional(),
+  alignSelf: alignSelfSchema.optional(),
 });
 
 type InputBaseNode = z.infer<typeof inputBaseNodeSchema>;
@@ -288,6 +300,7 @@ type InputVStackNode = InputBaseNode & {
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
   shadow?: ShadowStyle;
+  flexWrap?: FlexWrap;
 };
 
 type InputHStackNode = InputBaseNode & {
@@ -297,6 +310,7 @@ type InputHStackNode = InputBaseNode & {
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
   shadow?: ShadowStyle;
+  flexWrap?: FlexWrap;
 };
 
 // Layer の子要素は x, y を必須とする
@@ -345,6 +359,7 @@ const inputVStackNodeSchemaBase = inputBaseNodeSchema.extend({
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
   shadow: shadowStyleSchema.optional(),
+  flexWrap: flexWrapSchema.optional(),
 });
 
 const inputHStackNodeSchemaBase = inputBaseNodeSchema.extend({
@@ -354,6 +369,7 @@ const inputHStackNodeSchemaBase = inputBaseNodeSchema.extend({
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
   shadow: shadowStyleSchema.optional(),
+  flexWrap: flexWrapSchema.optional(),
 });
 
 const inputLayerChildSchemaBase = z.lazy(() =>

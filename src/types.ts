@@ -97,6 +97,18 @@ export const underlineSchema = z.union([
 
 export const alignItemsSchema = z.enum(["start", "center", "end", "stretch"]);
 
+export const alignSelfSchema = z.enum([
+  "auto",
+  "start",
+  "center",
+  "end",
+  "stretch",
+]);
+
+export const positionTypeSchema = z.enum(["relative", "absolute"]);
+
+export const flexWrapSchema = z.enum(["nowrap", "wrap", "wrapReverse"]);
+
 export const justifyContentSchema = z.enum([
   "start",
   "center",
@@ -290,6 +302,9 @@ export const shapeTypeSchema = z.enum([
 // ===== TypeScript Types (defined early for recursive references) =====
 export type ShadowStyle = z.infer<typeof shadowStyleSchema>;
 export type AlignItems = z.infer<typeof alignItemsSchema>;
+export type AlignSelf = z.infer<typeof alignSelfSchema>;
+export type PositionType = z.infer<typeof positionTypeSchema>;
+export type FlexWrap = z.infer<typeof flexWrapSchema>;
 export type JustifyContent = z.infer<typeof justifyContentSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
 export type Underline = z.infer<typeof underlineSchema>;
@@ -312,11 +327,19 @@ const basePOMNodeSchema = z.object({
   minH: z.number().optional(),
   maxH: z.number().optional(),
   padding: paddingSchema.optional(),
+  margin: paddingSchema.optional(),
   backgroundColor: z.string().optional(),
   backgroundImage: backgroundImageSchema.optional(),
   border: borderStyleSchema.optional(),
   borderRadius: z.number().optional(),
   opacity: z.number().min(0).max(1).optional(),
+  zIndex: z.number().optional(),
+  position: positionTypeSchema.optional(),
+  top: z.number().optional(),
+  right: z.number().optional(),
+  bottom: z.number().optional(),
+  left: z.number().optional(),
+  alignSelf: alignSelfSchema.optional(),
 });
 
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
@@ -743,6 +766,7 @@ export type VStackNode = BasePOMNode & {
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
   shadow?: ShadowStyle;
+  flexWrap?: FlexWrap;
 };
 
 export type HStackNode = BasePOMNode & {
@@ -752,6 +776,7 @@ export type HStackNode = BasePOMNode & {
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
   shadow?: ShadowStyle;
+  flexWrap?: FlexWrap;
 };
 
 // Layer の子要素は x, y を必須とする
@@ -800,6 +825,7 @@ const vStackNodeSchemaBase = basePOMNodeSchema.extend({
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
   shadow: shadowStyleSchema.optional(),
+  flexWrap: flexWrapSchema.optional(),
 });
 
 const hStackNodeSchemaBase = basePOMNodeSchema.extend({
@@ -809,6 +835,7 @@ const hStackNodeSchemaBase = basePOMNodeSchema.extend({
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
   shadow: shadowStyleSchema.optional(),
+  flexWrap: flexWrapSchema.optional(),
 });
 
 const layerChildSchemaBase = z.lazy(() =>
