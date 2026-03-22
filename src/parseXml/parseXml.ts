@@ -5,7 +5,6 @@ import {
   inputTextNodeSchema,
   inputUlNodeSchema,
   inputOlNodeSchema,
-  inputLiNodeSchema,
   inputImageNodeSchema,
   inputTableNodeSchema,
   inputShapeNodeSchema,
@@ -18,25 +17,16 @@ import {
   inputPyramidNodeSchema,
   inputLineNodeSchema,
   inputIconNodeSchema,
-  inputBaseNodeSchema,
 } from "./inputSchema.ts";
 import {
-  alignItemsSchema,
-  justifyContentSchema,
-  shadowStyleSchema,
-  processArrowStepSchema,
-  pyramidLevelSchema,
-  timelineItemSchema,
-  matrixAxisSchema,
-  matrixQuadrantsSchema,
-  matrixItemSchema,
-  flowNodeItemSchema,
-  flowConnectionSchema,
-  chartDataSchema,
-  tableColumnSchema,
-  tableCellSchema,
-  flexWrapSchema,
-} from "../types.ts";
+  type CoercionRule,
+  NODE_COERCION_MAP,
+  CHILD_ELEMENT_COERCION_MAP,
+  coerceWithRule,
+  coerceFallback,
+  getObjectShapeFromRule,
+  isBooleanObjectUnionRule,
+} from "./coercionRules.ts";
 
 // ===== ParseXmlError =====
 export class ParseXmlError extends Error {
@@ -77,58 +67,6 @@ const TYPE_TO_TAG: Record<string, string> = Object.fromEntries(
   Object.entries(TAG_TO_TYPE).map(([tag, type]) => [type, tag]),
 );
 
-// ===== Node schemas for property type coercion =====
-// Extract shape from ZodObject schemas for property type lookup.
-// Use Record<string, z.ZodTypeAny> directly to avoid Zod v4 type issues.
-type ShapeRecord = Record<string, z.ZodTypeAny>;
-
-function extractShape(schema: z.ZodTypeAny): ShapeRecord {
-  return (schema as unknown as { shape: ShapeRecord }).shape;
-}
-
-const leafNodeShapes: Record<string, ShapeRecord> = {
-  text: extractShape(inputTextNodeSchema),
-  image: extractShape(inputImageNodeSchema),
-  table: extractShape(inputTableNodeSchema),
-  shape: extractShape(inputShapeNodeSchema),
-  chart: extractShape(inputChartNodeSchema),
-  timeline: extractShape(inputTimelineNodeSchema),
-  matrix: extractShape(inputMatrixNodeSchema),
-  tree: extractShape(inputTreeNodeSchema),
-  flow: extractShape(inputFlowNodeSchema),
-  processArrow: extractShape(inputProcessArrowNodeSchema),
-  pyramid: extractShape(inputPyramidNodeSchema),
-  line: extractShape(inputLineNodeSchema),
-  ul: extractShape(inputUlNodeSchema),
-  ol: extractShape(inputOlNodeSchema),
-  icon: extractShape(inputIconNodeSchema),
-};
-
-const containerShapes: Record<string, ShapeRecord> = {
-  box: extractShape(
-    inputBaseNodeSchema.extend({ shadow: shadowStyleSchema.optional() }),
-  ),
-  vstack: extractShape(
-    inputBaseNodeSchema.extend({
-      gap: z.number().optional(),
-      alignItems: alignItemsSchema.optional(),
-      justifyContent: justifyContentSchema.optional(),
-      shadow: shadowStyleSchema.optional(),
-      flexWrap: flexWrapSchema.optional(),
-    }),
-  ),
-  hstack: extractShape(
-    inputBaseNodeSchema.extend({
-      gap: z.number().optional(),
-      alignItems: alignItemsSchema.optional(),
-      justifyContent: justifyContentSchema.optional(),
-      shadow: shadowStyleSchema.optional(),
-      flexWrap: flexWrapSchema.optional(),
-    }),
-  ),
-  layer: extractShape(inputBaseNodeSchema),
-};
-
 const CONTAINER_TYPES = new Set(["box", "vstack", "hstack", "layer"]);
 const TEXT_CONTENT_NODES = new Set(["text", "shape"]);
 // Attributes allowed on any node (e.g., x/y for Layer children positioning)
@@ -136,9 +74,9 @@ const UNIVERSAL_ATTRS = new Set(["x", "y"]);
 
 // ===== Validation helpers =====
 function getKnownAttributes(nodeType: string): string[] {
-  const shape = leafNodeShapes[nodeType] ?? containerShapes[nodeType];
-  if (!shape) return [];
-  return Object.keys(shape).filter((k) => k !== "type");
+  const rules = NODE_COERCION_MAP[nodeType];
+  if (!rules) return [];
+  return Object.keys(rules);
 }
 
 function levenshteinDistance(a: string, b: string): number {
@@ -181,9 +119,9 @@ function findClosestMatch(
 }
 
 function getKnownChildAttributes(tagName: string): string[] {
-  const shape = childElementShapes[tagName];
-  if (!shape) return [];
-  return Object.keys(shape);
+  const rules = CHILD_ELEMENT_COERCION_MAP[tagName];
+  if (!rules) return [];
+  return Object.keys(rules);
 }
 
 // ===== Leaf node Zod validation schemas =====
@@ -319,186 +257,16 @@ interface XmlElement {
   ":@"?: Record<string, string>;
 }
 
-// ===== Zod schema introspection (Zod v4 compatible) =====
-// Zod internal _def structure varies by version. Access via unknown to avoid type errors.
-type ZodDef = Record<string, unknown>;
+// ===== Coercion rule lookup =====
 
-function getDef(schema: z.ZodTypeAny): ZodDef {
-  return schema._def as unknown as ZodDef;
-}
-
-function getPropertySchema(
+function getCoercionRule(
   nodeType: string,
   propertyName: string,
-): z.ZodTypeAny | undefined {
-  const shape = leafNodeShapes[nodeType] ?? containerShapes[nodeType];
-  if (!shape) return undefined;
-  return shape[propertyName];
-}
-
-function getZodType(schema: z.ZodTypeAny): string {
-  const def = getDef(schema);
-  return (def.type ?? def.typeName ?? "") as string;
-}
-
-function unwrapSchema(schema: z.ZodTypeAny): z.ZodTypeAny {
-  const typeName = getZodType(schema);
-  const def = getDef(schema);
-  switch (typeName) {
-    case "optional":
-    case "default":
-    case "nullable":
-      return unwrapSchema(def.innerType as z.ZodTypeAny);
-    case "lazy":
-      return unwrapSchema((def.getter as () => z.ZodTypeAny)());
-    case "pipe":
-      return unwrapSchema(def.in as z.ZodTypeAny);
-    default:
-      return schema;
-  }
-}
-
-function resolveZodTypeName(schema: z.ZodTypeAny): string {
-  return getZodType(unwrapSchema(schema));
-}
-
-// ===== Value coercion =====
-// Returns { value, error } — if error is non-null, coercion failed.
-function coerceValue(
-  value: string,
-  schema: z.ZodTypeAny,
-): { value: unknown; error: string | null } {
-  const unwrapped = unwrapSchema(schema);
-  const typeName = getZodType(unwrapped);
-  const def = getDef(unwrapped);
-
-  switch (typeName) {
-    case "number": {
-      const num = Number(value);
-      if (isNaN(num)) {
-        return {
-          value: undefined,
-          error: `Cannot convert "${value}" to number`,
-        };
-      }
-      return { value: num, error: null };
-    }
-    case "boolean":
-      if (value !== "true" && value !== "false") {
-        return {
-          value: undefined,
-          error: `Cannot convert "${value}" to boolean (expected "true" or "false")`,
-        };
-      }
-      return { value: value === "true", error: null };
-    case "string":
-    case "enum":
-      return { value, error: null };
-    case "literal": {
-      const values = def.values as unknown[] | undefined;
-      const singleValue = def.value;
-      return { value: values?.[0] ?? singleValue, error: null };
-    }
-    case "array":
-    case "object":
-    case "record":
-    case "tuple":
-      try {
-        return { value: JSON.parse(value), error: null };
-      } catch {
-        return {
-          value: undefined,
-          error: `Cannot parse JSON value: "${value}"`,
-        };
-      }
-    case "union": {
-      const options = def.options as z.ZodTypeAny[];
-      return { value: coerceUnionValue(value, options), error: null };
-    }
-    default:
-      return { value: coerceFallback(value), error: null };
-  }
-}
-
-function coerceUnionValue(value: string, options: z.ZodTypeAny[]): unknown {
-  const typeNames = options.map((opt) => resolveZodTypeName(opt));
-
-  // Try boolean
-  if (
-    (value === "true" || value === "false") &&
-    typeNames.includes("boolean")
-  ) {
-    return value === "true";
-  }
-
-  // Try number
-  if (typeNames.includes("number")) {
-    const num = Number(value);
-    if (!isNaN(num) && value !== "") {
-      return num;
-    }
-  }
-
-  // Try literal
-  for (let i = 0; i < options.length; i++) {
-    if (typeNames[i] === "literal") {
-      const unwrapped = unwrapSchema(options[i]);
-      const def = getDef(unwrapped);
-      const values = def.values as unknown[] | undefined;
-      const singleValue = def.value;
-      const litVal = values?.[0] ?? singleValue;
-      if (litVal != null && `${litVal as string | number}` === value)
-        return litVal;
-    }
-  }
-
-  // Try JSON parse for objects/arrays
-  if (
-    typeNames.some((t) => ["array", "object", "record", "tuple"].includes(t))
-  ) {
-    if (value.startsWith("{") || value.startsWith("[")) {
-      try {
-        return JSON.parse(value);
-      } catch {
-        /* ignore */
-      }
-    }
-  }
-
-  // Fallback to string
-  return value;
-}
-
-function coerceFallback(value: string): unknown {
-  if (value === "true") return true;
-  if (value === "false") return false;
-  const num = Number(value);
-  if (value !== "" && !isNaN(num)) return num;
-  if (value.startsWith("{") || value.startsWith("[")) {
-    try {
-      return JSON.parse(value);
-    } catch {
-      /* ignore */
-    }
-  }
-  return value;
+): CoercionRule | undefined {
+  return NODE_COERCION_MAP[nodeType]?.[propertyName];
 }
 
 // ===== Dot notation helpers =====
-
-/**
- * Checks if a schema is a union containing both boolean and object types.
- * Used to allow `endArrow="true" endArrow.type="triangle"` coexistence.
- */
-function isBooleanObjectUnion(schema: z.ZodTypeAny): boolean {
-  const unwrapped = unwrapSchema(schema);
-  const typeName = getZodType(unwrapped);
-  if (typeName !== "union") return false;
-  const def = getDef(unwrapped);
-  const options = def.options as z.ZodTypeAny[];
-  const typeNames = options.map((opt) => getZodType(unwrapSchema(opt)));
-  return typeNames.includes("boolean") && typeNames.includes("object");
-}
 
 // ===== Dot notation expansion =====
 function expandDotNotation(attrs: Record<string, string>): {
@@ -526,38 +294,24 @@ function expandDotNotation(attrs: Record<string, string>): {
 function coerceDotGroup(
   prefix: string,
   subAttrs: Record<string, string>,
-  schema: z.ZodTypeAny,
+  rule: CoercionRule,
   tagName: string,
   errors: string[],
 ): Record<string, unknown> {
-  const unwrapped = unwrapSchema(schema);
-  const typeName = getZodType(unwrapped);
-
-  let objectSchema: z.ZodTypeAny | undefined;
-  if (typeName === "object") {
-    objectSchema = unwrapped;
-  } else if (typeName === "union") {
-    const def = getDef(unwrapped);
-    const options = def.options as z.ZodTypeAny[];
-    objectSchema = options.find(
-      (opt) => getZodType(unwrapSchema(opt)) === "object",
-    );
-    if (objectSchema) objectSchema = unwrapSchema(objectSchema);
-  }
+  const objectShape = getObjectShapeFromRule(rule);
 
   const obj: Record<string, unknown> = {};
-  if (objectSchema) {
-    const shape = extractShape(objectSchema);
+  if (objectShape) {
     for (const [subKey, subValue] of Object.entries(subAttrs)) {
-      if (shape[subKey]) {
-        const coerced = coerceValue(subValue, shape[subKey]);
+      if (objectShape[subKey]) {
+        const coerced = coerceWithRule(subValue, objectShape[subKey]);
         if (coerced.error !== null) {
           errors.push(`<${tagName}>: ${prefix}.${subKey}: ${coerced.error}`);
         } else {
           obj[subKey] = coerced.value;
         }
       } else {
-        const knownSubKeys = Object.keys(shape);
+        const knownSubKeys = Object.keys(objectShape);
         const suggestion = findClosestMatch(subKey, knownSubKeys);
         errors.push(
           `<${tagName}>: Unknown sub-attribute "${prefix}.${subKey}"${suggestion ? `. Did you mean "${prefix}.${suggestion}"?` : ""}`,
@@ -616,42 +370,27 @@ function getTextContent(node: XmlElement): string | undefined {
   return textParts.length > 0 ? textParts.join("") : undefined;
 }
 
-// ===== Child element schemas for type coercion =====
-const childElementShapes: Record<string, ShapeRecord> = {
-  ProcessArrowStep: extractShape(processArrowStepSchema),
-  PyramidLevel: extractShape(pyramidLevelSchema),
-  TimelineItem: extractShape(timelineItemSchema),
-  MatrixAxes: extractShape(matrixAxisSchema),
-  MatrixQuadrants: extractShape(matrixQuadrantsSchema),
-  MatrixItem: extractShape(matrixItemSchema),
-  FlowNode: extractShape(flowNodeItemSchema),
-  FlowConnection: extractShape(flowConnectionSchema),
-  TableColumn: extractShape(tableColumnSchema),
-  TableCell: extractShape(tableCellSchema),
-  Li: extractShape(inputLiNodeSchema),
-};
-
 function coerceChildAttrs(
   parentTagName: string,
   tagName: string,
   attrs: Record<string, string>,
   errors: string[],
 ): Record<string, unknown> {
-  const shape = childElementShapes[tagName];
+  const rules = CHILD_ELEMENT_COERCION_MAP[tagName];
   const result: Record<string, unknown> = {};
   const { regular: regularAttrs, dotGroups } = expandDotNotation(attrs);
 
   // Process dot-notation attributes
   for (const [prefix, subAttrs] of Object.entries(dotGroups)) {
-    if (shape && shape[prefix]) {
+    if (rules && rules[prefix]) {
       result[prefix] = coerceDotGroup(
         prefix,
         subAttrs,
-        shape[prefix],
+        rules[prefix],
         `${parentTagName}.${tagName}`,
         errors,
       );
-    } else if (shape) {
+    } else if (rules) {
       const knownAttrs = getKnownChildAttributes(tagName);
       const suggestion = findClosestMatch(prefix, knownAttrs);
       errors.push(
@@ -669,12 +408,12 @@ function coerceChildAttrs(
   // Process regular attributes
   for (const [key, value] of Object.entries(regularAttrs)) {
     if (key in dotGroups) {
-      // When the schema is a union of boolean and object,
+      // When the rule is a union of boolean and object,
       // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
       if (
-        shape &&
-        shape[key] &&
-        isBooleanObjectUnion(shape[key]) &&
+        rules &&
+        rules[key] &&
+        isBooleanObjectUnionRule(rules[key]) &&
         (value === "true" || value === "false")
       ) {
         // Silently skip the boolean value; dot-notation takes priority
@@ -685,14 +424,14 @@ function coerceChildAttrs(
       );
       continue;
     }
-    if (shape && shape[key]) {
-      const coerced = coerceValue(value, shape[key]);
+    if (rules && rules[key]) {
+      const coerced = coerceWithRule(value, rules[key]);
       if (coerced.error !== null) {
         errors.push(`<${parentTagName}>.<${tagName}>: ${coerced.error}`);
       } else {
         result[key] = coerced.value;
       }
-    } else if (shape) {
+    } else if (rules) {
       // Unknown attribute on child element
       const knownAttrs = getKnownChildAttributes(tagName);
       const suggestion = findClosestMatch(key, knownAttrs);
@@ -850,7 +589,6 @@ function convertChartChildren(
   result: Record<string, unknown>,
   errors: string[],
 ): void {
-  const dataShape = extractShape(chartDataSchema);
   const data: Record<string, unknown>[] = [];
   for (const child of childElements) {
     const tag = getTagName(child);
@@ -866,17 +604,8 @@ function convertChartChildren(
       values: [],
     };
     if (attrs.name !== undefined) {
-      const nameSchema = dataShape.name;
-      if (nameSchema) {
-        const coerced = coerceValue(attrs.name, nameSchema);
-        if (coerced.error !== null) {
-          errors.push(`<Chart>.<ChartSeries>: ${coerced.error}`);
-        } else {
-          series.name = coerced.value;
-        }
-      } else {
-        series.name = attrs.name;
-      }
+      // chartDataSchema.name は z.string().optional() なのでそのまま文字列として使用
+      series.name = attrs.name;
     }
 
     for (const dp of getChildElements(child)) {
@@ -1119,15 +848,9 @@ function convertPomNode(
 
   for (const [prefix, subAttrs] of Object.entries(dotGroups)) {
     if (prefix === "type") continue;
-    const propSchema = getPropertySchema(nodeType, prefix);
-    if (propSchema) {
-      result[prefix] = coerceDotGroup(
-        prefix,
-        subAttrs,
-        propSchema,
-        tagName,
-        errors,
-      );
+    const rule = getCoercionRule(nodeType, prefix);
+    if (rule) {
+      result[prefix] = coerceDotGroup(prefix, subAttrs, rule, tagName, errors);
     } else {
       const knownAttrs = getKnownAttributes(nodeType);
       const suggestion = findClosestMatch(prefix, knownAttrs);
@@ -1145,12 +868,12 @@ function convertPomNode(
     if (key === "type") continue;
     // Conflict check: dot-notation and regular attribute for the same key
     if (key in dotGroups) {
-      // When the schema is a union of boolean and object (e.g., endArrow),
+      // When the rule is a union of boolean and object (e.g., endArrow),
       // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
-      const propSchemaForConflict = getPropertySchema(nodeType, key);
+      const ruleForConflict = getCoercionRule(nodeType, key);
       if (
-        propSchemaForConflict &&
-        isBooleanObjectUnion(propSchemaForConflict) &&
+        ruleForConflict &&
+        isBooleanObjectUnionRule(ruleForConflict) &&
         (value === "true" || value === "false")
       ) {
         // Silently skip the boolean value; dot-notation takes priority
@@ -1161,9 +884,9 @@ function convertPomNode(
       );
       continue;
     }
-    const propSchema = getPropertySchema(nodeType, key);
-    if (propSchema) {
-      const coerced = coerceValue(value, propSchema);
+    const rule = getCoercionRule(nodeType, key);
+    if (rule) {
+      const coerced = coerceWithRule(value, rule);
       if (coerced.error !== null) {
         errors.push(`<${tagName}>: ${coerced.error}`);
       } else {

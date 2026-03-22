@@ -55,7 +55,7 @@ import {
 } from "../types.ts";
 
 // ===== Base Node Schema =====
-export const inputBaseNodeSchema = z.object({
+const inputBaseNodeSchema = z.object({
   w: lengthSchema.optional(),
   h: lengthSchema.optional(),
   minW: z.number().optional(),
@@ -96,7 +96,7 @@ export const inputTextNodeSchema = inputBaseNodeSchema.extend({
   lineHeight: z.number().optional(),
 });
 
-export const inputLiNodeSchema = liNodeSchema;
+const inputLiNodeSchema = liNodeSchema;
 
 export const inputUlNodeSchema = inputBaseNodeSchema.extend({
   type: z.literal("ul"),
