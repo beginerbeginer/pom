@@ -29,23 +29,7 @@ import { pxToIn, pxToPt } from "./units.ts";
 import { convertUnderline, convertStrike } from "./textOptions.ts";
 import { getImageData } from "../shared/measureImage.ts";
 import { renderBackgroundAndBorder } from "./utils/backgroundBorder.ts";
-import {
-  renderTextNode,
-  renderImageNode,
-  renderTableNode,
-  renderShapeNode,
-  renderChartNode,
-  renderTimelineNode,
-  renderMatrixNode,
-  renderTreeNode,
-  renderFlowNode,
-  renderProcessArrowNode,
-  renderPyramidNode,
-  renderLineNode,
-  renderUlNode,
-  renderOlNode,
-  renderIconNode,
-} from "./nodes/index.ts";
+import { getNodeDef } from "../registry/index.ts";
 
 type SlidePx = { w: number; h: number };
 
@@ -310,86 +294,36 @@ export function renderPptx(
         }
       }
 
-      switch (node.type) {
-        case "text":
-          renderTextNode(node, ctx);
+      const def = getNodeDef(node.type);
+
+      switch (def.category) {
+        case "leaf":
+          if (!def.render) {
+            throw new Error(
+              `No render function registered for leaf node: ${node.type}`,
+            );
+          }
+          def.render(node, ctx);
           break;
 
-        case "ul":
-          renderUlNode(node, ctx);
+        case "single-child": {
+          const boxNode = node as Extract<PositionedNode, { type: "box" }>;
+          renderNode(boxNode.children);
           break;
+        }
 
-        case "ol":
-          renderOlNode(node, ctx);
-          break;
-
-        case "image":
-          renderImageNode(node, ctx);
-          break;
-
-        case "icon":
-          renderIconNode(node, ctx);
-          break;
-
-        case "box":
-          // 子要素を再帰的に処理
-          renderNode(node.children);
-          break;
-
-        case "vstack":
-        case "hstack":
+        case "multi-child":
+        case "absolute-child": {
+          const containerNode = node as Extract<
+            PositionedNode,
+            { type: "vstack" | "hstack" | "layer" }
+          >;
           // zIndex でソートして描画順を制御（値が小さいものが先に描画される）
-          for (const child of sortByZIndex(node.children)) {
+          for (const child of sortByZIndex(containerNode.children)) {
             renderNode(child);
           }
           break;
-
-        case "table":
-          renderTableNode(node, ctx);
-          break;
-
-        case "shape":
-          renderShapeNode(node, ctx);
-          break;
-
-        case "chart":
-          renderChartNode(node, ctx);
-          break;
-
-        case "timeline":
-          renderTimelineNode(node, ctx);
-          break;
-
-        case "matrix":
-          renderMatrixNode(node, ctx);
-          break;
-
-        case "tree":
-          renderTreeNode(node, ctx);
-          break;
-
-        case "flow":
-          renderFlowNode(node, ctx);
-          break;
-
-        case "processArrow":
-          renderProcessArrowNode(node, ctx);
-          break;
-
-        case "pyramid":
-          renderPyramidNode(node, ctx);
-          break;
-
-        case "line":
-          renderLineNode(node, ctx);
-          break;
-
-        case "layer":
-          // zIndex でソートして描画順を制御（値が小さいものが先に描画される）
-          for (const child of sortByZIndex(node.children)) {
-            renderNode(child);
-          }
-          break;
+        }
       }
     }
 
