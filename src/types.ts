@@ -426,11 +426,22 @@ export const iconColorSchema = z
   .regex(/^#?[0-9a-fA-F]{3,8}$/)
   .optional();
 
+export const iconVariantSchema = z
+  .enum([
+    "circle-filled",
+    "circle-outlined",
+    "square-filled",
+    "square-outlined",
+  ])
+  .optional();
+
 const iconNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("icon"),
   name: iconNameSchema,
   size: z.number().positive().max(1024).optional(),
   color: iconColorSchema,
+  variant: iconVariantSchema,
+  bgColor: iconColorSchema,
 });
 
 export type IconNode = z.infer<typeof iconNodeSchema> & {
@@ -909,7 +920,18 @@ export type PositionedNode =
   | (PyramidNode & PositionedBase)
   | (LineNode & PositionedBase)
   | (LayerNode & PositionedBase & { children: PositionedLayerChild[] })
-  | (IconNode & PositionedBase & { iconImageData: string });
+  | (IconNode &
+      PositionedBase & {
+        iconImageData: string;
+        bgX?: number;
+        bgY?: number;
+        bgW?: number;
+        bgH?: number;
+        iconX?: number;
+        iconY?: number;
+        iconW?: number;
+        iconH?: number;
+      });
 
 const positionedLayerChildSchema: z.ZodType<PositionedLayerChild> = z.lazy(() =>
   positionedNodeSchema.and(

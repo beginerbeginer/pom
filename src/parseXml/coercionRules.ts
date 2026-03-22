@@ -324,6 +324,8 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     name: "string",
     size: "number",
     color: "string",
+    variant: "string",
+    bgColor: "string",
   },
   table: {
     ...BASE_RULES,

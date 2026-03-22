@@ -377,6 +377,17 @@ const iconSample = `
       </HStack>
     </VStack>
   </HStack>
+  <HStack gap="24">
+    <VStack gap="16" padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+      <Text fontSize="14" bold="true">Background Variants</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="cpu" size="32" variant="circle-filled" bgColor="#E8F0FE" color="#${palette.blue}" />
+        <Icon name="star" size="32" variant="circle-outlined" bgColor="#${palette.blue}" color="#${palette.blue}" />
+        <Icon name="settings" size="32" variant="square-filled" bgColor="#E8F0FE" color="#${palette.blue}" />
+        <Icon name="lock" size="32" variant="square-outlined" bgColor="#${palette.navy}" color="#${palette.navy}" />
+      </HStack>
+    </VStack>
+  </HStack>
 </VStack>
 `;
 

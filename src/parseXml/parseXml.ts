@@ -955,13 +955,14 @@ function convertPomNode(
     validateLeafNode(nodeType, result, errors);
   }
 
-  // Normalize icon color: add # prefix if missing
-  if (
-    nodeType === "icon" &&
-    typeof result.color === "string" &&
-    !result.color.startsWith("#")
-  ) {
-    result.color = `#${result.color}`;
+  // Normalize icon color / bgColor: add # prefix if missing
+  if (nodeType === "icon") {
+    if (typeof result.color === "string" && !result.color.startsWith("#")) {
+      result.color = `#${result.color}`;
+    }
+    if (typeof result.bgColor === "string" && !result.bgColor.startsWith("#")) {
+      result.bgColor = `#${result.bgColor}`;
+    }
   }
 
   return result;

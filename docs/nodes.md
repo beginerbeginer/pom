@@ -792,13 +792,16 @@ A node for displaying preset icons from the Lucide icon library. Icons are rende
 
 ```xml
 <Icon name="cpu" size="32" color="#1D4ED8" />
+<Icon name="cpu" variant="circle-filled" bgColor="#E8F0FE" color="#1D4ED8" />
 ```
 
-| Attribute | Values                         |
-| --------- | ------------------------------ |
-| `name`    | icon name (required)           |
-| `size`    | number (default: 24, in px)    |
-| `color`   | hex color (default: `#000000`) |
+| Attribute | Values                                                                      |
+| --------- | --------------------------------------------------------------------------- |
+| `name`    | icon name (required)                                                        |
+| `size`    | number (default: 24, in px)                                                 |
+| `color`   | hex color (default: `#000000`)                                              |
+| `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`      |
+| `bgColor` | hex color for the background shape (default: `#E0E0E0` when variant is set) |
 
 **Available Icons (47):**
 
