@@ -7,5 +7,6 @@
     "preview/**/*.ts",
     "scripts/docs-images/**/*.ts",
     "scripts/**/*.ts"
-  ]
+  ],
+  "ignore": ["website/**"]
 }
