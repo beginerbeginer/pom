@@ -6,6 +6,7 @@ import {
 } from "./calcYogaLayout/measureText.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
+import { freeYogaTree } from "./shared/freeYogaTree.ts";
 import { toPositioned } from "./toPositioned/toPositioned.ts";
 import { PositionedNode, SlideMasterOptions } from "./types.ts";
 
@@ -31,13 +32,17 @@ export async function buildPptx(
   const positionedPages: PositionedNode[] = [];
 
   for (const node of nodes) {
-    if (options?.autoFit !== false) {
-      await autoFitSlide(node, slideSize);
-    } else {
-      await calcYogaLayout(node, slideSize);
+    try {
+      if (options?.autoFit !== false) {
+        await autoFitSlide(node, slideSize);
+      } else {
+        await calcYogaLayout(node, slideSize);
+      }
+      const positioned = toPositioned(node);
+      positionedPages.push(positioned);
+    } finally {
+      freeYogaTree(node);
     }
-    const positioned = toPositioned(node);
-    positionedPages.push(positioned);
   }
 
   const pptx = renderPptx(positionedPages, slideSize, options?.master);

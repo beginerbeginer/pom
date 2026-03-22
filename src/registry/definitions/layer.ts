@@ -4,7 +4,7 @@ import type {
   PositionedLayerChild,
 } from "../../types.ts";
 import type { NodeDefinition } from "../types.ts";
-import { toPositioned } from "../../toPositioned/toPositioned.ts";
+import { toPositioned, omitYogaNode } from "../../toPositioned/toPositioned.ts";
 
 export const layerNodeDef: NodeDefinition = {
   type: "layer",
@@ -15,7 +15,7 @@ export const layerNodeDef: NodeDefinition = {
     // layer の子要素は layer 内の相対座標（child.x, child.y）を持つ
     // layer の絶対座標に加算してスライド上の絶対座標に変換
     return {
-      ...n,
+      ...omitYogaNode(n),
       x: absoluteX,
       y: absoluteY,
       w: layout.width,
@@ -35,7 +35,7 @@ export const layerNodeDef: NodeDefinition = {
           const adjustedY2 = child.y2 + lineAbsoluteY;
 
           return {
-            ...child,
+            ...omitYogaNode(child),
             x1: adjustedX1,
             y1: adjustedY1,
             x2: adjustedX2,

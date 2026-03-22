@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { walkPOMTree } from "./walkTree.ts";
+import { walkPOMTree } from "../shared/walkTree.ts";
 import { reduceTableRowHeight } from "./strategies/reduceTableRowHeight.ts";
 import { reduceFontSize } from "./strategies/reduceFontSize.ts";
 import { reduceGapAndPadding } from "./strategies/reduceGapAndPadding.ts";
