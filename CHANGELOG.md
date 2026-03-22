@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 5.2.0
+
+### Minor Changes
+
+- [#312](https://github.com/hirokisakabe/pom/pull/312) [`2937014`](https://github.com/hirokisakabe/pom/commit/29370141b31913c52c3f406741ccd6503a9a2681) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Layout v2: margin, zIndex, position, alignSelf, flexWrap を追加
+
 ## 5.1.0
 
 ### Minor Changes
