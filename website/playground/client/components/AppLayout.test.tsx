@@ -21,11 +21,6 @@ vi.mock("./XmlEditor", () => ({
   ),
 }));
 
-// XmlReferencePanel をモック
-vi.mock("./XmlReferencePanel", () => ({
-  XmlReferencePanel: () => <div data-testid="xml-reference-panel" />,
-}));
-
 // downloadPptx をモック
 const mockDownloadPptx = vi.fn().mockResolvedValue(undefined);
 vi.mock("../lib/downloadPptx", () => ({

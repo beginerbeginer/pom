@@ -34,7 +34,6 @@ import { DEFAULT_TEMPLATE, SAMPLE_TEMPLATES } from "../lib/sampleTemplates";
 import type { StructuredError } from "./SlidePreview";
 import { SlidePreview } from "./SlidePreview";
 import { XmlEditor } from "./XmlEditor";
-import { XmlReferencePanel } from "./XmlReferencePanel";
 
 const DEBOUNCE_MS = 500;
 
@@ -240,7 +239,15 @@ export function AppLayout() {
             <Download className="size-4" />
             <span>Download</span>
           </button>
-          <XmlReferencePanel />
+          <a
+            href="/nodes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
+          >
+            <BookOpen className="size-4" />
+            <span>XML Reference</span>
+          </a>
         </div>
       </header>
       <div className="grid min-h-0 flex-1 grid-cols-2 gap-4 p-4">
