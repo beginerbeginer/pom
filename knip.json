@@ -5,7 +5,7 @@
     "src/**/*.ts",
     "vrt/**/*.ts",
     "preview/**/*.ts",
-    "docs/lib/**/*.ts",
+    "scripts/docs-images/**/*.ts",
     "scripts/**/*.ts"
   ]
 }

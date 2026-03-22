@@ -1,8 +1,8 @@
 import path from "path";
 
-const LIB_DIR = path.dirname(new URL(import.meta.url).pathname);
-const DOCS_DIR = path.dirname(LIB_DIR);
-export const IMAGES_DIR = path.join(DOCS_DIR, "images");
+const SCRIPT_DIR = path.dirname(new URL(import.meta.url).pathname);
+const PROJECT_ROOT = path.resolve(SCRIPT_DIR, "../..");
+export const IMAGES_DIR = path.join(PROJECT_ROOT, "docs", "images");
 
 // VRT用ディレクトリ
 export const OUTPUT_DIR = path.join(IMAGES_DIR, "output");
