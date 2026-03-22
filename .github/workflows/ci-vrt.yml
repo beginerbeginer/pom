@@ -1,0 +1,37 @@
+name: CI - VRT
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/**"
+      - "vrt/**"
+      - "package.json"
+      - "package-lock.json"
+      - "docker-compose.yml"
+      - ".github/workflows/ci-vrt.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/**"
+      - "vrt/**"
+      - "package.json"
+      - "package-lock.json"
+      - "docker-compose.yml"
+      - ".github/workflows/ci-vrt.yml"
+
+jobs:
+  vrt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run VRT in Docker
+        run: docker compose run --rm vrt
+      - name: Upload diff on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-diff
+          path: |
+            vrt/actual.png
+            vrt/diff.png

@@ -1,0 +1,26 @@
+name: CI - Docs Site
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "website/**"
+      - "docs/**"
+      - ".github/workflows/ci-docs-site.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "website/**"
+      - "docs/**"
+      - ".github/workflows/ci-docs-site.yml"
+
+jobs:
+  docs-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: cd website && npm ci
+      - run: cd website && npm run build

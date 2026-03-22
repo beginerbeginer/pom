@@ -1,0 +1,45 @@
+name: CI - Build
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig.check.json"
+      - "main.ts"
+      - "eslint.config.mts"
+      - "knip.json"
+      - "vitest.config.ts"
+      - ".github/workflows/ci-build.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig.check.json"
+      - "main.ts"
+      - "eslint.config.mts"
+      - "knip.json"
+      - "vitest.config.ts"
+      - ".github/workflows/ci-build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run fmt:check
+      - run: npm run lint
+      - run: npm run knip
+      - run: npm run typecheck
+      - run: npm run test:run
+      - run: npx tsx main.ts
