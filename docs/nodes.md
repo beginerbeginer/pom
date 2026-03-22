@@ -25,7 +25,7 @@ Layout attributes that all nodes can have.
 | `right`           | number                                                     | Right offset (with position)      |
 | `bottom`          | number                                                     | Bottom offset (with position)     |
 | `left`            | number                                                     | Left offset (with position)       |
-| `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`           | Override parent alignItems        |
+| `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`            | Override parent alignItems        |
 
 - `backgroundImage`: `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
 - `border`: Can be combined with `color`, `width`, and `dashType` (`"solid"` / `"dash"` / `"dashDot"` / `"lgDash"` / `"lgDashDot"` / `"lgDashDotDot"` / `"sysDash"` / `"sysDot"`).
