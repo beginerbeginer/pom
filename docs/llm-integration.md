@@ -152,7 +152,7 @@ All Ul attributes plus:
 
 ### Icon
 
-Displays a preset icon (Lucide icon library).
+Displays an icon from the Lucide icon library (1,900+ icons available).
 
 ```xml
 <Icon name="cpu" size="32" color="1D4ED8" />
@@ -161,13 +161,33 @@ Displays a preset icon (Lucide icon library).
 
 | Attribute | Type / Values                                                            |
 | --------- | ------------------------------------------------------------------------ |
-| `name`    | Icon name (required)                                                     |
+| `name`    | Lucide icon name (required). See examples below                          |
 | `size`    | number (default: 24, in px)                                              |
 | `color`   | hex color (`#` prefix optional, default: `#000000`)                      |
 | `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`   |
 | `bgColor` | hex color for background shape (`#` prefix optional, default: `#E0E0E0`) |
 
-Available icons: `cpu`, `database`, `cloud`, `server`, `code`, `terminal`, `wifi`, `globe`, `user`, `users`, `contact`, `briefcase`, `building`, `bar-chart`, `line-chart`, `pie-chart`, `trending-up`, `mail`, `message-square`, `phone`, `video`, `search`, `settings`, `filter`, `download`, `upload`, `share`, `check`, `alert-triangle`, `info`, `shield`, `lock`, `unlock`, `file`, `folder`, `image`, `calendar`, `clock`, `bookmark`, `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `external-link`, `star`, `heart`, `zap`, `target`, `lightbulb`
+All Lucide v0.577.0 icons are available. Icon names use kebab-case. Common examples by category:
+
+- **Technology**: `cpu`, `database`, `cloud`, `server`, `code`, `terminal`, `wifi`, `globe`, `monitor`, `smartphone`, `laptop`, `hard-drive`, `circuit-board`, `microchip`, `binary`, `braces`, `git-branch`, `github`, `container`
+- **Business**: `briefcase`, `building`, `building-2`, `factory`, `landmark`, `wallet`, `credit-card`, `receipt`, `banknote`, `coins`, `piggy-bank`, `hand-coins`, `calculator`, `stamp`
+- **Charts & Data**: `bar-chart`, `bar-chart-2`, `bar-chart-3`, `line-chart`, `pie-chart`, `trending-up`, `trending-down`, `activity`, `gauge`, `presentation`
+- **Communication**: `mail`, `message-square`, `message-circle`, `phone`, `video`, `at-sign`, `send`, `inbox`, `megaphone`, `bell`, `rss`
+- **People**: `user`, `users`, `contact`, `user-plus`, `user-check`, `user-x`, `person-standing`, `baby`, `accessibility`
+- **Arrows & Navigation**: `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `chevron-right`, `chevron-left`, `chevron-up`, `chevron-down`, `move`, `corner-down-right`, `external-link`, `redo`, `undo`
+- **Actions**: `search`, `settings`, `filter`, `download`, `upload`, `share`, `copy`, `scissors`, `trash`, `edit`, `plus`, `minus`, `refresh-cw`, `rotate-cw`, `save`, `log-in`, `log-out`, `power`
+- **Status & Alerts**: `check`, `check-circle`, `x`, `x-circle`, `alert-triangle`, `alert-circle`, `info`, `help-circle`, `ban`, `thumbs-up`, `thumbs-down`
+- **Security**: `shield`, `shield-check`, `lock`, `unlock`, `key`, `fingerprint`, `scan`, `eye`, `eye-off`
+- **Files & Folders**: `file`, `file-text`, `file-code`, `file-spreadsheet`, `folder`, `folder-open`, `archive`, `paperclip`, `clipboard`
+- **Media**: `image`, `camera`, `film`, `music`, `volume-2`, `mic`, `play`, `pause`, `skip-forward`, `skip-back`
+- **Time**: `calendar`, `clock`, `timer`, `hourglass`, `alarm-clock`, `calendar-check`, `calendar-plus`
+- **Shapes & Symbols**: `star`, `heart`, `zap`, `target`, `lightbulb`, `flag`, `bookmark`, `award`, `crown`, `gem`, `flame`, `snowflake`, `sun`, `moon`, `cloud-rain`
+- **Layout & UI**: `layout`, `grid`, `list`, `table`, `columns`, `rows`, `sidebar`, `panel-left`, `panel-right`, `maximize`, `minimize`, `menu`
+- **Maps & Travel**: `map`, `map-pin`, `compass`, `navigation`, `plane`, `car`, `truck`, `train`, `ship`, `bike`, `bus`
+- **Health & Science**: `heart-pulse`, `thermometer`, `pill`, `syringe`, `microscope`, `dna`, `atom`, `flask-conical`, `beaker`
+- **Food & Nature**: `apple`, `cherry`, `grape`, `leaf`, `trees`, `flower`, `sprout`, `mountain`, `waves`
+
+For the full icon list, see https://lucide.dev/icons/ (use the icon name in kebab-case as the `name` attribute).
 
 ### Shape
 
