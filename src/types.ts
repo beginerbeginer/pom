@@ -437,7 +437,7 @@ export type IconNode = z.infer<typeof iconNodeSchema> & {
   yogaNode?: YogaNode;
 };
 
-export const tableCellSchema = z.object({
+const tableCellSchema = z.object({
   text: z.string(),
   fontSize: z.number().optional(),
   color: z.string().optional(),
