@@ -1,5 +1,23 @@
 # @hirokisakabe/pom
 
+## 5.1.0
+
+### Minor Changes
+
+- [#302](https://github.com/hirokisakabe/pom/pull/302) [`26a913b`](https://github.com/hirokisakabe/pom/commit/26a913b7af177d65d427c2323c99c9aae565a718) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: スライド縦幅はみ出し時の自動調整機能を追加
+
+  コンテンツがスライドの縦幅を超えた場合、段階的に調整してスライド内に収める機能を追加。
+  調整はテーブル行高さ → フォントサイズ → gap/padding → 全体スケーリングの順で適用される。
+  `autoFit: false` オプションで無効化可能。
+
+- [#303](https://github.com/hirokisakabe/pom/pull/303) [`e3b6190`](https://github.com/hirokisakabe/pom/commit/e3b619072529cf6e068baf1337bcf466e2b466c2) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - HStack/VStack の子要素に flexShrink=1 をデフォルト設定（CSS Flexbox と同じ挙動）。%サイズと gap を併用した場合に子要素がはみ出す問題を修正。
+
+- [#301](https://github.com/hirokisakabe/pom/pull/301) [`dc70a07`](https://github.com/hirokisakabe/pom/commit/dc70a07d5ae20ca49fcdba5feefd2410a4d7c0c0) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - VStack / HStack で shadow 属性をサポート
+
+### Patch Changes
+
+- [#299](https://github.com/hirokisakabe/pom/pull/299) [`fb0b039`](https://github.com/hirokisakabe/pom/commit/fb0b039dca09c88bf7159939723c99efcd65db8c) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: endArrow/beginArrow のブーリアン簡易形式とドット記法の同時指定を許容
+
 ## 5.0.1
 
 ### Patch Changes
