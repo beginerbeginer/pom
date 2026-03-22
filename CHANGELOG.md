@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 5.3.0
+
+### Minor Changes
+
+- [#378](https://github.com/hirokisakabe/pom/pull/378) [`27ba994`](https://github.com/hirokisakabe/pom/commit/27ba99429ab0ab0a8b4ea368ac8d96a9b70926f1) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Icon ノードに variant / bgColor 属性を追加し、背景付きアイコンを1タグで描画可能に
+
 ## 5.2.1
 
 ### Patch Changes
