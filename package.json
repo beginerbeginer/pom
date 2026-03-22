@@ -57,10 +57,10 @@
     "vrt:docker:update": "docker compose build vrt-update && docker compose run --rm vrt-update",
     "preview": "tsx preview/lib/previewPptx.ts",
     "preview:docker": "docker compose build preview && docker compose run --rm preview",
-    "docs:images": "tsx docs/lib/generateNodeImages.ts",
+    "docs:images": "tsx scripts/docs-images/generateNodeImages.ts",
     "docs:images:docker": "docker compose run --rm docs-images",
     "docs:images:docker:update": "docker compose build docs-images && docker compose run --rm docs-images",
-    "docs:images:vrt": "tsx docs/lib/generateNodeImages.ts --check",
+    "docs:images:vrt": "tsx scripts/docs-images/generateNodeImages.ts --check",
     "docs:images:vrt:docker": "docker compose build docs-images-vrt && docker compose run --rm docs-images-vrt",
     "release": "changeset publish"
   },
