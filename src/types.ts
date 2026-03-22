@@ -302,8 +302,6 @@ export const shapeTypeSchema = z.enum([
 // ===== TypeScript Types (defined early for recursive references) =====
 export type ShadowStyle = z.infer<typeof shadowStyleSchema>;
 export type AlignItems = z.infer<typeof alignItemsSchema>;
-export type AlignSelf = z.infer<typeof alignSelfSchema>;
-export type PositionType = z.infer<typeof positionTypeSchema>;
 export type FlexWrap = z.infer<typeof flexWrapSchema>;
 export type JustifyContent = z.infer<typeof justifyContentSchema>;
 export type UnderlineStyle = z.infer<typeof underlineStyleSchema>;
