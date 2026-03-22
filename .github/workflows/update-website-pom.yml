@@ -1,0 +1,56 @@
+name: Update website pom version
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+
+concurrency: ${{ github.workflow }}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Get published version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for npm registry propagation
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          for i in $(seq 1 30); do
+            if npm view @hirokisakabe/pom@$VERSION version 2>/dev/null; then
+              echo "Version $VERSION is available on npm registry"
+              exit 0
+            fi
+            echo "Attempt $i: version $VERSION not yet available, retrying in 10s..."
+            sleep 10
+          done
+          echo "::error::Version $VERSION not available after 5 minutes"
+          exit 1
+
+      - name: Update pom version in website
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          cd website
+          npm install @hirokisakabe/pom@$VERSION
+          if ! git diff --quiet -- package.json package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add package.json package-lock.json
+            git commit -m "chore: update @hirokisakabe/pom to v$VERSION [skip ci]"
+            git push origin HEAD:main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
