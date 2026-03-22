@@ -18,6 +18,14 @@ Layout attributes that all nodes can have.
 | `border`          | `border.color="333" border.width="1"`                      | Border                            |
 | `borderRadius`    | number                                                     | Corner radius (px)                |
 | `opacity`         | 0-1                                                        | Background transparency           |
+| `margin`          | number / `margin.top="8" margin.bottom="8"`                | Outer margin                      |
+| `zIndex`          | number                                                     | Stacking order (higher = on top)  |
+| `position`        | `relative` / `absolute`                                    | Positioning mode                  |
+| `top`             | number                                                     | Top offset (with position)        |
+| `right`           | number                                                     | Right offset (with position)      |
+| `bottom`          | number                                                     | Bottom offset (with position)     |
+| `left`            | number                                                     | Left offset (with position)       |
+| `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`            | Override parent alignItems        |
 
 - `backgroundImage`: `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
 - `border`: Can be combined with `color`, `width`, and `dashType` (`"solid"` / `"dash"` / `"dashDot"` / `"lgDash"` / `"lgDashDot"` / `"lgDashDotDot"` / `"sysDash"` / `"sysDot"`).
@@ -261,6 +269,7 @@ Arranges child elements **vertically**.
 | `gap`            | number (gap between children)                                               |
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
+| `flexWrap`       | `nowrap` / `wrap` / `wrapReverse`                                           |
 | `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 > **Note:** Child elements of VStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based heights combined with `gap` will shrink automatically to fit within the parent.
@@ -283,6 +292,7 @@ Arranges child elements **horizontally**.
 | `gap`            | number (gap between children)                                               |
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
+| `flexWrap`       | `nowrap` / `wrap` / `wrapReverse`                                           |
 | `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 > **Note:** Child elements of HStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based widths combined with `gap` will shrink automatically to fit within the parent.
