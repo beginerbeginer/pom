@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 5.2.1
+
+### Patch Changes
+
+- [#350](https://github.com/hirokisakabe/pom/pull/350) [`0551862`](https://github.com/hirokisakabe/pom/commit/05518625d786bae1c67f4bcede3a98d504294063) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - buildPptx 実行コンテキストを分離し、並列実行時のグローバル状態干渉を防止
+
+- [#321](https://github.com/hirokisakabe/pom/pull/321) [`1b45e09`](https://github.com/hirokisakabe/pom/commit/1b45e0909eb5696aaa54fca9693b18f3f960bce7) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - refactor: NodeRegistry を導入し、ノード処理の分岐を集約
+
+- [#346](https://github.com/hirokisakabe/pom/pull/346) [`5e430b3`](https://github.com/hirokisakabe/pom/commit/5e430b3944548b1060c7d07dc86e44474c6b4128) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - refactor: Yoga ノードのライフサイクルを明示化し解放を保証する
+
 ## 5.2.0
 
 ### Minor Changes
