@@ -130,7 +130,7 @@ export function AppLayout() {
         abortControllerRef.current.abort();
       }
     };
-  }, [xmlValue]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [xmlValue]);
 
   function handleErrorClick(errorIndex: number) {
     const view = editorViewRef.current;
