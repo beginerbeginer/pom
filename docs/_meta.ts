@@ -2,7 +2,7 @@ export default {
   index: "Introduction",
   nodes: "Nodes",
   "master-slide": "Slide Master",
-  serverless: "Serverless",
+  "text-measurement": "Text Measurement",
   "llm-integration": "LLM Integration",
   playground: {
     title: "Playground",

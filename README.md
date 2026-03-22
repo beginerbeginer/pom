@@ -214,13 +214,13 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 
 ## Documentation
 
-| Document                                        | Description                             |
-| ----------------------------------------------- | --------------------------------------- |
-| [Nodes](./docs/nodes.md)                        | Complete reference for all node types   |
-| [Master Slide](./docs/master-slide.md)          | Headers, footers, and page numbers      |
-| [Serverless Environments](./docs/serverless.md) | Text measurement options for serverless |
-| [LLM Integration](./docs/llm-integration.md)    | Compact XML reference for LLM prompts   |
-| [Playground](https://pom.pptx.app/playground)   | Try pom XML in the browser              |
+| Document                                       | Description                           |
+| ---------------------------------------------- | ------------------------------------- |
+| [Nodes](./docs/nodes.md)                       | Complete reference for all node types |
+| [Master Slide](./docs/master-slide.md)         | Headers, footers, and page numbers    |
+| [Text Measurement](./docs/text-measurement.md) | Text measurement options and settings |
+| [LLM Integration](./docs/llm-integration.md)   | Compact XML reference for LLM prompts |
+| [Playground](https://pom.pptx.app/playground)  | Try pom XML in the browser            |
 
 ## License
 
