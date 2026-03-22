@@ -1,12 +1,26 @@
+import type { Metadata } from "next";
 import { Head } from "nextra/components";
+import { siteDescription, siteName, siteUrl } from "./siteConfig";
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "pom",
-    template: "%s - pom",
+    default: siteName,
+    template: `%s - ${siteName}`,
   },
-  description:
-    "A library for declaratively describing PowerPoint presentations in TypeScript",
+  description: siteDescription,
+  openGraph: {
+    type: "website",
+    siteName,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary",
+    description: siteDescription,
+  },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function RootLayout({
