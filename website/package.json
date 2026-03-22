@@ -2,7 +2,7 @@
   "name": "pom-docs",
   "private": true,
   "scripts": {
-    "prebuild": "cp -r ../docs/images public/images",
+    "prebuild": "mkdir -p public && cp -r ../docs/images public/images",
     "dev": "next --turbopack",
     "build": "next build",
     "start": "next start"
