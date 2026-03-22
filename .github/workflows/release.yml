@@ -32,7 +32,11 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: npx changeset publish
-          version: npx changeset version && npm install --package-lock-only
+          version: |
+            npx changeset version
+            if ! git diff --quiet -- package.json; then
+              npm install --package-lock-only
+            fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
