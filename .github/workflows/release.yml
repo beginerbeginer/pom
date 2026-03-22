@@ -28,7 +28,17 @@ jobs:
       - run: npm run build
       - run: npm run test:run
 
+      - name: Check for changesets
+        id: changesets-check
+        run: |
+          if find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' -print -quit 2>/dev/null | grep -q .; then
+            echo "has_changesets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changesets=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Release PR or Publish
+        if: steps.changesets-check.outputs.has_changesets == 'true'
         uses: changesets/action@v1
         with:
           publish: npx changeset publish
@@ -39,4 +49,10 @@ jobs:
             fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Publish (after Release PR merge)
+        if: steps.changesets-check.outputs.has_changesets == 'false'
+        run: npx changeset publish
+        env:
           NPM_CONFIG_PROVENANCE: true
