@@ -7,4 +7,5 @@ export default withNextra({
   eslint: {
     ignoreDuringBuilds: true,
   },
+  serverExternalPackages: ["@resvg/resvg-js", "@hirokisakabe/pom"],
 });

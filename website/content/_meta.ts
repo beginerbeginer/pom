@@ -4,4 +4,8 @@ export default {
   "master-slide": "スライドマスター",
   serverless: "サーバーレス環境",
   "llm-integration": "LLM 連携",
+  playground: {
+    title: "Playground",
+    href: "/playground",
+  },
 };
