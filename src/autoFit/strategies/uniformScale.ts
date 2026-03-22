@@ -1,5 +1,5 @@
 import type { POMNode } from "../../types.ts";
-import { walkPOMTree } from "../walkTree.ts";
+import { walkPOMTree } from "../../shared/walkTree.ts";
 
 const MIN_SCALE = 0.5;
 

@@ -1,6 +1,6 @@
 import type { POMNode } from "../types.ts";
 import { calcYogaLayout } from "../calcYogaLayout/calcYogaLayout.ts";
-import { freeYogaTree } from "./freeYogaTree.ts";
+import { freeYogaTree } from "../shared/freeYogaTree.ts";
 import { reduceTableRowHeight } from "./strategies/reduceTableRowHeight.ts";
 import { reduceFontSize } from "./strategies/reduceFontSize.ts";
 import { reduceGapAndPadding } from "./strategies/reduceGapAndPadding.ts";
