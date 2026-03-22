@@ -1,6 +1,5 @@
 import type { POMNode, PositionedNode } from "../types.ts";
-import { getImageData } from "../shared/measureImage.ts";
-import { rasterizeIcon } from "../icons/index.ts";
+import { getNodeDef } from "../registry/index.ts";
 
 /**
  * POMNode ツリーを絶対座標付きの PositionedNode ツリーに変換する
@@ -22,227 +21,57 @@ export function toPositioned(
   const absoluteX = parentX + layout.left;
   const absoluteY = parentY + layout.top;
 
-  switch (pom.type) {
-    case "text":
-    case "ul":
-    case "ol": {
+  const def = getNodeDef(pom.type);
+
+  // ノード固有のカスタム変換がある場合はそれを使用
+  if (def.toPositioned) {
+    return def.toPositioned(pom, absoluteX, absoluteY, layout);
+  }
+
+  // category ベースのデフォルト処理
+  switch (def.category) {
+    case "leaf":
       return {
         ...pom,
         x: absoluteX,
         y: absoluteY,
         w: layout.width,
         h: layout.height,
-      };
+      } as PositionedNode;
+
+    case "single-child": {
+      const boxNode = pom as Extract<POMNode, { type: "box" }>;
+      return {
+        ...boxNode,
+        x: absoluteX,
+        y: absoluteY,
+        w: layout.width,
+        h: layout.height,
+        children: toPositioned(boxNode.children, absoluteX, absoluteY),
+      } as PositionedNode;
     }
-    case "image": {
-      const imageData = getImageData(pom.src);
+
+    case "multi-child": {
+      const containerNode = pom as Extract<
+        POMNode,
+        { type: "vstack" | "hstack" }
+      >;
       return {
-        ...pom,
+        ...containerNode,
         x: absoluteX,
         y: absoluteY,
         w: layout.width,
         h: layout.height,
-        imageData,
-      };
-    }
-    case "table": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "shape": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "chart": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "timeline": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "matrix": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "tree": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "flow": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "processArrow": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "pyramid": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-      };
-    }
-    case "box": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        children: toPositioned(pom.children, absoluteX, absoluteY),
-      };
-    }
-    case "vstack": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        children: pom.children.map((child) =>
+        children: containerNode.children.map((child) =>
           toPositioned(child, absoluteX, absoluteY),
         ),
-      };
+      } as PositionedNode;
     }
-    case "hstack": {
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        children: pom.children.map((child) =>
-          toPositioned(child, absoluteX, absoluteY),
-        ),
-      };
-    }
-    case "icon": {
-      const rasterSize = Math.max(
-        Math.ceil(layout.width),
-        Math.ceil(layout.height),
-        pom.size ?? 24,
+
+    case "absolute-child":
+      // absolute-child (layer) は必ずカスタム toPositioned を持つべき
+      throw new Error(
+        `Node type "${pom.type}" with category "absolute-child" must have a custom toPositioned`,
       );
-      const iconImageData = rasterizeIcon(
-        pom.name,
-        rasterSize,
-        pom.color ?? "#000000",
-      );
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        iconImageData,
-      };
-    }
-    case "line": {
-      // line ノードは絶対座標（x1, y1, x2, y2）を持つため、
-      // yogaNode の座標ではなく自身の座標からバウンディングボックスを計算
-      return {
-        ...pom,
-        x: Math.min(pom.x1, pom.x2),
-        y: Math.min(pom.y1, pom.y2),
-        w: Math.abs(pom.x2 - pom.x1),
-        h: Math.abs(pom.y2 - pom.y1),
-      };
-    }
-    case "layer": {
-      // layer の子要素は layer 内の相対座標（child.x, child.y）を持つ
-      // layer の絶対座標に加算してスライド上の絶対座標に変換
-      return {
-        ...pom,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        children: pom.children.map((child) => {
-          // layer 内での子要素の絶対座標（child.x, child.y がない場合は 0）
-          const childX = child.x ?? 0;
-          const childY = child.y ?? 0;
-
-          // line ノードは特別な処理が必要
-          // x1, y1, x2, y2 は layer 内の相対座標として扱い、layer の座標を加算
-          if (child.type === "line") {
-            const lineAbsoluteX = absoluteX + childX;
-            const lineAbsoluteY = absoluteY + childY;
-            const adjustedX1 = child.x1 + lineAbsoluteX;
-            const adjustedY1 = child.y1 + lineAbsoluteY;
-            const adjustedX2 = child.x2 + lineAbsoluteX;
-            const adjustedY2 = child.y2 + lineAbsoluteY;
-
-            return {
-              ...child,
-              x1: adjustedX1,
-              y1: adjustedY1,
-              x2: adjustedX2,
-              y2: adjustedY2,
-              x: Math.min(adjustedX1, adjustedX2),
-              y: Math.min(adjustedY1, adjustedY2),
-              w: Math.abs(adjustedX2 - adjustedX1),
-              h: Math.abs(adjustedY2 - adjustedY1),
-            };
-          }
-
-          // その他のノードは通常の処理
-          // Yoga で計算された子要素の相対座標を取得
-          const childLayout = child.yogaNode.getComputedLayout();
-          // 正しい親座標を計算: layer の座標 + child.x - Yoga の相対座標
-          // こうすることで toPositioned 内で:
-          // absoluteX = adjustedParentX + childLayout.left
-          //           = (absoluteX + child.x - childLayout.left) + childLayout.left
-          //           = absoluteX + child.x
-          // となり、子要素とその内部の子要素が正しい座標で配置される
-          const adjustedParentX = absoluteX + childX - childLayout.left;
-          const adjustedParentY = absoluteY + childY - childLayout.top;
-
-          return toPositioned(child, adjustedParentX, adjustedParentY);
-        }),
-      };
-    }
   }
 }

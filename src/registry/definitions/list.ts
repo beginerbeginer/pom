@@ -1,0 +1,65 @@
+import type { POMNode } from "../../types.ts";
+import type { NodeDefinition, Yoga } from "../types.ts";
+import type { Node as YogaNode } from "yoga-layout";
+import { measureText } from "../../calcYogaLayout/measureText.ts";
+import { measureFontLineHeightRatio } from "../../calcYogaLayout/fontLoader.ts";
+import { renderUlNode, renderOlNode } from "../../renderPptx/nodes/list.ts";
+
+function applyListYogaStyle(node: POMNode, yn: YogaNode, yoga: Yoga) {
+  const n = node as Extract<POMNode, { type: "ul" | "ol" }>;
+  const combinedText = n.items.map((item) => item.text).join("\n");
+  const fontSizePx = n.fontSize ?? 24;
+  const fontFamily = "Noto Sans JP";
+  const fontWeight = n.bold ? "bold" : "normal";
+  const spacingMultiple = n.lineHeight ?? 1.3;
+
+  const fontMetricsRatio = measureFontLineHeightRatio(fontWeight);
+  const lineHeight = fontMetricsRatio * spacingMultiple;
+
+  // バレット/番号のインデント幅（pptxgenjs DEF_BULLET_MARGIN = 27pt = 36px @96dpi）
+  const bulletIndentPx = 36;
+
+  yn.setMeasureFunc((width, widthMode) => {
+    const maxWidthPx = (() => {
+      switch (widthMode) {
+        case yoga.MEASURE_MODE_UNDEFINED:
+          return Number.POSITIVE_INFINITY;
+        case yoga.MEASURE_MODE_EXACTLY:
+        case yoga.MEASURE_MODE_AT_MOST:
+          return width;
+      }
+    })();
+
+    const textMaxWidthPx = Math.max(0, maxWidthPx - bulletIndentPx);
+
+    const { widthPx, heightPx } = measureText(combinedText, textMaxWidthPx, {
+      fontFamily,
+      fontSizePx,
+      lineHeight,
+      fontWeight,
+    });
+
+    return {
+      width: widthPx + bulletIndentPx,
+      height: heightPx,
+    };
+  });
+}
+
+export const ulNodeDef: NodeDefinition = {
+  type: "ul",
+  category: "leaf",
+  applyYogaStyle: applyListYogaStyle,
+  render(node, ctx) {
+    renderUlNode(node as Extract<typeof node, { type: "ul" }>, ctx);
+  },
+};
+
+export const olNodeDef: NodeDefinition = {
+  type: "ol",
+  category: "leaf",
+  applyYogaStyle: applyListYogaStyle,
+  render(node, ctx) {
+    renderOlNode(node as Extract<typeof node, { type: "ol" }>, ctx);
+  },
+};

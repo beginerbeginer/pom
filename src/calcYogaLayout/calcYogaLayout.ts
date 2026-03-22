@@ -1,33 +1,8 @@
-import type { POMNode, VStackNode, HStackNode } from "../types.ts";
+import type { POMNode } from "../types.ts";
 import { Node as YogaNode } from "yoga-layout";
 import { loadYoga } from "yoga-layout/load";
-import { measureText } from "./measureText.ts";
-import { measureFontLineHeightRatio } from "./fontLoader.ts";
-import { measureImage, prefetchImageSize } from "../shared/measureImage.ts";
-import { calcTableIntrinsicSize } from "../shared/tableUtils.ts";
-import {
-  measureProcessArrow,
-  measureTimeline,
-  measureMatrix,
-  measureTree,
-  measureFlow,
-  measurePyramid,
-} from "./measureCompositeNodes.ts";
-
-/**
- * コンポジットノードの最小スケール閾値。
- * renderPptx/utils/scaleToFit.ts の MIN_SCALE_THRESHOLD と同じ値を維持すること。
- */
-const MIN_SCALE_THRESHOLD = 0.5;
-
-/** 制約付きサイズを閾値でクランプする */
-function constrainWithMinScale(
-  intrinsicSize: number,
-  availableSize: number,
-): number {
-  const minSize = intrinsicSize * MIN_SCALE_THRESHOLD;
-  return Math.max(minSize, Math.min(intrinsicSize, availableSize));
-}
+import { prefetchImageSize } from "../shared/measureImage.ts";
+import { getNodeDef } from "../registry/index.ts";
 
 /**
  * POMNode ツリーを Yoga でレイアウト計算する
@@ -77,17 +52,30 @@ function collectImageSources(node: POMNode): string[] {
       sources.push(n.backgroundImage.src);
     }
 
-    if (n.type === "image") {
-      sources.push(n.src);
-    } else if (n.type === "box") {
-      traverse(n.children);
-    } else if (n.type === "vstack" || n.type === "hstack") {
-      for (const child of n.children) {
-        traverse(child);
+    const def = getNodeDef(n.type);
+
+    // ノード固有の画像ソース収集
+    if (def.collectImageSources) {
+      sources.push(...def.collectImageSources(n));
+    }
+
+    // 子要素の再帰
+    switch (def.category) {
+      case "single-child": {
+        const boxNode = n as Extract<POMNode, { type: "box" }>;
+        traverse(boxNode.children);
+        break;
       }
-    } else if (n.type === "layer") {
-      for (const child of n.children) {
-        traverse(child);
+      case "multi-child":
+      case "absolute-child": {
+        const containerNode = n as Extract<
+          POMNode,
+          { type: "vstack" | "hstack" | "layer" }
+        >;
+        for (const child of containerNode.children) {
+          traverse(child);
+        }
+        break;
       }
     }
   }
@@ -140,38 +128,26 @@ async function buildPomWithYogaTree(
 
   parentYoga.insertChild(yn, parentYoga.getChildCount());
 
-  switch (node.type) {
-    case "box": {
-      await buildPomWithYogaTree(node.children, yn, node);
+  const def = getNodeDef(node.type);
+
+  switch (def.category) {
+    case "single-child": {
+      const boxNode = node as Extract<POMNode, { type: "box" }>;
+      await buildPomWithYogaTree(boxNode.children, yn, node);
       break;
     }
-    case "vstack":
-    case "hstack": {
-      for (const child of node.children) {
+    case "multi-child":
+    case "absolute-child": {
+      const containerNode = node as Extract<
+        POMNode,
+        { type: "vstack" | "hstack" | "layer" }
+      >;
+      for (const child of containerNode.children) {
         await buildPomWithYogaTree(child, yn, node);
       }
       break;
     }
-    case "layer": {
-      // layer の子要素は絶対配置なので、各子要素のサイズ計算のみ行う
-      // x, y は toPositioned で適用される
-      for (const child of node.children) {
-        await buildPomWithYogaTree(child, yn, node);
-      }
-      break;
-    }
-    case "text":
-    case "image":
-    case "table":
-    case "shape":
-    case "timeline":
-    case "matrix":
-    case "tree":
-    case "flow":
-    case "processArrow":
-    case "pyramid":
-    case "line":
-    case "icon":
+    case "leaf":
       // 子要素なし
       break;
   }
@@ -308,369 +284,9 @@ async function applyStyleToYogaNode(node: POMNode, yn: YogaNode) {
     }
   }
 
-  switch (node.type) {
-    case "box":
-      // 特になし
-      break;
-
-    case "vstack": {
-      yn.setFlexDirection(yoga.FLEX_DIRECTION_COLUMN);
-      applyFlexProperties(node, yn, yoga);
-      break;
-    }
-
-    case "hstack": {
-      yn.setFlexDirection(yoga.FLEX_DIRECTION_ROW);
-      applyFlexProperties(node, yn, yoga);
-      break;
-    }
-
-    case "text":
-      {
-        const text = node.text;
-        const fontSizePx = node.fontSize ?? 24;
-        const fontFamily = "Noto Sans JP";
-        const fontWeight = node.bold ? "bold" : "normal";
-        const lineHeight = 1.3;
-
-        yn.setMeasureFunc((width, widthMode) => {
-          const maxWidthPx = (() => {
-            switch (widthMode) {
-              case yoga.MEASURE_MODE_UNDEFINED:
-                return Number.POSITIVE_INFINITY;
-              case yoga.MEASURE_MODE_EXACTLY:
-              case yoga.MEASURE_MODE_AT_MOST:
-                return width;
-            }
-          })();
-
-          const { widthPx, heightPx } = measureText(text, maxWidthPx, {
-            fontFamily,
-            fontSizePx,
-            lineHeight,
-            fontWeight,
-          });
-
-          return {
-            width: widthPx,
-            height: heightPx,
-          };
-        });
-      }
-      break;
-
-    case "ul":
-    case "ol":
-      {
-        const combinedText = node.items.map((item) => item.text).join("\n");
-        const fontSizePx = node.fontSize ?? 24;
-        const fontFamily = "Noto Sans JP";
-        const fontWeight = node.bold ? "bold" : "normal";
-        const spacingMultiple = node.lineHeight ?? 1.3;
-
-        // PowerPoint の lineHeight はフォントメトリクス（ascent + descent）に
-        // 対する倍率。fontSizePx × fontMetricsRatio × spacingMultiple で計算する。
-        const fontMetricsRatio = measureFontLineHeightRatio(fontWeight);
-        const lineHeight = fontMetricsRatio * spacingMultiple;
-
-        // バレット/番号のインデント幅（pptxgenjs DEF_BULLET_MARGIN = 27pt = 36px @96dpi）
-        const bulletIndentPx = 36;
-
-        yn.setMeasureFunc((width, widthMode) => {
-          const maxWidthPx = (() => {
-            switch (widthMode) {
-              case yoga.MEASURE_MODE_UNDEFINED:
-                return Number.POSITIVE_INFINITY;
-              case yoga.MEASURE_MODE_EXACTLY:
-              case yoga.MEASURE_MODE_AT_MOST:
-                return width;
-            }
-          })();
-
-          // バレットインデント分を除いたテキスト利用可能幅で計測
-          const textMaxWidthPx = Math.max(0, maxWidthPx - bulletIndentPx);
-
-          const { widthPx, heightPx } = measureText(
-            combinedText,
-            textMaxWidthPx,
-            {
-              fontFamily,
-              fontSizePx,
-              lineHeight,
-              fontWeight,
-            },
-          );
-
-          return {
-            width: widthPx + bulletIndentPx,
-            height: heightPx,
-          };
-        });
-      }
-      break;
-
-    case "image":
-      {
-        const src = node.src;
-
-        yn.setMeasureFunc(() => {
-          // 画像の実際のサイズを取得
-          const { widthPx, heightPx } = measureImage(src);
-
-          return {
-            width: widthPx,
-            height: heightPx,
-          };
-        });
-      }
-      break;
-
-    case "icon":
-      {
-        const size = node.size ?? 24;
-        yn.setMeasureFunc(() => ({
-          width: size,
-          height: size,
-        }));
-      }
-      break;
-
-    case "table":
-      {
-        yn.setMeasureFunc(() => {
-          const { width, height } = calcTableIntrinsicSize(node);
-
-          return {
-            width,
-            height,
-          };
-        });
-      }
-      break;
-
-    case "shape":
-      {
-        if (node.text) {
-          // テキストがある場合、テキストサイズを測定
-          const text = node.text;
-          const fontSizePx = node.fontSize ?? 24;
-          const fontFamily = node.fontFamily ?? "Noto Sans JP";
-          const fontWeight = node.bold ? "bold" : "normal";
-          const lineHeight = node.lineHeight ?? 1.3;
-
-          yn.setMeasureFunc((width, widthMode) => {
-            const maxWidthPx = (() => {
-              switch (widthMode) {
-                case yoga.MEASURE_MODE_UNDEFINED:
-                  return Number.POSITIVE_INFINITY;
-                case yoga.MEASURE_MODE_EXACTLY:
-                case yoga.MEASURE_MODE_AT_MOST:
-                  return width;
-              }
-            })();
-
-            const { widthPx, heightPx } = measureText(text, maxWidthPx, {
-              fontFamily,
-              fontSizePx,
-              lineHeight,
-              fontWeight,
-            });
-
-            return {
-              width: widthPx,
-              height: heightPx,
-            };
-          });
-        }
-        // テキストがない場合は、明示的にサイズが指定されていることを期待
-      }
-      break;
-
-    case "processArrow":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measureProcessArrow(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "pyramid":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measurePyramid(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "timeline":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measureTimeline(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "matrix":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measureMatrix(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "tree":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measureTree(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "flow":
-      {
-        yn.setMeasureFunc((width, widthMode, height, heightMode) => {
-          const intrinsic = measureFlow(node);
-          return {
-            width:
-              widthMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.width, width)
-                : intrinsic.width,
-            height:
-              heightMode !== yoga.MEASURE_MODE_UNDEFINED
-                ? constrainWithMinScale(intrinsic.height, height)
-                : intrinsic.height,
-          };
-        });
-      }
-      break;
-
-    case "line":
-      // line ノードは絶対座標を使用するため、Yoga レイアウトではサイズ 0 として扱う
-      yn.setWidth(0);
-      yn.setHeight(0);
-      break;
-
-    case "layer":
-      // layer は子を絶対配置するコンテナ
-      // サイズは明示的に指定されることを期待
-      break;
-  }
-}
-
-/**
- * vstack/hstack 共通の Flex プロパティを適用する
- */
-function applyFlexProperties(
-  node: VStackNode | HStackNode,
-  yn: YogaNode,
-  yoga: Yoga,
-): void {
-  if (node.gap !== undefined) {
-    yn.setGap(yoga.GUTTER_ROW, node.gap);
-    yn.setGap(yoga.GUTTER_COLUMN, node.gap);
-  }
-
-  if (node.alignItems !== undefined) {
-    switch (node.alignItems) {
-      case "start":
-        yn.setAlignItems(yoga.ALIGN_FLEX_START);
-        break;
-      case "center":
-        yn.setAlignItems(yoga.ALIGN_CENTER);
-        break;
-      case "end":
-        yn.setAlignItems(yoga.ALIGN_FLEX_END);
-        break;
-      case "stretch":
-        yn.setAlignItems(yoga.ALIGN_STRETCH);
-        break;
-    }
-  }
-
-  if (node.justifyContent !== undefined) {
-    switch (node.justifyContent) {
-      case "start":
-        yn.setJustifyContent(yoga.JUSTIFY_FLEX_START);
-        break;
-      case "center":
-        yn.setJustifyContent(yoga.JUSTIFY_CENTER);
-        break;
-      case "end":
-        yn.setJustifyContent(yoga.JUSTIFY_FLEX_END);
-        break;
-      case "spaceBetween":
-        yn.setJustifyContent(yoga.JUSTIFY_SPACE_BETWEEN);
-        break;
-      case "spaceAround":
-        yn.setJustifyContent(yoga.JUSTIFY_SPACE_AROUND);
-        break;
-      case "spaceEvenly":
-        yn.setJustifyContent(yoga.JUSTIFY_SPACE_EVENLY);
-        break;
-    }
-  }
-
-  if (node.flexWrap !== undefined) {
-    switch (node.flexWrap) {
-      case "nowrap":
-        yn.setFlexWrap(yoga.WRAP_NO_WRAP);
-        break;
-      case "wrap":
-        yn.setFlexWrap(yoga.WRAP_WRAP);
-        break;
-      case "wrapReverse":
-        yn.setFlexWrap(yoga.WRAP_WRAP_REVERSE);
-        break;
-    }
+  // ノード固有のスタイル適用（measureFunc 等）
+  const def = getNodeDef(node.type);
+  if (def.applyYogaStyle) {
+    await def.applyYogaStyle(node, yn, yoga);
   }
 }
