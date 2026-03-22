@@ -8,7 +8,7 @@ export async function copySvgAsPng(svgString: string): Promise<void> {
     typeof ClipboardItem === "undefined"
   ) {
     throw new Error(
-      "お使いのブラウザはクリップボードへの画像コピーに対応していません",
+      "Your browser does not support copying images to the clipboard",
     );
   }
 

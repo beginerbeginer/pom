@@ -60,8 +60,7 @@ export function AppLayout() {
     try {
       await downloadPptx(xmlValue);
     } catch (e) {
-      const message =
-        e instanceof Error ? e.message : "ダウンロードに失敗しました";
+      const message = e instanceof Error ? e.message : "Download failed";
       setErrors([{ type: "unknown", message }]);
     } finally {
       setIsDownloading(false);
@@ -98,9 +97,7 @@ export function AppLayout() {
       if (e instanceof DOMException && e.name === "AbortError") {
         return;
       }
-      setErrors([
-        { type: "unknown", message: "プレビューの生成に失敗しました" },
-      ]);
+      setErrors([{ type: "unknown", message: "Failed to generate preview" }]);
     } finally {
       if (!controller.signal.aborted) {
         setIsLoading(false);
@@ -185,13 +182,13 @@ export function AppLayout() {
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
           >
             <BookOpen className="size-4" />
-            <span>ドキュメント</span>
+            <span>Docs</span>
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors">
                 <ChevronDown className="size-4" />
-                <span>サンプル</span>
+                <span>Samples</span>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -211,7 +208,7 @@ export function AppLayout() {
             href="https://github.com/hirokisakabe/pom"
             target="_blank"
             rel="noopener noreferrer"
-            title="XML→PPTX 変換ライブラリ"
+            title="XML to PPTX conversion library"
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
           >
             <ExternalLink className="size-4" />
@@ -221,7 +218,7 @@ export function AppLayout() {
             href="https://github.com/hirokisakabe/pptx-glimpse"
             target="_blank"
             rel="noopener noreferrer"
-            title="PPTX→SVG 変換ライブラリ"
+            title="PPTX to SVG conversion library"
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
           >
             <ExternalLink className="size-4" />
@@ -233,7 +230,7 @@ export function AppLayout() {
             disabled={isLoading}
           >
             <RefreshCw className="size-4" />
-            <span>プレビュー更新</span>
+            <span>Refresh Preview</span>
           </button>
           <button
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors disabled:opacity-50"
@@ -241,7 +238,7 @@ export function AppLayout() {
             disabled={isDownloading}
           >
             <Download className="size-4" />
-            <span>ダウンロード</span>
+            <span>Download</span>
           </button>
           <XmlReferencePanel />
         </div>
@@ -274,15 +271,15 @@ export function AppLayout() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>サンプルに置き換えますか？</AlertDialogTitle>
+            <AlertDialogTitle>Replace with sample?</AlertDialogTitle>
             <AlertDialogDescription>
-              現在のエディタの内容が失われます。サンプルテンプレートに置き換えてもよろしいですか？
+              Current editor content will be lost. Replace with sample template?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>キャンセル</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmTemplate}>
-              置き換える
+              Replace
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

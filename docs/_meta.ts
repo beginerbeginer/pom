@@ -1,9 +1,9 @@
 export default {
-  index: "はじめに",
-  nodes: "ノードリファレンス",
-  "master-slide": "スライドマスター",
-  serverless: "サーバーレス環境",
-  "llm-integration": "LLM 連携",
+  index: "Introduction",
+  nodes: "Node Reference",
+  "master-slide": "Slide Master",
+  serverless: "Serverless",
+  "llm-integration": "LLM Integration",
   playground: {
     title: "Playground",
     href: "/playground",

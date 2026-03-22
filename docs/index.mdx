@@ -1,26 +1,26 @@
 # pom
 
-**pom (PowerPoint Object Model)** は、TypeScript で PowerPoint プレゼンテーションを宣言的に記述するためのライブラリです。XML を入力として、編集可能な PowerPoint ファイル (.pptx) を生成します。
+**pom (PowerPoint Object Model)** is a library for declaratively describing PowerPoint presentations in TypeScript. It takes XML as input and generates editable PowerPoint files (.pptx).
 
-[Playground で試す →](/playground)
+[Try in Playground →](/playground)
 
 ![Playground](./images/playground.png)
 
-## 特徴
+## Features
 
-- **AI Friendly** — LLM のコード生成に適したシンプルな XML 構造
-- **Declarative** — XML でスライドを記述。命令的な API 呼び出し不要
-- **Flexible Layout** — yoga-layout による Flexbox スタイルのレイアウト（VStack / HStack / Box）
-- **Rich Nodes** — 15 種類の組み込みノード: チャート、フローチャート、テーブル、タイムラインなど
-- **Schema-validated** — Zod スキーマによるランタイムバリデーション
-- **PowerPoint Native** — ネイティブの PowerPoint シェイプ機能をフル活用
-- **Pixel Units** — 直感的なピクセル単位のサイズ指定（内部で 96 DPI でインチに変換）
-- **Master Slide** — ヘッダー、フッター、ページ番号を一度定義すれば全スライドに適用
-- **Accurate Text Measurement** — opentype.js とバンドルされた Noto Sans JP フォントによる正確なテキスト計測
+- **AI Friendly** — Simple XML structure suited for LLM code generation
+- **Declarative** — Describe slides in XML. No imperative API calls needed
+- **Flexible Layout** — Flexbox-style layout powered by yoga-layout (VStack / HStack / Box)
+- **Rich Nodes** — 15 built-in node types: charts, flowcharts, tables, timelines, and more
+- **Schema-validated** — Runtime validation with Zod schemas
+- **PowerPoint Native** — Full use of native PowerPoint shape features
+- **Pixel Units** — Intuitive pixel-based sizing (internally converted to inches at 96 DPI)
+- **Master Slide** — Define headers, footers, and page numbers once and apply to all slides
+- **Accurate Text Measurement** — Precise text measurement with opentype.js and bundled Noto Sans JP font
 
-## クイックスタート
+## Quick Start
 
-Node.js 18 以上が必要です。
+Requires Node.js 18 or later.
 
 ```bash
 npm install @hirokisakabe/pom
@@ -40,50 +40,50 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 });
 await pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
-## ノード一覧
+## Node List
 
-| ノード       | 説明                                               |
-| ------------ | -------------------------------------------------- |
-| Text         | テキスト表示（フォントスタイル、装飾対応）         |
-| Ul           | 箇条書きリスト                                     |
-| Ol           | 番号付きリスト                                     |
-| Image        | 画像（ファイルパス、URL、base64）                  |
-| Table        | テーブル                                           |
-| Shape        | PowerPoint シェイプ（178 種類）                    |
-| Chart        | チャート（棒、折れ線、円、面、ドーナツ、レーダー） |
-| Timeline     | タイムライン / ロードマップ                        |
-| Matrix       | 2x2 マトリクス                                     |
-| Tree         | 組織図、決定木                                     |
-| Flow         | フローチャート                                     |
-| ProcessArrow | シェブロン型プロセス図                             |
-| Pyramid      | ピラミッド図                                       |
-| Line         | 線・矢印                                           |
-| Layer        | 絶対座標コンテナ                                   |
-| Box          | 単一子要素のコンテナ                               |
-| VStack       | 縦方向スタックレイアウト                           |
-| HStack       | 横方向スタックレイアウト                           |
-| Icon         | Lucide アイコン                                    |
+| Node         | Description                                   |
+| ------------ | --------------------------------------------- |
+| Text         | Text display (font styles, decorations)       |
+| Ul           | Bullet list                                   |
+| Ol           | Numbered list                                 |
+| Image        | Image (file path, URL, base64)                |
+| Table        | Table                                         |
+| Shape        | PowerPoint shape (178 types)                  |
+| Chart        | Chart (bar, line, pie, area, doughnut, radar) |
+| Timeline     | Timeline / roadmap                            |
+| Matrix       | 2x2 matrix                                    |
+| Tree         | Org chart, decision tree                      |
+| Flow         | Flowchart                                     |
+| ProcessArrow | Chevron-style process diagram                 |
+| Pyramid      | Pyramid diagram                               |
+| Line         | Line / arrow                                  |
+| Layer        | Absolute positioning container                |
+| Box          | Single-child container                        |
+| VStack       | Vertical stack layout                         |
+| HStack       | Horizontal stack layout                       |
+| Icon         | Lucide icon                                   |
 
-詳細は[ノードリファレンス](/nodes)をご覧ください。
+See the [Node Reference](/nodes) for details.
 
 ## Auto-Fit
 
-コンテンツがスライドの高さを超える場合、pom は自動的に収まるように調整します（デフォルトで有効）。
+When content exceeds the slide height, pom automatically adjusts it to fit (enabled by default).
 
-調整の優先順位:
+Adjustment priority:
 
-1. テーブル行の高さを縮小
-2. テキストのフォントサイズを縮小
-3. gap / padding を縮小
-4. 均一スケーリング（フォールバック）
+1. Reduce table row heights
+2. Reduce text font sizes
+3. Reduce gap / padding
+4. Uniform scaling (fallback)
 
-無効にする場合:
+To disable:
 
 ```typescript
 const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 ```
 
-## リンク
+## Links
 
 - [GitHub](https://github.com/hirokisakabe/pom)
 - [npm](https://www.npmjs.com/package/@hirokisakabe/pom)

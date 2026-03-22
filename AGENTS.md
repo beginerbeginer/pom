@@ -2,129 +2,134 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## プロジェクト概要
+## Project Overview
 
-pom (PowerPoint Object Model) は、TypeScript で PowerPoint プレゼンテーションを宣言的に記述するためのライブラリ。Flexbox スタイルのレイアウトを yoga-layout で計算し、pptxgenjs で PPTX を生成する。
+pom (PowerPoint Object Model) is a library for declaratively describing PowerPoint presentations in TypeScript. It calculates Flexbox-style layouts with yoga-layout and generates PPTX files with pptxgenjs.
 
-## コマンド
+## Commands
 
 ```bash
-npm run build             # TypeScriptコンパイル
+npm run build             # TypeScript compilation
 npm run lint              # ESLint
-npm run fmt               # Prettierフォーマット
-npm run fmt:check         # フォーマットチェック
-npm run typecheck         # 型チェック
-npm run test:run          # テスト実行
-npm run test              # テスト（watchモード）
-npx tsx main.ts           # サンプル実行（sample.pptx生成）
-npm run vrt:docker              # VRT実行（Docker環境）
-npm run vrt:docker:update       # VRTベースライン更新（Docker環境）
-npm run preview:docker          # プレビュー（main.tsのPPTXをPNG化）
-npm run docs:images:docker        # ドキュメント用ノード画像生成（Docker環境）
-npm run docs:images:docker:update # ドキュメント用ノード画像リビルド＆生成
+npm run fmt               # Prettier formatting
+npm run fmt:check         # Format check
+npm run typecheck         # Type checking
+npm run test:run          # Run tests
+npm run test              # Tests (watch mode)
+npx tsx main.ts           # Run sample (generates sample.pptx)
+npm run vrt:docker              # Run VRT (Docker environment)
+npm run vrt:docker:update       # Update VRT baseline (Docker environment)
+npm run preview:docker          # Preview (convert main.ts PPTX to PNG)
+npm run docs:images:docker        # Generate documentation node images (Docker environment)
+npm run docs:images:docker:update # Rebuild & generate documentation node images
 ```
 
-## ディレクトリ構造
+## Directory Structure
 
 ```
 src/
-├── index.ts              # 公開API
-├── types.ts              # 型定義
-├── buildPptx.ts          # メイン処理（XML → parseXml → レイアウト → PPTX）
-├── shared/               # 複数パイプラインステージが使う共有コード
-│   ├── measureImage.ts   # 画像サイズ計測・キャッシュ
-│   └── tableUtils.ts     # テーブルサイズ計算ユーティリティ
-├── parseXml/             # XML入力パーサー（fast-xml-parser、内部用）
-│   ├── parseXml.ts       # XMLパーサー本体
-│   └── inputSchema.ts    # 入力スキーマ（Zod、内部用）
-├── calcYogaLayout/       # レイアウト計算（yoga-layout）
-├── toPositioned/         # 絶対座標変換
-└── renderPptx/           # PPTX描画（pptxgenjs）
+├── index.ts              # Public API
+├── types.ts              # Type definitions
+├── buildPptx.ts          # Main processing (XML → parseXml → layout → PPTX)
+├── shared/               # Shared code used across multiple pipeline stages
+│   ├── measureImage.ts   # Image size measurement & caching
+│   └── tableUtils.ts     # Table size calculation utilities
+├── parseXml/             # XML input parser (fast-xml-parser, internal)
+│   ├── parseXml.ts       # XML parser core
+│   └── inputSchema.ts    # Input schema (Zod, internal)
+├── calcYogaLayout/       # Layout calculation (yoga-layout)
+├── toPositioned/         # Absolute coordinate conversion
+└── renderPptx/           # PPTX rendering (pptxgenjs)
 
 vrt/                      # Visual Regression Test
-preview/                  # プレビュー基盤（Claude Code用）
+preview/                  # Preview infrastructure (for Claude Code)
 
-docs/                             # ドキュメント（Single Source of Truth、website/content からシンボリックリンク）
-├── nodes.md                    # ノードリファレンス（画像付き）
-├── llm-integration.md          # LLM向けXMLリファレンス
-└── images/                     # ノードタイプ別サンプル画像（自動生成）
+docs/                             # Documentation (Single Source of Truth, symlinked from website/content)
+├── nodes.md                    # Node reference (with images)
+├── llm-integration.md          # XML reference for LLMs
+└── images/                     # Sample images per node type (auto-generated)
 
-scripts/docs-images/              # ドキュメント用画像生成スクリプト
-├── generateNodeImages.ts       # メイン実行スクリプト
-├── config.ts                   # ノードタイプ一覧・出力先設定
-└── sampleNodes.ts              # 各ノードのサンプルXML
+scripts/docs-images/              # Documentation image generation scripts
+├── generateNodeImages.ts       # Main execution script
+├── config.ts                   # Node type list & output settings
+└── sampleNodes.ts              # Sample XML for each node
 ```
 
-## アーキテクチャ
+## Architecture
 
-PPTX 生成は3段階のパイプライン:
+PPTX generation follows a 3-stage pipeline:
 
-1. **calcYogaLayout** (`src/calcYogaLayout/`) - POMNode ツリーを走査し、yoga-layout でレイアウト計算。各ノードに `yogaNode` をセット
-2. **toPositioned** (`src/toPositioned/`) - 計算済みレイアウトから絶対座標を持つ PositionedNode ツリーを生成
-3. **renderPptx** (`src/renderPptx/`) - PositionedNode を pptxgenjs API に変換してスライド描画
+1. **calcYogaLayout** (`src/calcYogaLayout/`) - Traverses the POMNode tree and calculates layout with yoga-layout. Sets `yogaNode` on each node
+2. **toPositioned** (`src/toPositioned/`) - Generates a PositionedNode tree with absolute coordinates from the calculated layout
+3. **renderPptx** (`src/renderPptx/`) - Converts PositionedNodes to pptxgenjs API calls for slide rendering
 
-### 公開API
+### Public API
 
-- `buildPptx(xml: string, slideSize, options?)` - XML 文字列を受け取り PPTX を生成するメイン関数
-- `TextMeasurementMode` - テキスト計測モード（`"opentype"` | `"fallback"` | `"auto"`）
-- `SlideMasterOptions` - スライドマスター設定（title, background, margin, objects, slideNumber）
+- `buildPptx(xml: string, slideSize, options?)` - Main function that takes an XML string and generates PPTX
+- `TextMeasurementMode` - Text measurement mode (`"opentype"` | `"fallback"` | `"auto"`)
+- `SlideMasterOptions` - Slide master settings (title, background, margin, objects, slideNumber)
 
-### 主要な内部型
+### Key Internal Types
 
-- `POMNode` - 入力ノード型（内部型。Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, Box, VStack, HStack, Icon）
-- `PositionedNode` - 位置情報付きノード（x, y, w, h を持つ）
-- `parseXml` - XML 文字列を POMNode 配列に変換する内部関数（タグ名は PascalCase、属性値は Zod スキーマで型変換、未知タグはエラー）
+- `POMNode` - Input node type (internal. Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, Box, VStack, HStack, Icon)
+- `PositionedNode` - Node with position info (has x, y, w, h)
+- `parseXml` - Internal function that converts XML strings to POMNode arrays (tag names are PascalCase, attribute values are type-converted via Zod schema, unknown tags produce errors)
 
-### 単位変換
+### Unit Conversion
 
-- ユーザー入力: ピクセル（px）
-- 内部レイアウト: ピクセル（yoga-layout）
-- PPTX 出力: インチ（`pxToIn` で変換、96 DPI 基準）
+- User input: pixels (px)
+- Internal layout: pixels (yoga-layout)
+- PPTX output: inches (converted via `pxToIn`, 96 DPI basis)
 
-### テキスト計測
+### Text Measurement
 
-テキストの幅計測には `opentype.js` を使用。Noto Sans JP フォントをライブラリにバンドルしており、Node.js とブラウザの両方で動作する。
+Text width measurement uses `opentype.js`. The Noto Sans JP font is bundled with the library and works in both Node.js and browser environments.
 
-- `src/calcYogaLayout/measureText.ts` - テキスト計測ロジック
-- `src/calcYogaLayout/fontLoader.ts` - フォント読み込み（opentype.js）
-- `src/calcYogaLayout/fonts/` - バンドルされたフォント（Base64）
-- `buildPptx` の `textMeasurement` オプションで計測方法を明示的に指定可能
-  - `"opentype"`: 常に opentype.js で計測（デフォルト）
-  - `"fallback"`: 常にフォールバック計算（CJK文字=1em、英数字=0.5em）
-  - `"auto"`: opentype.js で計測（デフォルト）
+- `src/calcYogaLayout/measureText.ts` - Text measurement logic
+- `src/calcYogaLayout/fontLoader.ts` - Font loading (opentype.js)
+- `src/calcYogaLayout/fonts/` - Bundled fonts (Base64)
+- The `textMeasurement` option in `buildPptx` allows explicit specification of the measurement method
+  - `"opentype"`: Always measure with opentype.js (default)
+  - `"fallback"`: Always use fallback calculation (CJK characters = 1em, alphanumeric = 0.5em)
+  - `"auto"`: Measure with opentype.js (default)
 
-## 機能追加時のチェックリスト
+## Feature Addition Checklist
 
-新しいプロパティや機能を追加する際は、以下のファイルを更新すること：
+When adding new properties or features, update the following files:
 
-1. **型定義**: `src/types.ts` - 新しい型やプロパティを追加
-2. **入力スキーマ**: `src/parseXml/inputSchema.ts` - Zod スキーマを追加（内部バリデーション用）
-3. **XMLパーサー**: `src/parseXml/parseXml.ts` - XML タグ/属性の変換処理を追加
-4. **描画処理**: `src/renderPptx/` 配下 - pptxgenjs への変換処理を実装
-5. **VRT テストデータ**: `vrt/lib/generatePptx.ts` - 新機能のテストケースを追加
-6. **VRT ベースライン更新**: `npm run vrt:docker:update` を実行
-7. **ドキュメント更新**:
-   - `README.md` - ユーザー向けドキュメント
-   - `docs/nodes.md` - ノードリファレンス
-   - `docs/llm-integration.md` - LLM 向け XML リファレンス（プロンプト用）
-   - `CLAUDE.md` - 主要な型セクションに追加
-8. **ドキュメント画像更新**（新ノードタイプ追加時）:
-   - `scripts/docs-images/config.ts` の `NODE_TYPES` に追加
-   - `scripts/docs-images/sampleNodes.ts` にサンプル XML を定義
-   - `npm run docs:images:docker:update` を実行
-9. **changeset 追加**: PR 作成前に `npx changeset add` を実行
+1. **Type definitions**: `src/types.ts` - Add new types or properties
+2. **Input schema**: `src/parseXml/inputSchema.ts` - Add Zod schema (for internal validation)
+3. **XML parser**: `src/parseXml/parseXml.ts` - Add XML tag/attribute conversion logic
+4. **Rendering**: Under `src/renderPptx/` - Implement pptxgenjs conversion
+5. **VRT test data**: `vrt/lib/generatePptx.ts` - Add test cases for the new feature
+6. **Update VRT baseline**: Run `npm run vrt:docker:update`
+7. **Documentation updates**:
+   - `README.md` - User-facing documentation
+   - `docs/nodes.md` - Node reference
+   - `docs/llm-integration.md` - XML reference for LLMs (for prompts)
+   - `CLAUDE.md` - Add to Key Internal Types section
+8. **Documentation image updates** (when adding new node types):
+   - Add to `NODE_TYPES` in `scripts/docs-images/config.ts`
+   - Define sample XML in `scripts/docs-images/sampleNodes.ts`
+   - Run `npm run docs:images:docker:update`
+9. **Add changeset**: Run `npx changeset add` before creating a PR
 
-## プレビューワークフロー（Claude Code用）
+## Preview Workflow (for Claude Code)
 
-main.ts を修正して PPTX の出力を確認する際は、以下の手順で行う:
+When modifying main.ts to verify PPTX output, follow these steps:
 
-1. main.ts を編集（必要に応じて src/ 配下のロジックも修正）
-2. `npm run preview:docker` を実行して PNG を生成
-3. `preview/output/sample.png` を Read ツールで視覚的に確認
-4. レイアウトに問題があれば修正して 2 に戻る
-5. 問題なければコミット
+1. Edit main.ts (and modify logic under src/ as needed)
+2. Run `npm run preview:docker` to generate PNG
+3. Visually verify `preview/output/sample.png` using the Read tool
+4. If there are layout issues, fix and return to step 2
+5. If everything looks good, commit
 
-### 出力ファイル
+### Output Files
 
-- `preview/output/sample.pptx` - 生成された PPTX
-- `preview/output/sample.png` - PNG 化された画像（レイアウト確認用）
+- `preview/output/sample.pptx` - Generated PPTX
+- `preview/output/sample.png` - PNG image (for layout verification)
+
+## Language Rules
+
+- Documentation and UI text: English
+- Source code comments: Japanese is acceptable

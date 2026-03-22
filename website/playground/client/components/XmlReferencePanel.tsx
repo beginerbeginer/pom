@@ -25,126 +25,126 @@ interface Section {
 
 const SECTIONS: Section[] = [
   {
-    title: "レイアウト",
+    title: "Layout",
     elements: [
       {
         name: "VStack",
-        description: "縦並びレイアウト",
+        description: "Vertical layout",
         attributes: "gap, alignItems, justifyContent, flexWrap, shadow",
       },
       {
         name: "HStack",
-        description: "横並びレイアウト",
+        description: "Horizontal layout",
         attributes: "gap, alignItems, justifyContent, flexWrap, shadow",
       },
       {
         name: "Box",
-        description: "コンテナ（単一子要素）",
+        description: "Container (single child)",
         attributes: "shadow",
       },
       {
         name: "Layer",
-        description: "絶対位置配置",
-        attributes: "子要素に x, y を指定",
+        description: "Absolute positioning",
+        attributes: "Children require x, y",
       },
     ],
   },
   {
-    title: "コンテンツ",
+    title: "Content",
     elements: [
       {
         name: "Text",
-        description: "テキスト",
+        description: "Text",
         attributes:
           "fontSize, color, bold, italic, underline, strike, textAlign, highlight, fontFamily, lineHeight",
       },
       {
         name: "Ul",
-        description: "箇条書きリスト",
+        description: "Bullet list",
         attributes:
-          "fontSize, color, bold, italic, underline, strike, highlight, textAlign, fontFamily, lineHeight / 子要素: Li (text, bold, italic, underline, strike, highlight, color, fontSize, fontFamily)",
+          "fontSize, color, bold, italic, underline, strike, highlight, textAlign, fontFamily, lineHeight / Children: Li (text, bold, italic, underline, strike, highlight, color, fontSize, fontFamily)",
       },
       {
         name: "Ol",
-        description: "番号付きリスト",
+        description: "Numbered list",
         attributes:
-          "fontSize, color, bold, italic, underline, strike, highlight, textAlign, fontFamily, lineHeight, numberType, numberStartAt / 子要素: Li (text, bold, italic, underline, strike, highlight, color, fontSize, fontFamily)",
+          "fontSize, color, bold, italic, underline, strike, highlight, textAlign, fontFamily, lineHeight, numberType, numberStartAt / Children: Li (text, bold, italic, underline, strike, highlight, color, fontSize, fontFamily)",
       },
       {
         name: "Image",
-        description: "画像",
+        description: "Image",
         attributes: "src, sizing (contain/cover/crop), shadow",
       },
       {
         name: "Table",
-        description: "テーブル",
+        description: "Table",
         attributes:
-          "defaultRowHeight / 子要素: TableColumn (width), TableRow (height), TableCell (fontSize, color, bold, italic, underline, strike, highlight, textAlign, backgroundColor, fontFamily, lineHeight, colspan, rowspan)",
+          "defaultRowHeight / Children: TableColumn (width), TableRow (height), TableCell (fontSize, color, bold, italic, underline, strike, highlight, textAlign, backgroundColor, fontFamily, lineHeight, colspan, rowspan)",
       },
       {
         name: "Shape",
-        description: "シェイプ",
+        description: "Shape",
         attributes:
-          "shapeType (rect/roundRect/ellipse/triangle/star5/cloud/downArrow等), text, fill.color, fill.transparency, line, shadow.type/opacity/blur/angle/offset/color, fontSize, color, textAlign, bold, italic, underline, strike, highlight, fontFamily, lineHeight",
+          "shapeType (rect/roundRect/ellipse/triangle/star5/cloud/downArrow etc.), text, fill.color, fill.transparency, line, shadow.type/opacity/blur/angle/offset/color, fontSize, color, textAlign, bold, italic, underline, strike, highlight, fontFamily, lineHeight",
       },
       {
         name: "Icon",
-        description: "アイコン",
+        description: "Icon",
         attributes:
-          "name (cpu/database/cloud/server/code/terminal/globe/user/users/briefcase/building/bar-chart/mail/search/settings/check/shield/lock/file/folder/calendar/clock/star/heart/zap/lightbulb等), size, color",
+          "name (cpu/database/cloud/server/code/terminal/globe/user/users/briefcase/building/bar-chart/mail/search/settings/check/shield/lock/file/folder/calendar/clock/star/heart/zap/lightbulb etc.), size, color",
       },
       {
         name: "Line",
-        description: "線",
+        description: "Line",
         attributes:
           "x1, y1, x2, y2, color, lineWidth, dashType, beginArrow, endArrow",
       },
     ],
   },
   {
-    title: "図表",
+    title: "Diagrams",
     elements: [
       {
         name: "Chart",
-        description: "チャート",
+        description: "Chart",
         attributes:
-          "chartType (bar/line/pie/area/doughnut/radar), showLegend, showTitle, title, chartColors, radarStyle / 子要素: ChartSeries (name), ChartDataPoint (label, value)",
+          "chartType (bar/line/pie/area/doughnut/radar), showLegend, showTitle, title, chartColors, radarStyle / Children: ChartSeries (name), ChartDataPoint (label, value)",
       },
       {
         name: "Timeline",
-        description: "タイムライン",
+        description: "Timeline",
         attributes:
-          "direction / 子要素: TimelineItem (date, title, description, color)",
+          "direction / Children: TimelineItem (date, title, description, color)",
       },
       {
         name: "Matrix",
-        description: "2x2 マトリクス",
+        description: "2x2 Matrix",
         attributes:
-          "子要素: MatrixAxes (x, y), MatrixQuadrants (topLeft, topRight, bottomLeft, bottomRight), MatrixItem (label, x, y, color)",
+          "Children: MatrixAxes (x, y), MatrixQuadrants (topLeft, topRight, bottomLeft, bottomRight), MatrixItem (label, x, y, color)",
       },
       {
         name: "Tree",
-        description: "ツリー/組織図",
+        description: "Tree / Org chart",
         attributes:
-          "layout, nodeShape, nodeWidth, nodeHeight, levelGap, siblingGap, connectorStyle / 子要素: TreeItem (label, color) ※再帰ネスト可",
+          "layout, nodeShape, nodeWidth, nodeHeight, levelGap, siblingGap, connectorStyle / Children: TreeItem (label, color) (recursive nesting)",
       },
       {
         name: "Flow",
-        description: "フローチャート",
+        description: "Flowchart",
         attributes:
-          "direction, nodeWidth, nodeHeight, nodeGap, connectorStyle / 子要素: FlowNode (id, shape, text, color), FlowConnection (from, to, label, color)",
+          "direction, nodeWidth, nodeHeight, nodeGap, connectorStyle / Children: FlowNode (id, shape, text, color), FlowConnection (from, to, label, color)",
       },
       {
         name: "ProcessArrow",
-        description: "プロセス矢印",
+        description: "Process arrow",
         attributes:
-          "direction, itemWidth, itemHeight, gap, fontSize, bold, italic, strike / 子要素: ProcessArrowStep (label, color, textColor)",
+          "direction, itemWidth, itemHeight, gap, fontSize, bold, italic, strike / Children: ProcessArrowStep (label, color, textColor)",
       },
       {
         name: "Pyramid",
-        description: "ピラミッド図",
+        description: "Pyramid",
         attributes:
-          "direction (up/down) / 子要素: PyramidLevel (label, color, textColor)",
+          "direction (up/down) / Children: PyramidLevel (label, color, textColor)",
       },
     ],
   },
@@ -157,52 +157,52 @@ interface CommonAttribute {
 }
 
 const COMMON_ATTRIBUTES: CommonAttribute[] = [
-  { name: "w", type: 'number | "max" | "%"', description: "幅" },
-  { name: "h", type: 'number | "max" | "%"', description: "高さ" },
-  { name: "minW / maxW", type: "number", description: "最小/最大幅" },
-  { name: "minH / maxH", type: "number", description: "最小/最大高さ" },
+  { name: "w", type: 'number | "max" | "%"', description: "Width" },
+  { name: "h", type: 'number | "max" | "%"', description: "Height" },
+  { name: "minW / maxW", type: "number", description: "Min / max width" },
+  { name: "minH / maxH", type: "number", description: "Min / max height" },
   {
     name: "padding",
     type: "number | padding.top/right/bottom/left",
-    description: "パディング",
+    description: "Padding",
   },
   {
     name: "backgroundColor",
     type: "string",
-    description: "背景色（16進数）",
+    description: "Background color (hex)",
   },
   {
     name: "backgroundImage",
     type: "backgroundImage.src, backgroundImage.sizing",
-    description: "背景画像",
+    description: "Background image",
   },
   {
     name: "border",
     type: "border.color, border.width, border.dashType",
-    description: "枠線",
+    description: "Border",
   },
-  { name: "borderRadius", type: "number", description: "角丸" },
-  { name: "opacity", type: "number (0-1)", description: "不透明度" },
+  { name: "borderRadius", type: "number", description: "Border radius" },
+  { name: "opacity", type: "number (0-1)", description: "Opacity" },
   {
     name: "margin",
     type: "number | margin.top/right/bottom/left",
-    description: "マージン",
+    description: "Margin",
   },
   {
     name: "alignSelf",
     type: '"start" | "center" | "end" | "stretch" | "auto"',
-    description: "自身の配置",
+    description: "Self alignment",
   },
-  { name: "zIndex", type: "number", description: "重なり順" },
+  { name: "zIndex", type: "number", description: "Stacking order" },
   {
     name: "position",
     type: '"relative" | "absolute"',
-    description: "配置モード",
+    description: "Positioning mode",
   },
   {
     name: "top / right / bottom / left",
     type: "number",
-    description: "絶対位置指定",
+    description: "Absolute position offset",
   },
 ];
 
@@ -233,18 +233,18 @@ export function XmlReferencePanel() {
       <SheetTrigger asChild>
         <button
           className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
-          aria-label="XML リファレンスを開く"
-          title="XML リファレンス"
+          aria-label="Open XML reference"
+          title="XML Reference"
         >
           <CircleHelp className="size-4" />
-          <span>リファレンス</span>
+          <span>Reference</span>
         </button>
       </SheetTrigger>
       <SheetContent className="sm:max-w-md" side="right">
         <SheetHeader>
-          <SheetTitle>XML リファレンス</SheetTitle>
+          <SheetTitle>XML Reference</SheetTitle>
           <SheetDescription>
-            pom がサポートする XML 要素と属性の一覧
+            List of XML elements and attributes supported by pom
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-6 overflow-y-auto px-4 pb-4">
@@ -252,7 +252,7 @@ export function XmlReferencePanel() {
             <Search className="text-muted-foreground absolute top-2.5 left-2.5 size-4" />
             <input
               type="text"
-              placeholder="要素名や属性で検索..."
+              placeholder="Search elements or attributes..."
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -286,7 +286,7 @@ export function XmlReferencePanel() {
 
           {filteredCommonAttributes.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-semibold">共通属性</h3>
+              <h3 className="mb-2 text-sm font-semibold">Common Attributes</h3>
               <div className="flex flex-col gap-2">
                 {filteredCommonAttributes.map((attr) => (
                   <div
@@ -313,7 +313,7 @@ export function XmlReferencePanel() {
           {filteredSections.length === 0 &&
             filteredCommonAttributes.length === 0 && (
               <p className="text-muted-foreground py-8 text-center text-sm">
-                一致する要素が見つかりません
+                No matching elements found
               </p>
             )}
         </div>
