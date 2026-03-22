@@ -14,14 +14,22 @@ npm run lint              # ESLint
 npm run fmt               # Prettier formatting
 npm run fmt:check         # Format check
 npm run typecheck         # Type checking
+npm run knip              # Detect unused code
 npm run test:run          # Run tests
 npm run test              # Tests (watch mode)
+npm run test:ui           # Tests (UI mode)
 npx tsx main.ts           # Run sample (generates sample.pptx)
+npm run vrt                     # Run VRT (local)
+npm run vrt:update              # Update VRT baseline (local)
 npm run vrt:docker              # Run VRT (Docker environment)
 npm run vrt:docker:update       # Update VRT baseline (Docker environment)
-npm run preview:docker          # Preview (convert main.ts PPTX to PNG)
+npm run preview                 # Preview (local)
+npm run preview:docker          # Preview (convert main.ts PPTX to PNG, Docker)
+npm run docs:images             # Generate documentation node images (local)
 npm run docs:images:docker        # Generate documentation node images (Docker environment)
 npm run docs:images:docker:update # Rebuild & generate documentation node images
+npm run docs:images:vrt           # Check documentation images (local)
+npm run docs:images:vrt:docker    # Check documentation images (Docker)
 ```
 
 ## Directory Structure
@@ -31,9 +39,23 @@ src/
 ├── index.ts              # Public API
 ├── types.ts              # Type definitions
 ├── buildPptx.ts          # Main processing (XML → parseXml → layout → PPTX)
+├── buildContext.ts        # Build context (caches, measurement mode)
+├── autoFit/              # Slide overflow auto-fit engine
+│   ├── autoFit.ts        # Auto-fit logic
+│   └── strategies/       # Adjustment strategies (font size, gap, table row height, uniform scale)
+├── registry/             # Node registry system
+│   ├── nodeRegistry.ts   # Node definition registration & management
+│   ├── types.ts          # Registry types
+│   └── definitions/      # Node type definitions (text, list, image, table, shape, chart, icon, etc.)
+├── icons/                # Icon feature
+│   ├── renderIcon.ts     # SVG icon rasterization
+│   └── iconData.ts       # Icon preset library data
 ├── shared/               # Shared code used across multiple pipeline stages
 │   ├── measureImage.ts   # Image size measurement & caching
-│   └── tableUtils.ts     # Table size calculation utilities
+│   ├── tableUtils.ts     # Table size calculation utilities
+│   ├── freeYogaTree.ts   # Yoga node tree cleanup
+│   ├── processArrowConstants.ts # ProcessArrow constants
+│   └── walkTree.ts       # Tree traversal utility
 ├── parseXml/             # XML input parser (fast-xml-parser, internal)
 │   ├── parseXml.ts       # XML parser core
 │   └── inputSchema.ts    # Input schema (Zod, internal)
@@ -47,6 +69,8 @@ preview/                  # Preview infrastructure (for Claude Code)
 docs/                             # Documentation (Single Source of Truth, symlinked from website/content)
 ├── nodes.md                    # Nodes (with images)
 ├── llm-integration.md          # XML reference for LLMs
+├── master-slide.md             # Master slide documentation
+├── text-measurement.md         # Text measurement documentation
 └── images/                     # Sample images per node type (auto-generated)
 
 scripts/docs-images/              # Documentation image generation scripts
@@ -63,9 +87,12 @@ PPTX generation follows a 3-stage pipeline:
 2. **toPositioned** (`src/toPositioned/`) - Generates a PositionedNode tree with absolute coordinates from the calculated layout
 3. **renderPptx** (`src/renderPptx/`) - Converts PositionedNodes to pptxgenjs API calls for slide rendering
 
+Additionally, **autoFit** (`src/autoFit/`) adjusts slides when content overflows vertically, applying strategies such as font size reduction, gap reduction, table row height reduction, and uniform scaling.
+
 ### Public API
 
 - `buildPptx(xml: string, slideSize, options?)` - Main function that takes an XML string and generates PPTX
+- `ParseXmlError` - Error class thrown on XML parse failure
 - `TextMeasurementMode` - Text measurement mode (`"opentype"` | `"fallback"` | `"auto"`)
 - `SlideMasterOptions` - Slide master settings (title, background, margin, objects, slideNumber)
 
@@ -100,19 +127,20 @@ When adding new properties or features, update the following files:
 1. **Type definitions**: `src/types.ts` - Add new types or properties
 2. **Input schema**: `src/parseXml/inputSchema.ts` - Add Zod schema (for internal validation)
 3. **XML parser**: `src/parseXml/parseXml.ts` - Add XML tag/attribute conversion logic
-4. **Rendering**: Under `src/renderPptx/` - Implement pptxgenjs conversion
-5. **VRT test data**: `vrt/lib/generatePptx.ts` - Add test cases for the new feature
-6. **Update VRT baseline**: Run `npm run vrt:docker:update`
-7. **Documentation updates**:
+4. **Node registry**: `src/registry/definitions/` - Add node definition to the registry
+5. **Rendering**: Under `src/renderPptx/` - Implement pptxgenjs conversion
+6. **VRT test data**: `vrt/lib/generatePptx.ts` - Add test cases for the new feature
+7. **Update VRT baseline**: Run `npm run vrt:docker:update`
+8. **Documentation updates**:
    - `README.md` - User-facing documentation
    - `docs/nodes.md` - Nodes
    - `docs/llm-integration.md` - XML reference for LLMs (for prompts)
    - `CLAUDE.md` - Add to Key Internal Types section
-8. **Documentation image updates** (when adding new node types):
+9. **Documentation image updates** (when adding new node types):
    - Add to `NODE_TYPES` in `scripts/docs-images/config.ts`
    - Define sample XML in `scripts/docs-images/sampleNodes.ts`
    - Run `npm run docs:images:docker:update`
-9. **Add changeset**: Run `npx changeset add` before creating a PR
+10. **Add changeset**: Run `npx changeset add` before creating a PR
 
 ## Preview Workflow (for Claude Code)
 
