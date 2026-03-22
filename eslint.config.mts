@@ -14,6 +14,7 @@ export default defineConfig([
       "preview/**",
       "docs/lib/**",
       "scripts/**",
+      "website/**",
       "eslint.config.mts",
       "vitest.config.ts",
     ],
