@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["scripts/convertFontToBase64.ts"],
+  "entry": ["scripts/convertFontToBase64.ts", "scripts/generate-icon-data.ts"],
   "project": [
     "src/**/*.ts",
     "vrt/**/*.ts",
