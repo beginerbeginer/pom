@@ -27,7 +27,7 @@ export async function downloadPptx(xml: string): Promise<void> {
   });
 
   if (!res.ok) {
-    let message = "ダウンロードに失敗しました";
+    let message = "Download failed";
     try {
       const text = await res.text();
       const parsed: unknown = JSON.parse(text);

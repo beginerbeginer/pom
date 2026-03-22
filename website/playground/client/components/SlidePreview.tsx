@@ -28,13 +28,13 @@ type CopyStatus = "idle" | "copying" | "success" | "error";
 function getErrorTypeLabel(type: string): string {
   switch (type) {
     case "xml_syntax":
-      return "XML構文エラー";
+      return "XML Syntax Error";
     case "schema":
-      return "属性値エラー";
+      return "Attribute Value Error";
     case "structure":
-      return "構造エラー";
+      return "Structure Error";
     default:
-      return "エラー";
+      return "Error";
   }
 }
 
@@ -90,7 +90,7 @@ export function SlidePreview({
       <div className="bg-muted flex h-full items-center justify-center rounded-md border">
         <div className="text-muted-foreground flex items-center gap-2">
           <Loader2 className="h-5 w-5 animate-spin" />
-          <span>プレビューを生成中...</span>
+          <span>Generating preview...</span>
         </div>
       </div>
     );
@@ -135,9 +135,7 @@ export function SlidePreview({
   if (totalPages === 0) {
     return (
       <div className="bg-muted flex h-full items-center justify-center rounded-md border">
-        <p className="text-muted-foreground">
-          XML を編集するとプレビューが自動的に表示されます
-        </p>
+        <p className="text-muted-foreground">Edit XML to see a preview</p>
       </div>
     );
   }
@@ -153,8 +151,8 @@ export function SlidePreview({
           className="bg-background/80 hover:bg-background absolute top-2 right-2 rounded-md p-2 backdrop-blur-sm transition-colors disabled:opacity-50"
           onClick={() => void handleCopyAsPng()}
           disabled={copyStatus === "copying"}
-          title="画像をコピー"
-          aria-label="画像をコピー"
+          title="Copy as image"
+          aria-label="Copy as image"
         >
           {copyStatus === "idle" && <Copy className="h-4 w-4" />}
           {copyStatus === "copying" && (

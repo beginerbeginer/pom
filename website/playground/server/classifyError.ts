@@ -102,7 +102,7 @@ export function classifyError(error: unknown, xml: string): StructuredError[] {
   }
 
   if (!(error instanceof Error)) {
-    return [{ type: "unknown", message: "不明なエラーが発生しました" }];
+    return [{ type: "unknown", message: "An unknown error occurred" }];
   }
 
   const message = error.message;

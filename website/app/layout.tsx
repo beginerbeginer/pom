@@ -6,7 +6,7 @@ export const metadata = {
     template: "%s - pom",
   },
   description:
-    "TypeScript で PowerPoint プレゼンテーションを宣言的に記述するためのライブラリ",
+    "A library for declaratively describing PowerPoint presentations in TypeScript",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" dir="ltr" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <Head />
       <body>{children}</body>
     </html>
