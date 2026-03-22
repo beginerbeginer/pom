@@ -14,11 +14,11 @@
 </p>
 
 <p align="center">
-  <a href="https://pom-playground.vercel.app/"><b>Try it online — Playground</b></a>
+  <a href="https://pom.pptx.app/playground"><b>Try it online — Playground</b></a>
 </p>
 
 <p align="center">
-  <a href="https://pom-playground.vercel.app/">
+  <a href="https://pom.pptx.app/playground">
     <img src="./docs/images/playground.png" alt="Playground" width="800">
   </a>
 </p>
@@ -215,13 +215,13 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 
 ## Documentation
 
-| Document                                         | Description                             |
-| ------------------------------------------------ | --------------------------------------- |
-| [Nodes Reference](./docs/nodes.md)               | Complete reference for all node types   |
-| [Master Slide](./docs/master-slide.md)           | Headers, footers, and page numbers      |
-| [Serverless Environments](./docs/serverless.md)  | Text measurement options for serverless |
-| [LLM Integration](./docs/llm-integration.md)     | Compact XML reference for LLM prompts   |
-| [Playground](https://pom-playground.vercel.app/) | Try pom XML in the browser              |
+| Document                                        | Description                             |
+| ----------------------------------------------- | --------------------------------------- |
+| [Nodes Reference](./docs/nodes.md)              | Complete reference for all node types   |
+| [Master Slide](./docs/master-slide.md)          | Headers, footers, and page numbers      |
+| [Serverless Environments](./docs/serverless.md) | Text measurement options for serverless |
+| [LLM Integration](./docs/llm-integration.md)    | Compact XML reference for LLM prompts   |
+| [Playground](https://pom.pptx.app/playground)   | Try pom XML in the browser              |
 
 ## License
 
