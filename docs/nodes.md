@@ -263,6 +263,8 @@ Arranges child elements **vertically**.
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 | `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
+> **Note:** Child elements of VStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based heights combined with `gap` will shrink automatically to fit within the parent.
+
 ### 9. HStack
 
 Arranges child elements **horizontally**.
@@ -282,6 +284,8 @@ Arranges child elements **horizontally**.
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 | `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
+
+> **Note:** Child elements of HStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based widths combined with `gap` will shrink automatically to fit within the parent.
 
 ### 10. Chart
 
