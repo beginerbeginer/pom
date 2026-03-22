@@ -23,4 +23,7 @@ jobs:
         with:
           node-version: "22"
       - run: cd website && npm ci
+      - run: cd website && npm run fmt:check
+      - run: cd website && npm run lint
+      - run: cd website && npm run typecheck
       - run: cd website && npm run build

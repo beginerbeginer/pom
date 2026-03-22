@@ -75,7 +75,7 @@ export function XmlEditor({
     return () => {
       view.destroy();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const view = viewRef.current;
