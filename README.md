@@ -90,7 +90,7 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 | VStack       | Vertical stack layout                          |
 | HStack       | Horizontal stack layout                        |
 
-For detailed node documentation, see [Nodes Reference](./docs/nodes.md).
+For detailed node documentation, see [Nodes](./docs/nodes.md).
 
 ## Node Examples
 
@@ -216,7 +216,7 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 
 | Document                                       | Description                           |
 | ---------------------------------------------- | ------------------------------------- |
-| [Nodes Reference](./docs/nodes.md)             | Complete reference for all node types |
+| [Nodes](./docs/nodes.md)                       | Complete reference for all node types |
 | [Master Slide](./docs/master-slide.md)         | Headers, footers, and page numbers    |
 | [Text Measurement](./docs/text-measurement.md) | Text measurement options and settings |
 | [LLM Integration](./docs/llm-integration.md)   | Compact XML reference for LLM prompts |

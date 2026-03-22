@@ -1,4 +1,4 @@
-# Nodes Reference
+# Nodes
 
 This document provides a complete reference for all node types available in pom.
 
