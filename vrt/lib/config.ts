@@ -45,6 +45,7 @@ export const PAGE_NAMES = [
   "29-icon-in-hstack",
   "30-leaf-padding",
   "31-leaf-padding-composite",
+  "32-center-align-hstack",
 ] as const;
 
 export const THRESHOLD = 0.1;

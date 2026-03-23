@@ -33,6 +33,7 @@ import {
   page29IconInHStackXml,
   page30LeafPaddingXml,
   page31LeafPaddingCompositeXml,
+  page32CenterAlignHStackXml,
 } from "./slides/index.js";
 
 export async function generatePptx(outputPath: string): Promise<void> {
@@ -69,6 +70,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page29IconInHStackXml,
     page30LeafPaddingXml,
     page31LeafPaddingCompositeXml,
+    page32CenterAlignHStackXml,
   ].join("\n");
 
   const { pptx } = await buildPptx(

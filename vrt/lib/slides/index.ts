@@ -30,3 +30,4 @@ export {
   page30LeafPaddingXml,
   page31LeafPaddingCompositeXml,
 } from "./leafPadding.js";
+export { page32CenterAlignHStackXml } from "./centerAlignHStack.js";
