@@ -10,6 +10,7 @@ export default defineConfig([
       "**/*.test.ts",
       "node_modules/**",
       "eslint.config.mts",
+      "vitest.config.ts",
     ],
   },
   {
