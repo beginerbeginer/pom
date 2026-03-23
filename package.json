@@ -42,7 +42,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:clean": "rm -rf dist && tsc",
     "prepublishOnly": "npm run build && npm run lint && npm run fmt:check && npm run typecheck && npm run test:run",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
