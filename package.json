@@ -51,6 +51,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "vrt": "tsx vrt/runVrt.ts",
     "vrt:update": "tsx vrt/runVrt.ts --update",
     "vrt:docker": "docker compose build vrt && docker compose run --rm vrt",
@@ -73,7 +74,8 @@
     "@eslint/js": "^9.39.1",
     "@types/opentype.js": "^1.3.8",
     "@types/pngjs": "6.0.5",
-    "@vitest/ui": "^4.0.8",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "jiti": "2.6.1",
@@ -85,7 +87,7 @@
     "tsx": "4.21.0",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.47.0",
-    "vitest": "^4.0.8"
+    "vitest": "^4.1.0"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

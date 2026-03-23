@@ -5,5 +5,9 @@ export default defineConfig({
     globals: true,
     environment: "node",
     exclude: [...configDefaults.exclude, "website/**"],
+    coverage: {
+      include: ["src/**/*.ts"],
+      reporter: ["text", "html", "json", "json-summary"],
+    },
   },
 });
