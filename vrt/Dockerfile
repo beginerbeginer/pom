@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 WORKDIR /app
 
 # npm依存のインストール（BuildKitキャッシュマウント使用）
-COPY package*.json ./
+COPY package*.json .npmrc ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
