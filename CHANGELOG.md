@@ -1,5 +1,25 @@
 # @hirokisakabe/pom
 
+## 5.5.0
+
+### Minor Changes
+
+- [#425](https://github.com/hirokisakabe/pom/pull/425) [`8cfaccc`](https://github.com/hirokisakabe/pom/commit/8cfacccce068cb3c187f84adee83e14f51448a39) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Add structured diagnostics for warnings and fallbacks. `buildPptx()` now returns `{ pptx, diagnostics }` instead of just the pptx instance. A new `strict` option throws `DiagnosticsError` when diagnostics are collected.
+
+### Patch Changes
+
+- [#409](https://github.com/hirokisakabe/pom/pull/409) [`bcf609f`](https://github.com/hirokisakabe/pom/commit/bcf609f3705dd2e40310a8086cc0ccf6e5e774df) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - CI に size-limit を導入してパッケージサイズを監視
+
+- [#428](https://github.com/hirokisakabe/pom/pull/428) [`6c11d11`](https://github.com/hirokisakabe/pom/commit/6c11d11fda489ea79562d8325e105495c47beafa) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Fix icon aspect ratio distortion when variant-less Icon node is stretched with padding
+
+- [#426](https://github.com/hirokisakabe/pom/pull/426) [`ce5e266`](https://github.com/hirokisakabe/pom/commit/ce5e26619b41bc6592891f5c0c125e591b35d45b) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Fix leaf node padding rendering to correctly offset content position and size by padding values
+
+- [#411](https://github.com/hirokisakabe/pom/pull/411) [`74b47c9`](https://github.com/hirokisakabe/pom/commit/74b47c9150631a02ff1d6a5a6e7090597b259563) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Refactor layout runtime state to localize Yoga usage with YogaNodeMap
+
+- [#419](https://github.com/hirokisakabe/pom/pull/419) [`8fcb2cc`](https://github.com/hirokisakabe/pom/commit/8fcb2ccf4e163219ca6170cf6db45f221b4974b1) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - refactor: inputSchema.ts を削除し、types.ts のスキーマを Single Source of Truth に統合
+
+- [#420](https://github.com/hirokisakabe/pom/pull/420) [`0ccb643`](https://github.com/hirokisakabe/pom/commit/0ccb643d90f178d2bd90a205d39d8b093bf9f02a) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Fix icon stretching horizontally when placed inside HStack without explicit width
+
 ## 5.4.0
 
 ### Minor Changes
