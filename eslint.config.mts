@@ -12,6 +12,7 @@ export default defineConfig([
       "main.ts",
       "vrt/**",
       "preview/**",
+      "bench/**",
       "scripts/docs-images/**",
       "scripts/**",
       "docs/**",

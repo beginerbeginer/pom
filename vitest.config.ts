@@ -9,5 +9,8 @@ export default defineConfig({
       include: ["src/**/*.ts"],
       reporter: ["text", "html", "json", "json-summary"],
     },
+    benchmark: {
+      include: ["bench/**/*.bench.ts"],
+    },
   },
 });
