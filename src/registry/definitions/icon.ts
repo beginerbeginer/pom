@@ -17,27 +17,6 @@ export const iconNodeDef: NodeDefinition = {
   toPositioned(pom, absoluteX, absoluteY, layout, ctx) {
     const n = pom as Extract<POMNode, { type: "icon" }>;
     const iconSize = n.size ?? 24;
-    const rasterSize = Math.max(
-      Math.ceil(n.variant ? iconSize : layout.width),
-      Math.ceil(n.variant ? iconSize : layout.height),
-      iconSize,
-    );
-    const iconImageData = rasterizeIcon(
-      n.name,
-      rasterSize,
-      n.color ?? "#000000",
-      ctx.iconRasterCache,
-    );
-
-    // variant 指定時はアイコンを中央に配置
-    const positioned: Record<string, unknown> = {
-      ...n,
-      x: absoluteX,
-      y: absoluteY,
-      w: layout.width,
-      h: layout.height,
-      iconImageData,
-    };
 
     // padding を考慮したコンテンツ領域で bg/icon の座標を計算
     const content = getContentArea({
@@ -47,6 +26,27 @@ export const iconNodeDef: NodeDefinition = {
       h: layout.height,
       padding: n.padding,
     });
+
+    // 実描画サイズに合わせてラスタライズ（不要に大きい PNG を防ぐ）
+    const rasterSize = Math.max(
+      Math.ceil(n.variant ? iconSize : Math.min(content.w, content.h)),
+      iconSize,
+    );
+    const iconImageData = rasterizeIcon(
+      n.name,
+      rasterSize,
+      n.color ?? "#000000",
+      ctx.iconRasterCache,
+    );
+
+    const positioned: Record<string, unknown> = {
+      ...n,
+      x: absoluteX,
+      y: absoluteY,
+      w: layout.width,
+      h: layout.height,
+      iconImageData,
+    };
 
     if (n.variant) {
       const totalSize = Math.ceil(iconSize * 1.75);
@@ -61,11 +61,12 @@ export const iconNodeDef: NodeDefinition = {
       positioned.iconW = iconSize;
       positioned.iconH = iconSize;
     } else {
-      // variant なしの場合はコンテンツ領域に合わせてアイコンを配置
-      positioned.iconX = content.x;
-      positioned.iconY = content.y;
-      positioned.iconW = content.w;
-      positioned.iconH = content.h;
+      // variant なしの場合もアスペクト比を維持し、コンテンツ領域の中央に配置
+      const iconSide = Math.min(content.w, content.h);
+      positioned.iconX = content.x + (content.w - iconSide) / 2;
+      positioned.iconY = content.y + (content.h - iconSide) / 2;
+      positioned.iconW = iconSide;
+      positioned.iconH = iconSide;
     }
     return positioned as PositionedNode;
   },
