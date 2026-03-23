@@ -1,4 +1,4 @@
-import type { POMNode } from "../types.ts";
+import type { POMNode, AlignItems } from "../types.ts";
 import type { BuildContext } from "../buildContext.ts";
 import type { YogaNodeMap } from "./types.ts";
 import { Node as YogaNode } from "yoga-layout";
@@ -123,6 +123,54 @@ async function getYoga(): Promise<Yoga> {
 }
 
 /**
+ * ノードが交差軸方向（幅）で確定サイズを持つかを判定する
+ * - 明示的な w がある場合は確定
+ * - alignSelf で stretch 以外が指定されている場合は不確定
+ * - 親の alignItems で stretch（デフォルト）以外が指定されている場合は不確定
+ */
+function nodeHasDefiniteWidth(node: POMNode, parentNode?: POMNode): boolean {
+  // 明示的な幅がある
+  if (node.w !== undefined) return true;
+
+  // alignSelf で stretch 以外が明示されている場合は不確定
+  if (
+    node.alignSelf !== undefined &&
+    node.alignSelf !== "stretch" &&
+    node.alignSelf !== "auto"
+  ) {
+    return false;
+  }
+
+  // 親がいない場合（ルートノード）は確定
+  if (!parentNode) return true;
+
+  // 親の alignItems を取得（VStack/HStack のみ持つ、Box 等は undefined でデフォルト stretch）
+  let parentAlignItems: AlignItems | undefined;
+  if (parentNode.type === "vstack") {
+    parentAlignItems = parentNode.alignItems;
+  } else if (parentNode.type === "hstack") {
+    parentAlignItems = parentNode.alignItems;
+  }
+
+  // VStack/Box（column 方向）の子の場合、交差軸は水平方向
+  // alignItems が stretch（デフォルト）なら子は親幅に伸長される
+  if (
+    parentNode.type === "vstack" ||
+    parentNode.type === "box" ||
+    parentNode.type === "layer"
+  ) {
+    return parentAlignItems === undefined || parentAlignItems === "stretch";
+  }
+
+  // HStack の子の場合、幅は主軸方向で flex により決まるため確定とみなす
+  if (parentNode.type === "hstack") {
+    return true;
+  }
+
+  return true;
+}
+
+/**
  * POMNode ツリーを再帰的に走査し、YogaNode ツリーを構築する
  */
 async function buildPomWithYogaTree(
@@ -131,6 +179,7 @@ async function buildPomWithYogaTree(
   ctx: BuildContext,
   map: YogaNodeMap,
   parentNode?: POMNode,
+  grandparentNode?: POMNode,
 ) {
   const yoga = await getYoga();
 
@@ -156,7 +205,13 @@ async function buildPomWithYogaTree(
     node.type !== "icon"
   ) {
     yn.setFlexGrow(1);
-    yn.setFlexBasis(0);
+    // HStack が確定幅を持つ場合のみ flexBasis=0 で均等分割
+    // HStack が auto-sized（親の alignItems が center/start/end 等）の場合、
+    // flexBasis=0 だと子要素の自然な幅が失われてレイアウトが崩れるため、
+    // flexBasis=auto（デフォルト）のまま維持する
+    if (nodeHasDefiniteWidth(parentNode, grandparentNode)) {
+      yn.setFlexBasis(0);
+    }
   }
 
   parentYoga.insertChild(yn, parentYoga.getChildCount());
@@ -166,7 +221,14 @@ async function buildPomWithYogaTree(
   switch (def.category) {
     case "single-child": {
       const boxNode = node as Extract<POMNode, { type: "box" }>;
-      await buildPomWithYogaTree(boxNode.children, yn, ctx, map, node);
+      await buildPomWithYogaTree(
+        boxNode.children,
+        yn,
+        ctx,
+        map,
+        node,
+        parentNode,
+      );
       break;
     }
     case "multi-child":
@@ -176,7 +238,7 @@ async function buildPomWithYogaTree(
         { type: "vstack" | "hstack" | "layer" }
       >;
       for (const child of containerNode.children) {
-        await buildPomWithYogaTree(child, yn, ctx, map, node);
+        await buildPomWithYogaTree(child, yn, ctx, map, node, parentNode);
       }
       break;
     }
