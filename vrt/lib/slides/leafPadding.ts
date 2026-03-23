@@ -180,5 +180,23 @@ export const page31LeafPaddingCompositeXml = `
       <Shape padding='{"top":10,"right":40,"bottom":30,"left":20}' w="200" h="120" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" shapeType="rect" fill.color="${palette.green}" text="Asym" color="FFFFFF" fontSize="14" />
     </VStack>
   </HStack>
+
+  <!-- Icon aspect ratio test: non-square container -->
+  <HStack gap="16" alignItems="stretch">
+    <VStack gap="4" w="33%">
+      <Text fontSize="12" bold="true">Icon wide container</Text>
+      <Icon w="200" h="80" padding="10" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" name="star" size="32" color="#${palette.blue}" />
+    </VStack>
+
+    <VStack gap="4" w="33%">
+      <Text fontSize="12" bold="true">Icon tall container</Text>
+      <Icon w="80" h="200" padding="10" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" name="heart" size="32" color="#${palette.red}" />
+    </VStack>
+
+    <VStack gap="4" w="33%">
+      <Text fontSize="12" bold="true">Icon asymmetric padding</Text>
+      <Icon padding='{"top":10,"right":40,"bottom":30,"left":20}' backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" name="cpu" size="32" color="#${palette.green}" />
+    </VStack>
+  </HStack>
 </VStack>
 `;
