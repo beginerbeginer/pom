@@ -8,13 +8,13 @@ pom core is stable — focus shifts to **developer experience tools** that make 
 
 ## Priorities
 
-| Priority | Item               | Description                                                                                  |
-| -------- | ------------------ | -------------------------------------------------------------------------------------------- |
-| **P1**   | Monorepo (#431)    | Consolidate pom-cli and pom-glimpse into `packages/` for unified releases and type sharing   |
-| **P2**   | pom-cli (#432)     | `pom build input.xml -o output.pptx` — casual entry point, CI-friendly                       |
-| **P2**   | pom-md (#435)      | Markdown wrapper with `pomxml` code fences — write slides fast                               |
-| **P3**   | pom-jsx (#435)     | JSX/TSX authoring — type-safe, programmable, template-friendly                               |
-| **P4**   | pom-glimpse (#433) | Direct PNG/SVG renderer from pom XML (bypass PPTX). Revisit if pptx-glimpse path is too slow |
+| Priority | Item        | Description                                                                                  |
+| -------- | ----------- | -------------------------------------------------------------------------------------------- |
+| **P1**   | Monorepo    | Consolidate pom-cli and pom-glimpse into `packages/` for unified releases and type sharing   |
+| **P2**   | pom-cli     | `pom build input.xml -o output.pptx` — casual entry point, CI-friendly                       |
+| **P2**   | pom-md      | Markdown wrapper with `pomxml` code fences — write slides fast                               |
+| **P3**   | pom-jsx     | JSX/TSX authoring — type-safe, programmable, template-friendly                               |
+| **P4**   | pom-glimpse | Direct PNG/SVG renderer from pom XML (bypass PPTX). Revisit if pptx-glimpse path is too slow |
 
 ## Repositories
 
@@ -29,7 +29,7 @@ pom core is stable — focus shifts to **developer experience tools** that make 
 | **pom-ai**           | AI chat playground          | Lightweight playground — no further feature expansion |
 | **mcp-pptx-preview** | MCP server for PPTX preview | PPTX preview via MCP                                  |
 
-### Archive candidates (#434)
+### Archive candidates
 
 | Repository         | Reason                                              |
 | ------------------ | --------------------------------------------------- |
