@@ -66,6 +66,14 @@ src/
 ├── toPositioned/         # Absolute coordinate conversion
 └── renderPptx/           # PPTX rendering (pptxgenjs)
 
+packages/
+├── pom-md/               # Markdown → pom XML converter (@hirokisakabe/pom-md)
+│   ├── src/
+│   │   ├── index.ts      # Public API (parseMd)
+│   │   └── parseMd.ts    # Markdown → pom XML conversion logic
+│   ├── package.json      # Independent package (no npm workspaces)
+│   └── tsconfig.json
+
 vrt/                      # Visual Regression Test
 preview/                  # Preview infrastructure (for Claude Code)
 website/                  # Documentation website (Next.js)
@@ -165,6 +173,26 @@ When modifying main.ts to verify PPTX output, follow these steps:
 
 - `preview/output/sample.pptx` - Generated PPTX
 - `preview/output/sample.png` - PNG image (for layout verification)
+
+## Packages (packages/)
+
+Sub-packages live under `packages/` with independent `package.json` and `node_modules` (no npm workspaces). Each package has its own lint/test/build scripts.
+
+### pom-md (`packages/pom-md/`)
+
+Markdown → pom XML converter. Converts Markdown with `pomxml` code fences into pom XML strings.
+
+```bash
+cd packages/pom-md
+npm run build             # TypeScript compilation
+npm run lint              # ESLint
+npm run fmt               # Prettier formatting
+npm run fmt:check         # Format check
+npm run typecheck         # Type checking
+npm run test:run          # Run tests
+```
+
+Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
 
 ## Language Rules
 
