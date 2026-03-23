@@ -18,20 +18,116 @@ on:
       - ".size-limit.js"
       - ".github/workflows/ci-size-limit.yml"
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   size-limit:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
       - run: npm ci
-      - uses: andresz1/size-limit-action@v1
+      - run: npm run build
+
+      - name: Run size-limit
+        run: npx size-limit --json > size-limit-results.json
+
+      # --- main: キャッシュ保存 ---
+      - name: Save baseline to cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_step: install
-          build_script: build
+          path: size-limit-results.json
+          key: size-limit-main-${{ github.sha }}
+
+      # --- PR: ベースライン復元 ---
+      - name: Restore baseline from cache
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: size-limit-baseline.json
+          key: size-limit-main-${{ github.event.pull_request.base.sha }}
+          restore-keys: |
+            size-limit-main-
+
+      # --- PR: コメント生成・投稿 ---
+      - name: Generate size-limit comment
+        if: github.event_name == 'pull_request'
+        run: |
+          node -e "
+          const fs = require('fs');
+          const current = JSON.parse(fs.readFileSync('size-limit-results.json', 'utf-8'));
+
+          let baseline = null;
+          try {
+            baseline = JSON.parse(fs.readFileSync('size-limit-baseline.json', 'utf-8'));
+          } catch {}
+
+          function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+          }
+
+          function formatDiff(curr, base) {
+            if (!base) return '';
+            const diff = curr - base;
+            if (diff === 0) return '0 B (0%)';
+            const sign = diff > 0 ? '+' : '';
+            const pct = ((diff / base) * 100).toFixed(2);
+            return sign + formatBytes(Math.abs(diff)) + ' (' + sign + pct + '%)';
+          }
+
+          let md = '## 📦 Size Limit Report\n\n';
+          md += '| Name | Size | Limit | Diff |\n';
+          md += '|------|------|-------|------|\n';
+
+          for (const entry of current) {
+            const baseEntry = baseline?.find(b => b.name === entry.name);
+            const diff = baseEntry ? formatDiff(entry.size, baseEntry.size) : 'N/A';
+            const status = entry.passed ? '✅' : '🚨';
+            md += '| ' + status + ' ' + entry.name + ' | ' + formatBytes(entry.size) + ' | ' + formatBytes(entry.sizeLimit) + ' | ' + diff + ' |\n';
+          }
+
+          if (!baseline) {
+            md += '\n> ℹ️ No baseline found for comparison.\n';
+          }
+
+          fs.writeFileSync('size-limit-comment.md', md);
+          "
+
+      - name: Post or update PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('size-limit-comment.md', 'utf-8');
+            const marker = '<!-- size-limit-comment -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(marker));
+            const fullBody = marker + '\n' + body;
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+            }
