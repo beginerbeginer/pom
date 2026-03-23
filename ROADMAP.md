@@ -6,15 +6,17 @@ pom core is stable — focus shifts to **developer experience tools** that make 
 
 **Primary target**: engineers who want a "marp for PPTX" — write markup, get slides.
 
+Prioritize **authoring formats** first. Execution tooling should support those workflows, not lead them.
+
 ## Priorities
 
-| Priority | Item        | Description                                                                                  |
-| -------- | ----------- | -------------------------------------------------------------------------------------------- |
-| **P1**   | Monorepo    | Consolidate pom-cli and pom-glimpse into `packages/` for unified releases and type sharing   |
-| **P2**   | pom-cli     | `pom build input.xml -o output.pptx` — casual entry point, CI-friendly                       |
-| **P2**   | pom-md      | Markdown wrapper with `pomxml` code fences — write slides fast                               |
-| **P3**   | pom-jsx     | JSX/TSX authoring — type-safe, programmable, template-friendly                               |
-| **P4**   | pom-glimpse | Direct PNG/SVG renderer from pom XML (bypass PPTX). Revisit if pptx-glimpse path is too slow |
+| Priority | Item        | Description                                                                                     |
+| -------- | ----------- | ----------------------------------------------------------------------------------------------- |
+| **P1**   | Monorepo    | Consolidate ecosystem packages under `packages/` for unified releases and type sharing          |
+| **P2**   | pom-md      | Markdown wrapper with `pomxml` code fences — write slides fast                                  |
+| **P3**   | pom-jsx     | JSX/TSX authoring — type-safe, programmable, template-friendly                                  |
+| **P4**   | pom-cli     | Shared execution layer for `pom-md` / `pom-jsx` and CI use cases; keep standalone scope minimal |
+| **P5**   | pom-glimpse | Direct PNG/SVG renderer from pom XML (bypass PPTX). Revisit if pptx-glimpse path is too slow    |
 
 ## Repositories
 
