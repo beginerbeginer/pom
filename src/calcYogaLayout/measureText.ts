@@ -1,4 +1,7 @@
-import { measureTextWidth as measureTextWidthOpentype } from "./fontLoader.ts";
+import {
+  measureTextWidth as measureTextWidthOpentype,
+  isBundledFont,
+} from "./fontLoader.ts";
 
 type MeasureOptions = {
   fontFamily: string;
@@ -145,6 +148,8 @@ export function measureText(
   heightPx: number;
 } {
   // 計測方法を決定
+  // "opentype" / "fallback" が明示指定された場合はそれを優先
+  // "auto" の場合はバンドル外フォントならフォールバック計測を使用
   const shouldUseFallback = (() => {
     switch (mode) {
       case "opentype":
@@ -152,8 +157,7 @@ export function measureText(
       case "fallback":
         return true;
       case "auto":
-        // opentype.js はバンドルされたフォントを使うため常に利用可能
-        return false;
+        return !isBundledFont(opts.fontFamily);
     }
   })();
 

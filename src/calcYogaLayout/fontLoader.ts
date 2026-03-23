@@ -60,6 +60,16 @@ function getFont(weight: "normal" | "bold"): Font {
   return font;
 }
 
+/** バンドル済みフォント名の一覧 */
+const BUNDLED_FONT_NAMES = new Set(["Noto Sans JP"]);
+
+/**
+ * 指定されたフォントがバンドル済みかどうかを判定する
+ */
+export function isBundledFont(fontFamily: string): boolean {
+  return BUNDLED_FONT_NAMES.has(fontFamily);
+}
+
 /**
  * 指定したテキストの幅を計測する
  * @param text 計測するテキスト
