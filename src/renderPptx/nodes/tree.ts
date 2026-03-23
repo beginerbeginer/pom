@@ -7,6 +7,7 @@ import type {
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { calcScaleFactor } from "../utils/scaleToFit.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type TreePositionedNode = Extract<PositionedNode, { type: "tree" }>;
 
@@ -297,10 +298,11 @@ export function renderTreeNode(
   // ツリーのサイズを計算
   const treeSize = calculateSubtreeSize(node.data);
 
-  // スケール係数を計算
+  // スケール係数を計算（コンテンツ領域基準）
+  const content = getContentArea(node);
   const scaleFactor = calcScaleFactor(
-    node.w,
-    node.h,
+    content.w,
+    content.h,
     treeSize.width,
     treeSize.height,
     "tree",
@@ -310,8 +312,8 @@ export function renderTreeNode(
   // スケール後のサイズで中央配置オフセットを計算
   const scaledW = treeSize.width * scaleFactor;
   const scaledH = treeSize.height * scaleFactor;
-  const offsetX = node.x + (node.w - scaledW) / 2;
-  const offsetY = node.y + (node.h - scaledH) / 2;
+  const offsetX = content.x + (content.w - scaledW) / 2;
+  const offsetY = content.y + (content.h - scaledH) / 2;
 
   // レイアウト計算（原点(0,0)からの相対座標）
   const rootLayout = calculateTreeLayout(node.data, 0, 0);

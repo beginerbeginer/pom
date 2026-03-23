@@ -6,6 +6,7 @@ import {
 } from "../../shared/tableUtils.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { convertUnderline, convertStrike } from "../textOptions.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type TablePositionedNode = Extract<PositionedNode, { type: "table" }>;
 
@@ -38,12 +39,13 @@ export function renderTableNode(
     }),
   );
 
+  const content = getContentArea(node);
   const tableOptions = {
-    x: pxToIn(node.x),
-    y: pxToIn(node.y),
-    w: pxToIn(node.w),
-    h: pxToIn(node.h),
-    colW: resolveColumnWidths(node, node.w).map((width) => pxToIn(width)),
+    x: pxToIn(content.x),
+    y: pxToIn(content.y),
+    w: pxToIn(content.w),
+    h: pxToIn(content.h),
+    colW: resolveColumnWidths(node, content.w).map((width) => pxToIn(width)),
     rowH: resolveRowHeights(node).map((height) => pxToIn(height)),
     margin: 0,
   };

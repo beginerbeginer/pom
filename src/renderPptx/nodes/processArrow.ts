@@ -9,6 +9,7 @@ import {
   DEFAULT_PROCESS_ARROW_ITEM_WIDTH,
   DEFAULT_PROCESS_ARROW_ITEM_HEIGHT,
 } from "../../shared/processArrowConstants.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type ProcessArrowPositionedNode = Extract<
   PositionedNode,
@@ -32,11 +33,12 @@ export function renderProcessArrowNode(
   const arrowDepth = itemHeight * ARROW_DEPTH_RATIO;
   const gap = node.gap ?? -arrowDepth;
 
-  // スケール係数を計算
+  // スケール係数を計算（コンテンツ領域基準）
+  const content = getContentArea(node);
   const intrinsic = measureProcessArrow(node);
   const scaleFactor = calcScaleFactor(
-    node.w,
-    node.h,
+    content.w,
+    content.h,
     intrinsic.width,
     intrinsic.height,
     "processArrow",
@@ -48,9 +50,18 @@ export function renderProcessArrowNode(
   const scaledGap = gap * scaleFactor;
   const scaledArrowDepth = arrowDepth * scaleFactor;
 
+  // コンテンツ領域を使用するための仮想ノードを作成
+  const contentNode = {
+    ...node,
+    x: content.x,
+    y: content.y,
+    w: content.w,
+    h: content.h,
+  };
+
   if (direction === "horizontal") {
     renderHorizontalProcessArrow(
-      node,
+      contentNode,
       ctx,
       steps,
       stepCount,
@@ -64,7 +75,7 @@ export function renderProcessArrowNode(
     );
   } else {
     renderVerticalProcessArrow(
-      node,
+      contentNode,
       ctx,
       steps,
       stepCount,

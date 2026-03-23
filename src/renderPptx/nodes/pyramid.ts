@@ -3,6 +3,7 @@ import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { measurePyramid } from "../../calcYogaLayout/measureCompositeNodes.ts";
 import { calcScaleFactor } from "../utils/scaleToFit.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type PyramidPositionedNode = Extract<PositionedNode, { type: "pyramid" }>;
 
@@ -19,11 +20,12 @@ export function renderPyramidNode(
   const defaultColor = "4472C4";
   const defaultTextColor = "FFFFFF";
 
-  // スケール係数を計算
+  // スケール係数を計算（コンテンツ領域基準）
+  const content = getContentArea(node);
   const intrinsic = measurePyramid(node);
   const scaleFactor = calcScaleFactor(
-    node.w,
-    node.h,
+    content.w,
+    content.h,
     intrinsic.width,
     intrinsic.height,
     "pyramid",
@@ -35,8 +37,8 @@ export function renderPyramidNode(
   const gap = 2 * scaleFactor;
 
   const totalHeight = levelCount * layerHeight + (levelCount - 1) * gap;
-  const startX = node.x + (node.w - baseWidth) / 2;
-  const startY = node.y + (node.h - totalHeight) / 2;
+  const startX = content.x + (content.w - baseWidth) / 2;
+  const startY = content.y + (content.h - totalHeight) / 2;
 
   for (let i = 0; i < levelCount; i++) {
     const level = levels[i];

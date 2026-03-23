@@ -2,6 +2,7 @@ import type { PositionedNode, LiNode } from "../../types.ts";
 import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { convertUnderline, convertStrike } from "../textOptions.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type UlPositionedNode = Extract<PositionedNode, { type: "ul" }>;
 type OlPositionedNode = Extract<PositionedNode, { type: "ol" }>;
@@ -37,6 +38,7 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
   const fontSizePx = node.fontSize ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
   const lineHeight = node.lineHeight ?? 1.3;
+  const content = getContentArea(node);
 
   if (hasItemStyleOverride(node.items)) {
     // Li に個別スタイルがある場合は配列形式を使用
@@ -59,10 +61,10 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
     });
 
     ctx.slide.addText(textItems, {
-      x: pxToIn(node.x),
-      y: pxToIn(node.y),
-      w: pxToIn(node.w),
-      h: pxToIn(node.h),
+      x: pxToIn(content.x),
+      y: pxToIn(content.y),
+      w: pxToIn(content.w),
+      h: pxToIn(content.h),
       align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
@@ -73,10 +75,10 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
     const text = node.items.map((li) => li.text).join("\n");
 
     ctx.slide.addText(text, {
-      x: pxToIn(node.x),
-      y: pxToIn(node.y),
-      w: pxToIn(node.w),
-      h: pxToIn(node.h),
+      x: pxToIn(content.x),
+      y: pxToIn(content.y),
+      w: pxToIn(content.w),
+      h: pxToIn(content.h),
       fontSize: pxToPt(fontSizePx),
       fontFace: fontFamily,
       align: node.textAlign ?? "left",
@@ -98,6 +100,7 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
   const fontSizePx = node.fontSize ?? 24;
   const fontFamily = node.fontFamily ?? "Noto Sans JP";
   const lineHeight = node.lineHeight ?? 1.3;
+  const content = getContentArea(node);
 
   const bulletOptions: Record<string, unknown> = { type: "number" };
   if (node.numberType !== undefined) {
@@ -127,10 +130,10 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
     });
 
     ctx.slide.addText(textItems, {
-      x: pxToIn(node.x),
-      y: pxToIn(node.y),
-      w: pxToIn(node.w),
-      h: pxToIn(node.h),
+      x: pxToIn(content.x),
+      y: pxToIn(content.y),
+      w: pxToIn(content.w),
+      h: pxToIn(content.h),
       align: node.textAlign ?? "left",
       valign: "top" as const,
       margin: 0,
@@ -140,10 +143,10 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
     const text = node.items.map((li) => li.text).join("\n");
 
     ctx.slide.addText(text, {
-      x: pxToIn(node.x),
-      y: pxToIn(node.y),
-      w: pxToIn(node.w),
-      h: pxToIn(node.h),
+      x: pxToIn(content.x),
+      y: pxToIn(content.y),
+      w: pxToIn(content.w),
+      h: pxToIn(content.h),
       fontSize: pxToPt(fontSizePx),
       fontFace: fontFamily,
       align: node.textAlign ?? "left",
