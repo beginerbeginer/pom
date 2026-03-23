@@ -97,7 +97,7 @@ Customized underline with style and color:
 <Text underline.style="dotted">Dotted underline</Text>
 ```
 
-**Available underline styles:** `dash` | `dashHeavy` | `dashLong` | `dashLongHeavy` | `dbl` | `dotDash` | `dotDotDash` | `dotted` | `dottedHeavy` | `heavy` | `none` | `sng` | `wavy` | `wavyDbl` | `wavyHeavy`
+See the Text section in [Nodes](./nodes.md) for all available underline styles.
 
 ### Highlight
 
@@ -163,7 +163,7 @@ Add borders to any node with dot notation:
 
 ### Border Dash Types
 
-`solid` | `dash` | `dashDot` | `lgDash` | `lgDashDot` | `lgDashDotDot` | `sysDash` | `sysDot`
+See Common Properties in [Nodes](./nodes.md) for available dash types.
 
 ```xml
 <Box border.color="333333" border.width="2" border.dashType="dash" padding="16">

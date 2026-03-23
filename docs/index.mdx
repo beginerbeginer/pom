@@ -68,20 +68,7 @@ See the [Nodes](/nodes) for details. For color, font, and visual effect guidance
 
 ## Auto-Fit
 
-When content exceeds the slide height, pom automatically adjusts it to fit (enabled by default).
-
-Adjustment priority:
-
-1. Reduce table row heights
-2. Reduce text font sizes
-3. Reduce gap / padding
-4. Uniform scaling (fallback)
-
-To disable:
-
-```typescript
-const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
-```
+When content exceeds the slide height, pom automatically adjusts it to fit (enabled by default). See [API Reference](./api-reference.md#autofit) for adjustment priority and configuration.
 
 ## For AI Agent Developers
 
