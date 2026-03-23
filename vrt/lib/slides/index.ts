@@ -26,3 +26,7 @@ export { page24PyramidXml } from "./pyramid.js";
 export { page25IconXml, page29IconInHStackXml } from "./icon.js";
 export { page27HStackFlexShrinkXml } from "./flexShrink.js";
 export { page28LayoutV2Xml } from "./layoutV2.js";
+export {
+  page30LeafPaddingXml,
+  page31LeafPaddingCompositeXml,
+} from "./leafPadding.js";

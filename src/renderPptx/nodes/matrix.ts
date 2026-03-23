@@ -3,6 +3,7 @@ import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { measureMatrix } from "../../calcYogaLayout/measureCompositeNodes.ts";
 import { calcScaleFactor } from "../utils/scaleToFit.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type MatrixPositionedNode = Extract<PositionedNode, { type: "matrix" }>;
 
@@ -19,11 +20,12 @@ export function renderMatrixNode(
   const baseLineWidth = 2; // px
   const axisColor = "E2E8F0";
 
-  // スケール係数を計算
+  // スケール係数を計算（コンテンツ領域基準）
+  const content = getContentArea(node);
   const intrinsic = measureMatrix(node);
   const scaleFactor = calcScaleFactor(
-    node.w,
-    node.h,
+    content.w,
+    content.h,
     intrinsic.width,
     intrinsic.height,
     "matrix",
@@ -33,12 +35,12 @@ export function renderMatrixNode(
   const itemSize = baseItemSize * scaleFactor;
   const lineWidth = baseLineWidth * scaleFactor;
 
-  // マトリクスの描画領域（パディングを考慮）
-  const padding = 60 * scaleFactor; // 軸ラベル用の余白
-  const areaX = node.x + padding;
-  const areaY = node.y + padding;
-  const areaW = node.w - padding * 2;
-  const areaH = node.h - padding * 2;
+  // マトリクスの描画領域（軸ラベル用の余白を考慮）
+  const axisMargin = 60 * scaleFactor; // 軸ラベル用の余白
+  const areaX = content.x + axisMargin;
+  const areaY = content.y + axisMargin;
+  const areaW = content.w - axisMargin * 2;
+  const areaH = content.h - axisMargin * 2;
 
   // 中心座標
   const centerX = areaX + areaW / 2;
@@ -82,7 +84,7 @@ export function renderMatrixNode(
 
   // Y軸ラベル（左部中央）
   ctx.slide.addText(axes.y, {
-    x: pxToIn(node.x + 4 * scaleFactor),
+    x: pxToIn(content.x + 4 * scaleFactor),
     y: pxToIn(centerY - 12 * scaleFactor),
     w: pxToIn(48 * scaleFactor),
     h: pxToIn(axisLabelH),

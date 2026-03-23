@@ -3,6 +3,7 @@ import type { RenderContext } from "../types.ts";
 import { pxToIn, pxToPt } from "../units.ts";
 import { measureFlow } from "../../calcYogaLayout/measureCompositeNodes.ts";
 import { calcScaleFactor } from "../utils/scaleToFit.ts";
+import { getContentArea } from "../utils/contentArea.ts";
 
 type FlowPositionedNode = Extract<PositionedNode, { type: "flow" }>;
 
@@ -26,11 +27,12 @@ export function renderFlowNode(
   const connectorStyle = node.connectorStyle ?? {};
   const defaultColor = "1D4ED8";
 
-  // スケール係数を計算
+  // スケール係数を計算（コンテンツ領域基準）
+  const content = getContentArea(node);
   const intrinsic = measureFlow(node);
   const scaleFactor = calcScaleFactor(
-    node.w,
-    node.h,
+    content.w,
+    content.h,
     intrinsic.width,
     intrinsic.height,
     "flow",
@@ -44,10 +46,19 @@ export function renderFlowNode(
   const layouts = new Map<string, FlowNodeLayout>();
   const nodeCount = node.nodes.length;
 
+  // コンテンツ領域を使用するための仮想ノードを作成
+  const contentNode = {
+    ...node,
+    x: content.x,
+    y: content.y,
+    w: content.w,
+    h: content.h,
+  };
+
   // ノードのレイアウトを計算
   if (direction === "horizontal") {
     calculateHorizontalLayout(
-      node,
+      contentNode,
       layouts,
       nodeCount,
       scaledNodeWidth,
@@ -57,7 +68,7 @@ export function renderFlowNode(
     );
   } else {
     calculateVerticalLayout(
-      node,
+      contentNode,
       layouts,
       nodeCount,
       scaledNodeWidth,
