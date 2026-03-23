@@ -42,6 +42,7 @@ export const PAGE_NAMES = [
   "26-vstack-hstack-shadow",
   "27-hstack-flex-shrink",
   "28-layout-v2",
+  "29-icon-in-hstack",
 ] as const;
 
 export const THRESHOLD = 0.1;

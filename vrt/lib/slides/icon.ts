@@ -4,6 +4,65 @@ import { palette } from "./palette.js";
 // Page 25: Icon Test
 // テスト対象: name, size, color, variant, bgColor
 // ============================================================
+// ============================================================
+// Page 29: Icon in HStack Test
+// テスト対象: HStack直下のアイコンが引き伸ばされないこと
+// ============================================================
+export const page29IconInHStackXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 29: Icon in HStack</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Icons directly in HStack (no w specified):</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="cpu" size="32" color="#${palette.blue}" />
+        <Icon name="database" size="32" color="#${palette.green}" />
+        <Icon name="shield" size="32" color="#${palette.red}" />
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Icons with text siblings in HStack:</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="star" size="32" color="#${palette.navy}" />
+        <Text fontSize="16">Star icon with text</Text>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Variant icons in HStack:</Text>
+      <HStack gap="16" alignItems="center">
+        <Icon name="cpu" size="32" variant="circle-filled" bgColor="#E8F0FE" color="#${palette.blue}" />
+        <Icon name="database" size="32" variant="circle-filled" bgColor="#E6F4EA" color="#${palette.green}" />
+        <Icon name="shield" size="32" variant="circle-filled" bgColor="#FDE7E7" color="#${palette.red}" />
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Narrow HStack (w=120) with icons:</Text>
+      <HStack w="120" gap="8" alignItems="center">
+        <Icon name="cpu" size="32" color="#${palette.blue}" />
+        <Icon name="database" size="32" color="#${palette.green}" />
+        <Icon name="shield" size="32" color="#${palette.red}" />
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">HStack with default alignItems:</Text>
+      <HStack gap="16">
+        <Icon name="star" size="32" color="#${palette.navy}" />
+        <Icon name="heart" size="32" color="#${palette.red}" />
+        <Text fontSize="16">Text alongside icons</Text>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
+
 export const page25IconXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 25: Icon Test</Text>
