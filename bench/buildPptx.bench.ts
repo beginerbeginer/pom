@@ -141,11 +141,8 @@ describe("calcYogaLayout", () => {
     const nodes = parseXml(simpleXml);
     const ctx = createBuildContext("opentype");
     for (const node of nodes) {
-      try {
-        await calcYogaLayout(node, slideSize, ctx);
-      } finally {
-        freeYogaTree(node);
-      }
+      const map = await calcYogaLayout(node, slideSize, ctx);
+      freeYogaTree(map);
     }
   });
 
@@ -155,11 +152,8 @@ describe("calcYogaLayout", () => {
       const nodes = parseXml(complexXml);
       const ctx = createBuildContext("opentype");
       for (const node of nodes) {
-        try {
-          await calcYogaLayout(node, slideSize, ctx);
-        } finally {
-          freeYogaTree(node);
-        }
+        const map = await calcYogaLayout(node, slideSize, ctx);
+        freeYogaTree(map);
       }
     },
     { time: 5000 },

@@ -1,38 +1,51 @@
 import type { POMNode } from "../types.ts";
 import type { BuildContext } from "../buildContext.ts";
+import type { YogaNodeMap } from "./types.ts";
 import { Node as YogaNode } from "yoga-layout";
 import { loadYoga } from "yoga-layout/load";
 import { prefetchImageSize } from "../shared/measureImage.ts";
+import { freeYogaTree } from "../shared/freeYogaTree.ts";
 import { getNodeDef } from "../registry/index.ts";
 
 /**
  * POMNode ツリーを Yoga でレイアウト計算する
- * POMNode ツリーの各ノードに yogaNode プロパティがセットされる
+ * POMNode と YogaNode の対応を YogaNodeMap として返す
  *
  * @param root 入力 POMNode ツリーのルート
  * @param slideSize スライド全体のサイズ（px）
  * @param ctx BuildContext
+ * @returns YogaNodeMap（POMNode → YogaNode のマッピング）
  */
 export async function calcYogaLayout(
   root: POMNode,
   slideSize: { w: number; h: number },
   ctx: BuildContext,
-) {
+): Promise<YogaNodeMap> {
   const Yoga = await getYoga();
 
   // 事前に全画像のサイズを取得（HTTPS対応のため）
   await prefetchAllImageSizes(root, ctx);
 
-  const rootYoga = Yoga.Node.create();
-  root.yogaNode = rootYoga;
+  const map: YogaNodeMap = new Map();
 
-  await buildPomWithYogaTree(root, rootYoga, ctx);
+  try {
+    const rootYoga = Yoga.Node.create();
+    map.set(root, rootYoga);
 
-  // スライド全体サイズを指定
-  rootYoga.setWidth(slideSize.w);
-  rootYoga.setHeight(slideSize.h);
+    await buildPomWithYogaTree(root, rootYoga, ctx, map);
 
-  rootYoga.calculateLayout(slideSize.w, slideSize.h, Yoga.DIRECTION_LTR);
+    // スライド全体サイズを指定
+    rootYoga.setWidth(slideSize.w);
+    rootYoga.setHeight(slideSize.h);
+
+    rootYoga.calculateLayout(slideSize.w, slideSize.h, Yoga.DIRECTION_LTR);
+  } catch (e) {
+    // 途中で失敗した場合、作成済みの YogaNode を解放してから再 throw
+    freeYogaTree(map);
+    throw e;
+  }
+
+  return map;
 }
 
 /**
@@ -111,12 +124,13 @@ async function buildPomWithYogaTree(
   node: POMNode,
   parentYoga: YogaNode,
   ctx: BuildContext,
+  map: YogaNodeMap,
   parentNode?: POMNode,
 ) {
   const yoga = await getYoga();
 
   const yn = yoga.Node.create();
-  node.yogaNode = yn; // 対応する YogaNode をセット
+  map.set(node, yn); // 対応する YogaNode をマップに登録
 
   await applyStyleToYogaNode(node, yn, ctx);
 
@@ -144,7 +158,7 @@ async function buildPomWithYogaTree(
   switch (def.category) {
     case "single-child": {
       const boxNode = node as Extract<POMNode, { type: "box" }>;
-      await buildPomWithYogaTree(boxNode.children, yn, ctx, node);
+      await buildPomWithYogaTree(boxNode.children, yn, ctx, map, node);
       break;
     }
     case "multi-child":
@@ -154,7 +168,7 @@ async function buildPomWithYogaTree(
         { type: "vstack" | "hstack" | "layer" }
       >;
       for (const child of containerNode.children) {
-        await buildPomWithYogaTree(child, yn, ctx, node);
+        await buildPomWithYogaTree(child, yn, ctx, map, node);
       }
       break;
     }

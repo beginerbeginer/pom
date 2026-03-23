@@ -1,21 +1,13 @@
 import type { POMNode, PositionedNode } from "../types.ts";
 import type { BuildContext } from "../buildContext.ts";
+import type { YogaNodeMap } from "../calcYogaLayout/types.ts";
 import { getNodeDef } from "../registry/index.ts";
-
-/**
- * POMNode から yogaNode を除外したオブジェクトを返す。
- * PositionedNode に yogaNode 参照が残らないようにするため。
- */
-export function omitYogaNode<T extends POMNode>(pom: T): Omit<T, "yogaNode"> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { yogaNode, ...rest } = pom;
-  return rest;
-}
 
 /**
  * POMNode ツリーを絶対座標付きの PositionedNode ツリーに変換する
  * @param pom 入力 POMNode
  * @param ctx BuildContext
+ * @param map YogaNodeMap（POMNode → YogaNode のマッピング）
  * @param parentX 親ノードの絶対X座標
  * @param parentY 親ノードの絶対Y座標
  * @returns PositionedNode ツリー
@@ -23,14 +15,16 @@ export function omitYogaNode<T extends POMNode>(pom: T): Omit<T, "yogaNode"> {
 export function toPositioned(
   pom: POMNode,
   ctx: BuildContext,
+  map: YogaNodeMap,
   parentX = 0,
   parentY = 0,
 ): PositionedNode {
-  if (!pom.yogaNode) {
-    throw new Error("yogaNode not set on POMNode");
+  const yogaNode = map.get(pom);
+  if (!yogaNode) {
+    throw new Error("YogaNode not found in map for POMNode");
   }
 
-  const layout = pom.yogaNode.getComputedLayout();
+  const layout = yogaNode.getComputedLayout();
   const absoluteX = parentX + layout.left;
   const absoluteY = parentY + layout.top;
 
@@ -38,14 +32,14 @@ export function toPositioned(
 
   // ノード固有のカスタム変換がある場合はそれを使用
   if (def.toPositioned) {
-    return def.toPositioned(pom, absoluteX, absoluteY, layout, ctx);
+    return def.toPositioned(pom, absoluteX, absoluteY, layout, ctx, map);
   }
 
   // category ベースのデフォルト処理
   switch (def.category) {
     case "leaf":
       return {
-        ...omitYogaNode(pom),
+        ...pom,
         x: absoluteX,
         y: absoluteY,
         w: layout.width,
@@ -55,12 +49,18 @@ export function toPositioned(
     case "single-child": {
       const boxNode = pom as Extract<POMNode, { type: "box" }>;
       return {
-        ...omitYogaNode(boxNode),
+        ...boxNode,
         x: absoluteX,
         y: absoluteY,
         w: layout.width,
         h: layout.height,
-        children: toPositioned(boxNode.children, ctx, absoluteX, absoluteY),
+        children: toPositioned(
+          boxNode.children,
+          ctx,
+          map,
+          absoluteX,
+          absoluteY,
+        ),
       } as PositionedNode;
     }
 
@@ -70,13 +70,13 @@ export function toPositioned(
         { type: "vstack" | "hstack" }
       >;
       return {
-        ...omitYogaNode(containerNode),
+        ...containerNode,
         x: absoluteX,
         y: absoluteY,
         w: layout.width,
         h: layout.height,
         children: containerNode.children.map((child) =>
-          toPositioned(child, ctx, absoluteX, absoluteY),
+          toPositioned(child, ctx, map, absoluteX, absoluteY),
         ),
       } as PositionedNode;
     }

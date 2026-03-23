@@ -1,4 +1,3 @@
-import type { Node as YogaNode } from "yoga-layout";
 import { z } from "zod";
 import { ICON_DATA } from "./icons/iconData.ts";
 
@@ -317,7 +316,6 @@ export const backgroundImageSchema = z.object({
 
 // ===== Base Node =====
 const basePOMNodeSchema = z.object({
-  yogaNode: z.custom<YogaNode>().optional(),
   w: lengthSchema.optional(),
   h: lengthSchema.optional(),
   minW: z.number().optional(),
@@ -444,9 +442,7 @@ const iconNodeSchema = basePOMNodeSchema.extend({
   bgColor: iconColorSchema,
 });
 
-export type IconNode = z.infer<typeof iconNodeSchema> & {
-  yogaNode?: YogaNode;
-};
+export type IconNode = z.infer<typeof iconNodeSchema>;
 
 const tableCellSchema = z.object({
   text: z.string(),

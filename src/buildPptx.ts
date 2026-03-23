@@ -2,6 +2,7 @@ import { autoFitSlide } from "./autoFit/autoFit.ts";
 import { createBuildContext } from "./buildContext.ts";
 import { calcYogaLayout } from "./calcYogaLayout/calcYogaLayout.ts";
 import type { TextMeasurementMode } from "./calcYogaLayout/measureText.ts";
+import type { YogaNodeMap } from "./calcYogaLayout/types.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { freeYogaTree } from "./shared/freeYogaTree.ts";
@@ -25,16 +26,17 @@ export async function buildPptx(
   const positionedPages: PositionedNode[] = [];
 
   for (const node of nodes) {
+    let map: YogaNodeMap | undefined;
     try {
       if (options?.autoFit !== false) {
-        await autoFitSlide(node, slideSize, ctx);
+        map = await autoFitSlide(node, slideSize, ctx);
       } else {
-        await calcYogaLayout(node, slideSize, ctx);
+        map = await calcYogaLayout(node, slideSize, ctx);
       }
-      const positioned = toPositioned(node, ctx);
+      const positioned = toPositioned(node, ctx, map);
       positionedPages.push(positioned);
     } finally {
-      freeYogaTree(node);
+      if (map) freeYogaTree(map);
     }
   }
 
