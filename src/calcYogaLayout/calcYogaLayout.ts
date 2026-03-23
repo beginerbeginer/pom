@@ -136,16 +136,19 @@ async function buildPomWithYogaTree(
 
   // HStack/VStack の子要素に flexShrink=1 をデフォルト設定（CSS Flexbox と同じ挙動）
   // 主軸方向で %サイズ + gap がある場合の overflow を防ぐ
+  // アイコンは固定サイズのコンテンツなので shrink させない
   if (parentNode?.type === "hstack" || parentNode?.type === "vstack") {
-    yn.setFlexShrink(1);
+    yn.setFlexShrink(node.type === "icon" ? 0 : 1);
   }
 
   // HStack の子要素で幅が指定されていない場合、デフォルトで均等分割
   // テーブルは setMeasureFunc でカラム幅合計を返すため除外
+  // アイコンは固定サイズのコンテンツなので除外
   if (
     parentNode?.type === "hstack" &&
     node.w === undefined &&
-    node.type !== "table"
+    node.type !== "table" &&
+    node.type !== "icon"
   ) {
     yn.setFlexGrow(1);
     yn.setFlexBasis(0);
