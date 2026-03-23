@@ -15,7 +15,7 @@ import { PositionedNode, SlideMasterOptions } from "./types.ts";
 export type { TextMeasurementMode };
 
 export interface BuildPptxResult {
-  pptx: ReturnType<typeof renderPptx>;
+  pptx: import("pptxgenjs").default;
   diagnostics: Diagnostic[];
 }
 
