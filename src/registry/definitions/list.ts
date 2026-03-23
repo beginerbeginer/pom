@@ -33,6 +33,8 @@ function applyListYogaStyle(
         case yoga.MEASURE_MODE_EXACTLY:
         case yoga.MEASURE_MODE_AT_MOST:
           return width;
+        default:
+          return Number.POSITIVE_INFINITY;
       }
     })();
 

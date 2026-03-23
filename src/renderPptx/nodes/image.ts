@@ -17,7 +17,7 @@ export function renderImageNode(
     h: pxToIn(content.h),
     shadow: node.shadow
       ? {
-          type: node.shadow.type,
+          type: node.shadow.type ?? ("outer" as const),
           opacity: node.shadow.opacity,
           blur: node.shadow.blur,
           angle: node.shadow.angle,
