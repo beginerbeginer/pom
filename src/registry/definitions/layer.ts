@@ -48,11 +48,10 @@ export const layerNodeDef: NodeDefinition = {
         }
 
         // その他のノードは通常の処理
-        const childYogaNode = map.get(child);
-        if (!childYogaNode) {
-          throw new Error("YogaNode not found in map for layer child");
+        const childLayout = map.get(child);
+        if (!childLayout) {
+          throw new Error("Layout result not found in map for layer child");
         }
-        const childLayout = childYogaNode.getComputedLayout();
         const adjustedParentX = absoluteX + childX - childLayout.left;
         const adjustedParentY = absoluteY + childY - childLayout.top;
 

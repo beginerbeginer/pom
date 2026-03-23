@@ -1,13 +1,13 @@
 import type { POMNode, PositionedNode } from "../types.ts";
 import type { BuildContext } from "../buildContext.ts";
-import type { YogaNodeMap } from "../calcYogaLayout/types.ts";
+import type { LayoutResultMap } from "../calcYogaLayout/types.ts";
 import { getNodeDef } from "../registry/index.ts";
 
 /**
  * POMNode ツリーを絶対座標付きの PositionedNode ツリーに変換する
  * @param pom 入力 POMNode
  * @param ctx BuildContext
- * @param map YogaNodeMap（POMNode → YogaNode のマッピング）
+ * @param map LayoutResultMap（POMNode → 計算済みレイアウト結果のマッピング）
  * @param parentX 親ノードの絶対X座標
  * @param parentY 親ノードの絶対Y座標
  * @returns PositionedNode ツリー
@@ -15,16 +15,14 @@ import { getNodeDef } from "../registry/index.ts";
 export function toPositioned(
   pom: POMNode,
   ctx: BuildContext,
-  map: YogaNodeMap,
+  map: LayoutResultMap,
   parentX = 0,
   parentY = 0,
 ): PositionedNode {
-  const yogaNode = map.get(pom);
-  if (!yogaNode) {
-    throw new Error("YogaNode not found in map for POMNode");
+  const layout = map.get(pom);
+  if (!layout) {
+    throw new Error("Layout result not found in map for POMNode");
   }
-
-  const layout = yogaNode.getComputedLayout();
   const absoluteX = parentX + layout.left;
   const absoluteY = parentY + layout.top;
 
