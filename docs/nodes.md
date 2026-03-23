@@ -803,7 +803,9 @@ A node for displaying preset icons from the Lucide icon library. Icons are rende
 | `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`      |
 | `bgColor` | hex color for the background shape (default: `#E0E0E0` when variant is set) |
 
-**Available Icons (47):**
+All [Lucide icons](https://lucide.dev/icons/) are available. Below are common examples:
+
+**Common Icons (49):**
 
 | Category      | Icons                                                                          |
 | ------------- | ------------------------------------------------------------------------------ |
