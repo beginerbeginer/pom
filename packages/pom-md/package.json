@@ -1,0 +1,63 @@
+{
+  "name": "@hirokisakabe/pom-md",
+  "version": "0.1.0",
+  "description": "Markdown wrapper for pom — write slides in Markdown with pomxml code fences.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/hirokisakabe/pom#readme",
+  "bugs": {
+    "url": "https://github.com/hirokisakabe/pom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirokisakabe/pom.git",
+    "directory": "packages/pom-md"
+  },
+  "license": "MIT",
+  "keywords": [
+    "powerpoint",
+    "pptx",
+    "presentation",
+    "slides",
+    "markdown",
+    "pom"
+  ],
+  "author": "Hiroki Sakabe",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/markdown-it": "^14.1.2",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.47.0",
+    "vitest": "^4.1.0"
+  }
+}
