@@ -19,6 +19,7 @@ export default defineConfig([
       "website/**",
       "eslint.config.mts",
       "vitest.config.ts",
+      ".size-limit.js",
     ],
   },
   {
