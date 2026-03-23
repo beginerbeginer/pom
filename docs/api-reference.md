@@ -22,7 +22,7 @@ async function buildPptx(
 
 #### `xml` (required)
 
-An XML string describing the slide content. Each root-level element represents one slide. See [Nodes](./nodes.md) for available node types and [LLM Integration](./llm-integration.md) for the complete XML reference.
+An XML string describing the slide content. Each root-level element represents one slide. See [Nodes](./nodes.md) for available node types and [llm.txt](/llm.txt) for the complete XML reference.
 
 ```typescript
 const xml = `

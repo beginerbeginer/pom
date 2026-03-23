@@ -68,7 +68,7 @@ preview/                  # Preview infrastructure (for Claude Code)
 
 docs/                             # Documentation (Single Source of Truth, symlinked from website/content)
 ├── nodes.md                    # Nodes (with images)
-├── llm-integration.md          # XML reference for LLMs
+├── index.mdx                   # Introduction page
 ├── master-slide.md             # Master slide documentation
 ├── text-measurement.md         # Text measurement documentation
 └── images/                     # Sample images per node type (auto-generated)
@@ -134,7 +134,7 @@ When adding new properties or features, update the following files:
 8. **Documentation updates**:
    - `README.md` - User-facing documentation
    - `docs/nodes.md` - Nodes
-   - `docs/llm-integration.md` - XML reference for LLMs (for prompts)
+   - `website/public/llm.txt` - XML reference for LLMs (for prompts)
    - `CLAUDE.md` - Add to Key Internal Types section
 9. **Documentation image updates** (when adding new node types):
    - Add to `NODE_TYPES` in `scripts/docs-images/config.ts`

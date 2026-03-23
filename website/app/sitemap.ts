@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/nodes` },
     { url: `${siteUrl}/master-slide` },
     { url: `${siteUrl}/text-measurement` },
-    { url: `${siteUrl}/llm-integration` },
+    { url: `${siteUrl}/llm.txt` },
     { url: `${siteUrl}/playground` },
   ];
 }

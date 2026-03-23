@@ -35,7 +35,7 @@
 
 ## Features
 
-- **AI Friendly** — Simple XML structure designed for LLM code generation. Pair with [LLM Integration guide](./docs/llm-integration.md) for prompt-ready references.
+- **AI Friendly** — Simple XML structure designed for LLM code generation. Include [llm.txt](./website/public/llm.txt) in your system prompt for XML reference. Also available at `https://pom.pptx.app/llm.txt`.
 - **Declarative** — Describe slides as XML. No imperative API calls needed.
 - **Flexible Layout** — Flexbox-style layout with VStack / HStack / Box, powered by yoga-layout.
 - **Rich Nodes** — 15 built-in node types: charts, flowcharts, tables, timelines, org trees, and more.
@@ -220,7 +220,7 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 | [Nodes](./docs/nodes.md)                       | Complete reference for all node types |
 | [Master Slide](./docs/master-slide.md)         | Headers, footers, and page numbers    |
 | [Text Measurement](./docs/text-measurement.md) | Text measurement options and settings |
-| [LLM Integration](./docs/llm-integration.md)   | Compact XML reference for LLM prompts |
+| [llm.txt](./website/public/llm.txt)            | Compact XML reference for LLM prompts |
 | [Playground](https://pom.pptx.app/playground)  | Try pom XML in the browser            |
 
 ## License
