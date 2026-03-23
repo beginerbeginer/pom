@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 5.4.0
+
+### Minor Changes
+
+- [#386](https://github.com/hirokisakabe/pom/pull/386) [`30a7ce4`](https://github.com/hirokisakabe/pom/commit/30a7ce4c5ae004e1a0d332f3de2a066a521abe58) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - プリセットアイコンを Lucide v0.577.0 全 1,951 個に拡充
+
+### Patch Changes
+
+- [#382](https://github.com/hirokisakabe/pom/pull/382) [`c803885`](https://github.com/hirokisakabe/pom/commit/c803885c00f527cde725a40dde2019c86d48f405) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Add API reference documentation for `buildPptx()` options
+
 ## 5.3.0
 
 ### Minor Changes
