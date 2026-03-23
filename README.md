@@ -216,6 +216,7 @@ const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 
 | Document                                       | Description                           |
 | ---------------------------------------------- | ------------------------------------- |
+| [API Reference](./docs/api-reference.md)       | `buildPptx()` function and options    |
 | [Nodes](./docs/nodes.md)                       | Complete reference for all node types |
 | [Master Slide](./docs/master-slide.md)         | Headers, footers, and page numbers    |
 | [Text Measurement](./docs/text-measurement.md) | Text measurement options and settings |
