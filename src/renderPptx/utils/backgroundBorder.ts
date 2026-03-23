@@ -5,7 +5,7 @@ import { pxToIn, pxToPt } from "../units.ts";
 
 function convertShadow(shadow: ShadowStyle) {
   return {
-    type: shadow.type,
+    type: shadow.type ?? ("outer" as const),
     opacity: shadow.opacity,
     blur: shadow.blur,
     angle: shadow.angle,

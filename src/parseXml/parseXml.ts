@@ -253,7 +253,7 @@ function validateLeafNode(
 type XmlNode = XmlElement | XmlTextNode;
 type XmlTextNode = { "#text": string };
 interface XmlElement {
-  [tagName: string]: XmlNode[] | Record<string, string>;
+  [tagName: string]: XmlNode[] | Record<string, string> | undefined;
   ":@"?: Record<string, string>;
 }
 
