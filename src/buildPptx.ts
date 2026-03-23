@@ -3,6 +3,7 @@ import { createBuildContext } from "./buildContext.ts";
 import { calcYogaLayout } from "./calcYogaLayout/calcYogaLayout.ts";
 import type { TextMeasurementMode } from "./calcYogaLayout/measureText.ts";
 import type { YogaNodeMap } from "./calcYogaLayout/types.ts";
+import { extractLayoutResults } from "./calcYogaLayout/types.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { freeYogaTree } from "./shared/freeYogaTree.ts";
@@ -33,7 +34,8 @@ export async function buildPptx(
       } else {
         map = await calcYogaLayout(node, slideSize, ctx);
       }
-      const positioned = toPositioned(node, ctx, map);
+      const layoutMap = extractLayoutResults(map);
+      const positioned = toPositioned(node, ctx, layoutMap);
       positionedPages.push(positioned);
     } finally {
       if (map) freeYogaTree(map);

@@ -3,7 +3,7 @@ import type { Node as YogaNode } from "yoga-layout";
 import type { RenderContext } from "../renderPptx/types.ts";
 import type { loadYoga } from "yoga-layout/load";
 import type { BuildContext } from "../buildContext.ts";
-import type { YogaNodeMap } from "../calcYogaLayout/types.ts";
+import type { LayoutResultMap } from "../calcYogaLayout/types.ts";
 
 export type Yoga = Awaited<ReturnType<typeof loadYoga>>;
 
@@ -36,7 +36,7 @@ export interface NodeDefinition {
     absoluteY: number,
     layout: { width: number; height: number },
     ctx: BuildContext,
-    map: YogaNodeMap,
+    map: LayoutResultMap,
   ) => PositionedNode;
 
   /** PositionedNode をスライドにレンダリングする（リーフノード用） */
