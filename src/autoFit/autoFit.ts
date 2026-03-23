@@ -20,19 +20,38 @@ const strategies: Strategy[] = [
   uniformScale,
 ];
 
+/** オーバーフロー測定結果 */
+interface OverflowResult {
+  contentHeight: number;
+  isOverflowing: boolean;
+  /** スライド高さ / コンテンツ高さ（オーバーフロー時 < 1） */
+  targetRatio: number;
+  map: YogaNodeMap;
+}
+
 /**
- * 通常の slideSize でレイアウト計算し、コンテンツの占有高さを取得する。
+ * レイアウト計算を実行し、コンテンツのオーバーフロー状態を測定する。
+ */
+async function measureOverflow(
+  node: POMNode,
+  slideSize: { w: number; h: number },
+  ctx: BuildContext,
+): Promise<OverflowResult> {
+  const map = await calcYogaLayout(node, slideSize, ctx);
+  const contentHeight = calcContentHeight(map, node);
+  const isOverflowing = contentHeight > slideSize.h * OVERFLOW_TOLERANCE;
+  const targetRatio = isOverflowing ? slideSize.h / contentHeight : 1;
+  return { contentHeight, isOverflowing, targetRatio, map };
+}
+
+/**
+ * Yoga レイアウト結果からコンテンツの占有高さを算出する。
  *
  * ルートの yogaNode の子要素の (top + height) の最大値を計算し、
  * ルートの padding.bottom を加算してコンテンツの占有高さとする。
  * h="max" や flexGrow の影響を受けず、正確なコンテンツ高さを返す。
  */
-async function measureContentHeight(
-  node: POMNode,
-  slideSize: { w: number; h: number },
-  ctx: BuildContext,
-): Promise<{ height: number; map: YogaNodeMap }> {
-  const map = await calcYogaLayout(node, slideSize, ctx);
+function calcContentHeight(map: YogaNodeMap, node: POMNode): number {
   const rootYoga = map.get(node);
   if (!rootYoga) {
     throw new Error("YogaNode not found in map for root node");
@@ -40,7 +59,7 @@ async function measureContentHeight(
 
   const childCount = rootYoga.getChildCount();
   if (childCount === 0) {
-    return { height: rootYoga.getComputedHeight(), map };
+    return rootYoga.getComputedHeight();
   }
 
   let maxBottom = 0;
@@ -55,7 +74,7 @@ async function measureContentHeight(
 
   // ルートの paddingBottom を加算
   const paddingBottom = rootYoga.getComputedPadding(2); // EDGE_BOTTOM = 2
-  return { height: maxBottom + paddingBottom, map };
+  return maxBottom + paddingBottom;
 }
 
 /**
@@ -72,43 +91,40 @@ export async function autoFitSlide(
   slideSize: { w: number; h: number },
   ctx: BuildContext,
 ): Promise<YogaNodeMap> {
-  let currentMap: YogaNodeMap | undefined;
-
+  // Phase 1: 戦略を順次適用してオーバーフローを解消
   for (const strategy of strategies) {
-    if (currentMap) freeYogaTree(currentMap);
-    const { height: contentHeight, map } = await measureContentHeight(
-      node,
-      slideSize,
-      ctx,
-    );
-    currentMap = map;
+    const result = await measureOverflow(node, slideSize, ctx);
+    freeYogaTree(result.map);
 
-    if (contentHeight <= slideSize.h * OVERFLOW_TOLERANCE) {
+    if (!result.isOverflowing) {
       break;
     }
 
-    const ratio = slideSize.h / contentHeight;
-    const changed = strategy(node, ratio);
-
+    const changed = strategy(node, result.targetRatio);
     if (!changed) {
       continue;
     }
   }
 
-  // 最終的にオーバーフローが解消されたか確認
-  if (currentMap) freeYogaTree(currentMap);
-  const { height: finalHeight, map: finalMap } = await measureContentHeight(
-    node,
-    slideSize,
-    ctx,
-  );
-  if (finalHeight > slideSize.h * OVERFLOW_TOLERANCE) {
+  // Phase 2: 最終レイアウト計算とオーバーフロー検証
+  return finalizeLayout(node, slideSize, ctx);
+}
+
+/**
+ * 最終レイアウトを計算し、オーバーフローが残っていれば警告を出力する。
+ */
+async function finalizeLayout(
+  node: POMNode,
+  slideSize: { w: number; h: number },
+  ctx: BuildContext,
+): Promise<YogaNodeMap> {
+  const result = await measureOverflow(node, slideSize, ctx);
+  if (result.isOverflowing) {
     console.warn(
-      `[pom] autoFit: content height (${Math.round(finalHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
+      `[pom] autoFit: content height (${Math.round(result.contentHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
     );
   }
+  freeYogaTree(result.map);
 
-  // 最終レイアウト（正しい slideSize で）
-  freeYogaTree(finalMap);
   return calcYogaLayout(node, slideSize, ctx);
 }
