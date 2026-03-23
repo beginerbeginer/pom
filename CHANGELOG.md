@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 5.5.1
+
+### Patch Changes
+
+- [#442](https://github.com/hirokisakabe/pom/pull/442) [`6b48337`](https://github.com/hirokisakabe/pom/commit/6b48337ed32b333136d068cd863e76d996911438) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Text/Ul/Ol のレイアウト計測時に fontFamily を反映し、描画フォントとの乖離を削減
+
+- [#440](https://github.com/hirokisakabe/pom/pull/440) [`4e57f99`](https://github.com/hirokisakabe/pom/commit/4e57f997ffc158eed3ea07e533722748b9dba3ed) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: VStack の alignItems="center" 配下で HStack 子要素のテキスト幅が潰れる問題を修正
+
+- [#447](https://github.com/hirokisakabe/pom/pull/447) [`121b542`](https://github.com/hirokisakabe/pom/commit/121b5427f7d13b0dd4ac605436960d80bc1bfc42) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Upgrade TypeScript from 5.9.3 to 6.0.2 and fix type errors
+
 ## 5.5.0
 
 ### Minor Changes
