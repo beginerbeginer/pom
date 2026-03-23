@@ -1,7 +1,6 @@
 import type { POMNode, PositionedNode } from "../../types.ts";
 import type { NodeDefinition } from "../types.ts";
 import { renderLineNode } from "../../renderPptx/nodes/line.ts";
-import { omitYogaNode } from "../../toPositioned/toPositioned.ts";
 
 export const lineNodeDef: NodeDefinition = {
   type: "line",
@@ -16,7 +15,7 @@ export const lineNodeDef: NodeDefinition = {
     // line ノードは絶対座標（x1, y1, x2, y2）を持つため、
     // yogaNode の座標ではなく自身の座標からバウンディングボックスを計算
     return {
-      ...omitYogaNode(n),
+      ...n,
       x: Math.min(n.x1, n.x2),
       y: Math.min(n.y1, n.y2),
       w: Math.abs(n.x2 - n.x1),

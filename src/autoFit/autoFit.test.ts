@@ -256,9 +256,9 @@ describe("autoFitSlide", () => {
       children: [{ type: "text", text: "hello", fontSize: 24 }],
       padding: 20,
     };
-    await autoFitSlide(node, slideSize, createBuildContext());
-    // yogaNode がセットされていること（レイアウト計算が完了）
-    expect(node.yogaNode).toBeDefined();
+    const map = await autoFitSlide(node, slideSize, createBuildContext());
+    // レイアウト計算が完了していること
+    expect(map.size).toBeGreaterThan(0);
     // fontSize は変更されていない
     const text = node.children[0];
     if (text.type === "text") {
@@ -282,8 +282,8 @@ describe("autoFitSlide", () => {
         },
       ],
     };
-    await autoFitSlide(node, slideSize, createBuildContext());
-    expect(node.yogaNode).toBeDefined();
+    const map = await autoFitSlide(node, slideSize, createBuildContext());
+    expect(map.size).toBeGreaterThan(0);
     // defaultRowHeight が縮小されていること
     const table = node.children[0];
     if (table.type === "table") {

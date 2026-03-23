@@ -1,5 +1,6 @@
 import type { POMNode } from "../types.ts";
 import type { BuildContext } from "../buildContext.ts";
+import type { YogaNodeMap } from "../calcYogaLayout/types.ts";
 import { calcYogaLayout } from "../calcYogaLayout/calcYogaLayout.ts";
 import { freeYogaTree } from "../shared/freeYogaTree.ts";
 import { reduceTableRowHeight } from "./strategies/reduceTableRowHeight.ts";
@@ -30,13 +31,16 @@ async function measureContentHeight(
   node: POMNode,
   slideSize: { w: number; h: number },
   ctx: BuildContext,
-): Promise<number> {
-  await calcYogaLayout(node, slideSize, ctx);
-  const rootYoga = node.yogaNode;
+): Promise<{ height: number; map: YogaNodeMap }> {
+  const map = await calcYogaLayout(node, slideSize, ctx);
+  const rootYoga = map.get(node);
+  if (!rootYoga) {
+    throw new Error("YogaNode not found in map for root node");
+  }
 
   const childCount = rootYoga.getChildCount();
   if (childCount === 0) {
-    return rootYoga.getComputedHeight();
+    return { height: rootYoga.getComputedHeight(), map };
   }
 
   let maxBottom = 0;
@@ -51,7 +55,7 @@ async function measureContentHeight(
 
   // ルートの paddingBottom を加算
   const paddingBottom = rootYoga.getComputedPadding(2); // EDGE_BOTTOM = 2
-  return maxBottom + paddingBottom;
+  return { height: maxBottom + paddingBottom, map };
 }
 
 /**
@@ -67,10 +71,17 @@ export async function autoFitSlide(
   node: POMNode,
   slideSize: { w: number; h: number },
   ctx: BuildContext,
-): Promise<void> {
+): Promise<YogaNodeMap> {
+  let currentMap: YogaNodeMap | undefined;
+
   for (const strategy of strategies) {
-    freeYogaTree(node);
-    const contentHeight = await measureContentHeight(node, slideSize, ctx);
+    if (currentMap) freeYogaTree(currentMap);
+    const { height: contentHeight, map } = await measureContentHeight(
+      node,
+      slideSize,
+      ctx,
+    );
+    currentMap = map;
 
     if (contentHeight <= slideSize.h * OVERFLOW_TOLERANCE) {
       break;
@@ -85,8 +96,12 @@ export async function autoFitSlide(
   }
 
   // 最終的にオーバーフローが解消されたか確認
-  freeYogaTree(node);
-  const finalHeight = await measureContentHeight(node, slideSize, ctx);
+  if (currentMap) freeYogaTree(currentMap);
+  const { height: finalHeight, map: finalMap } = await measureContentHeight(
+    node,
+    slideSize,
+    ctx,
+  );
   if (finalHeight > slideSize.h * OVERFLOW_TOLERANCE) {
     console.warn(
       `[pom] autoFit: content height (${Math.round(finalHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
@@ -94,6 +109,6 @@ export async function autoFitSlide(
   }
 
   // 最終レイアウト（正しい slideSize で）
-  freeYogaTree(node);
-  await calcYogaLayout(node, slideSize, ctx);
+  freeYogaTree(finalMap);
+  return calcYogaLayout(node, slideSize, ctx);
 }

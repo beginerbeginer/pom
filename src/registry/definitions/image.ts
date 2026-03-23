@@ -4,7 +4,6 @@ import type { Node as YogaNode } from "yoga-layout";
 import { measureImage, getImageData } from "../../shared/measureImage.ts";
 import type { BuildContext } from "../../buildContext.ts";
 import { renderImageNode } from "../../renderPptx/nodes/image.ts";
-import { omitYogaNode } from "../../toPositioned/toPositioned.ts";
 
 export const imageNodeDef: NodeDefinition = {
   type: "image",
@@ -22,7 +21,7 @@ export const imageNodeDef: NodeDefinition = {
     const n = pom as Extract<POMNode, { type: "image" }>;
     const imageData = getImageData(n.src, ctx.imageDataCache);
     return {
-      ...omitYogaNode(n),
+      ...n,
       x: absoluteX,
       y: absoluteY,
       w: layout.width,
