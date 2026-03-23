@@ -67,7 +67,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page29IconInHStackXml,
   ].join("\n");
 
-  const pptx = await buildPptx(
+  const { pptx } = await buildPptx(
     allPagesXml,
     {
       w: 1280,

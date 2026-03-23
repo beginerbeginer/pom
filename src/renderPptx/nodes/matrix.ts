@@ -27,6 +27,7 @@ export function renderMatrixNode(
     intrinsic.width,
     intrinsic.height,
     "matrix",
+    ctx.buildContext.diagnostics,
   );
 
   const itemSize = baseItemSize * scaleFactor;

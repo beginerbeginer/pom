@@ -1,10 +1,12 @@
+import type { DiagnosticCollector } from "../../diagnostics.ts";
+
 const MIN_SCALE_THRESHOLD = 0.5;
 
 /**
  * 割り当てサイズと固有サイズからスケール係数を計算する。
  *
  * - scaleFactor = min(allocatedW / intrinsicW, allocatedH / intrinsicH, 1.0)
- * - scaleFactor < MIN_SCALE_THRESHOLD の場合、閾値でクランプして console.warn
+ * - scaleFactor < MIN_SCALE_THRESHOLD の場合、閾値でクランプして diagnostics に記録
  */
 export function calcScaleFactor(
   allocatedW: number,
@@ -12,6 +14,7 @@ export function calcScaleFactor(
   intrinsicW: number,
   intrinsicH: number,
   nodeType: string,
+  diagnostics: DiagnosticCollector,
 ): number {
   if (intrinsicW <= 0 || intrinsicH <= 0) return 1.0;
 
@@ -20,8 +23,9 @@ export function calcScaleFactor(
   let scaleFactor = Math.min(scaleX, scaleY, 1.0);
 
   if (scaleFactor < MIN_SCALE_THRESHOLD) {
-    console.warn(
-      `[pom] ${nodeType} node: scale factor ${scaleFactor.toFixed(2)} is below threshold ${MIN_SCALE_THRESHOLD}. Content may overflow.`,
+    diagnostics.add(
+      "SCALE_BELOW_THRESHOLD",
+      `${nodeType} node: scale factor ${scaleFactor.toFixed(2)} is below threshold ${MIN_SCALE_THRESHOLD}. Content may overflow.`,
     );
     scaleFactor = MIN_SCALE_THRESHOLD;
   }

@@ -27,6 +27,7 @@ export function renderPyramidNode(
     intrinsic.width,
     intrinsic.height,
     "pyramid",
+    ctx.buildContext.diagnostics,
   );
 
   const baseWidth = 400 * scaleFactor;

@@ -4,6 +4,8 @@ import { calcYogaLayout } from "./calcYogaLayout/calcYogaLayout.ts";
 import type { TextMeasurementMode } from "./calcYogaLayout/measureText.ts";
 import type { YogaNodeMap } from "./calcYogaLayout/types.ts";
 import { extractLayoutResults } from "./calcYogaLayout/types.ts";
+import type { Diagnostic } from "./diagnostics.ts";
+import { DiagnosticsError } from "./diagnostics.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { freeYogaTree } from "./shared/freeYogaTree.ts";
@@ -12,6 +14,11 @@ import { PositionedNode, SlideMasterOptions } from "./types.ts";
 
 export type { TextMeasurementMode };
 
+export interface BuildPptxResult {
+  pptx: import("pptxgenjs").default;
+  diagnostics: Diagnostic[];
+}
+
 export async function buildPptx(
   xml: string,
   slideSize: { w: number; h: number },
@@ -19,8 +26,9 @@ export async function buildPptx(
     master?: SlideMasterOptions;
     textMeasurement?: TextMeasurementMode;
     autoFit?: boolean;
+    strict?: boolean;
   },
-) {
+): Promise<BuildPptxResult> {
   const ctx = createBuildContext(options?.textMeasurement ?? "auto");
 
   const nodes = parseXml(xml);
@@ -43,6 +51,11 @@ export async function buildPptx(
   }
 
   const pptx = renderPptx(positionedPages, slideSize, ctx, options?.master);
+  const diagnostics = ctx.diagnostics.items;
 
-  return pptx;
+  if (options?.strict && diagnostics.length > 0) {
+    throw new DiagnosticsError(diagnostics);
+  }
+
+  return { pptx, diagnostics };
 }

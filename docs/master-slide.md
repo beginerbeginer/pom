@@ -16,7 +16,7 @@ const xml = `
 </VStack>
 `;
 
-const pptx = await buildPptx(
+const { pptx } = await buildPptx(
   xml,
   { w: 1280, h: 720 },
   {

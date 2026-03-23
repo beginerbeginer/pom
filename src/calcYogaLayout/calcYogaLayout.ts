@@ -58,7 +58,12 @@ async function prefetchAllImageSizes(
   const imageSources = collectImageSources(node);
   await Promise.all(
     imageSources.map((src) =>
-      prefetchImageSize(src, ctx.imageSizeCache, ctx.imageDataCache),
+      prefetchImageSize(
+        src,
+        ctx.imageSizeCache,
+        ctx.imageDataCache,
+        ctx.diagnostics,
+      ),
     ),
   );
 }

@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import * as fs from "fs";
+import type { DiagnosticCollector } from "../diagnostics.ts";
 
 const require = createRequire(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -38,6 +39,7 @@ export async function prefetchImageSize(
   src: string,
   sizeCache: ImageSizeCache,
   dataCache: ImageDataCache,
+  diagnostics: DiagnosticCollector,
 ): Promise<{
   widthPx: number;
   heightPx: number;
@@ -91,7 +93,10 @@ export async function prefetchImageSize(
     return result;
   } catch (error) {
     // エラーが発生した場合はデフォルトサイズを返す
-    console.warn(`Failed to measure image size for ${src}:`, error);
+    diagnostics.add(
+      "IMAGE_MEASURE_FAILED",
+      `Failed to measure image size for ${src}: ${String(error)}`,
+    );
     const result = {
       widthPx: 100,
       heightPx: 100,
@@ -111,6 +116,7 @@ export async function prefetchImageSize(
 export function measureImage(
   src: string,
   sizeCache: ImageSizeCache,
+  diagnostics: DiagnosticCollector,
 ): {
   widthPx: number;
   heightPx: number;
@@ -132,7 +138,8 @@ export function measureImage(
     }
     // HTTPS/HTTP URLの場合はキャッシュがないとデフォルト値を返す
     else if (src.startsWith("https://") || src.startsWith("http://")) {
-      console.warn(
+      diagnostics.add(
+        "IMAGE_NOT_PREFETCHED",
         `Image size for URL ${src} was not prefetched. Using default size.`,
       );
       return {
@@ -161,7 +168,10 @@ export function measureImage(
     return result;
   } catch (error) {
     // エラーが発生した場合はデフォルトサイズを返す
-    console.warn(`Failed to measure image size for ${src}:`, error);
+    diagnostics.add(
+      "IMAGE_MEASURE_FAILED",
+      `Failed to measure image size for ${src}: ${String(error)}`,
+    );
     return {
       widthPx: 100,
       heightPx: 100,

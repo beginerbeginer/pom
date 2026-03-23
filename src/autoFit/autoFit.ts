@@ -120,8 +120,9 @@ async function finalizeLayout(
 ): Promise<YogaNodeMap> {
   const result = await measureOverflow(node, slideSize, ctx);
   if (result.isOverflowing) {
-    console.warn(
-      `[pom] autoFit: content height (${Math.round(result.contentHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
+    ctx.diagnostics.add(
+      "AUTOFIT_OVERFLOW",
+      `autoFit: content height (${Math.round(result.contentHeight)}px) exceeds slide height (${slideSize.h}px) after all adjustments.`,
     );
   }
   freeYogaTree(result.map);

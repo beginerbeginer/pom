@@ -304,6 +304,7 @@ export function renderTreeNode(
     treeSize.width,
     treeSize.height,
     "tree",
+    ctx.buildContext.diagnostics,
   );
 
   // スケール後のサイズで中央配置オフセットを計算

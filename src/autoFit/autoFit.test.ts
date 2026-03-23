@@ -309,11 +309,10 @@ describe("autoFitSlide", () => {
       padding: 20,
       gap: 10,
     };
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-    await autoFitSlide(node, { w: 1280, h: 200 }, createBuildContext());
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining("[pom] autoFit"),
-    );
-    warnSpy.mockRestore();
+    const ctx = createBuildContext();
+    await autoFitSlide(node, { w: 1280, h: 200 }, ctx);
+    expect(ctx.diagnostics.items.length).toBeGreaterThan(0);
+    expect(ctx.diagnostics.items[0].code).toBe("AUTOFIT_OVERFLOW");
+    expect(ctx.diagnostics.items[0].message).toContain("autoFit");
   });
 });
