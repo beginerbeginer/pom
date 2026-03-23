@@ -35,7 +35,7 @@ const xml = `
 `;
 
 async function main() {
-  const pptx = await buildPptx(xml, {
+  const { pptx } = await buildPptx(xml, {
     w: 1280,
     h: 720,
   });

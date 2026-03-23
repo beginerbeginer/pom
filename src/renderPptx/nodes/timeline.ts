@@ -28,6 +28,7 @@ export function renderTimelineNode(
     intrinsic.width,
     intrinsic.height,
     "timeline",
+    ctx.buildContext.diagnostics,
   );
 
   const nodeRadius = baseNodeRadius * scaleFactor;

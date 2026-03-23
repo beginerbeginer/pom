@@ -63,7 +63,7 @@ const xml = `
 </VStack>
 `;
 
-const pptx = await buildPptx(xml, { w: 1280, h: 720 });
+const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
 await pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
@@ -209,7 +209,7 @@ Adjustments are applied in the following priority order:
 To disable:
 
 ```typescript
-const pptx = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
+const { pptx } = await buildPptx(xml, { w: 1280, h: 720 }, { autoFit: false });
 ```
 
 ## Documentation

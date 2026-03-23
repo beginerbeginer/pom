@@ -13,7 +13,11 @@ export const imageNodeDef: NodeDefinition = {
     const src = n.src;
 
     yn.setMeasureFunc(() => {
-      const { widthPx, heightPx } = measureImage(src, ctx.imageSizeCache);
+      const { widthPx, heightPx } = measureImage(
+        src,
+        ctx.imageSizeCache,
+        ctx.diagnostics,
+      );
       return { width: widthPx, height: heightPx };
     });
   },

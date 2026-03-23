@@ -40,6 +40,7 @@ export function renderProcessArrowNode(
     intrinsic.width,
     intrinsic.height,
     "processArrow",
+    ctx.buildContext.diagnostics,
   );
 
   const scaledItemWidth = itemWidth * scaleFactor;

@@ -49,41 +49,50 @@ The slide dimensions in pixels. Internally converted to inches at 96 DPI.
 
 #### `options` (optional)
 
-| Property          | Type                  | Default     | Description                               |
-| ----------------- | --------------------- | ----------- | ----------------------------------------- |
-| `master`          | `SlideMasterOptions`  | `undefined` | Slide master settings                     |
-| `textMeasurement` | `TextMeasurementMode` | `"auto"`    | Text width measurement method             |
-| `autoFit`         | `boolean`             | `true`      | Auto-fit content when it overflows slides |
+| Property          | Type                  | Default     | Description                                               |
+| ----------------- | --------------------- | ----------- | --------------------------------------------------------- |
+| `master`          | `SlideMasterOptions`  | `undefined` | Slide master settings                                     |
+| `textMeasurement` | `TextMeasurementMode` | `"auto"`    | Text width measurement method                             |
+| `autoFit`         | `boolean`             | `true`      | Auto-fit content when it overflows slides                 |
+| `strict`          | `boolean`             | `false`     | Throw `DiagnosticsError` if any diagnostics are collected |
 
 ### Return Value
 
-Returns a [pptxgenjs](https://github.com/gitbrent/PptxGenJS) instance. Use `.writeFile()` or `.write()` to output the PPTX file.
+Returns a `BuildPptxResult` object:
+
+| Field         | Type           | Description                                 |
+| ------------- | -------------- | ------------------------------------------- |
+| `pptx`        | pptxgenjs      | The generated presentation instance         |
+| `diagnostics` | `Diagnostic[]` | Warnings collected during the build process |
 
 ```typescript
-const pptx = await buildPptx(xml, { w: 1280, h: 720 });
+const { pptx, diagnostics } = await buildPptx(xml, { w: 1280, h: 720 });
 
 // Save to file (Node.js)
 await pptx.writeFile({ fileName: "output.pptx" });
 
-// Get as base64 string
-const base64 = await pptx.write({ outputType: "base64" });
-
-// Get as ArrayBuffer
-const buffer = await pptx.write({ outputType: "arraybuffer" });
+// Check for warnings
+if (diagnostics.length > 0) {
+  console.warn("Build warnings:", diagnostics);
+}
 ```
 
 ### Errors
 
 - **`ParseXmlError`** — Thrown when the XML string is invalid or contains unknown tags/attributes.
+- **`DiagnosticsError`** — Thrown when `strict: true` is set and diagnostics are collected during build.
 
 ```typescript
-import { buildPptx, ParseXmlError } from "@hirokisakabe/pom";
+import { buildPptx, ParseXmlError, DiagnosticsError } from "@hirokisakabe/pom";
 
 try {
-  const pptx = await buildPptx(xml, { w: 1280, h: 720 });
+  const { pptx } = await buildPptx(xml, { w: 1280, h: 720 }, { strict: true });
 } catch (e) {
   if (e instanceof ParseXmlError) {
     console.error("Invalid XML:", e.message);
+  }
+  if (e instanceof DiagnosticsError) {
+    console.error("Build diagnostics:", e.diagnostics);
   }
 }
 ```
@@ -97,7 +106,7 @@ try {
 Defines a slide master with static objects and page numbers applied to all slides. See [Master Slide](./master-slide.md) for full documentation.
 
 ```typescript
-const pptx = await buildPptx(
+const { pptx } = await buildPptx(
   xml,
   { w: 1280, h: 720 },
   {
@@ -136,7 +145,7 @@ When enabled (default), content that exceeds the slide height is automatically a
 
 ```typescript
 // Disable auto-fit
-const pptx = await buildPptx(
+const { pptx } = await buildPptx(
   xml,
   { w: 1280, h: 720 },
   {
@@ -151,7 +160,10 @@ const pptx = await buildPptx(
 
 ```typescript
 import type {
+  BuildPptxResult,
   TextMeasurementMode,
+  Diagnostic,
+  DiagnosticCode,
   SlideMasterOptions,
   SlideMasterBackground,
   SlideMasterMargin,

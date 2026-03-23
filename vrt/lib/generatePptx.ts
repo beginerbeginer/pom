@@ -65,7 +65,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page28LayoutV2Xml,
   ].join("\n");
 
-  const pptx = await buildPptx(
+  const { pptx } = await buildPptx(
     allPagesXml,
     {
       w: 1280,

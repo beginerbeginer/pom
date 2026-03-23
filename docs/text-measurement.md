@@ -7,7 +7,7 @@ pom uses `opentype.js` with bundled Noto Sans JP fonts to measure text width and
 You can specify the text measurement method using the `textMeasurement` option if needed:
 
 ```typescript
-const pptx = await buildPptx(
+const { pptx } = await buildPptx(
   xml,
   { w: 1280, h: 720 },
   {

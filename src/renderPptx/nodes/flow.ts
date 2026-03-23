@@ -34,6 +34,7 @@ export function renderFlowNode(
     intrinsic.width,
     intrinsic.height,
     "flow",
+    ctx.buildContext.diagnostics,
   );
 
   const scaledNodeWidth = nodeWidth * scaleFactor;
