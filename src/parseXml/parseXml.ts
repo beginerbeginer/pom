@@ -1,23 +1,23 @@
 import { XMLParser } from "fast-xml-parser";
 import { z } from "zod";
-import type { POMNode } from "../types.ts";
 import {
-  inputTextNodeSchema,
-  inputUlNodeSchema,
-  inputOlNodeSchema,
-  inputImageNodeSchema,
-  inputTableNodeSchema,
-  inputShapeNodeSchema,
-  inputChartNodeSchema,
-  inputTimelineNodeSchema,
-  inputMatrixNodeSchema,
-  inputTreeNodeSchema,
-  inputFlowNodeSchema,
-  inputProcessArrowNodeSchema,
-  inputPyramidNodeSchema,
-  inputLineNodeSchema,
-  inputIconNodeSchema,
-} from "./inputSchema.ts";
+  type POMNode,
+  textNodeSchema,
+  ulNodeSchema,
+  olNodeSchema,
+  imageNodeSchema,
+  tableNodeSchema,
+  shapeNodeSchema,
+  chartNodeSchema,
+  timelineNodeSchema,
+  matrixNodeSchema,
+  treeNodeSchema,
+  flowNodeSchema,
+  processArrowNodeSchema,
+  pyramidNodeSchema,
+  lineNodeSchema,
+  iconNodeSchema,
+} from "../types.ts";
 import {
   type CoercionRule,
   NODE_COERCION_MAP,
@@ -126,21 +126,21 @@ function getKnownChildAttributes(tagName: string): string[] {
 
 // ===== Leaf node Zod validation schemas =====
 const leafNodeValidationSchemas: Record<string, z.ZodTypeAny> = {
-  text: inputTextNodeSchema,
-  image: inputImageNodeSchema,
-  table: inputTableNodeSchema,
-  shape: inputShapeNodeSchema,
-  chart: inputChartNodeSchema,
-  timeline: inputTimelineNodeSchema,
-  matrix: inputMatrixNodeSchema,
-  tree: inputTreeNodeSchema,
-  flow: inputFlowNodeSchema,
-  processArrow: inputProcessArrowNodeSchema,
-  pyramid: inputPyramidNodeSchema,
-  line: inputLineNodeSchema,
-  ul: inputUlNodeSchema,
-  ol: inputOlNodeSchema,
-  icon: inputIconNodeSchema,
+  text: textNodeSchema,
+  image: imageNodeSchema,
+  table: tableNodeSchema,
+  shape: shapeNodeSchema,
+  chart: chartNodeSchema,
+  timeline: timelineNodeSchema,
+  matrix: matrixNodeSchema,
+  tree: treeNodeSchema,
+  flow: flowNodeSchema,
+  processArrow: processArrowNodeSchema,
+  pyramid: pyramidNodeSchema,
+  line: lineNodeSchema,
+  ul: ulNodeSchema,
+  ol: olNodeSchema,
+  icon: iconNodeSchema,
 };
 
 function formatZodIssue(

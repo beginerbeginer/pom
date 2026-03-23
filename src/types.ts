@@ -2,13 +2,13 @@ import { z } from "zod";
 import { ICON_DATA } from "./icons/iconData.ts";
 
 // ===== Basic Types =====
-export const lengthSchema = z.union([
+const lengthSchema = z.union([
   z.number(),
   z.literal("max"),
   z.string().regex(/^\d+%$/),
 ]);
 
-export const paddingSchema = z.union([
+const paddingSchema = z.union([
   z.number(),
   z.object({
     top: z.number().optional(),
@@ -18,7 +18,7 @@ export const paddingSchema = z.union([
   }),
 ]);
 
-export const borderDashSchema = z.enum([
+const borderDashSchema = z.enum([
   "solid",
   "dash",
   "dashDot",
@@ -29,13 +29,13 @@ export const borderDashSchema = z.enum([
   "sysDot",
 ]);
 
-export const borderStyleSchema = z.object({
+const borderStyleSchema = z.object({
   color: z.string().optional(),
   width: z.number().optional(),
   dashType: borderDashSchema.optional(),
 });
 
-export const fillStyleSchema = z.object({
+const fillStyleSchema = z.object({
   color: z.string().optional(),
   transparency: z.number().optional(),
 });
@@ -49,7 +49,7 @@ export const shadowStyleSchema = z.object({
   color: z.string().optional(),
 });
 
-export const bulletNumberTypeSchema = z.enum([
+const bulletNumberTypeSchema = z.enum([
   "alphaLcParenBoth",
   "alphaLcParenR",
   "alphaLcPeriod",
@@ -94,21 +94,15 @@ export const underlineSchema = z.union([
   }),
 ]);
 
-export const alignItemsSchema = z.enum(["start", "center", "end", "stretch"]);
+const alignItemsSchema = z.enum(["start", "center", "end", "stretch"]);
 
-export const alignSelfSchema = z.enum([
-  "auto",
-  "start",
-  "center",
-  "end",
-  "stretch",
-]);
+const alignSelfSchema = z.enum(["auto", "start", "center", "end", "stretch"]);
 
-export const positionTypeSchema = z.enum(["relative", "absolute"]);
+const positionTypeSchema = z.enum(["relative", "absolute"]);
 
-export const flexWrapSchema = z.enum(["nowrap", "wrap", "wrapReverse"]);
+const flexWrapSchema = z.enum(["nowrap", "wrap", "wrapReverse"]);
 
-export const justifyContentSchema = z.enum([
+const justifyContentSchema = z.enum([
   "start",
   "center",
   "end",
@@ -117,7 +111,7 @@ export const justifyContentSchema = z.enum([
   "spaceEvenly",
 ]);
 
-export const shapeTypeSchema = z.enum([
+const shapeTypeSchema = z.enum([
   "accentBorderCallout1",
   "accentBorderCallout2",
   "accentBorderCallout3",
@@ -309,7 +303,7 @@ export type Underline = z.infer<typeof underlineSchema>;
 // ===== Background Image =====
 const backgroundImageSizingSchema = z.enum(["cover", "contain"]);
 
-export const backgroundImageSchema = z.object({
+const backgroundImageSchema = z.object({
   src: z.string(),
   sizing: backgroundImageSizingSchema.optional(),
 });
@@ -341,7 +335,7 @@ const basePOMNodeSchema = z.object({
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
 
 // ===== Non-recursive Node Types =====
-const textNodeSchema = basePOMNodeSchema.extend({
+export const textNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("text"),
   text: z.string(),
   fontSize: z.number().optional(),
@@ -368,7 +362,7 @@ export const liNodeSchema = z.object({
   fontFamily: z.string().optional(),
 });
 
-const ulNodeSchema = basePOMNodeSchema.extend({
+export const ulNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("ul"),
   items: z.array(liNodeSchema),
   fontSize: z.number().optional(),
@@ -383,7 +377,7 @@ const ulNodeSchema = basePOMNodeSchema.extend({
   lineHeight: z.number().optional(),
 });
 
-const olNodeSchema = basePOMNodeSchema.extend({
+export const olNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("ol"),
   items: z.array(liNodeSchema),
   fontSize: z.number().optional(),
@@ -408,23 +402,21 @@ const imageSizingSchema = z.object({
   y: z.number().optional(),
 });
 
-const imageNodeSchema = basePOMNodeSchema.extend({
+export const imageNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
   sizing: imageSizingSchema.optional(),
   shadow: shadowStyleSchema.optional(),
 });
 
-export const iconNameSchema = z.enum(
-  Object.keys(ICON_DATA) as [string, ...string[]],
-);
+const iconNameSchema = z.enum(Object.keys(ICON_DATA) as [string, ...string[]]);
 
-export const iconColorSchema = z
+const iconColorSchema = z
   .string()
   .regex(/^#?[0-9a-fA-F]{3,8}$/)
   .optional();
 
-export const iconVariantSchema = z
+const iconVariantSchema = z
   .enum([
     "circle-filled",
     "circle-outlined",
@@ -433,7 +425,7 @@ export const iconVariantSchema = z
   ])
   .optional();
 
-const iconNodeSchema = basePOMNodeSchema.extend({
+export const iconNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("icon"),
   name: iconNameSchema,
   size: z.number().positive().max(1024).optional(),
@@ -459,12 +451,12 @@ const tableCellSchema = z.object({
   rowspan: z.number().int().min(1).optional(),
 });
 
-export const tableRowSchema = z.object({
+const tableRowSchema = z.object({
   cells: z.array(tableCellSchema),
   height: z.number().optional(),
 });
 
-export const tableColumnSchema = z.object({
+const tableColumnSchema = z.object({
   width: z.number().optional(),
 });
 
@@ -475,7 +467,7 @@ export const tableNodeSchema = basePOMNodeSchema.extend({
   defaultRowHeight: z.number().optional(),
 });
 
-const shapeNodeSchema = basePOMNodeSchema.extend({
+export const shapeNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("shape"),
   shapeType: shapeTypeSchema,
   text: z.string().optional(),
@@ -494,7 +486,7 @@ const shapeNodeSchema = basePOMNodeSchema.extend({
   lineHeight: z.number().optional(),
 });
 
-export const chartTypeSchema = z.enum([
+const chartTypeSchema = z.enum([
   "bar",
   "line",
   "pie",
@@ -503,15 +495,15 @@ export const chartTypeSchema = z.enum([
   "radar",
 ]);
 
-export const radarStyleSchema = z.enum(["standard", "marker", "filled"]);
+const radarStyleSchema = z.enum(["standard", "marker", "filled"]);
 
-export const chartDataSchema = z.object({
+const chartDataSchema = z.object({
   name: z.string().optional(),
   labels: z.array(z.string()),
   values: z.array(z.number()),
 });
 
-const chartNodeSchema = basePOMNodeSchema.extend({
+export const chartNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("chart"),
   chartType: chartTypeSchema,
   data: z.array(chartDataSchema),
@@ -533,9 +525,9 @@ export type ShapeNode = z.infer<typeof shapeNodeSchema>;
 export type ChartNode = z.infer<typeof chartNodeSchema>;
 
 // ===== Timeline Node =====
-export const timelineDirectionSchema = z.enum(["horizontal", "vertical"]);
+const timelineDirectionSchema = z.enum(["horizontal", "vertical"]);
 
-export const timelineItemSchema = z.object({
+const timelineItemSchema = z.object({
   date: z.string(),
   title: z.string(),
   description: z.string().optional(),
@@ -551,19 +543,19 @@ export const timelineNodeSchema = basePOMNodeSchema.extend({
 export type TimelineNode = z.infer<typeof timelineNodeSchema>;
 
 // ===== Matrix Node =====
-export const matrixAxisSchema = z.object({
+const matrixAxisSchema = z.object({
   x: z.string(),
   y: z.string(),
 });
 
-export const matrixQuadrantsSchema = z.object({
+const matrixQuadrantsSchema = z.object({
   topLeft: z.string(),
   topRight: z.string(),
   bottomLeft: z.string(),
   bottomRight: z.string(),
 });
 
-export const matrixItemSchema = z.object({
+const matrixItemSchema = z.object({
   label: z.string(),
   x: z.number().min(0).max(1),
   y: z.number().min(0).max(1),
@@ -580,7 +572,7 @@ export const matrixNodeSchema = basePOMNodeSchema.extend({
 export type MatrixNode = z.infer<typeof matrixNodeSchema>;
 
 // ===== Tree Node =====
-export const treeLayoutSchema = z.enum(["vertical", "horizontal"]);
+const treeLayoutSchema = z.enum(["vertical", "horizontal"]);
 
 export const treeNodeShapeSchema = z.enum(["rect", "roundRect", "ellipse"]);
 
@@ -620,9 +612,9 @@ export type TreeConnectorStyle = z.infer<typeof treeConnectorStyleSchema>;
 export type TreeNode = z.infer<typeof treeNodeSchema>;
 
 // ===== ProcessArrow Node =====
-export const processArrowDirectionSchema = z.enum(["horizontal", "vertical"]);
+const processArrowDirectionSchema = z.enum(["horizontal", "vertical"]);
 
-export const processArrowStepSchema = z.object({
+const processArrowStepSchema = z.object({
   label: z.string(),
   color: z.string().optional(),
   textColor: z.string().optional(),
@@ -646,9 +638,9 @@ export const processArrowNodeSchema = basePOMNodeSchema.extend({
 export type ProcessArrowNode = z.infer<typeof processArrowNodeSchema>;
 
 // ===== Pyramid Node =====
-export const pyramidDirectionSchema = z.enum(["up", "down"]);
+const pyramidDirectionSchema = z.enum(["up", "down"]);
 
-export const pyramidLevelSchema = z.object({
+const pyramidLevelSchema = z.object({
   label: z.string(),
   color: z.string().optional(),
   textColor: z.string().optional(),
@@ -665,7 +657,7 @@ export const pyramidNodeSchema = basePOMNodeSchema.extend({
 export type PyramidNode = z.infer<typeof pyramidNodeSchema>;
 
 // ===== Flow Node =====
-export const flowDirectionSchema = z.enum(["horizontal", "vertical"]);
+const flowDirectionSchema = z.enum(["horizontal", "vertical"]);
 
 const flowNodeShapeSchema = z.enum([
   "flowChartTerminator",
@@ -682,7 +674,7 @@ const flowNodeShapeSchema = z.enum([
   "flowChartMagneticDisk",
 ]);
 
-export const flowNodeItemSchema = z.object({
+const flowNodeItemSchema = z.object({
   id: z.string(),
   shape: flowNodeShapeSchema,
   text: z.string(),
@@ -692,14 +684,14 @@ export const flowNodeItemSchema = z.object({
   height: z.number().optional(),
 });
 
-export const flowConnectionSchema = z.object({
+const flowConnectionSchema = z.object({
   from: z.string(),
   to: z.string(),
   label: z.string().optional(),
   color: z.string().optional(),
 });
 
-export const flowConnectorStyleSchema = z.object({
+const flowConnectorStyleSchema = z.object({
   color: z.string().optional(),
   width: z.number().optional(),
   arrowType: z
@@ -736,7 +728,7 @@ const lineArrowOptionsSchema = z.object({
 
 export const lineArrowSchema = z.union([z.boolean(), lineArrowOptionsSchema]);
 
-const lineNodeSchema = basePOMNodeSchema.extend({
+export const lineNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("line"),
   x1: z.number(),
   y1: z.number(),
