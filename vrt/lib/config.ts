@@ -46,6 +46,8 @@ export const PAGE_NAMES = [
   "30-leaf-padding",
   "31-leaf-padding-composite",
   "32-center-align-hstack",
+  "33-custom-font",
+  "34-custom-font-wrap",
 ] as const;
 
 export const THRESHOLD = 0.1;

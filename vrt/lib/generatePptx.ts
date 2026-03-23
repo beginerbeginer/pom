@@ -34,6 +34,8 @@ import {
   page30LeafPaddingXml,
   page31LeafPaddingCompositeXml,
   page32CenterAlignHStackXml,
+  page33CustomFontXml,
+  page34CustomFontWrapXml,
 } from "./slides/index.js";
 
 export async function generatePptx(outputPath: string): Promise<void> {
@@ -71,6 +73,8 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page30LeafPaddingXml,
     page31LeafPaddingCompositeXml,
     page32CenterAlignHStackXml,
+    page33CustomFontXml,
+    page34CustomFontWrapXml,
   ].join("\n");
 
   const { pptx } = await buildPptx(
