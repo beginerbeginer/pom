@@ -48,6 +48,7 @@ src/
 │   ├── types.ts          # Registry types
 │   └── definitions/      # Node type definitions (text, list, image, table, shape, chart, icon, etc.)
 ├── icons/                # Icon feature
+│   ├── index.ts          # Icon module exports
 │   ├── renderIcon.ts     # SVG icon rasterization
 │   └── iconData.ts       # Icon preset library data
 ├── shared/               # Shared code used across multiple pipeline stages
@@ -65,18 +66,24 @@ src/
 
 vrt/                      # Visual Regression Test
 preview/                  # Preview infrastructure (for Claude Code)
+website/                  # Documentation website (Next.js)
+sample_images/            # Sample output images
 
 docs/                             # Documentation (Single Source of Truth, symlinked from website/content)
+├── index.mdx                   # Documentation top page
+├── _meta.ts                    # Navigation metadata
 ├── nodes.md                    # Nodes (with images)
 ├── llm-integration.md          # XML reference for LLMs
 ├── master-slide.md             # Master slide documentation
 ├── text-measurement.md         # Text measurement documentation
 └── images/                     # Sample images per node type (auto-generated)
 
-scripts/docs-images/              # Documentation image generation scripts
-├── generateNodeImages.ts       # Main execution script
-├── config.ts                   # Node type list & output settings
-└── sampleNodes.ts              # Sample XML for each node
+scripts/
+├── convertFontToBase64.ts        # Font file to Base64 conversion utility
+└── docs-images/                  # Documentation image generation scripts
+    ├── generateNodeImages.ts     # Main execution script
+    ├── config.ts                 # Node type list & output settings
+    └── sampleNodes.ts            # Sample XML for each node
 ```
 
 ## Architecture
