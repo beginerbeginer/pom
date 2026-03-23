@@ -15,7 +15,7 @@ function applyListYogaStyle(
   const n = node as Extract<POMNode, { type: "ul" | "ol" }>;
   const combinedText = n.items.map((item) => item.text).join("\n");
   const fontSizePx = n.fontSize ?? 24;
-  const fontFamily = "Noto Sans JP";
+  const fontFamily = n.fontFamily ?? "Noto Sans JP";
   const fontWeight = n.bold ? "bold" : "normal";
   const spacingMultiple = n.lineHeight ?? 1.3;
 

@@ -12,7 +12,7 @@ export const textNodeDef: NodeDefinition = {
     const n = node as Extract<POMNode, { type: "text" }>;
     const text = n.text;
     const fontSizePx = n.fontSize ?? 24;
-    const fontFamily = "Noto Sans JP";
+    const fontFamily = n.fontFamily ?? "Noto Sans JP";
     const fontWeight = n.bold ? "bold" : "normal";
     const lineHeight = 1.3;
 
