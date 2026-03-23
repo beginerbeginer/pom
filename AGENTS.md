@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 pom (PowerPoint Object Model) is a library for declaratively describing PowerPoint presentations in TypeScript. It calculates Flexbox-style layouts with yoga-layout and generates PPTX files with pptxgenjs.
 
+For ecosystem-wide direction, priorities, and repository status, see [ROADMAP.md](./ROADMAP.md).
+
 ## Commands
 
 ```bash
