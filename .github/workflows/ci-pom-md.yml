@@ -1,0 +1,33 @@
+name: CI - pom-md
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "packages/pom-md/**"
+      - ".github/workflows/ci-pom-md.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "packages/pom-md/**"
+      - ".github/workflows/ci-pom-md.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: packages/pom-md
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run fmt:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:run
+      - run: npm run build
