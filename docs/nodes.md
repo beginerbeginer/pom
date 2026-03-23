@@ -54,7 +54,7 @@ A node for displaying text.
 | `fontFamily`             | string (default: `Noto Sans JP`)                           |
 | `lineHeight`             | number (default: 1.3)                                      |
 
-Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
+See [Styling Guide](./styling-guide.md#font-size-guide) for recommended font sizes.
 
 **UnderlineStyle:**
 

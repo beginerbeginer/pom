@@ -123,23 +123,7 @@ const pptx = await buildPptx(
 
 ### textMeasurement
 
-Controls how text width is measured for line breaking and layout. See [Text Measurement](./text-measurement.md) for full documentation.
-
-| Value        | Description                                                |
-| ------------ | ---------------------------------------------------------- |
-| `"opentype"` | Always use opentype.js for measurement                     |
-| `"fallback"` | Use fallback calculation (CJK = 1em, alphanumeric = 0.5em) |
-| `"auto"`     | Use opentype.js (same as `"opentype"`) — default           |
-
-```typescript
-const pptx = await buildPptx(
-  xml,
-  { w: 1280, h: 720 },
-  {
-    textMeasurement: "fallback",
-  },
-);
-```
+Controls how text width is measured for line breaking and layout. Accepts `"opentype"`, `"fallback"`, or `"auto"` (default). See [Text Measurement](./text-measurement.md) for details on each mode.
 
 ### autoFit
 
