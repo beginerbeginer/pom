@@ -1275,8 +1275,26 @@ describe("parseXml", () => {
         `;
         const result = parseXml(xml);
         const node = result[0] as Record<string, unknown>;
-        expect(node.columns).toBeUndefined();
+        expect(node.columns).toEqual([{}, {}]);
         expect(node.rows).toEqual([{ cells: [{ text: "A" }, { text: "B" }] }]);
+      });
+
+      it("TableColumn なしで colspan を含む TableRow から正しい列数を推定する", () => {
+        const xml = `
+          <Table>
+            <TableRow>
+              <TableCell colspan="3">Header</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>A</TableCell>
+              <TableCell>B</TableCell>
+              <TableCell>C</TableCell>
+            </TableRow>
+          </Table>
+        `;
+        const result = parseXml(xml);
+        const node = result[0] as Record<string, unknown>;
+        expect(node.columns).toEqual([{}, {}, {}]);
       });
 
       it("JSON 属性のみでも引き続き動作する（後方互換性）", () => {
