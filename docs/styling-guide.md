@@ -123,9 +123,7 @@ Apply a background highlight to text:
 All nodes support `backgroundColor`:
 
 ```xml
-<Box backgroundColor="F8F9FA" padding="16">
-  <Text>Content on a light gray background</Text>
-</Box>
+<Text backgroundColor="F8F9FA" padding="16">Content on a light gray background</Text>
 ```
 
 ### Background Image
@@ -133,9 +131,7 @@ All nodes support `backgroundColor`:
 Set a background image with `backgroundImage.src` and control sizing with `backgroundImage.sizing`:
 
 ```xml
-<Box backgroundImage.src="./photo.jpg" backgroundImage.sizing="cover" w="400" h="300">
-  <Text color="FFFFFF">Text over image</Text>
-</Box>
+<Text backgroundImage.src="./photo.jpg" backgroundImage.sizing="cover" w="400" h="300" color="FFFFFF">Text over image</Text>
 ```
 
 | Property                 | Values                   | Description                                         |
@@ -148,9 +144,7 @@ Set a background image with `backgroundImage.src` and control sizing with `backg
 Add borders to any node with dot notation:
 
 ```xml
-<Box border.color="E5E7EB" border.width="1" padding="16">
-  <Text>Box with a light border</Text>
-</Box>
+<Text border.color="E5E7EB" border.width="1" padding="16">Container with a light border</Text>
 ```
 
 ### Border Properties
@@ -166,9 +160,7 @@ Add borders to any node with dot notation:
 See Common Properties in [Nodes](./nodes.md) for available dash types.
 
 ```xml
-<Box border.color="333333" border.width="2" border.dashType="dash" padding="16">
-  <Text>Dashed border</Text>
-</Box>
+<Text border.color="333333" border.width="2" border.dashType="dash" padding="16">Dashed border</Text>
 ```
 
 ### Border Radius
@@ -176,19 +168,17 @@ See Common Properties in [Nodes](./nodes.md) for available dash types.
 Round corners with `borderRadius`:
 
 ```xml
-<Box backgroundColor="1D4ED8" borderRadius="8" padding="16">
-  <Text color="FFFFFF">Rounded box</Text>
-</Box>
+<Text backgroundColor="1D4ED8" borderRadius="8" padding="16" color="FFFFFF">Rounded box</Text>
 ```
 
 ## Shadow
 
-Add drop shadows to Box, VStack, HStack, Image, and Shape nodes:
+Add drop shadows to VStack, HStack, Image, and Shape nodes:
 
 ```xml
-<Box shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000" shadow.opacity="0.3" padding="16">
+<VStack shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000" shadow.opacity="0.3" padding="16">
   <Text>Card with shadow</Text>
-</Box>
+</VStack>
 ```
 
 ### Shadow Properties
@@ -207,9 +197,7 @@ Add drop shadows to Box, VStack, HStack, Image, and Shape nodes:
 Control background transparency with `opacity` (0 = fully transparent, 1 = fully opaque):
 
 ```xml
-<Box backgroundColor="1D4ED8" opacity="0.5" padding="16">
-  <Text>Semi-transparent blue background</Text>
-</Box>
+<Text backgroundColor="1D4ED8" opacity="0.5" padding="16">Semi-transparent blue background</Text>
 ```
 
 ### Overlay Pattern with Layer

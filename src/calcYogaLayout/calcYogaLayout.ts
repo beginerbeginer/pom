@@ -89,11 +89,6 @@ function collectImageSources(node: POMNode): string[] {
 
     // 子要素の再帰
     switch (def.category) {
-      case "single-child": {
-        const boxNode = n as Extract<POMNode, { type: "box" }>;
-        traverse(boxNode.children);
-        break;
-      }
       case "multi-child":
       case "absolute-child": {
         const containerNode = n as Extract<
@@ -144,7 +139,7 @@ function nodeHasDefiniteWidth(node: POMNode, parentNode?: POMNode): boolean {
   // 親がいない場合（ルートノード）は確定
   if (!parentNode) return true;
 
-  // 親の alignItems を取得（VStack/HStack のみ持つ、Box 等は undefined でデフォルト stretch）
+  // 親の alignItems を取得（VStack/HStack のみ持つ）
   let parentAlignItems: AlignItems | undefined;
   if (parentNode.type === "vstack") {
     parentAlignItems = parentNode.alignItems;
@@ -152,13 +147,9 @@ function nodeHasDefiniteWidth(node: POMNode, parentNode?: POMNode): boolean {
     parentAlignItems = parentNode.alignItems;
   }
 
-  // VStack/Box（column 方向）の子の場合、交差軸は水平方向
+  // VStack（column 方向）の子の場合、交差軸は水平方向
   // alignItems が stretch（デフォルト）なら子は親幅に伸長される
-  if (
-    parentNode.type === "vstack" ||
-    parentNode.type === "box" ||
-    parentNode.type === "layer"
-  ) {
+  if (parentNode.type === "vstack" || parentNode.type === "layer") {
     return parentAlignItems === undefined || parentAlignItems === "stretch";
   }
 
@@ -219,18 +210,6 @@ async function buildPomWithYogaTree(
   const def = getNodeDef(node.type);
 
   switch (def.category) {
-    case "single-child": {
-      const boxNode = node as Extract<POMNode, { type: "box" }>;
-      await buildPomWithYogaTree(
-        boxNode.children,
-        yn,
-        ctx,
-        map,
-        node,
-        parentNode,
-      );
-      break;
-    }
     case "multi-child":
     case "absolute-child": {
       const containerNode = node as Extract<

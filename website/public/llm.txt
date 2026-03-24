@@ -55,20 +55,6 @@ Arranges children vertically (VStack) / horizontally (HStack).
 
 > **Note:** Children of VStack / HStack default to `flexShrink=1` (same behavior as CSS Flexbox). Even when combining `%` widths with `gap`, children automatically shrink to fit within the parent.
 
-### Box
-
-A container that holds exactly one child. Used for adding padding or fixed sizing.
-
-```xml
-<Box w="50%" padding="20" backgroundColor="FFFFFF">
-  <Text>Content</Text>
-</Box>
-```
-
-| Attribute | Type                                                                       | Description |
-| --------- | -------------------------------------------------------------------------- | ----------- |
-| `shadow`  | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Shadow      |
-
 ### Layer
 
 Positions children using absolute coordinates. Children require `x` and `y`. Source order determines stacking.
@@ -148,7 +134,7 @@ All Ul attributes plus:
 | --------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `src`     | string (URL / path / base64)                                                                                             |
 | `sizing`  | `'{"type":"contain"}' ` / `'{"type":"cover"}'` / `'{"type":"crop","x":0,"y":0,"w":100,"h":100}'`                         |
-| `shadow`  | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` (shared by Image, Box, Shape, VStack, HStack) |
+| `shadow`  | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` (shared by Image, Shape, VStack, HStack) |
 
 ### Icon
 
@@ -465,12 +451,8 @@ When the same property is specified via both attributes (JSON string) and child 
 <VStack w="100%" h="max" padding="48" gap="24" alignItems="stretch">
   <Text fontSize="28" bold="true">Title</Text>
   <HStack gap="24" alignItems="start">
-    <Box w="50%" padding="20" backgroundColor="FFFFFF" borderRadius="8">
-      <Text fontSize="14">Left column</Text>
-    </Box>
-    <Box w="50%" padding="20" backgroundColor="FFFFFF" borderRadius="8">
-      <Text fontSize="14">Right column</Text>
-    </Box>
+    <Text w="50%" padding="20" backgroundColor="FFFFFF" borderRadius="8" fontSize="14">Left column</Text>
+    <Text w="50%" padding="20" backgroundColor="FFFFFF" borderRadius="8" fontSize="14">Right column</Text>
   </HStack>
 </VStack>
 ```
@@ -479,7 +461,6 @@ When the same property is specified via both attributes (JSON string) and child 
 
 - Colors do not need `#` prefix (`FF0000`)
 - `alignItems` / `justifyContent` use `start` / `end` (not `left` / `right`)
-- `Box` accepts exactly one child (not an array)
 - Property names are `w` / `h` (not `width` / `height`)
 - Children of `Layer` require `x` and `y`
 - `Tree` must have exactly one root `<TreeItem>`

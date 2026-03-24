@@ -10,9 +10,6 @@ export function walkPOMTree(
   visitor(node);
 
   switch (node.type) {
-    case "box":
-      walkPOMTree(node.children, visitor);
-      break;
     case "vstack":
     case "hstack":
     case "layer":

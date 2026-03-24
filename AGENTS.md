@@ -122,7 +122,7 @@ Additionally, **autoFit** (`src/autoFit/`) adjusts slides when content overflows
 
 ### Key Internal Types
 
-- `POMNode` - Input node type (internal. Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, Box, VStack, HStack, Icon)
+- `POMNode` - Input node type (internal. Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, VStack, HStack, Icon)
 - `PositionedNode` - Node with position info (has x, y, w, h)
 - `parseXml` - Internal function that converts XML strings to POMNode arrays (tag names are PascalCase, attribute values are type-converted via Zod schema, unknown tags produce errors)
 

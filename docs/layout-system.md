@@ -4,13 +4,12 @@ A conceptual guide to building layouts with pom's Flexbox-style layout system po
 
 ## Layout Containers
 
-pom provides three container types for composing layouts:
+pom provides two container types for composing layouts:
 
-| Container | Direction  | Children | Use Case                                   |
-| --------- | ---------- | -------- | ------------------------------------------ |
-| `VStack`  | Vertical   | Multiple | Stack elements top to bottom               |
-| `HStack`  | Horizontal | Multiple | Arrange elements side by side              |
-| `Box`     | —          | Single   | Wrap a single element with spacing/styling |
+| Container | Direction  | Use Case                      |
+| --------- | ---------- | ----------------------------- |
+| `VStack`  | Vertical   | Stack elements top to bottom  |
+| `HStack`  | Horizontal | Arrange elements side by side |
 
 ### VStack — Vertical Stack
 
@@ -36,16 +35,6 @@ Arranges children **left to right**. The main axis is horizontal, and the cross 
 </HStack>
 ```
 
-### Box — Single-Child Wrapper
-
-Wraps exactly **one** child element. Use it to add padding, background, border, or fixed sizing around a single element.
-
-```xml
-<Box padding="24" backgroundColor="F8F9FA" borderRadius="8">
-  <Text>Wrapped content</Text>
-</Box>
-```
-
 ## Sizing
 
 ### Fixed Size
@@ -53,9 +42,7 @@ Wraps exactly **one** child element. Use it to add padding, background, border, 
 Specify exact dimensions in pixels:
 
 ```xml
-<Box w="400" h="200">
-  <Text>400×200 box</Text>
-</Box>
+<Text w="400" h="200">400×200 container</Text>
 ```
 
 ### Fill Available Space with `"max"`
@@ -120,9 +107,7 @@ Adds space **inside** a container, between the container's edge and its children
 
 ```xml
 <!-- Uniform padding on all sides -->
-<Box padding="24">
-  <Text>24px padding all around</Text>
-</Box>
+<Text padding="24">24px padding all around</Text>
 
 <!-- Per-side padding -->
 <VStack padding.top="32" padding.bottom="32" padding.left="48" padding.right="48">
@@ -237,10 +222,10 @@ Use `flexWrap` on VStack or HStack to wrap children when they overflow. HStack w
 
 ```xml
 <HStack gap="8" flexWrap="wrap" w="400">
-  <Box w="150" padding="8" backgroundColor="DCE6F1"><Text>Item 1</Text></Box>
-  <Box w="150" padding="8" backgroundColor="DCE6F1"><Text>Item 2</Text></Box>
-  <Box w="150" padding="8" backgroundColor="DCE6F1"><Text>Item 3</Text></Box>
-  <Box w="150" padding="8" backgroundColor="DCE6F1"><Text>Item 4</Text></Box>
+  <Text w="150" padding="8" backgroundColor="DCE6F1">Item 1</Text>
+  <Text w="150" padding="8" backgroundColor="DCE6F1">Item 2</Text>
+  <Text w="150" padding="8" backgroundColor="DCE6F1">Item 3</Text>
+  <Text w="150" padding="8" backgroundColor="DCE6F1">Item 4</Text>
 </HStack>
 ```
 
@@ -267,7 +252,7 @@ Use `position="absolute"` with `top`, `right`, `bottom`, `left` to place element
 
 ## Nesting Layouts
 
-Build complex layouts by nesting VStack, HStack, and Box:
+Build complex layouts by nesting VStack and HStack:
 
 ```xml
 <!-- Outer vertical structure -->

@@ -10,7 +10,6 @@ export type Yoga = Awaited<ReturnType<typeof loadYoga>>;
 /** ノードのカテゴリ。子要素の扱い方を決定する */
 export type NodeCategory =
   | "leaf" // 子要素なし
-  | "single-child" // 子要素1つ（box）
   | "multi-child" // 子要素複数（vstack, hstack）
   | "absolute-child"; // 子要素複数・絶対配置（layer）
 

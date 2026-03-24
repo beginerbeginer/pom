@@ -311,12 +311,6 @@ export function renderPptx(
           def.render(node, ctx);
           break;
 
-        case "single-child": {
-          const boxNode = node as Extract<PositionedNode, { type: "box" }>;
-          renderNode(boxNode.children);
-          break;
-        }
-
         case "multi-child":
         case "absolute-child": {
           const containerNode = node as Extract<

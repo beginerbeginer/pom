@@ -2,24 +2,24 @@ import { palette } from "./palette.js";
 
 // ============================================================
 // Page 19: Shadow Test
-// テスト対象: Box shadow, Image shadow, Shape shadow
+// テスト対象: VStack shadow, Image shadow, Shape shadow
 // ============================================================
 export const page19ShadowXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 19: Shadow Test</Text>
-  <!-- Box with outer shadow -->
+  <!-- VStack with outer shadow -->
   <HStack gap="24" alignItems="start">
-    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
-      <Text fontSize="14" color="${palette.charcoal}">Box: outer shadow</Text>
-    </Box>
-    <!-- Box with inner shadow -->
-    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow.type="inner" shadow.color="000000" shadow.blur="4" shadow.offset="2" shadow.angle="315" shadow.opacity="0.2">
-      <Text fontSize="14" color="${palette.charcoal}">Box: inner shadow</Text>
-    </Box>
-    <!-- Box with shadow + border -->
-    <Box w="200" h="100" padding="16" backgroundColor="FFFFFF" border.color="${palette.blue}" border.width="2" borderRadius="8" shadow.type="outer" shadow.color="${palette.blue}" shadow.blur="8" shadow.offset="4" shadow.angle="315" shadow.opacity="0.4">
-      <Text fontSize="14" color="${palette.charcoal}">Box: shadow + border</Text>
-    </Box>
+    <VStack w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
+      <Text fontSize="14" color="${palette.charcoal}">VStack: outer shadow</Text>
+    </VStack>
+    <!-- VStack with inner shadow -->
+    <VStack w="200" h="100" padding="16" backgroundColor="FFFFFF" borderRadius="8" shadow.type="inner" shadow.color="000000" shadow.blur="4" shadow.offset="2" shadow.angle="315" shadow.opacity="0.2">
+      <Text fontSize="14" color="${palette.charcoal}">VStack: inner shadow</Text>
+    </VStack>
+    <!-- VStack with shadow + border -->
+    <VStack w="200" h="100" padding="16" backgroundColor="FFFFFF" border.color="${palette.blue}" border.width="2" borderRadius="8" shadow.type="outer" shadow.color="${palette.blue}" shadow.blur="8" shadow.offset="4" shadow.angle="315" shadow.opacity="0.4">
+      <Text fontSize="14" color="${palette.charcoal}">VStack: shadow + border</Text>
+    </VStack>
   </HStack>
   <!-- Shape with shadow (various shape types) -->
   <HStack gap="24" alignItems="start">
@@ -28,15 +28,13 @@ export const page19ShadowXml = `
   </HStack>
   <!-- Image with shadow -->
   <HStack gap="24" alignItems="start">
-    <Box w="180" h="120">
-      <Image src="https://placehold.co/180x120/DBEAFE/1D4ED8?text=Shadow" w="180" h="120" shadow.type="outer" shadow.color="000000" shadow.blur="8" shadow.offset="4" shadow.angle="315" shadow.opacity="0.4" />
-    </Box>
+    <Image src="https://placehold.co/180x120/DBEAFE/1D4ED8?text=Shadow" w="180" h="120" shadow.type="outer" shadow.color="000000" shadow.blur="8" shadow.offset="4" shadow.angle="315" shadow.opacity="0.4" />
   </HStack>
-  <!-- Box with shadow only (no background, no border) -->
+  <!-- VStack with shadow only (no background, no border) -->
   <HStack gap="24" alignItems="start">
-    <Box w="200" h="80" padding="16" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
+    <VStack w="200" h="80" padding="16" shadow.type="outer" shadow.color="000000" shadow.blur="6" shadow.offset="3" shadow.angle="315" shadow.opacity="0.3">
       <Text fontSize="14" color="${palette.charcoal}">Shadow only (no bg)</Text>
-    </Box>
+    </VStack>
   </HStack>
 </VStack>
 `;

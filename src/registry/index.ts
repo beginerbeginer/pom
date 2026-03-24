@@ -15,7 +15,6 @@ import {
   processArrowNodeDef,
   pyramidNodeDef,
 } from "./definitions/compositeNodes.ts";
-import { boxNodeDef } from "./definitions/box.ts";
 import { vstackNodeDef, hstackNodeDef } from "./definitions/stack.ts";
 import { layerNodeDef } from "./definitions/layer.ts";
 
@@ -35,7 +34,6 @@ registerNode(treeNodeDef);
 registerNode(flowNodeDef);
 registerNode(processArrowNodeDef);
 registerNode(pyramidNodeDef);
-registerNode(boxNodeDef);
 registerNode(vstackNodeDef);
 registerNode(hstackNodeDef);
 registerNode(layerNodeDef);

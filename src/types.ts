@@ -750,12 +750,6 @@ export type LineNode = z.infer<typeof lineNodeSchema>;
 // ===== Recursive Types with Explicit Type Definitions =====
 
 // Define the types explicitly to avoid 'any' inference
-export type BoxNode = BasePOMNode & {
-  type: "box";
-  children: POMNode;
-  shadow?: ShadowStyle;
-};
-
 export type VStackNode = BasePOMNode & {
   type: "vstack";
   children: POMNode[];
@@ -793,7 +787,6 @@ export type POMNode =
   | OlNode
   | ImageNode
   | TableNode
-  | BoxNode
   | VStackNode
   | HStackNode
   | ShapeNode
@@ -809,12 +802,6 @@ export type POMNode =
   | IconNode;
 
 // Define schemas using passthrough to maintain type safety
-const boxNodeSchemaBase = basePOMNodeSchema.extend({
-  type: z.literal("box"),
-  children: z.lazy(() => pomNodeSchema),
-  shadow: shadowStyleSchema.optional(),
-});
-
 const vStackNodeSchemaBase = basePOMNodeSchema.extend({
   type: z.literal("vstack"),
   children: z.array(z.lazy(() => pomNodeSchema)),
@@ -856,7 +843,6 @@ const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
     olNodeSchema,
     imageNodeSchema,
     tableNodeSchema,
-    boxNodeSchemaBase,
     vStackNodeSchemaBase,
     hStackNodeSchemaBase,
     shapeNodeSchema,
@@ -895,7 +881,6 @@ export type PositionedNode =
   | (OlNode & PositionedBase)
   | (ImageNode & PositionedBase & { imageData?: string })
   | (TableNode & PositionedBase)
-  | (BoxNode & PositionedBase & { children: PositionedNode })
   | (VStackNode & PositionedBase & { children: PositionedNode[] })
   | (HStackNode & PositionedBase & { children: PositionedNode[] })
   | (ShapeNode & PositionedBase)
@@ -939,9 +924,6 @@ const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
       imageData: z.string().optional(),
     }),
     tableNodeSchema.merge(positionedBaseSchema),
-    boxNodeSchemaBase.merge(positionedBaseSchema).extend({
-      children: z.lazy(() => positionedNodeSchema),
-    }),
     vStackNodeSchemaBase.merge(positionedBaseSchema).extend({
       children: z.array(z.lazy(() => positionedNodeSchema)),
     }),

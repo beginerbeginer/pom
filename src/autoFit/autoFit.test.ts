@@ -30,16 +30,6 @@ describe("walkPOMTree", () => {
     expect(visited).toEqual(["vstack", "text", "text"]);
   });
 
-  it("box の子を走査する", () => {
-    const node: POMNode = {
-      type: "box",
-      children: { type: "text", text: "child" },
-    };
-    const visited: string[] = [];
-    walkPOMTree(node, (n) => visited.push(n.type));
-    expect(visited).toEqual(["box", "text"]);
-  });
-
   it("ネストされたツリーを走査する", () => {
     const node: POMNode = {
       type: "vstack",
