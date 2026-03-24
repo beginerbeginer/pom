@@ -2,6 +2,7 @@ import * as esbuild from "esbuild";
 import fs from "fs";
 
 const watch = process.argv.includes("--watch");
+const buildTest = process.argv.includes("--test");
 
 // CJS バンドルで import.meta.url が空になる問題を解消するプラグイン。
 // pom の dist ファイルが createRequire(import.meta.url) を使用しているため、
@@ -36,11 +37,30 @@ const buildOptions = {
   plugins: [importMetaPlugin],
 };
 
+/** @type {import('esbuild').BuildOptions} */
+const testBuildOptions = {
+  entryPoints: ["src/test/extension.test.ts"],
+  bundle: true,
+  outfile: "dist/test/extension.test.js",
+  external: ["vscode", "mocha", "assert"],
+  loader: { ".node": "copy" },
+  format: "cjs",
+  platform: "node",
+  target: "node18",
+  sourcemap: true,
+  plugins: [importMetaPlugin],
+};
+
 if (watch) {
   const ctx = await esbuild.context(buildOptions);
   await ctx.watch();
   console.log("Watching for changes...");
 } else {
   await esbuild.build(buildOptions);
-  console.log("Build complete");
+  if (buildTest) {
+    await esbuild.build(testBuildOptions);
+    console.log("Build complete (with tests)");
+  } else {
+    console.log("Build complete");
+  }
 }

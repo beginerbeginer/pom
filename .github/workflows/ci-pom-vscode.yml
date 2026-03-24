@@ -61,3 +61,6 @@ jobs:
       - name: Build
         working-directory: packages/pom-vscode
         run: npm run build
+      - name: Integration Test
+        working-directory: packages/pom-vscode
+        run: xvfb-run -a npm run test:integration

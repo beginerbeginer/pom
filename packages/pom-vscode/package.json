@@ -45,17 +45,22 @@
     "fmt:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:integration": "node esbuild.mjs --test && vscode-test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@hirokisakabe/pom": "file:../../",
     "@hirokisakabe/pom-md": "file:../pom-md",
+    "@types/mocha": "^10.0.10",
     "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.25.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "jiti": "^2.6.1",
+    "mocha": "^11.7.5",
     "pptx-glimpse": "^0.5.0",
     "prettier": "3.6.2",
     "typescript": "5.9.3",
