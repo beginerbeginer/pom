@@ -1,5 +1,14 @@
 # @hirokisakabe/pom
 
+## 5.6.0
+
+### Minor Changes
+
+- [#474](https://github.com/hirokisakabe/pom/pull/474) [`eeebd0b`](https://github.com/hirokisakabe/pom/commit/eeebd0bbf052aee2a5177988e10ddc100067fce2) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: Icon ノードでインライン SVG をサポート
+
+  `<Icon>` の子要素に `<svg>` を直接記述して、プリセットにないカスタムアイコンを描画できるようになりました。
+  `size`, `color`, `variant`, `bgColor` などの既存属性もインライン SVG に適用されます。
+
 ## 5.5.1
 
 ### Patch Changes
