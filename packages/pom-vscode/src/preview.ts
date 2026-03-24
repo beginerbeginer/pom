@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as vscode from "vscode";
 import { parseMd } from "@hirokisakabe/pom-md";
 import { buildPptx } from "@hirokisakabe/pom";
@@ -11,6 +12,7 @@ const DEBOUNCE_MS = 500;
 export class PomPreviewPanel {
   private static instance: PomPreviewPanel | undefined;
   private readonly panel: vscode.WebviewPanel;
+  private readonly fontDirs: string[];
   private documentUri: vscode.Uri;
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
   private renderGeneration = 0;
@@ -18,9 +20,11 @@ export class PomPreviewPanel {
 
   private constructor(
     panel: vscode.WebviewPanel,
+    extensionPath: string,
     document: vscode.TextDocument,
   ) {
     this.panel = panel;
+    this.fontDirs = [path.join(extensionPath, "fonts")];
     this.documentUri = document.uri;
 
     this.panel.onDidDispose(() => {
@@ -33,7 +37,7 @@ export class PomPreviewPanel {
   }
 
   static createOrShow(
-    _extensionUri: vscode.Uri,
+    extensionUri: vscode.Uri,
     document: vscode.TextDocument,
   ): void {
     if (PomPreviewPanel.instance) {
@@ -50,7 +54,11 @@ export class PomPreviewPanel {
       { enableScripts: false },
     );
 
-    PomPreviewPanel.instance = new PomPreviewPanel(panel, document);
+    PomPreviewPanel.instance = new PomPreviewPanel(
+      panel,
+      extensionUri.fsPath,
+      document,
+    );
   }
 
   static update(document: vscode.TextDocument): void {
@@ -98,7 +106,10 @@ export class PomPreviewPanel {
 
       if (generation !== this.renderGeneration) return;
 
-      const slides = await convertPptxToSvg(buffer, { width: SLIDE_WIDTH });
+      const slides = await convertPptxToSvg(buffer, {
+        width: SLIDE_WIDTH,
+        fontDirs: this.fontDirs,
+      });
       const svgs = slides.map((s: { svg: string }) => s.svg);
 
       if (generation === this.renderGeneration && !this.disposed) {
