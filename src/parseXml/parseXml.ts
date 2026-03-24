@@ -40,7 +40,7 @@ export class ParseXmlError extends Error {
 }
 
 // ===== Tag name → POM node type mapping =====
-const TAG_TO_TYPE: Record<string, string> = {
+export const TAG_TO_TYPE: Record<string, string> = {
   Text: "text",
   Image: "image",
   Table: "table",
