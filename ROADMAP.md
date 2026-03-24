@@ -22,14 +22,14 @@ Prioritize **authoring formats** first. Execution tooling should support those w
 
 ### Active
 
-| Repository           | Role                        | Notes                                                 |
-| -------------------- | --------------------------- | ----------------------------------------------------- |
-| **pom**              | Core library                | Stable. Layout engine + PPTX generation               |
-| **prompt2pptx**      | AI slide generation app     | Primary AI application — actively developed           |
-| **pptx-glimpse**     | PPTX → SVG/PNG renderer     | Used for preview and VRT                              |
-| **pom-vscode**       | VS Code extension           | Stays as a separate repo (VS Code-specific CI/CD)     |
-| **pom-ai**           | AI chat playground          | Lightweight playground — no further feature expansion |
-| **mcp-pptx-preview** | MCP server for PPTX preview | PPTX preview via MCP                                  |
+| Repository           | Role                        | Notes                                                               |
+| -------------------- | --------------------------- | ------------------------------------------------------------------- |
+| **pom**              | Core library                | Stable. Layout engine + PPTX generation                             |
+| **prompt2pptx**      | AI slide generation app     | Primary AI application — actively developed                         |
+| **pptx-glimpse**     | PPTX → SVG/PNG renderer     | Used for preview and VRT                                            |
+| **pom-vscode**       | VS Code extension           | Monorepo package (`packages/pom-vscode`) with dedicated CI workflow |
+| **pom-ai**           | AI chat playground          | Lightweight playground — no further feature expansion               |
+| **mcp-pptx-preview** | MCP server for PPTX preview | PPTX preview via MCP                                                |
 
 ### Archive candidates
 
