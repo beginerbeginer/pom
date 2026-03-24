@@ -76,12 +76,12 @@ describe("parseMd", () => {
 | B | 200 |`;
       const result = parseMd(md);
       expect(result).toContain("<Table>");
-      expect(result).toContain("<Th>名前</Th>");
-      expect(result).toContain("<Th>値</Th>");
-      expect(result).toContain("<Td>A</Td>");
-      expect(result).toContain("<Td>100</Td>");
-      expect(result).toContain("<Td>B</Td>");
-      expect(result).toContain("<Td>200</Td>");
+      expect(result).toContain("<TableCell>名前</TableCell>");
+      expect(result).toContain("<TableCell>値</TableCell>");
+      expect(result).toContain("<TableCell>A</TableCell>");
+      expect(result).toContain("<TableCell>100</TableCell>");
+      expect(result).toContain("<TableCell>B</TableCell>");
+      expect(result).toContain("<TableCell>200</TableCell>");
       expect(result).toContain("</Table>");
     });
   });

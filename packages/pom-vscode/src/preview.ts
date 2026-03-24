@@ -78,10 +78,16 @@ export class PomPreviewPanel {
         return;
       }
 
-      const { pptx } = await buildPptx(xml, {
-        w: SLIDE_WIDTH,
-        h: SLIDE_HEIGHT,
-      });
+      const { pptx } = await buildPptx(
+        xml,
+        {
+          w: SLIDE_WIDTH,
+          h: SLIDE_HEIGHT,
+        },
+        {
+          textMeasurement: "fallback",
+        },
+      );
 
       if (generation !== this.renderGeneration) return;
 
