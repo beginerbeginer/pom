@@ -8,5 +8,5 @@
     "scripts/docs-images/**/*.ts",
     "scripts/**/*.ts"
   ],
-  "ignore": ["website/**"]
+  "ignore": ["website/**", "packages/**"]
 }
