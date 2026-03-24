@@ -702,6 +702,12 @@ function convertTableChildren(
   }
   if (columns.length > 0) {
     result.columns = columns;
+  } else if (rows.length > 0) {
+    // TableColumn が未指定の場合、最初の行のセル数からデフォルトの columns を自動生成
+    const maxCells = Math.max(
+      ...rows.map((row) => (row.cells as unknown[]).length),
+    );
+    result.columns = Array.from({ length: maxCells }, () => ({}));
   }
   if (rows.length > 0) {
     result.rows = rows;

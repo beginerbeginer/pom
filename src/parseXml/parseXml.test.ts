@@ -1275,7 +1275,7 @@ describe("parseXml", () => {
         `;
         const result = parseXml(xml);
         const node = result[0] as Record<string, unknown>;
-        expect(node.columns).toBeUndefined();
+        expect(node.columns).toEqual([{}, {}]);
         expect(node.rows).toEqual([{ cells: [{ text: "A" }, { text: "B" }] }]);
       });
 
