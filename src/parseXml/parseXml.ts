@@ -703,9 +703,14 @@ function convertTableChildren(
   if (columns.length > 0) {
     result.columns = columns;
   } else if (rows.length > 0) {
-    // TableColumn が未指定の場合、最初の行のセル数からデフォルトの columns を自動生成
+    // TableColumn が未指定の場合、行のセル数（colspan 考慮）からデフォルトの columns を自動生成
     const maxCells = Math.max(
-      ...rows.map((row) => (row.cells as unknown[]).length),
+      ...rows.map((row) =>
+        (row.cells as Record<string, unknown>[]).reduce(
+          (sum, cell) => sum + ((cell.colspan as number) ?? 1),
+          0,
+        ),
+      ),
     );
     result.columns = Array.from({ length: maxCells }, () => ({}));
   }
