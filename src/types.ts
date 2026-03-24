@@ -427,7 +427,8 @@ const iconVariantSchema = z
 
 export const iconNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("icon"),
-  name: iconNameSchema,
+  name: iconNameSchema.optional(),
+  svgContent: z.string().optional(),
   size: z.number().positive().max(1024).optional(),
   color: iconColorSchema,
   variant: iconVariantSchema,

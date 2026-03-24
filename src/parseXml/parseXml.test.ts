@@ -181,6 +181,39 @@ describe("parseXml", () => {
       ).toThrow();
     });
 
+    it("Icon ノードでインライン SVG を変換する", () => {
+      const result = parseXml(
+        '<Icon size="32"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20z"/></svg></Icon>',
+      );
+      expect(result).toEqual([
+        {
+          type: "icon",
+          size: 32,
+          svgContent: expect.stringContaining("<svg"),
+        },
+      ]);
+      // svgContent に path が含まれることを確認
+      expect((result[0] as Record<string, unknown>).svgContent).toContain(
+        "M12 2L2 22h20z",
+      );
+    });
+
+    it("Icon ノードで name と svg の同時指定はエラーになる", () => {
+      expect(() =>
+        parseXml(
+          '<Icon name="cpu"><svg viewBox="0 0 24 24"><path d="M12 2"/></svg></Icon>',
+        ),
+      ).toThrow();
+    });
+
+    it("Icon ノードで svg 以外の子要素はエラーになる", () => {
+      expect(() => parseXml("<Icon><Text>hello</Text></Icon>")).toThrow();
+    });
+
+    it("Icon ノードで name も svg もない場合はエラーになる", () => {
+      expect(() => parseXml("<Icon />")).toThrow();
+    });
+
     it("Table ノードを変換する", () => {
       const columns = JSON.stringify([{ width: 100 }, { width: 200 }]);
       const rows = JSON.stringify([{ cells: [{ text: "A" }, { text: "B" }] }]);

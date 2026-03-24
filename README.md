@@ -89,7 +89,7 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 | Box          | Container for single child with padding        |
 | VStack       | Vertical stack layout                          |
 | HStack       | Horizontal stack layout                        |
-| Icon         | Lucide icons                                   |
+| Icon         | Lucide icons / inline SVG                      |
 
 For detailed node documentation, see [Nodes](./docs/nodes.md).
 
