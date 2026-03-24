@@ -60,8 +60,7 @@ export const page29IconInHStackXml = `
 export const page35IconInlineSvgXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 35: Icon Inline SVG</Text>
-  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
-    <VStack gap="12">
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="12">
       <Text fontSize="14" bold="true">Inline SVG (triangle):</Text>
       <HStack gap="24" alignItems="center">
         <VStack gap="4" alignItems="center">
@@ -83,10 +82,8 @@ export const page35IconInlineSvgXml = `
           <Text fontSize="10">size=48</Text>
         </VStack>
       </HStack>
-    </VStack>
-  </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
-    <VStack gap="12">
+  </VStack>
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="12">
       <Text fontSize="14" bold="true">Inline SVG with color:</Text>
       <HStack gap="24" alignItems="center">
         <VStack gap="4" alignItems="center">
@@ -108,10 +105,8 @@ export const page35IconInlineSvgXml = `
           <Text fontSize="10">green</Text>
         </VStack>
       </HStack>
-    </VStack>
-  </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
-    <VStack gap="12">
+  </VStack>
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="12">
       <Text fontSize="14" bold="true">Inline SVG with variant:</Text>
       <HStack gap="24" alignItems="center">
         <VStack gap="4" alignItems="center">
@@ -139,10 +134,8 @@ export const page35IconInlineSvgXml = `
           <Text fontSize="10">square-outlined</Text>
         </VStack>
       </HStack>
-    </VStack>
-  </Box>
-  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
-    <VStack gap="12">
+  </VStack>
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="12">
       <Text fontSize="14" bold="true">Inline SVG with fill (house icon):</Text>
       <HStack gap="24" alignItems="center">
         <VStack gap="4" alignItems="center">
@@ -158,8 +151,7 @@ export const page35IconInlineSvgXml = `
           <Text fontSize="10">layers</Text>
         </VStack>
       </HStack>
-    </VStack>
-  </Box>
+  </VStack>
 </VStack>
 `;
 
