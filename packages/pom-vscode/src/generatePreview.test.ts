@@ -72,6 +72,10 @@ describe("generatePreviewSvg", () => {
     expect(mockConvertPptxToSvg).toHaveBeenCalledWith(expect.any(Uint8Array), {
       width: SLIDE_WIDTH,
       fontDirs: ["/path/to/fonts"],
+      fontMapping: {
+        "游ゴシック Light": "Noto Sans CJK JP",
+        "Yu Gothic Light": "Noto Sans CJK JP",
+      },
     });
   });
 
