@@ -229,20 +229,20 @@ function collectTable(
 
       // ヘッダー行
       if (headerRow.length > 0) {
-        xml += "<Tr>";
+        xml += "<TableRow>";
         for (const cell of headerRow) {
-          xml += `<Th>${escapeXml(cell)}</Th>`;
+          xml += `<TableCell>${escapeXml(cell)}</TableCell>`;
         }
-        xml += "</Tr>";
+        xml += "</TableRow>";
       }
 
       // データ行
       for (const row of dataRows) {
-        xml += "<Tr>";
+        xml += "<TableRow>";
         for (const cell of row) {
-          xml += `<Td>${escapeXml(cell)}</Td>`;
+          xml += `<TableCell>${escapeXml(cell)}</TableCell>`;
         }
-        xml += "</Tr>";
+        xml += "</TableRow>";
       }
 
       xml += "</Table>";

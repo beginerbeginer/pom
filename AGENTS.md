@@ -73,6 +73,13 @@ packages/
 │   │   └── parseMd.ts    # Markdown → pom XML conversion logic
 │   ├── package.json      # Independent package (no npm workspaces)
 │   └── tsconfig.json
+├── pom-vscode/           # VS Code extension for live preview
+│   ├── src/
+│   │   ├── extension.ts  # Extension entry point (activate/deactivate)
+│   │   └── preview.ts    # Preview webview panel logic
+│   ├── esbuild.mjs       # Build script (esbuild)
+│   ├── package.json      # VS Code extension manifest
+│   └── tsconfig.json
 
 vrt/                      # Visual Regression Test
 preview/                  # Preview infrastructure (for Claude Code)
@@ -193,6 +200,24 @@ npm run test:run          # Run tests
 ```
 
 Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
+
+### pom-vscode (`packages/pom-vscode/`)
+
+VS Code extension for live preview of `.pom.md` files. Converts pom-md to SVG via pptx-glimpse and displays in a webview panel.
+
+```bash
+cd packages/pom-vscode
+npm run build             # esbuild bundle
+npm run watch             # esbuild watch mode
+npm run lint              # ESLint
+npm run fmt               # Prettier formatting
+npm run fmt:check         # Format check
+npm run typecheck         # Type checking
+```
+
+Pipeline: `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
+
+To test locally: open `packages/pom-vscode` in VS Code and press F5 to launch Extension Development Host.
 
 ## Language Rules
 
