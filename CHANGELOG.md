@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 6.0.0
+
+### Major Changes
+
+- [#477](https://github.com/hirokisakabe/pom/pull/477) [`223d69b`](https://github.com/hirokisakabe/pom/commit/223d69b19f27b3656a2c4dd3197f0027908db206) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Box ノードを削除し VStack に統一。Box ノードと single-child カテゴリを廃止し、従来 Box を使用していた箇所は VStack で代替可能。
+
+### Patch Changes
+
+- [#478](https://github.com/hirokisakabe/pom/pull/478) [`848821e`](https://github.com/hirokisakabe/pom/commit/848821e0b1c362a9c3e94104b744f2a690d57628) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: TableColumn なしの Table で columns.reduce クラッシュを修正
+
 ## 5.6.0
 
 ### Minor Changes
