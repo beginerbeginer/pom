@@ -1,0 +1,58 @@
+name: CI - pom-vscode
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "packages/pom-vscode/**"
+      - "packages/pom-md/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - ".github/workflows/ci-pom-vscode.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "packages/pom-vscode/**"
+      - "packages/pom-md/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - ".github/workflows/ci-pom-vscode.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install and build root package
+        run: |
+          npm ci
+          npm run build
+      - name: Install and build pom-md
+        run: |
+          cd packages/pom-md
+          npm ci
+          npm run build
+      - name: Install pom-vscode dependencies
+        working-directory: packages/pom-vscode
+        run: npm ci
+      - name: Format check
+        working-directory: packages/pom-vscode
+        run: npm run fmt:check
+      - name: Lint
+        working-directory: packages/pom-vscode
+        run: npm run lint
+      - name: Type check
+        working-directory: packages/pom-vscode
+        run: npm run typecheck
+      - name: Build
+        working-directory: packages/pom-vscode
+        run: npm run build
