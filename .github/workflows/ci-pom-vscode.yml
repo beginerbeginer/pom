@@ -43,7 +43,7 @@ jobs:
           npm run build
       - name: Install pom-vscode dependencies
         working-directory: packages/pom-vscode
-        run: npm ci
+        run: npm install
       - name: Format check
         working-directory: packages/pom-vscode
         run: npm run fmt:check
