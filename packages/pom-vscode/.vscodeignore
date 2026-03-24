@@ -1,0 +1,6 @@
+src/**
+.gitignore
+tsconfig.json
+esbuild.mjs
+eslint.config.mts
+.prettierignore
