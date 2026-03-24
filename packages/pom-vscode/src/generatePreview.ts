@@ -5,6 +5,16 @@ import { convertPptxToSvg } from "pptx-glimpse";
 export const SLIDE_WIDTH = 1280;
 export const SLIDE_HEIGHT = 720;
 
+/**
+ * pptx-glimpse の DEFAULT_FONT_MAPPING に含まれないテーマフォントの追加マッピング。
+ * pptxgenjs のテーマフォントに「游ゴシック Light」が含まれるが、
+ * DEFAULT_FONT_MAPPING には「游ゴシック」のみでLight は未定義のため補完する。
+ */
+const EXTRA_FONT_MAPPING: Record<string, string> = {
+  "游ゴシック Light": "Noto Sans CJK JP",
+  "Yu Gothic Light": "Noto Sans CJK JP",
+};
+
 export type PreviewResult =
   | { type: "empty" }
   | { type: "success"; svgs: string[] }
@@ -37,6 +47,7 @@ export async function generatePreviewSvg(
     const slides = await convertPptxToSvg(buffer, {
       width: SLIDE_WIDTH,
       fontDirs,
+      fontMapping: EXTRA_FONT_MAPPING,
     });
     const svgs = slides.map((s: { svg: string }) => s.svg);
 
