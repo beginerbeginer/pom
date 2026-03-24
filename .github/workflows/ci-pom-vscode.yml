@@ -53,6 +53,9 @@ jobs:
       - name: Type check
         working-directory: packages/pom-vscode
         run: npm run typecheck
+      - name: Test
+        working-directory: packages/pom-vscode
+        run: npm run test:run
       - name: Build
         working-directory: packages/pom-vscode
         run: npm run build
