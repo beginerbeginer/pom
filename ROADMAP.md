@@ -31,16 +31,11 @@ Prioritize **authoring formats** first. Execution tooling should support those w
 | **pom-ai**           | AI chat playground          | Lightweight playground — no further feature expansion               |
 | **mcp-pptx-preview** | MCP server for PPTX preview | PPTX preview via MCP                                                |
 
-### Archive candidates
-
-| Repository         | Reason                                              |
-| ------------------ | --------------------------------------------------- |
-| **pptx-ai-studio** | Development stopped. Superseded by prompt2pptx      |
-| **pptx-ai-editor** | Development stopped. Python-based, unrelated to pom |
-| **pptx-forge**     | Python version of pom — no longer needed            |
-| **pptx-ai**        | Nearly empty (first commit only)                    |
-
 ### Already archived
 
+- **pptx-ai-studio** — development stopped, superseded by prompt2pptx
+- **pptx-ai-editor** — development stopped, Python-based, unrelated to pom
+- **pptx-forge** — Python version of pom, no longer needed
+- **pptx-ai** — nearly empty (first commit only)
 - **pom-playground** — replaced by pom-ai
 - **pptxify** — archived
