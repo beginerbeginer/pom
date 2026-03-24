@@ -9,9 +9,11 @@ export default defineConfig([
       "dist/**",
       "**/*.test.ts",
       "node_modules/**",
+      ".vscode-test/**",
       "eslint.config.mts",
       "esbuild.mjs",
       "vitest.config.ts",
+      ".vscode-test.mjs",
     ],
   },
   {
