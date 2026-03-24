@@ -1,4 +1,4 @@
-import { XMLParser } from "fast-xml-parser";
+import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { z } from "zod";
 import {
   type POMNode,
@@ -209,6 +209,7 @@ const CHILD_ELEMENT_PROPS: Record<string, Set<string>> = {
   tree: new Set(["data"]),
   ul: new Set(["items"]),
   ol: new Set(["items"]),
+  icon: new Set(["name", "svgContent"]),
 };
 
 function validateLeafNode(
@@ -700,6 +701,17 @@ function convertTableChildren(
   }
   if (columns.length > 0) {
     result.columns = columns;
+  } else if (rows.length > 0) {
+    // TableColumn が未指定の場合、行のセル数（colspan 考慮）からデフォルトの columns を自動生成
+    const maxCells = Math.max(
+      ...rows.map((row) =>
+        (row.cells as Record<string, unknown>[]).reduce(
+          (sum, cell) => sum + ((cell.colspan as number) ?? 1),
+          0,
+        ),
+      ),
+    );
+    result.columns = Array.from({ length: maxCells }, () => ({}));
   }
   if (rows.length > 0) {
     result.rows = rows;
@@ -791,6 +803,47 @@ function convertListChildren(
   result.items = items;
 }
 
+// SVG 要素を XML 文字列に再構築する
+const svgBuilder = new XMLBuilder({
+  preserveOrder: true,
+  ignoreAttributes: false,
+  attributeNamePrefix: "@_",
+});
+
+function serializeSvgElement(svgElement: XmlElement): string {
+  return String(svgBuilder.build([svgElement]));
+}
+
+function convertIconChildren(
+  childElements: XmlElement[],
+  result: Record<string, unknown>,
+  errors: string[],
+): void {
+  if (childElements.length !== 1) {
+    errors.push(
+      `<Icon>: Expected exactly one <svg> child element, but found ${childElements.length} child element(s)`,
+    );
+    return;
+  }
+
+  const child = childElements[0];
+  const tag = getTagName(child);
+  if (tag !== "svg") {
+    errors.push(`<Icon>: Expected <svg> child element, but found <${tag}>`);
+    return;
+  }
+
+  // name と svg の排他バリデーション
+  if (result.name !== undefined) {
+    errors.push(
+      '<Icon>: Cannot specify both "name" attribute and <svg> child element',
+    );
+    return;
+  }
+
+  result.svgContent = serializeSvgElement(child);
+}
+
 const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
   ul: (childElements, result, errors) =>
     convertListChildren("Ul", childElements, result, errors),
@@ -804,6 +857,7 @@ const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
   chart: convertChartChildren,
   table: convertTableChildren,
   tree: convertTreeChildren,
+  icon: convertIconChildren,
 };
 
 // ===== Node conversion =====
@@ -943,13 +997,19 @@ function convertPomNode(
     validateLeafNode(nodeType, result, errors);
   }
 
-  // Normalize icon color / bgColor: add # prefix if missing
+  // Icon: normalize color / bgColor and validate name vs svgContent
   if (nodeType === "icon") {
     if (typeof result.color === "string" && !result.color.startsWith("#")) {
       result.color = `#${result.color}`;
     }
     if (typeof result.bgColor === "string" && !result.bgColor.startsWith("#")) {
       result.bgColor = `#${result.bgColor}`;
+    }
+    // name も svgContent もない場合はエラー
+    if (result.name === undefined && result.svgContent === undefined) {
+      errors.push(
+        '<Icon>: Either "name" attribute or <svg> child element is required',
+      );
     }
   }
 

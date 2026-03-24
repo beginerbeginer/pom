@@ -23,7 +23,11 @@ export { page21XmlChildElementsXml } from "./xmlChildElements.js";
 export { page22CompositeScaleToFitXml } from "./compositeScaleToFit.js";
 export { page23TableColspanRowspanXml } from "./tableColspanRowspan.js";
 export { page24PyramidXml } from "./pyramid.js";
-export { page25IconXml, page29IconInHStackXml } from "./icon.js";
+export {
+  page25IconXml,
+  page29IconInHStackXml,
+  page35IconInlineSvgXml,
+} from "./icon.js";
 export { page27HStackFlexShrinkXml } from "./flexShrink.js";
 export { page28LayoutV2Xml } from "./layoutV2.js";
 export {
