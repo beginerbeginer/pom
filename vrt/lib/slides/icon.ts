@@ -63,6 +63,116 @@ export const page29IconInHStackXml = `
 </VStack>
 `;
 
+// ============================================================
+// Page 35: Icon Inline SVG Test
+// テスト対象: インライン SVG、size/color/variant との組み合わせ
+// ============================================================
+export const page35IconInlineSvgXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 35: Icon Inline SVG</Text>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Inline SVG (triangle):</Text>
+      <HStack gap="24" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon>
+            <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+          </Icon>
+          <Text fontSize="10">default</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+          </Icon>
+          <Text fontSize="10">size=32</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="48">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+          </Icon>
+          <Text fontSize="10">size=48</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Inline SVG with color:</Text>
+      <HStack gap="24" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" color="#${palette.blue}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">blue</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" color="#${palette.red}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">red</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" color="#${palette.green}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">green</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Inline SVG with variant:</Text>
+      <HStack gap="24" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" variant="circle-filled" bgColor="#E8F0FE" color="#${palette.blue}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">circle-filled</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" variant="circle-outlined" bgColor="#${palette.red}" color="#${palette.red}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">circle-outlined</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" variant="square-filled" bgColor="#E6F4EA" color="#${palette.green}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">square-filled</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32" variant="square-outlined" bgColor="#${palette.navy}" color="#${palette.navy}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke-width="2"/></svg>
+          </Icon>
+          <Text fontSize="10">square-outlined</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+  <Box padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+    <VStack gap="12">
+      <Text fontSize="14" bold="true">Inline SVG with fill (house icon):</Text>
+      <HStack gap="24" alignItems="center">
+        <VStack gap="4" alignItems="center">
+          <Icon size="32">
+            <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </Icon>
+          <Text fontSize="10">house</Text>
+        </VStack>
+        <VStack gap="4" alignItems="center">
+          <Icon size="32">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="#${palette.blue}" stroke="#${palette.navy}" stroke-width="1"/><path d="M2 17l10 5 10-5" fill="none" stroke="#${palette.navy}" stroke-width="1"/><path d="M2 12l10 5 10-5" fill="none" stroke="#${palette.navy}" stroke-width="1"/></svg>
+          </Icon>
+          <Text fontSize="10">layers</Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  </Box>
+</VStack>
+`;
+
 export const page25IconXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
   <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 25: Icon Test</Text>

@@ -48,6 +48,7 @@ export const PAGE_NAMES = [
   "32-center-align-hstack",
   "33-custom-font",
   "34-custom-font-wrap",
+  "35-icon-inline-svg",
 ] as const;
 
 export const THRESHOLD = 0.1;

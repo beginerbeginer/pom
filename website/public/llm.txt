@@ -152,20 +152,30 @@ All Ul attributes plus:
 
 ### Icon
 
-Displays an icon from the Lucide icon library (1,900+ icons available).
+Displays an icon from the Lucide icon library (1,900+ icons available) or an inline SVG.
 
 ```xml
+<!-- Preset icon -->
 <Icon name="cpu" size="32" color="1D4ED8" />
 <Icon name="cpu" variant="circle-filled" bgColor="E8F0FE" color="1D4ED8" />
+
+<!-- Inline SVG -->
+<Icon size="32" color="1D4ED8">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2L2 22h20z" fill="none" stroke-width="2"/>
+  </svg>
+</Icon>
 ```
 
 | Attribute | Type / Values                                                            |
 | --------- | ------------------------------------------------------------------------ |
-| `name`    | Lucide icon name (required). See examples below                          |
+| `name`    | Lucide icon name (required if no `<svg>` child). See examples below      |
 | `size`    | number (default: 24, in px)                                              |
 | `color`   | hex color (`#` prefix optional, default: `#000000`)                      |
 | `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`   |
 | `bgColor` | hex color for background shape (`#` prefix optional, default: `#E0E0E0`) |
+
+Either `name` attribute or a `<svg>` child element is required. Both cannot be specified at the same time. When using inline SVG, `color` sets `stroke` and `fill="none"` on the root `<svg>` element; explicit `stroke`/`fill` on child elements take precedence.
 
 All Lucide v0.577.0 icons are available. Icon names use kebab-case. Common examples by category:
 

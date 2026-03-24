@@ -1,1 +1,1 @@
-export { rasterizeIcon } from "./renderIcon.ts";
+export { rasterizeIcon, rasterizeSvgContent } from "./renderIcon.ts";
