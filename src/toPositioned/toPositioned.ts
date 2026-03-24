@@ -44,24 +44,6 @@ export function toPositioned(
         h: layout.height,
       } as PositionedNode;
 
-    case "single-child": {
-      const boxNode = pom as Extract<POMNode, { type: "box" }>;
-      return {
-        ...boxNode,
-        x: absoluteX,
-        y: absoluteY,
-        w: layout.width,
-        h: layout.height,
-        children: toPositioned(
-          boxNode.children,
-          ctx,
-          map,
-          absoluteX,
-          absoluteY,
-        ),
-      } as PositionedNode;
-    }
-
     case "multi-child": {
       const containerNode = pom as Extract<
         POMNode,

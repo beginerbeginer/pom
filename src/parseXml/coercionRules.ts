@@ -418,10 +418,6 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     endArrow: LINE_ARROW_RULE,
   },
   // コンテナノード
-  box: {
-    ...BASE_RULES,
-    shadow: SHADOW_STYLE_RULE,
-  },
   vstack: {
     ...BASE_RULES,
     gap: "number",

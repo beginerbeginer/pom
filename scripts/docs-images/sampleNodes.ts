@@ -49,15 +49,9 @@ const imageSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontSize="28" bold="true" color="${palette.navy}">Image Node Example</Text>
   <HStack gap="40" alignItems="center">
-    <Box backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="16">
-      <Image src="${sampleImageUrl}" w="200" h="150" />
-    </Box>
-    <Box backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" borderRadius="8" padding="16">
-      <Image src="${sampleImageUrl}" w="150" h="150" />
-    </Box>
-    <Box backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" borderRadius="16" padding="16">
-      <Image src="${sampleImageUrl}" w="180" h="120" />
-    </Box>
+    <Image src="${sampleImageUrl}" w="200" h="150" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="16" />
+    <Image src="${sampleImageUrl}" w="150" h="150" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" borderRadius="8" padding="16" />
+    <Image src="${sampleImageUrl}" w="180" h="120" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" borderRadius="16" padding="16" />
   </HStack>
 </VStack>
 `;
@@ -275,23 +269,6 @@ const pyramidSample = `
 </VStack>
 `;
 
-const boxSample = `
-<VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Box Node Example</Text>
-  <HStack gap="32">
-    <Box w="200" h="150" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="16">
-      <Text fontSize="14">Basic Box\nwith padding</Text>
-    </Box>
-    <Box w="200" h="150" backgroundColor="${palette.lightBlue}" border.color="${palette.blue}" border.width="2" borderRadius="8" padding="16">
-      <Text fontSize="14" color="${palette.navy}">Rounded Box\nwith border</Text>
-    </Box>
-    <Box w="200" h="150" backgroundColor="${palette.navy}" borderRadius="16" padding="16">
-      <Text fontSize="14" color="FFFFFF">Styled Box\nwith background</Text>
-    </Box>
-  </HStack>
-</VStack>
-`;
-
 const vstackSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontSize="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
@@ -403,7 +380,6 @@ export const sampleNodes: Record<NodeType, string> = {
   flow: flowSample,
   processArrow: processArrowSample,
   pyramid: pyramidSample,
-  box: boxSample,
   vstack: vstackSample,
   hstack: hstackSample,
   icon: iconSample,

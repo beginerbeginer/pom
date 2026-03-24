@@ -18,9 +18,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
   </HStack>
   <HStack w="max" gap="16" alignItems="start">
     <VStack gap="12">
-      <Box w="max" padding="12" backgroundColor="0E0D6A" border.color="0E0D6A" border.width="1">
+      <VStack w="max" padding="12" backgroundColor="0E0D6A" border.color="0E0D6A" border.width="1">
         <Text fontSize="14" color="FFFFFF" textAlign="center" bold="true">主要経営指標（連結）</Text>
-      </Box>
+      </VStack>
       <Table w="max" defaultRowHeight="38">
         <TableColumn width="140" />
         <TableColumn width="110" />
@@ -63,40 +63,40 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+0.6pt</TableCell>
         </TableRow>
       </Table>
-      <Box w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
+      <VStack w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
         <VStack gap="6">
           <Text fontSize="11" color="0E0D6A" bold="true">【セグメント別売上構成】</Text>
           <HStack gap="8">
-            <Box padding="6" backgroundColor="E8EAF6" border.color="0E0D6A" border.width="1">
+            <VStack padding="6" backgroundColor="E8EAF6" border.color="0E0D6A" border.width="1">
               <VStack gap="2" alignItems="center">
                 <Text fontSize="9" color="0E0D6A">デジタル事業</Text>
                 <Text fontSize="11" color="0E0D6A" bold="true">1,842億円</Text>
                 <Text fontSize="9" color="5A5A8A">43.0%</Text>
               </VStack>
-            </Box>
-            <Box padding="6" backgroundColor="FFF8E1" border.color="F9A825" border.width="1">
+            </VStack>
+            <VStack padding="6" backgroundColor="FFF8E1" border.color="F9A825" border.width="1">
               <VStack gap="2" alignItems="center">
                 <Text fontSize="9" color="E65100">ソリューション</Text>
                 <Text fontSize="11" color="E65100" bold="true">1,285億円</Text>
                 <Text fontSize="9" color="FF8F00">30.0%</Text>
               </VStack>
-            </Box>
-            <Box padding="6" backgroundColor="E8F5E9" border.color="2E7D32" border.width="1">
+            </VStack>
+            <VStack padding="6" backgroundColor="E8F5E9" border.color="2E7D32" border.width="1">
               <VStack gap="2" alignItems="center">
                 <Text fontSize="9" color="1B5E20">その他</Text>
                 <Text fontSize="11" color="1B5E20" bold="true">1,158億円</Text>
                 <Text fontSize="9" color="388E3C">27.0%</Text>
               </VStack>
-            </Box>
+            </VStack>
           </HStack>
         </VStack>
-      </Box>
+      </VStack>
     </VStack>
     <VStack gap="12">
-      <Box w="max" padding="12" backgroundColor="0E0D6A" border.color="0E0D6A" border.width="1">
+      <VStack w="max" padding="12" backgroundColor="0E0D6A" border.color="0E0D6A" border.width="1">
         <Text fontSize="14" color="FFFFFF" textAlign="center" bold="true">前年同期比推移（四半期別）</Text>
-      </Box>
-      <Box w="max" padding="12" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
+      </VStack>
+      <VStack w="max" padding="12" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
         <Chart w="480" h="180" chartType="bar" showLegend="true" chartColors='["0E0D6A","5C6BC0"]'>
           <ChartSeries name="売上高（億円）">
             <ChartDataPoint label="Q1" value="3980" />
@@ -111,8 +111,8 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
             <ChartDataPoint label="Q4予想" value="535" />
           </ChartSeries>
         </Chart>
-      </Box>
-      <Box w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
+      </VStack>
+      <VStack w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
         <Table w="max" defaultRowHeight="28">
           <TableColumn width="100" />
           <TableColumn width="90" />
@@ -141,41 +141,41 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
             <TableCell fontSize="10" color="E65100" textAlign="center" backgroundColor="FFF3E0">12.0%</TableCell>
           </TableRow>
         </Table>
-      </Box>
+      </VStack>
     </VStack>
   </HStack>
-  <Box w="max" padding="12" backgroundColor="0E0D6A">
+  <VStack w="max" padding="12" backgroundColor="0E0D6A">
     <Text fontSize="14" color="FFFFFF" textAlign="center" bold="true">第3四半期 主要トピックス</Text>
-  </Box>
+  </VStack>
   <HStack w="max" gap="12">
-    <Box padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
+    <VStack padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
       <VStack gap="6" alignItems="center">
         <Shape w="36" h="36" shapeType="ellipse" fill.color="E8EAF6" fontSize="12" color="0E0D6A">01</Shape>
         <Text fontSize="11" color="0E0D6A" textAlign="center" bold="true">新規事業の収益寄与</Text>
         <Text fontSize="9" color="3C3C3C" textAlign="center">AI・クラウド事業が前年比+42%成長、売上構成比15%に拡大。SaaS型サービスのARR（年間経常収益）が280億円を突破</Text>
       </VStack>
-    </Box>
-    <Box padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
+    </VStack>
+    <VStack padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
       <VStack gap="6" alignItems="center">
         <Shape w="36" h="36" shapeType="ellipse" fill.color="E8EAF6" fontSize="12" color="0E0D6A">02</Shape>
         <Text fontSize="11" color="0E0D6A" textAlign="center" bold="true">コスト最適化の進展</Text>
         <Text fontSize="9" color="3C3C3C" textAlign="center">全社DX推進により販管費率が前年比1.2pt改善。物流拠点統合で年間45億円のコスト削減を実現</Text>
       </VStack>
-    </Box>
-    <Box padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
+    </VStack>
+    <VStack padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
       <VStack gap="6" alignItems="center">
         <Shape w="36" h="36" shapeType="ellipse" fill.color="E8EAF6" fontSize="12" color="0E0D6A">03</Shape>
         <Text fontSize="11" color="0E0D6A" textAlign="center" bold="true">主力製品の成長加速</Text>
         <Text fontSize="9" color="3C3C3C" textAlign="center">フラッグシップ製品「NEXUS Pro」が累計導入社数5,000社突破。大企業向けエンタープライズ版の受注が好調</Text>
       </VStack>
-    </Box>
-    <Box padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
+    </VStack>
+    <VStack padding="10" backgroundColor="FFFFFF" border.color="0E0D6A" border.width="2">
       <VStack gap="6" alignItems="center">
         <Shape w="36" h="36" shapeType="ellipse" fill.color="E8EAF6" fontSize="12" color="0E0D6A">04</Shape>
         <Text fontSize="11" color="0E0D6A" textAlign="center" bold="true">海外展開の加速</Text>
         <Text fontSize="9" color="3C3C3C" textAlign="center">ASEAN地域売上が前年比+28%。シンガポール拠点を起点に東南アジア6カ国での事業展開を本格化</Text>
       </VStack>
-    </Box>
+    </VStack>
   </HStack>
   <HStack w="max" gap="0" alignItems="center" justifyContent="spaceBetween">
     <Text fontSize="9" color="7A7A9A">※本資料に記載の数値はダミーデータです。実際の企業業績とは関係ありません。</Text>
@@ -203,7 +203,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
   </VStack>
 
   <HStack gap="24" alignItems="stretch">
-    <Box padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
+    <VStack padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
       <VStack gap="16" alignItems="start">
         <Shape shapeType="ellipse" w="48" h="48" fill.color="EEF2FF" fontSize="24" color="4F46E5">⚡</Shape>
         <Text fontSize="20" bold="true" color="0F172A">圧倒的なスピード</Text>
@@ -211,9 +211,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           独自のエンジンにより、従来のツールと比較して約5倍の処理速度を実現しました。
         </Text>
       </VStack>
-    </Box>
+    </VStack>
 
-    <Box padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
+    <VStack padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
       <VStack gap="16" alignItems="start">
         <Shape shapeType="ellipse" w="48" h="48" fill.color="ECFDF5" fontSize="24" color="059669">🔒</Shape>
         <Text fontSize="20" bold="true" color="0F172A">高度なセキュリティ</Text>
@@ -221,9 +221,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           金融機関レベルの暗号化技術を標準搭載。大切なデータを安全に守ります。
         </Text>
       </VStack>
-    </Box>
+    </VStack>
 
-    <Box padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
+    <VStack padding="32" backgroundColor="FFFFFF" borderRadius="16" shadow.type="outer" shadow.opacity="0.1" shadow.blur="10" shadow.angle="90" shadow.offset="4">
       <VStack gap="16" alignItems="start">
         <Shape shapeType="ellipse" w="48" h="48" fill.color="FFFBEB" fontSize="24" color="D97706">📱</Shape>
         <Text fontSize="20" bold="true" color="0F172A">マルチデバイス対応</Text>
@@ -231,10 +231,10 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           PC、スマートフォン、タブレット。場所を選ばず、いつでもどこでもアクセス可能。
         </Text>
       </VStack>
-    </Box>
+    </VStack>
   </HStack>
 
-  <Box w="max" padding="40" backgroundColor="1E293B" borderRadius="16">
+  <VStack w="max" padding="40" backgroundColor="1E293B" borderRadius="16">
     <HStack gap="40" alignItems="center" justifyContent="spaceBetween">
       <VStack gap="8" w="60%">
         <Text fontSize="24" bold="true" color="FFFFFF">まずは無料トライアルから</Text>
@@ -245,7 +245,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         無料で始める
       </Shape>
     </HStack>
-  </Box>
+  </VStack>
 
 </VStack>`,
   },
@@ -260,7 +260,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
   </VStack>
 
   <HStack w="100%" gap="24" alignItems="end">
-    <Box w="30%" padding="32" backgroundColor="FFFFFF" borderRadius="32" shadow.type="outer" shadow.opacity="0.05" shadow.blur="20" shadow.offset="10">
+    <VStack w="30%" padding="32" backgroundColor="FFFFFF" borderRadius="32" shadow.type="outer" shadow.opacity="0.05" shadow.blur="20" shadow.offset="10">
       <VStack gap="24">
         <Shape shapeType="ellipse" w="56" h="56" fill.color="E0F7FA" color="0891B2" fontSize="24" bold="true">🌱</Shape>
         <VStack gap="4">
@@ -277,9 +277,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         </Ul>
         <Shape shapeType="roundRect" w="max" h="56" fill.color="F1F5F9" color="64748B" fontSize="15" bold="true">無料で始める</Shape>
       </VStack>
-    </Box>
+    </VStack>
 
-    <Box w="32%" padding="40" backgroundColor="FFFFFF" borderRadius="32" border.color="6366F1" border.width="3" shadow.type="outer" shadow.opacity="0.15" shadow.blur="30" shadow.offset="15">
+    <VStack w="32%" padding="40" backgroundColor="FFFFFF" borderRadius="32" border.color="6366F1" border.width="3" shadow.type="outer" shadow.opacity="0.15" shadow.blur="30" shadow.offset="15">
       <VStack gap="24">
         <HStack justifyContent="spaceBetween" alignItems="center">
           <Shape shapeType="ellipse" w="64" h="64" fill.color="EEF2FF" color="6366F1" fontSize="28" bold="true">🚀</Shape>
@@ -300,9 +300,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         </Ul>
         <Shape shapeType="roundRect" w="max" h="60" fill.color="6366F1" shadow.type="outer" shadow.opacity="0.3" shadow.blur="10" color="FFFFFF" fontSize="16" bold="true">14日間無料で試す</Shape>
       </VStack>
-    </Box>
+    </VStack>
 
-    <Box w="30%" padding="32" backgroundColor="FFFFFF" borderRadius="32" shadow.type="outer" shadow.opacity="0.05" shadow.blur="20" shadow.offset="10">
+    <VStack w="30%" padding="32" backgroundColor="FFFFFF" borderRadius="32" shadow.type="outer" shadow.opacity="0.05" shadow.blur="20" shadow.offset="10">
       <VStack gap="24">
         <Shape shapeType="ellipse" w="56" h="56" fill.color="FFFBEB" color="D97706" fontSize="24" bold="true">💎</Shape>
         <VStack gap="4">
@@ -319,7 +319,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         </Ul>
         <Shape shapeType="roundRect" w="max" h="56" fill.color="1E293B" color="FFFFFF" fontSize="15" bold="true">お問い合わせ</Shape>
       </VStack>
-    </Box>
+    </VStack>
   </HStack>
 
   <Text fontSize="12" color="94A3B8">※価格はすべて税抜き表示です。年間契約の場合さらに20%OFFが適用されます。</Text>
@@ -334,7 +334,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
     <Text fontSize="14" color="757575">各種チャートの表示サンプル</Text>
   </VStack>
   <HStack w="max" gap="16">
-    <Box padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+    <VStack padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
       <VStack gap="8">
         <Text fontSize="14" color="212121" bold="true">棒グラフ — 月別売上推移</Text>
         <Chart w="420" h="200" chartType="bar" showLegend="true" chartColors='["90CAF9","1565C0"]'>
@@ -356,8 +356,8 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           </ChartSeries>
         </Chart>
       </VStack>
-    </Box>
-    <Box padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+    </VStack>
+    <VStack padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
       <VStack gap="8">
         <Text fontSize="14" color="212121" bold="true">折れ線グラフ — ユーザー数推移</Text>
         <Chart w="420" h="200" chartType="line" showLegend="true" chartColors='["1565C0","FF6F00"]'>
@@ -379,10 +379,10 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           </ChartSeries>
         </Chart>
       </VStack>
-    </Box>
+    </VStack>
   </HStack>
   <HStack w="max" gap="16">
-    <Box padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+    <VStack padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
       <VStack gap="8">
         <Text fontSize="14" color="212121" bold="true">円グラフ — 顧客構成</Text>
         <Chart w="260" h="200" chartType="pie" showLegend="true" chartColors='["1565C0","26A69A","FF6F00","AB47BC","78909C"]'>
@@ -395,8 +395,8 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           </ChartSeries>
         </Chart>
       </VStack>
-    </Box>
-    <Box padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+    </VStack>
+    <VStack padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
       <VStack gap="8">
         <Text fontSize="14" color="212121" bold="true">ドーナツ — 予算配分</Text>
         <Chart w="260" h="200" chartType="doughnut" showLegend="true" chartColors='["1565C0","2E7D32","FF6F00","AB47BC","78909C"]'>
@@ -409,8 +409,8 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           </ChartSeries>
         </Chart>
       </VStack>
-    </Box>
-    <Box padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+    </VStack>
+    <VStack padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
       <VStack gap="8">
         <Text fontSize="14" color="212121" bold="true">レーダー — スキル評価</Text>
         <Chart w="260" h="200" chartType="radar" showLegend="true" chartColors='["1565C0","FF6F00"]'>
@@ -430,9 +430,9 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
           </ChartSeries>
         </Chart>
       </VStack>
-    </Box>
+    </VStack>
   </HStack>
-  <Box w="max" padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
+  <VStack w="max" padding="16" backgroundColor="FFFFFF" border.color="E0E0E0" border.width="1" borderRadius="8">
     <VStack gap="8">
       <Text fontSize="14" color="212121" bold="true">エリアチャート — トラフィック推移</Text>
       <Chart w="max" h="180" chartType="area" showLegend="true" chartColors='["1565C0","81D4FA"]'>
@@ -456,7 +456,7 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         </ChartSeries>
       </Chart>
     </VStack>
-  </Box>
+  </VStack>
 </VStack>`,
   },
 ];

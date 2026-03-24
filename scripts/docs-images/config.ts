@@ -21,7 +21,6 @@ export const NODE_TYPES = [
   "flow",
   "processArrow",
   "pyramid",
-  "box",
   "vstack",
   "hstack",
   "icon",

@@ -271,23 +271,6 @@ describe("parseXml", () => {
       ]);
     });
 
-    it("Box で children を単一ノードとして変換する", () => {
-      const xml = `
-        <Box padding="20" backgroundColor="FFFFFF">
-          <Text>Content</Text>
-        </Box>
-      `;
-      const result = parseXml(xml);
-      expect(result).toEqual([
-        {
-          type: "box",
-          padding: 20,
-          backgroundColor: "FFFFFF",
-          children: { type: "text", text: "Content" },
-        },
-      ]);
-    });
-
     it("Layer で children を配列として変換する", () => {
       const xml = `
         <Layer w="800" h="600">
@@ -498,32 +481,6 @@ describe("parseXml", () => {
         },
       ]);
     });
-
-    it("Box の中にコンテナノードをネストできる", () => {
-      const xml = `
-        <Box padding="20">
-          <VStack gap="8">
-            <Text>A</Text>
-            <Text>B</Text>
-          </VStack>
-        </Box>
-      `;
-      const result = parseXml(xml);
-      expect(result).toEqual([
-        {
-          type: "box",
-          padding: 20,
-          children: {
-            type: "vstack",
-            gap: 8,
-            children: [
-              { type: "text", text: "A" },
-              { type: "text", text: "B" },
-            ],
-          },
-        },
-      ]);
-    });
   });
 
   // ===== 未知タグのエラー =====
@@ -573,7 +530,7 @@ describe("parseXml", () => {
 
     it("shadow をドット記法で変換する", () => {
       const result = parseXml(
-        '<Box shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000"><Text>A</Text></Box>',
+        '<VStack shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000"><Text>A</Text></VStack>',
       );
       expect((result[0] as Record<string, unknown>).shadow).toEqual({
         type: "outer",
@@ -691,12 +648,6 @@ describe("parseXml", () => {
       expect(() =>
         parseXml('<Chart chartType="bar" data="not-json" />'),
       ).toThrow();
-    });
-
-    it("Box に複数子要素がある場合エラーをスローする", () => {
-      expect(() => parseXml("<Box><Text>A</Text><Text>B</Text></Box>")).toThrow(
-        "<Box> must have exactly 1 child element",
-      );
     });
 
     it("boolean の不正値でエラーをスローする", () => {

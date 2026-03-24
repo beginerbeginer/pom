@@ -55,7 +55,6 @@ export const TAG_TO_TYPE: Record<string, string> = {
   Ul: "ul",
   Ol: "ol",
   Line: "line",
-  Box: "box",
   VStack: "vstack",
   HStack: "hstack",
   Layer: "layer",
@@ -67,7 +66,7 @@ const TYPE_TO_TAG: Record<string, string> = Object.fromEntries(
   Object.entries(TAG_TO_TYPE).map(([tag, type]) => [type, tag]),
 );
 
-const CONTAINER_TYPES = new Set(["box", "vstack", "hstack", "layer"]);
+const CONTAINER_TYPES = new Set(["vstack", "hstack", "layer"]);
 const TEXT_CONTENT_NODES = new Set(["text", "shape"]);
 // Attributes allowed on any node (e.g., x/y for Layer children positioning)
 const UNIVERSAL_ATTRS = new Set(["x", "y"]);
@@ -980,18 +979,7 @@ function convertPomNode(
     const convertedChildren = childElements
       .map((child) => convertElement(child, errors))
       .filter((child): child is Record<string, unknown> => child !== null);
-    if (nodeType === "box") {
-      if (childElements.length !== 1) {
-        errors.push(
-          `<Box> must have exactly 1 child element, but got ${childElements.length}`,
-        );
-      }
-      if (convertedChildren.length > 0) {
-        result.children = convertedChildren[0];
-      }
-    } else {
-      result.children = convertedChildren;
-    }
+    result.children = convertedChildren;
   }
   // Leaf nodes that shouldn't have child elements
   else if (

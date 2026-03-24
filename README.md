@@ -37,8 +37,8 @@
 
 - **AI Friendly** — Simple XML structure designed for LLM code generation. Include [llm.txt](./website/public/llm.txt) in your system prompt for XML reference. Also available at `https://pom.pptx.app/llm.txt`.
 - **Declarative** — Describe slides as XML. No imperative API calls needed.
-- **Flexible Layout** — Flexbox-style layout with VStack / HStack / Box, powered by yoga-layout.
-- **Rich Nodes** — 19 built-in node types: charts, flowcharts, tables, timelines, org trees, and more.
+- **Flexible Layout** — Flexbox-style layout with VStack / HStack, powered by yoga-layout.
+- **Rich Nodes** — 18 built-in node types: charts, flowcharts, tables, timelines, org trees, and more.
 - **Schema-validated** — XML input is validated with Zod schemas at runtime with clear error messages.
 - **PowerPoint Native** — Full access to native PowerPoint shape features (roundRect, ellipse, arrows, etc.).
 - **Pixel Units** — Intuitive pixel-based sizing (internally converted to inches at 96 DPI).
@@ -86,7 +86,6 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 | Pyramid      | Pyramid diagrams for hierarchies               |
 | Line         | Horizontal / vertical lines                    |
 | Layer        | Absolute-positioned overlay container          |
-| Box          | Container for single child with padding        |
 | VStack       | Vertical stack layout                          |
 | HStack       | Horizontal stack layout                        |
 | Icon         | Lucide icons / inline SVG                      |

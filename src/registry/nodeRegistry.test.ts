@@ -12,7 +12,6 @@ const ALL_NODE_TYPES: POMNode["type"][] = [
   "ol",
   "image",
   "table",
-  "box",
   "vstack",
   "hstack",
   "shape",
@@ -54,7 +53,6 @@ describe("NodeRegistry", () => {
   });
 
   it("カテゴリが正しく設定されていること", () => {
-    expect(getNodeDef("box").category).toBe("single-child");
     expect(getNodeDef("vstack").category).toBe("multi-child");
     expect(getNodeDef("hstack").category).toBe("multi-child");
     expect(getNodeDef("layer").category).toBe("absolute-child");
