@@ -71,7 +71,7 @@ jobs:
           PKG_VERSION=$(node -p "require('./package.json').version")
           PUBLISHER=$(node -p "require('./package.json').publisher")
           EXTENSION_ID="${PUBLISHER}.${PKG_NAME}"
-          if vsce show "${EXTENSION_ID}" 2>/dev/null | grep -q "^Version:.*${PKG_VERSION}$"; then
+          if vsce show "${EXTENSION_ID}" 2>/dev/null | grep -Fq "Version: ${PKG_VERSION}"; then
             echo "published=true" >> "$GITHUB_OUTPUT"
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
