@@ -28,7 +28,7 @@ const buildOptions = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
   outfile: "dist/extension.js",
-  external: ["vscode"],
+  external: ["vscode", "sharp"],
   loader: { ".node": "copy" },
   format: "cjs",
   platform: "node",
