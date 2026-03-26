@@ -17,8 +17,7 @@ export async function GET() {
       await import(mod);
       results[mod] = "ok";
     } catch (e: unknown) {
-      results[mod] =
-        e instanceof Error ? e.message : String(e);
+      results[mod] = e instanceof Error ? e.message : String(e);
     }
   }
 
