@@ -24,7 +24,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+      - run: pnpm --filter @hirokisakabe/pom-md run build
       - run: pnpm run test:run
+      - run: pnpm --filter @hirokisakabe/pom-md run fmt:check
+      - run: pnpm --filter @hirokisakabe/pom-md run lint
+      - run: pnpm --filter @hirokisakabe/pom-md run typecheck
+      - run: pnpm --filter @hirokisakabe/pom-md run test:run
 
       - name: Check for changesets
         id: changesets-check
@@ -44,6 +49,7 @@ jobs:
           version: pnpm exec changeset version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
       - name: Sync pnpm-lock.yaml on Release PR branch
@@ -66,4 +72,5 @@ jobs:
         if: steps.changesets-check.outputs.has_changesets == 'false'
         run: pnpm exec changeset publish
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
