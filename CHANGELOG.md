@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 6.0.1
+
+### Patch Changes
+
+- [#504](https://github.com/hirokisakabe/pom/pull/504) [`7bb3e8d`](https://github.com/hirokisakabe/pom/commit/7bb3e8d16e2b75fe71a1ffd4d79925018d9091ae) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: image-size モジュールを静的 import に変更し esbuild バンドルに含まれるようにする
+
 ## 6.0.0
 
 ### Major Changes
