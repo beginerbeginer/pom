@@ -22,6 +22,8 @@ pnpm run knip              # Detect unused code
 pnpm run test:run          # Run tests
 pnpm run test              # Tests (watch mode)
 pnpm run test:ui           # Tests (UI mode)
+pnpm run test:coverage     # Tests (with coverage)
+pnpm run size              # Bundle size check (size-limit)
 pnpm exec tsx main.ts      # Run sample (generates sample.pptx)
 pnpm run vrt                     # Run VRT (local)
 pnpm run vrt:update              # Update VRT baseline (local)
@@ -53,6 +55,7 @@ packages/
 │   │   ├── types.ts              # Type definitions
 │   │   ├── buildPptx.ts          # Main processing (XML → parseXml → layout → PPTX)
 │   │   ├── buildContext.ts        # Build context (caches, measurement mode)
+│   │   ├── diagnostics.ts         # Diagnostics system (error collection & reporting)
 │   │   ├── autoFit/              # Slide overflow auto-fit engine
 │   │   │   ├── autoFit.ts        # Auto-fit logic
 │   │   │   └── strategies/       # Adjustment strategies (font size, gap, table row height, uniform scale)
@@ -72,7 +75,7 @@ packages/
 │   │   │   └── walkTree.ts       # Tree traversal utility
 │   │   ├── parseXml/             # XML input parser (fast-xml-parser, internal)
 │   │   │   ├── parseXml.ts       # XML parser core
-│   │   │   └── inputSchema.ts    # Input schema (Zod, internal)
+│   │   │   └── coercionRules.ts  # Attribute coercion rules
 │   │   ├── calcYogaLayout/       # Layout calculation (yoga-layout)
 │   │   ├── toPositioned/         # Absolute coordinate conversion
 │   │   └── renderPptx/           # PPTX rendering (pptxgenjs)
@@ -85,6 +88,9 @@ packages/
 │   │   ├── nodes.md              # Nodes (with images)
 │   │   ├── master-slide.md       # Master slide documentation
 │   │   ├── text-measurement.md   # Text measurement documentation
+│   │   ├── api-reference.md      # API reference
+│   │   ├── layout-system.md      # Layout system guide
+│   │   ├── styling-guide.md      # Styling guide
 │   │   └── images/               # Sample images per node type (auto-generated)
 │   ├── scripts/
 │   │   ├── convertFontToBase64.ts        # Font file to Base64 conversion utility
@@ -132,7 +138,10 @@ Additionally, **autoFit** (`packages/pom/src/autoFit/`) adjusts slides when cont
 ### Public API
 
 - `buildPptx(xml: string, slideSize, options?)` - Main function that takes an XML string and generates PPTX
+- `BuildPptxResult` - Return type of buildPptx
 - `ParseXmlError` - Error class thrown on XML parse failure
+- `DiagnosticsError` - Error class containing collected diagnostics (IMAGE_MEASURE_FAILED, IMAGE_NOT_PREFETCHED, AUTOFIT_OVERFLOW, SCALE_BELOW_THRESHOLD)
+- `Diagnostic` / `DiagnosticCode` - Diagnostic entry type and code type
 - `TextMeasurementMode` - Text measurement mode (`"opentype"` | `"fallback"` | `"auto"`)
 - `SlideMasterOptions` - Slide master settings (title, background, margin, objects, slideNumber)
 
@@ -165,7 +174,7 @@ Text width measurement uses `opentype.js`. The Noto Sans JP font is bundled with
 When adding new properties or features, update the following files:
 
 1. **Type definitions**: `packages/pom/src/types.ts` - Add new types or properties
-2. **Input schema**: `packages/pom/src/parseXml/inputSchema.ts` - Add Zod schema (for internal validation)
+2. **Coercion rules**: `packages/pom/src/parseXml/coercionRules.ts` - Add attribute coercion rules
 3. **XML parser**: `packages/pom/src/parseXml/parseXml.ts` - Add XML tag/attribute conversion logic
 4. **Node registry**: `packages/pom/src/registry/definitions/` - Add node definition to the registry
 5. **Rendering**: Under `packages/pom/src/renderPptx/` - Implement pptxgenjs conversion
