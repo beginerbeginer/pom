@@ -12,22 +12,19 @@ export default withNextra({
   outputFileTracingRoot: dirname(
     dirname(dirname(fileURLToPath(import.meta.url))),
   ),
-  serverExternalPackages: [
-    "@resvg/resvg-js",
-    "@hirokisakabe/pom",
-    "pptxgenjs",
-    "yoga-layout",
-    "fast-xml-parser",
-    "opentype.js",
-    "image-size",
-  ],
+  serverExternalPackages: ["@resvg/resvg-js"],
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // workspace リンクされた @hirokisakabe/pom は serverExternalPackages では
-      // 外部化されず、内部の @resvg/resvg-js native バイナリの解析に失敗する。
-      // @resvg 関連パッケージのみ webpack externals で明示的に除外する。
+      // workspace リンクされた @hirokisakabe/pom はバンドルに含まれるが、
+      // 内部で require する @resvg/resvg-js はネイティブバイナリのため
+      // バンドルから除外する必要がある。
       config.externals = config.externals || [];
-      config.externals.push(/^@resvg\//);
+      config.externals.push(({ request }, callback) => {
+        if (request && /^@resvg\//.test(request)) {
+          return callback(null, `commonjs ${request}`);
+        }
+        callback();
+      });
     }
     return config;
   },
