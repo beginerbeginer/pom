@@ -1,7 +1,8 @@
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import nextra from "nextra";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const withNextra = nextra({});
 
 export default withNextra({
@@ -9,17 +10,19 @@ export default withNextra({
   eslint: {
     ignoreDuringBuilds: true,
   },
-  outputFileTracingRoot: dirname(
-    dirname(dirname(fileURLToPath(import.meta.url))),
-  ),
-  serverExternalPackages: ["@resvg/resvg-js", "@hirokisakabe/pom"],
+  outputFileTracingRoot: dirname(dirname(__dirname)),
+  serverExternalPackages: ["@resvg/resvg-js"],
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // workspace リンクされた @hirokisakabe/pom は serverExternalPackages では
-      // 外部化されず、内部の @resvg/resvg-js native バイナリの解析に失敗する。
-      // @resvg 関連パッケージのみ webpack externals で明示的に除外する。
-      config.externals = config.externals || [];
-      config.externals.push(/^@resvg\//);
+      // workspace link の @hirokisakabe/pom は dist/ を参照するため
+      // webpack がバンドルせず外部モジュール扱いしてしまう。
+      // resolve alias でソースを直接参照し、webpack にバンドルさせる。
+      config.resolve = config.resolve || {};
+      config.resolve.alias = config.resolve.alias || {};
+      config.resolve.alias["@hirokisakabe/pom"] = resolve(
+        __dirname,
+        "../../packages/pom/src/index.ts",
+      );
     }
     return config;
   },
