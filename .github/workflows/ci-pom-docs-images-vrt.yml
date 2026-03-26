@@ -1,38 +1,38 @@
-name: CI - VRT
+name: CI - pom Docs Images VRT
 
 on:
   push:
     branches: ["main"]
     paths:
+      - "packages/pom/docs/**"
       - "packages/pom/src/**"
-      - "packages/pom/vrt/**"
+      - "packages/pom/scripts/docs-images/**"
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-vrt.yml"
+      - ".github/workflows/ci-pom-docs-images-vrt.yml"
   pull_request:
     branches: ["main"]
     paths:
+      - "packages/pom/docs/**"
       - "packages/pom/src/**"
-      - "packages/pom/vrt/**"
+      - "packages/pom/scripts/docs-images/**"
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-vrt.yml"
+      - ".github/workflows/ci-pom-docs-images-vrt.yml"
 
 jobs:
-  vrt:
+  docs-images-vrt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run VRT in Docker
+      - name: Run docs images VRT in Docker
         working-directory: packages/pom
-        run: docker compose run --rm vrt
+        run: docker compose run --rm docs-images-vrt
       - name: Upload diff on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: vrt-diff
-          path: |
-            packages/pom/vrt/actual.png
-            packages/pom/vrt/diff.png
+          name: docs-images-vrt-diff
+          path: packages/pom/docs/images/output/diff/

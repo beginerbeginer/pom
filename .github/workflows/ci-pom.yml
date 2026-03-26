@@ -1,4 +1,4 @@
-name: CI - Build
+name: CI - pom
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
       - "packages/pom/knip.json"
       - "packages/pom/vitest.config.ts"
       - ".node-version"
-      - ".github/workflows/ci-build.yml"
+      - ".github/workflows/ci-pom.yml"
   pull_request:
     branches: ["main"]
     paths:
@@ -34,7 +34,7 @@ on:
       - "packages/pom/knip.json"
       - "packages/pom/vitest.config.ts"
       - ".node-version"
-      - ".github/workflows/ci-build.yml"
+      - ".github/workflows/ci-pom.yml"
 
 jobs:
   build:
