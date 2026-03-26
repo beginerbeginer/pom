@@ -1,5 +1,6 @@
 {
   "name": "pom-vscode",
+  "private": true,
   "displayName": "pom",
   "description": "Live preview for pom-md presentations",
   "version": "0.1.1",
