@@ -16,52 +16,47 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
 
-      - name: Install and build root package
-        run: |
-          npm ci
-          npm run build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Install and build pom-md
-        run: |
-          cd packages/pom-md
-          npm ci
-          npm run build
+      - name: Build root package
+        run: pnpm run build
 
-      - name: Install pom-vscode dependencies
-        working-directory: packages/pom-vscode
-        run: npm ci
+      - name: Build pom-md
+        run: pnpm --filter @hirokisakabe/pom-md run build
 
       - name: Format check
         working-directory: packages/pom-vscode
-        run: npm run fmt:check
+        run: pnpm run fmt:check
 
       - name: Lint
         working-directory: packages/pom-vscode
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Type check
         working-directory: packages/pom-vscode
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Test
         working-directory: packages/pom-vscode
-        run: npm run test:run
+        run: pnpm run test:run
 
       - name: Build
         working-directory: packages/pom-vscode
-        run: npm run build
+        run: pnpm run build
 
       - name: Integration Test
         working-directory: packages/pom-vscode
-        run: xvfb-run -a npm run test:integration
+        run: xvfb-run -a pnpm run test:integration
 
       - name: Install vsce
-        run: npm install -g @vscode/vsce
+        run: pnpm add -g @vscode/vsce
 
       - name: Check if version is already published
         id: version-check

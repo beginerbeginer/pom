@@ -21,21 +21,20 @@ jobs:
         working-directory: packages/pom-md
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: packages/pom-md/.node-version
-          cache: npm
+          cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - name: Upgrade npm for Trusted Publishing
-        run: npm install -g npm@latest
-
-      - run: npm ci
-      - run: npm run fmt:check
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run test:run
-      - run: npm run build
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+      - run: pnpm run fmt:check
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm run test:run
+      - run: pnpm run build
 
       - name: Check if version is already published
         id: version-check
@@ -50,4 +49,4 @@ jobs:
 
       - name: Publish to npm
         if: steps.version-check.outputs.published == 'false'
-        run: npm publish --provenance --access public
+        run: pnpm publish --provenance --access public --no-git-checks

@@ -7,7 +7,7 @@ on:
       - "docs/**"
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "docker-compose.yml"
       - ".github/workflows/ci-docs-images-vrt.yml"
   pull_request:
@@ -16,7 +16,7 @@ on:
       - "docs/**"
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "docker-compose.yml"
       - ".github/workflows/ci-docs-images-vrt.yml"
 

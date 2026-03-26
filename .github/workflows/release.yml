@@ -15,18 +15,16 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - name: Upgrade npm for Trusted Publishing
-        run: npm install -g npm@latest
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test:run
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run test:run
 
       - name: Check for changesets
         id: changesets-check
@@ -42,23 +40,23 @@ jobs:
         if: steps.changesets-check.outputs.has_changesets == 'true'
         uses: changesets/action@v1
         with:
-          publish: npx changeset publish
-          version: npx changeset version
+          publish: pnpm exec changeset publish
+          version: pnpm exec changeset version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
-      - name: Sync package-lock.json on Release PR branch
+      - name: Sync pnpm-lock.yaml on Release PR branch
         if: steps.changesets.outputs.pullRequestNumber
         run: |
           git fetch origin changeset-release/main
           git checkout changeset-release/main
-          npm install --package-lock-only
-          if ! git diff --quiet -- package-lock.json; then
+          pnpm install --lockfile-only
+          if ! git diff --quiet -- pnpm-lock.yaml; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add package-lock.json
-            git commit -m "chore: sync package-lock.json"
+            git add pnpm-lock.yaml
+            git commit -m "chore: sync pnpm-lock.yaml"
             git push origin changeset-release/main
           fi
         env:
@@ -66,6 +64,6 @@ jobs:
 
       - name: Publish (after Release PR merge)
         if: steps.changesets-check.outputs.has_changesets == 'false'
-        run: npx changeset publish
+        run: pnpm exec changeset publish
         env:
           NPM_CONFIG_PROVENANCE: true

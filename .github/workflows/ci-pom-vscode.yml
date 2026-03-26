@@ -8,7 +8,7 @@ on:
       - "packages/pom-md/**"
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "tsconfig.json"
       - ".node-version"
       - ".github/workflows/ci-pom-vscode.yml"
@@ -19,7 +19,7 @@ on:
       - "packages/pom-md/**"
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "tsconfig.json"
       - ".node-version"
       - ".github/workflows/ci-pom-vscode.yml"
@@ -31,36 +31,32 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install and build root package
-        run: |
-          npm ci
-          npm run build
-      - name: Install and build pom-md
-        run: |
-          cd packages/pom-md
-          npm ci
-          npm run build
-      - name: Install pom-vscode dependencies
-        working-directory: packages/pom-vscode
-        run: npm ci
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build root package
+        run: pnpm run build
+      - name: Build pom-md
+        run: pnpm --filter @hirokisakabe/pom-md run build
       - name: Format check
         working-directory: packages/pom-vscode
-        run: npm run fmt:check
+        run: pnpm run fmt:check
       - name: Lint
         working-directory: packages/pom-vscode
-        run: npm run lint
+        run: pnpm run lint
       - name: Type check
         working-directory: packages/pom-vscode
-        run: npm run typecheck
+        run: pnpm run typecheck
       - name: Test
         working-directory: packages/pom-vscode
-        run: npm run test:run
+        run: pnpm run test:run
       - name: Build
         working-directory: packages/pom-vscode
-        run: npm run build
+        run: pnpm run build
       - name: Integration Test
         working-directory: packages/pom-vscode
-        run: xvfb-run -a npm run test:integration
+        run: xvfb-run -a pnpm run test:integration

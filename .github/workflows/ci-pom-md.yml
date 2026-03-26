@@ -6,12 +6,16 @@ on:
     paths:
       - "packages/pom-md/**"
       - "packages/pom-md/.node-version"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "packages/pom-md/**"
       - "packages/pom-md/.node-version"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"
 
 jobs:
@@ -24,12 +28,15 @@ jobs:
         working-directory: packages/pom-md
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: packages/pom-md/.node-version
-      - run: npm ci
-      - run: npm run fmt:check
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run test:run
-      - run: npm run build
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+      - run: pnpm run fmt:check
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm run test:run
+      - run: pnpm run build
