@@ -11,27 +11,27 @@ For ecosystem-wide direction, priorities, and repository status, see [ROADMAP.md
 ## Commands
 
 ```bash
-npm run build             # TypeScript compilation
-npm run lint              # ESLint
-npm run fmt               # Prettier formatting
-npm run fmt:check         # Format check
-npm run typecheck         # Type checking
-npm run knip              # Detect unused code
-npm run test:run          # Run tests
-npm run test              # Tests (watch mode)
-npm run test:ui           # Tests (UI mode)
-npx tsx main.ts           # Run sample (generates sample.pptx)
-npm run vrt                     # Run VRT (local)
-npm run vrt:update              # Update VRT baseline (local)
-npm run vrt:docker              # Run VRT (Docker environment)
-npm run vrt:docker:update       # Update VRT baseline (Docker environment)
-npm run preview                 # Preview (local)
-npm run preview:docker          # Preview (convert main.ts PPTX to PNG, Docker)
-npm run docs:images             # Generate documentation node images (local)
-npm run docs:images:docker        # Generate documentation node images (Docker environment)
-npm run docs:images:docker:update # Rebuild & generate documentation node images
-npm run docs:images:vrt           # Check documentation images (local)
-npm run docs:images:vrt:docker    # Check documentation images (Docker)
+pnpm run build             # TypeScript compilation
+pnpm run lint              # ESLint
+pnpm run fmt               # Prettier formatting
+pnpm run fmt:check         # Format check
+pnpm run typecheck         # Type checking
+pnpm run knip              # Detect unused code
+pnpm run test:run          # Run tests
+pnpm run test              # Tests (watch mode)
+pnpm run test:ui           # Tests (UI mode)
+pnpm exec tsx main.ts      # Run sample (generates sample.pptx)
+pnpm run vrt                     # Run VRT (local)
+pnpm run vrt:update              # Update VRT baseline (local)
+pnpm run vrt:docker              # Run VRT (Docker environment)
+pnpm run vrt:docker:update       # Update VRT baseline (Docker environment)
+pnpm run preview                 # Preview (local)
+pnpm run preview:docker          # Preview (convert main.ts PPTX to PNG, Docker)
+pnpm run docs:images             # Generate documentation node images (local)
+pnpm run docs:images:docker        # Generate documentation node images (Docker environment)
+pnpm run docs:images:docker:update # Rebuild & generate documentation node images
+pnpm run docs:images:vrt           # Check documentation images (local)
+pnpm run docs:images:vrt:docker    # Check documentation images (Docker)
 ```
 
 ## Directory Structure
@@ -71,7 +71,7 @@ packages/
 │   ├── src/
 │   │   ├── index.ts      # Public API (parseMd)
 │   │   └── parseMd.ts    # Markdown → pom XML conversion logic
-│   ├── package.json      # Independent package (no npm workspaces)
+│   ├── package.json
 │   └── tsconfig.json
 ├── pom-vscode/           # VS Code extension for live preview
 │   ├── src/
@@ -154,7 +154,7 @@ When adding new properties or features, update the following files:
 4. **Node registry**: `src/registry/definitions/` - Add node definition to the registry
 5. **Rendering**: Under `src/renderPptx/` - Implement pptxgenjs conversion
 6. **VRT test data**: `vrt/lib/generatePptx.ts` - Add test cases for the new feature
-7. **Update VRT baseline**: Run `npm run vrt:docker:update`
+7. **Update VRT baseline**: Run `pnpm run vrt:docker:update`
 8. **Documentation updates**:
    - `README.md` - User-facing documentation
    - `docs/nodes.md` - Nodes
@@ -163,15 +163,15 @@ When adding new properties or features, update the following files:
 9. **Documentation image updates** (when adding new node types):
    - Add to `NODE_TYPES` in `scripts/docs-images/config.ts`
    - Define sample XML in `scripts/docs-images/sampleNodes.ts`
-   - Run `npm run docs:images:docker:update`
-10. **Add changeset**: Run `npx changeset add` before creating a PR
+   - Run `pnpm run docs:images:docker:update`
+10. **Add changeset**: Run `pnpm exec changeset add` before creating a PR
 
 ## Preview Workflow (for Claude Code)
 
 When modifying main.ts to verify PPTX output, follow these steps:
 
 1. Edit main.ts (and modify logic under src/ as needed)
-2. Run `npm run preview:docker` to generate PNG
+2. Run `pnpm run preview:docker` to generate PNG
 3. Visually verify `preview/output/sample.png` using the Read tool
 4. If there are layout issues, fix and return to step 2
 5. If everything looks good, commit
@@ -183,20 +183,19 @@ When modifying main.ts to verify PPTX output, follow these steps:
 
 ## Packages (packages/)
 
-Sub-packages live under `packages/` with independent `package.json` and `node_modules` (no npm workspaces). Each package has its own lint/test/build scripts.
+Managed as a pnpm workspace. All packages share a single `pnpm-lock.yaml` at the root.
 
 ### pom-md (`packages/pom-md/`)
 
 Markdown → pom XML converter. Converts Markdown with `pomxml` code fences into pom XML strings.
 
 ```bash
-cd packages/pom-md
-npm run build             # TypeScript compilation
-npm run lint              # ESLint
-npm run fmt               # Prettier formatting
-npm run fmt:check         # Format check
-npm run typecheck         # Type checking
-npm run test:run          # Run tests
+pnpm --filter @hirokisakabe/pom-md run build       # TypeScript compilation
+pnpm --filter @hirokisakabe/pom-md run lint         # ESLint
+pnpm --filter @hirokisakabe/pom-md run fmt          # Prettier formatting
+pnpm --filter @hirokisakabe/pom-md run fmt:check    # Format check
+pnpm --filter @hirokisakabe/pom-md run typecheck    # Type checking
+pnpm --filter @hirokisakabe/pom-md run test:run     # Run tests
 ```
 
 Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
@@ -206,13 +205,12 @@ Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
 VS Code extension for live preview of `.pom.md` files. Converts pom-md to SVG via pptx-glimpse and displays in a webview panel.
 
 ```bash
-cd packages/pom-vscode
-npm run build             # esbuild bundle
-npm run watch             # esbuild watch mode
-npm run lint              # ESLint
-npm run fmt               # Prettier formatting
-npm run fmt:check         # Format check
-npm run typecheck         # Type checking
+pnpm --filter pom-vscode run build       # esbuild bundle
+pnpm --filter pom-vscode run watch       # esbuild watch mode
+pnpm --filter pom-vscode run lint        # ESLint
+pnpm --filter pom-vscode run fmt         # Prettier formatting
+pnpm --filter pom-vscode run fmt:check   # Format check
+pnpm --filter pom-vscode run typecheck   # Type checking
 ```
 
 Pipeline: `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`

@@ -7,6 +7,8 @@ on:
       - "website/**"
       - "docs/**"
       - "website/.node-version"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/ci-docs-site.yml"
   pull_request:
     branches: ["main"]
@@ -14,6 +16,8 @@ on:
       - "website/**"
       - "docs/**"
       - "website/.node-version"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/ci-docs-site.yml"
 
 jobs:
@@ -21,12 +25,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: website/.node-version
-      - run: cd website && npm ci
-      - run: cd website && npm run fmt:check
-      - run: cd website && npm run lint
-      - run: cd website && npm run typecheck
-      - run: cd website && npm run test:run
-      - run: cd website && npm run build
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter pom-docs run fmt:check
+      - run: pnpm --filter pom-docs run lint
+      - run: pnpm --filter pom-docs run typecheck
+      - run: pnpm --filter pom-docs run test:run
+      - run: pnpm --filter pom-docs run build

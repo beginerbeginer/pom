@@ -14,7 +14,7 @@ on:
       - "docs/**/_meta.ts"
       - "*.md"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "tsconfig.json"
       - "tsconfig.check.json"
       - "main.ts"
@@ -36,7 +36,7 @@ on:
       - "docs/**/_meta.ts"
       - "*.md"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - "tsconfig.json"
       - "tsconfig.check.json"
       - "main.ts"
@@ -54,15 +54,17 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - run: npm ci
-      - run: npm run fmt:check
-      - run: npm run lint
-      - run: npm run knip
-      - run: npm run typecheck
-      - run: npm run test:coverage
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run fmt:check
+      - run: pnpm run lint
+      - run: pnpm run knip
+      - run: pnpm run typecheck
+      - run: pnpm run test:coverage
 
       - name: Cache main branch coverage
         if: github.event_name == 'push'
@@ -104,4 +106,4 @@ jobs:
         with:
           json-summary-path: coverage/coverage-summary.json
 
-      - run: npx tsx main.ts
+      - run: pnpm exec tsx main.ts

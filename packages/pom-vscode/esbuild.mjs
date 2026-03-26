@@ -42,7 +42,7 @@ const testBuildOptions = {
   entryPoints: ["src/test/extension.test.ts"],
   bundle: true,
   outfile: "dist/test/extension.test.js",
-  external: ["vscode", "mocha", "assert"],
+  external: ["vscode", "mocha", "assert", "sharp"],
   loader: { ".node": "copy" },
   format: "cjs",
   platform: "node",

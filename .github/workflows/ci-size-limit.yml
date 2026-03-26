@@ -6,7 +6,7 @@ on:
     paths:
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - ".size-limit.js"
       - ".node-version"
       - ".github/workflows/ci-size-limit.yml"
@@ -15,7 +15,7 @@ on:
     paths:
       - "src/**"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - ".size-limit.js"
       - ".node-version"
       - ".github/workflows/ci-size-limit.yml"
@@ -29,15 +29,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
-      - run: npm ci
-      - run: npm run build
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
 
       - name: Run size-limit
-        run: npx size-limit --json > size-limit-results.json
+        run: pnpm exec size-limit --json > size-limit-results.json
 
       # --- main: キャッシュ保存 ---
       - name: Save baseline to cache

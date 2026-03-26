@@ -7,7 +7,7 @@ services:
     volumes:
       # 結果をホストに出力するため output ディレクトリをマウント
       - ./vrt/output:/app/vrt/output
-    command: npm run vrt
+    command: pnpm run vrt
 
   vrt-update:
     build:
@@ -17,7 +17,7 @@ services:
     volumes:
       # expected.png を更新するため vrt ディレクトリ全体をマウント
       - ./vrt:/app/vrt
-    command: npm run vrt:update
+    command: pnpm run vrt:update
 
   preview:
     build:
@@ -27,7 +27,7 @@ services:
     volumes:
       # preview 結果をホストに出力するためマウント
       - ./preview/output:/app/preview/output
-    command: npm run preview
+    command: pnpm run preview
 
   docs-images:
     build:
@@ -37,7 +37,7 @@ services:
     volumes:
       # ドキュメント用画像をホストに出力するためマウント
       - ./docs/images:/app/docs/images
-    command: npm run docs:images
+    command: pnpm run docs:images
 
   docs-images-vrt:
     build:
@@ -49,4 +49,4 @@ services:
       - ./docs/images:/app/docs/images:ro
       # VRT結果をホストに出力するため output ディレクトリをマウント
       - ./docs/images/output:/app/docs/images/output
-    command: npm run docs:images:vrt
+    command: pnpm run docs:images:vrt

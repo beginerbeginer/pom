@@ -16,14 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # --- PR: ベースライン復元 ---
       - name: Restore baseline from cache
@@ -48,11 +51,11 @@ jobs:
       # --- ベンチマーク実行 ---
       - name: Run benchmarks (with comparison)
         if: env.BASELINE_EXISTS == 'true'
-        run: npx vitest bench --compare bench-baseline.json --outputJson bench-results.json
+        run: pnpm exec vitest bench --compare bench-baseline.json --outputJson bench-results.json
 
       - name: Run benchmarks
         if: env.BASELINE_EXISTS != 'true'
-        run: npx vitest bench --outputJson bench-results.json
+        run: pnpm exec vitest bench --outputJson bench-results.json
 
       # --- main: キャッシュ保存 ---
       - name: Save baseline to cache
@@ -67,9 +70,9 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           if [ "$BASELINE_EXISTS" = "true" ]; then
-            npx tsx scripts/format-bench-comment.ts bench-results.json bench-baseline.json > bench-comment.md
+            pnpm exec tsx scripts/format-bench-comment.ts bench-results.json bench-baseline.json > bench-comment.md
           else
-            npx tsx scripts/format-bench-comment.ts bench-results.json > bench-comment.md
+            pnpm exec tsx scripts/format-bench-comment.ts bench-results.json > bench-comment.md
           fi
 
       - name: Post or update PR comment

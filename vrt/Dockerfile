@@ -14,14 +14,20 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && rm -rf /usr/share/man/* \
     && sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
 
+# pnpm のセットアップ（package.json の packageManager フィールドからバージョンを取得）
 WORKDIR /app
+COPY package.json ./
+RUN corepack enable && corepack install
 
-# npm依存のインストール（BuildKitキャッシュマウント使用）
-COPY package*.json .npmrc ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+# pnpm依存のインストール（BuildKitキャッシュマウント使用）
+COPY pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY packages/pom-md/package.json packages/pom-md/
+COPY packages/pom-vscode/package.json packages/pom-vscode/
+COPY website/package.json website/
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 # アプリケーションコードのコピー
 COPY . .
 
-CMD ["npm", "run", "vrt"]
+CMD ["pnpm", "run", "vrt"]
