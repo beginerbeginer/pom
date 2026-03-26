@@ -42,8 +42,7 @@ const textSample = `
 </VStack>
 `;
 
-const sampleImageUrl =
-  "https://raw.githubusercontent.com/hirokisakabe/pom/main/sample_images/sample_0.png";
+const sampleImageUrl = "sample_images/sample_0.png";
 
 const imageSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
