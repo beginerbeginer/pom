@@ -9,7 +9,7 @@ declare const __dirname: string;
  * mocha を起動し、extension.test.js を実行する。
  */
 export async function run(): Promise<void> {
-  const mocha = new Mocha({ timeout: 20000 });
+  const mocha = new Mocha({ ui: "tdd", timeout: 20000 });
   mocha.addFile(path.resolve(__dirname, "extension.test.js"));
 
   return new Promise<void>((resolve, reject) => {
