@@ -3,8 +3,24 @@ name: Benchmark
 on:
   push:
     branches: [main]
+    paths:
+      - "packages/pom/src/**"
+      - "packages/pom/bench/**"
+      - "packages/pom/package.json"
+      - "packages/pom/scripts/format-bench-comment.ts"
+      - "pnpm-lock.yaml"
+      - ".node-version"
+      - ".github/workflows/ci-benchmark.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "packages/pom/src/**"
+      - "packages/pom/bench/**"
+      - "packages/pom/package.json"
+      - "packages/pom/scripts/format-bench-comment.ts"
+      - "pnpm-lock.yaml"
+      - ".node-version"
+      - ".github/workflows/ci-benchmark.yml"
 
 permissions:
   contents: read

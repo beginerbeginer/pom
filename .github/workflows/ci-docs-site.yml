@@ -6,6 +6,8 @@ on:
     paths:
       - "apps/website/**"
       - "packages/pom/docs/**"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "apps/website/.node-version"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -15,6 +17,8 @@ on:
     paths:
       - "apps/website/**"
       - "packages/pom/docs/**"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "apps/website/.node-version"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"

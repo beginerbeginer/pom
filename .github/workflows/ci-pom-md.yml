@@ -5,8 +5,8 @@ on:
     branches: ["main"]
     paths:
       - "packages/pom-md/**"
-      - "packages/pom-md/.node-version"
       - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"
@@ -14,8 +14,8 @@ on:
     branches: ["main"]
     paths:
       - "packages/pom-md/**"
-      - "packages/pom-md/.node-version"
       - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"
