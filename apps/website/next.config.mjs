@@ -24,14 +24,14 @@ export default withNextra({
   ],
   outputFileTracingIncludes: {
     "/api/**": [
-      "./node_modules/@hirokisakabe/pom/**",
-      "./node_modules/pptxgenjs/**",
-      "./node_modules/yoga-layout/**",
-      "./node_modules/fast-xml-parser/**",
-      "./node_modules/opentype.js/**",
-      "./node_modules/image-size/**",
-      "./node_modules/@resvg/resvg-js/**",
-      "./node_modules/zod/**",
+      "../../packages/pom/node_modules/**",
+      "../../node_modules/.pnpm/pptxgenjs@*/node_modules/**",
+      "../../node_modules/.pnpm/yoga-layout@*/node_modules/**",
+      "../../node_modules/.pnpm/fast-xml-parser@*/node_modules/**",
+      "../../node_modules/.pnpm/opentype.js@*/node_modules/**",
+      "../../node_modules/.pnpm/image-size@*/node_modules/**",
+      "../../node_modules/.pnpm/@resvg+resvg-js@*/node_modules/**",
+      "../../node_modules/.pnpm/zod@*/node_modules/**",
     ],
   },
 });
