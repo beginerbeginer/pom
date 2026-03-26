@@ -219,6 +219,18 @@ Pipeline: `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxTo
 
 To test locally: open `packages/pom-vscode` in VS Code and press F5 to launch Extension Development Host.
 
+#### Release Flow
+
+pom-vscode uses a Git tag-driven release workflow (changeset is not supported for VS Code extensions).
+
+1. Manually update `version` in `packages/pom-vscode/package.json` and merge to main
+2. GitHub Actions (`release-pom-vscode.yml`) triggers on push to main
+3. The workflow checks both Marketplace publish status and Git tag existence independently
+4. If unpublished → `vsce publish` to VS Code Marketplace
+5. If tag missing → create `pom-vscode-v{version}` Git tag and GitHub Release
+
+Each step is idempotent: if the workflow fails midway (e.g., tag push fails after successful publish), re-running will skip already-completed steps and resume from the point of failure.
+
 ## Language Rules
 
 - Documentation and UI text: English
