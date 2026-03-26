@@ -1,4 +1,4 @@
-name: CI - Size Limit
+name: CI - pom Size Limit
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "pnpm-lock.yaml"
       - "packages/pom/.size-limit.js"
       - ".node-version"
-      - ".github/workflows/ci-size-limit.yml"
+      - ".github/workflows/ci-pom-size-limit.yml"
   pull_request:
     branches: ["main"]
     paths:
@@ -20,7 +20,7 @@ on:
       - "pnpm-lock.yaml"
       - "packages/pom/.size-limit.js"
       - ".node-version"
-      - ".github/workflows/ci-size-limit.yml"
+      - ".github/workflows/ci-pom-size-limit.yml"
 
 permissions:
   contents: read

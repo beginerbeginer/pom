@@ -1,4 +1,4 @@
-name: CI - Docs Images VRT
+name: CI - pom Docs Images VRT
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-docs-images-vrt.yml"
+      - ".github/workflows/ci-pom-docs-images-vrt.yml"
   pull_request:
     branches: ["main"]
     paths:
@@ -22,7 +22,7 @@ on:
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-docs-images-vrt.yml"
+      - ".github/workflows/ci-pom-docs-images-vrt.yml"
 
 jobs:
   docs-images-vrt:

@@ -1,4 +1,4 @@
-name: CI - VRT
+name: CI - pom VRT
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-vrt.yml"
+      - ".github/workflows/ci-pom-vrt.yml"
   pull_request:
     branches: ["main"]
     paths:
@@ -20,7 +20,7 @@ on:
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/docker-compose.yml"
-      - ".github/workflows/ci-vrt.yml"
+      - ".github/workflows/ci-pom-vrt.yml"
 
 jobs:
   vrt:
