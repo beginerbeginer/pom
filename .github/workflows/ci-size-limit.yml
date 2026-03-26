@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "packages/pom/src/**"
+      - "package.json"
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/.size-limit.js"
@@ -14,6 +15,7 @@ on:
     branches: ["main"]
     paths:
       - "packages/pom/src/**"
+      - "package.json"
       - "packages/pom/package.json"
       - "pnpm-lock.yaml"
       - "packages/pom/.size-limit.js"
