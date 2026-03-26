@@ -46,7 +46,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:integration": "node esbuild.mjs --test && vscode-test"
+    "test:integration": "node esbuild.mjs --test && vscode-test",
+    "test:vsix": "node esbuild.mjs --test && vsce package --no-dependencies && vscode-test --config .vscode-test.vsix.mjs",
+    "test:vsix:clean": "rm -f *.vsix"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -56,6 +58,7 @@
     "@types/vscode": "^1.85.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",

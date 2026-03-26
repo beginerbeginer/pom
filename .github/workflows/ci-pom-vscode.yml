@@ -60,3 +60,10 @@ jobs:
       - name: Integration Test
         working-directory: packages/pom-vscode
         run: xvfb-run -a pnpm run test:integration
+      - name: VSIX E2E Test
+        working-directory: packages/pom-vscode
+        run: xvfb-run -a pnpm run test:vsix
+      - name: Clean VSIX artifacts
+        if: always()
+        working-directory: packages/pom-vscode
+        run: pnpm run test:vsix:clean
