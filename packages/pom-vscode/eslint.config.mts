@@ -14,6 +14,7 @@ export default defineConfig([
       "esbuild.mjs",
       "vitest.config.ts",
       ".vscode-test.mjs",
+      "run-vsix-test.mjs",
     ],
   },
   {

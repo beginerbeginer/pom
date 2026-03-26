@@ -51,6 +51,20 @@ const testBuildOptions = {
   plugins: [importMetaPlugin],
 };
 
+/** @type {import('esbuild').BuildOptions} */
+const vsixRunnerBuildOptions = {
+  entryPoints: ["src/test/vsix-runner.ts"],
+  bundle: true,
+  outfile: "dist/test/vsix-runner.js",
+  external: ["vscode", "mocha"],
+  loader: { ".node": "copy" },
+  format: "cjs",
+  platform: "node",
+  target: "node18",
+  sourcemap: true,
+  plugins: [importMetaPlugin],
+};
+
 if (watch) {
   const ctx = await esbuild.context(buildOptions);
   await ctx.watch();
@@ -59,6 +73,7 @@ if (watch) {
   await esbuild.build(buildOptions);
   if (buildTest) {
     await esbuild.build(testBuildOptions);
+    await esbuild.build(vsixRunnerBuildOptions);
     console.log("Build complete (with tests)");
   } else {
     console.log("Build complete");

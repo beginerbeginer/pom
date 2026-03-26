@@ -7,3 +7,7 @@ esbuild.mjs
 eslint.config.mts
 .prettierignore
 .vscode-test.mjs
+vitest.config.ts
+run-vsix-test.mjs
+test-vsix-harness/**
+*.vsix
