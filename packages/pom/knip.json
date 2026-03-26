@@ -12,6 +12,11 @@
     "scripts/docs-images/**/*.ts",
     "scripts/**/*.ts"
   ],
+  "ignoreBinaries": ["eslint", "prettier", "vitest"],
+  "ignoreDependencies": ["typescript-eslint", "vitest"],
+  "vitest": {
+    "config": ["vitest.config.ts"]
+  },
   "rules": {
     "exports": "warn"
   }
