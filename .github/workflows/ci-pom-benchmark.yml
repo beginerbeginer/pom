@@ -1,4 +1,4 @@
-name: Benchmark
+name: CI - pom Benchmark
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "packages/pom/scripts/format-bench-comment.ts"
       - "pnpm-lock.yaml"
       - ".node-version"
-      - ".github/workflows/ci-benchmark.yml"
+      - ".github/workflows/ci-pom-benchmark.yml"
   pull_request:
     branches: [main]
     paths:
@@ -20,7 +20,7 @@ on:
       - "packages/pom/scripts/format-bench-comment.ts"
       - "pnpm-lock.yaml"
       - ".node-version"
-      - ".github/workflows/ci-benchmark.yml"
+      - ".github/workflows/ci-pom-benchmark.yml"
 
 permissions:
   contents: read
