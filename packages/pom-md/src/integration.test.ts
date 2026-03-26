@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseMd } from "./parseMd.ts";
-import { parseXml, TAG_TO_TYPE } from "../../../src/parseXml/parseXml.ts";
+import { parseXml, TAG_TO_TYPE } from "../../pom/src/parseXml/parseXml.ts";
 
 // ===== 1. pom core との統合テスト =====
 describe("pom core 統合テスト", () => {

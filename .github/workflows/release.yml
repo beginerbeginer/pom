@@ -25,9 +25,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Upgrade npm for trusted publishing (OIDC)
         run: npm install -g npm@^11.5.1
-      - run: pnpm run build
+      - run: pnpm --filter @hirokisakabe/pom run build
       - run: pnpm --filter @hirokisakabe/pom-md run build
-      - run: pnpm run test:run
+      - run: pnpm --filter @hirokisakabe/pom run test:run
       - run: pnpm --filter @hirokisakabe/pom-md run fmt:check
       - run: pnpm --filter @hirokisakabe/pom-md run lint
       - run: pnpm --filter @hirokisakabe/pom-md run typecheck

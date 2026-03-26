@@ -6,10 +6,10 @@ on:
     paths:
       - "packages/pom-vscode/**"
       - "packages/pom-md/**"
-      - "src/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - "tsconfig.json"
+      - "packages/pom/tsconfig.json"
       - ".node-version"
       - ".github/workflows/ci-pom-vscode.yml"
   pull_request:
@@ -17,10 +17,10 @@ on:
     paths:
       - "packages/pom-vscode/**"
       - "packages/pom-md/**"
-      - "src/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - "tsconfig.json"
+      - "packages/pom/tsconfig.json"
       - ".node-version"
       - ".github/workflows/ci-pom-vscode.yml"
 
@@ -38,8 +38,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build root package
-        run: pnpm run build
+      - name: Build pom
+        run: pnpm --filter @hirokisakabe/pom run build
       - name: Build pom-md
         run: pnpm --filter @hirokisakabe/pom-md run build
       - name: Format check

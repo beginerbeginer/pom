@@ -21,13 +21,15 @@ RUN corepack enable && corepack install
 
 # pnpm依存のインストール（BuildKitキャッシュマウント使用）
 COPY pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY packages/pom/package.json packages/pom/
 COPY packages/pom-md/package.json packages/pom-md/
 COPY packages/pom-vscode/package.json packages/pom-vscode/
-COPY website/package.json website/
+COPY apps/website/package.json apps/website/
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
 # アプリケーションコードのコピー
 COPY . .
 
+WORKDIR /app/packages/pom
 CMD ["pnpm", "run", "vrt"]

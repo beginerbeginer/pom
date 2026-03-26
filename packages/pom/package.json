@@ -1,0 +1,102 @@
+{
+  "name": "@hirokisakabe/pom",
+  "version": "6.0.1",
+  "description": "AI-friendly PowerPoint generation with a Flexbox layout engine.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/hirokisakabe/pom#readme",
+  "bugs": {
+    "url": "https://github.com/hirokisakabe/pom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirokisakabe/pom.git",
+    "directory": "packages/pom"
+  },
+  "license": "MIT",
+  "keywords": [
+    "powerpoint",
+    "pptx",
+    "presentation",
+    "slides",
+    "typescript",
+    "declarative",
+    "flexbox",
+    "layout",
+    "office"
+  ],
+  "author": "Hiroki Sakabe",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "pnpm run build && pnpm run lint && pnpm run fmt:check && pnpm run typecheck && pnpm run test:run",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "knip": "knip",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "vrt": "tsx vrt/runVrt.ts",
+    "vrt:update": "tsx vrt/runVrt.ts --update",
+    "vrt:docker": "docker compose build vrt && docker compose run --rm vrt",
+    "vrt:docker:update": "docker compose build vrt-update && docker compose run --rm vrt-update",
+    "preview": "tsx preview/lib/previewPptx.ts",
+    "preview:docker": "docker compose build preview && docker compose run --rm preview",
+    "docs:images": "tsx scripts/docs-images/generateNodeImages.ts",
+    "docs:images:docker": "docker compose run --rm docs-images",
+    "docs:images:docker:update": "docker compose build docs-images && docker compose run --rm docs-images",
+    "docs:images:vrt": "tsx scripts/docs-images/generateNodeImages.ts --check",
+    "docs:images:vrt:docker": "docker compose build docs-images-vrt && docker compose run --rm docs-images-vrt",
+    "size": "size-limit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@size-limit/file": "^12.0.1",
+    "@types/opentype.js": "^1.3.8",
+    "@types/pngjs": "6.0.5",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "jiti": "2.6.1",
+    "knip": "^5.85.0",
+    "lucide-static": "^0.577.0",
+    "pixelmatch": "7.1.0",
+    "pngjs": "7.0.0",
+    "prettier": "3.6.2",
+    "size-limit": "^12.0.1",
+    "tsx": "4.21.0",
+    "typescript": "6.0.2",
+    "typescript-eslint": "^8.47.0",
+    "vitest": "^4.1.0"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "fast-xml-parser": "^5.3.7",
+    "image-size": "2.0.2",
+    "opentype.js": "^1.3.4",
+    "pptxgenjs": "4.0.1",
+    "yoga-layout": "3.2.1",
+    "zod": "^4.3.6"
+  }
+}

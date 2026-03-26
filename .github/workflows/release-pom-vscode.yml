@@ -78,8 +78,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build root package
-        run: pnpm run build
+      - name: Build pom
+        run: pnpm --filter @hirokisakabe/pom run build
 
       - name: Build pom-md
         run: pnpm --filter @hirokisakabe/pom-md run build

@@ -4,19 +4,19 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "src/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - ".size-limit.js"
+      - "packages/pom/.size-limit.js"
       - ".node-version"
       - ".github/workflows/ci-size-limit.yml"
   pull_request:
     branches: ["main"]
     paths:
-      - "src/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - ".size-limit.js"
+      - "packages/pom/.size-limit.js"
       - ".node-version"
       - ".github/workflows/ci-size-limit.yml"
 
@@ -36,8 +36,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+        working-directory: packages/pom
 
       - name: Run size-limit
+        working-directory: packages/pom
         run: pnpm exec size-limit --json > size-limit-results.json
 
       # --- main: キャッシュ保存 ---
@@ -45,7 +47,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/cache/save@v4
         with:
-          path: size-limit-results.json
+          path: packages/pom/size-limit-results.json
           key: size-limit-main-${{ github.sha }}
 
       # --- PR: ベースライン復元 ---
@@ -53,7 +55,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/cache/restore@v4
         with:
-          path: size-limit-baseline.json
+          path: packages/pom/size-limit-baseline.json
           key: size-limit-main-${{ github.event.pull_request.base.sha }}
           restore-keys: |
             size-limit-main-
@@ -61,6 +63,7 @@ jobs:
       # --- PR: コメント生成・投稿 ---
       - name: Generate size-limit comment
         if: github.event_name == 'pull_request'
+        working-directory: packages/pom
         run: |
           node -e "
           const fs = require('fs');
@@ -110,7 +113,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const body = fs.readFileSync('size-limit-comment.md', 'utf-8');
+            const body = fs.readFileSync('packages/pom/size-limit-comment.md', 'utf-8');
             const marker = '<!-- size-limit-comment -->';
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,

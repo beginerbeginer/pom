@@ -6,6 +6,7 @@ on:
     paths:
       - "packages/pom-md/**"
       - "packages/pom-md/.node-version"
+      - "packages/pom/src/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"
@@ -14,6 +15,7 @@ on:
     paths:
       - "packages/pom-md/**"
       - "packages/pom-md/.node-version"
+      - "packages/pom/src/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-pom-md.yml"

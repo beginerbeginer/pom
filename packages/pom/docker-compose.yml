@@ -1,52 +1,52 @@
 services:
   vrt:
     build:
-      context: .
-      dockerfile: vrt/Dockerfile
+      context: ../..
+      dockerfile: packages/pom/vrt/Dockerfile
     image: pom-vrt:latest
     volumes:
       # 結果をホストに出力するため output ディレクトリをマウント
-      - ./vrt/output:/app/vrt/output
+      - ./vrt/output:/app/packages/pom/vrt/output
     command: pnpm run vrt
 
   vrt-update:
     build:
-      context: .
-      dockerfile: vrt/Dockerfile
+      context: ../..
+      dockerfile: packages/pom/vrt/Dockerfile
     image: pom-vrt:latest
     volumes:
       # expected.png を更新するため vrt ディレクトリ全体をマウント
-      - ./vrt:/app/vrt
+      - ./vrt:/app/packages/pom/vrt
     command: pnpm run vrt:update
 
   preview:
     build:
-      context: .
-      dockerfile: vrt/Dockerfile
+      context: ../..
+      dockerfile: packages/pom/vrt/Dockerfile
     image: pom-vrt:latest
     volumes:
       # preview 結果をホストに出力するためマウント
-      - ./preview/output:/app/preview/output
+      - ./preview/output:/app/packages/pom/preview/output
     command: pnpm run preview
 
   docs-images:
     build:
-      context: .
-      dockerfile: vrt/Dockerfile
+      context: ../..
+      dockerfile: packages/pom/vrt/Dockerfile
     image: pom-vrt:latest
     volumes:
       # ドキュメント用画像をホストに出力するためマウント
-      - ./docs/images:/app/docs/images
+      - ./docs/images:/app/packages/pom/docs/images
     command: pnpm run docs:images
 
   docs-images-vrt:
     build:
-      context: .
-      dockerfile: vrt/Dockerfile
+      context: ../..
+      dockerfile: packages/pom/vrt/Dockerfile
     image: pom-vrt:latest
     volumes:
       # docs/images/*.png をベースラインとして参照
-      - ./docs/images:/app/docs/images:ro
+      - ./docs/images:/app/packages/pom/docs/images:ro
       # VRT結果をホストに出力するため output ディレクトリをマウント
-      - ./docs/images/output:/app/docs/images/output
+      - ./docs/images/output:/app/packages/pom/docs/images/output
     command: pnpm run docs:images:vrt

@@ -4,18 +4,18 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "website/**"
-      - "docs/**"
-      - "website/.node-version"
+      - "apps/website/**"
+      - "packages/pom/docs/**"
+      - "apps/website/.node-version"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-docs-site.yml"
   pull_request:
     branches: ["main"]
     paths:
-      - "website/**"
-      - "docs/**"
-      - "website/.node-version"
+      - "apps/website/**"
+      - "packages/pom/docs/**"
+      - "apps/website/.node-version"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/ci-docs-site.yml"
@@ -28,10 +28,10 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: website/.node-version
+          node-version-file: apps/website/.node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - run: pnpm --filter @hirokisakabe/pom run build
       - run: pnpm --filter pom-docs run fmt:check
       - run: pnpm --filter pom-docs run lint
       - run: pnpm --filter pom-docs run typecheck
