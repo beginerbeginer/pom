@@ -193,8 +193,6 @@ The root package (`@hirokisakabe/pom`) and `@hirokisakabe/pom-md` use [Changeset
 2. Push to main → GitHub Actions creates a Release PR (version bump + CHANGELOG)
 3. Merge the Release PR → `changeset publish` publishes to npm
 
-Note: `NPM_TOKEN` secret must be configured in the repository for npm publish.
-
 ### pom-md (`packages/pom-md/`)
 
 Markdown → pom XML converter. Converts Markdown with `pomxml` code fences into pom XML strings.
