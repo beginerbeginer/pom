@@ -1,15 +1,15 @@
-import { createRequire } from "module";
-
-// pptxgenjs の型定義（NodeNext 互換）
+// pptxgenjs の型定義
 type PptxGenJSInstance = import("pptxgenjs").default;
 
-const require = createRequire(import.meta.url);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const pptxModule = require("pptxgenjs");
-// CommonJS モジュールは .default または直接エクスポートされる場合がある
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
-const PptxGenJS: new () => PptxGenJSInstance = pptxModule.default ?? pptxModule;
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+// pptxgenjs は CJS パッケージのため動的 import で読み込む
+async function loadPptxGenJS(): Promise<new () => PptxGenJSInstance> {
+  const pptxModule = await import("pptxgenjs");
+  // CJS default export の解決: module.default.default (ESM wrapper) または module.default
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+  const mod = pptxModule as any;
+  return mod.default?.default ?? mod.default ?? mod;
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+}
 type SlideMasterProps = Parameters<PptxGenJSInstance["defineSlideMaster"]>[0];
 type ImageProps = {
   x: number;
@@ -198,7 +198,7 @@ function defineSlideMasterFromOptions(
  * @param master スライドマスターオプション（省略可能）
  * @returns PptxGenJS インスタンス
  */
-export function renderPptx(
+export async function renderPptx(
   pages: PositionedNode[],
   slidePx: SlidePx,
   buildContext: BuildContext,
@@ -206,6 +206,7 @@ export function renderPptx(
 ) {
   const slideIn = { w: pxToIn(slidePx.w), h: pxToIn(slidePx.h) }; // layout(=px) → PptxGenJS(=inch) への最終変換
 
+  const PptxGenJS = await loadPptxGenJS();
   const pptx = new PptxGenJS();
 
   pptx.defineLayout({ name: "custom", width: slideIn.w, height: slideIn.h });

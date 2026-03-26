@@ -50,7 +50,12 @@ export async function buildPptx(
     }
   }
 
-  const pptx = renderPptx(positionedPages, slideSize, ctx, options?.master);
+  const pptx = await renderPptx(
+    positionedPages,
+    slideSize,
+    ctx,
+    options?.master,
+  );
   const diagnostics = ctx.diagnostics.items;
 
   if (options?.strict && diagnostics.length > 0) {
