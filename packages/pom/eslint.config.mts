@@ -16,8 +16,6 @@ export default defineConfig([
       "scripts/docs-images/**",
       "scripts/**",
       "docs/**",
-      "website/**",
-      "packages/**",
       "eslint.config.mts",
       "vitest.config.ts",
       ".size-limit.js",

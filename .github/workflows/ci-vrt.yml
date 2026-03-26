@@ -4,20 +4,20 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "src/**"
-      - "vrt/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/vrt/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - "docker-compose.yml"
+      - "packages/pom/docker-compose.yml"
       - ".github/workflows/ci-vrt.yml"
   pull_request:
     branches: ["main"]
     paths:
-      - "src/**"
-      - "vrt/**"
-      - "package.json"
+      - "packages/pom/src/**"
+      - "packages/pom/vrt/**"
+      - "packages/pom/package.json"
       - "pnpm-lock.yaml"
-      - "docker-compose.yml"
+      - "packages/pom/docker-compose.yml"
       - ".github/workflows/ci-vrt.yml"
 
 jobs:
@@ -26,6 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run VRT in Docker
+        working-directory: packages/pom
         run: docker compose run --rm vrt
       - name: Upload diff on failure
         if: failure()
@@ -33,5 +34,5 @@ jobs:
         with:
           name: vrt-diff
           path: |
-            vrt/actual.png
-            vrt/diff.png
+            packages/pom/vrt/actual.png
+            packages/pom/vrt/diff.png
