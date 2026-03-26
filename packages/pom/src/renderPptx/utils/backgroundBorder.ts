@@ -24,9 +24,8 @@ export function renderBackgroundAndBorder(
   node: PositionedNode,
   ctx: RenderContext,
 ): void {
-  const { backgroundColor, backgroundImage, border, borderRadius } = node;
-  const shadow =
-    "shadow" in node ? (node as { shadow?: ShadowStyle }).shadow : undefined;
+  const { backgroundColor, backgroundImage, border, borderRadius, shadow } =
+    node;
   const hasBackground = Boolean(backgroundColor);
   const hasBackgroundImage = Boolean(backgroundImage);
   const hasBorder = Boolean(

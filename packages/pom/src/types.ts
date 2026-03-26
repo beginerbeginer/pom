@@ -330,6 +330,7 @@ const basePOMNodeSchema = z.object({
   bottom: z.number().optional(),
   left: z.number().optional(),
   alignSelf: alignSelfSchema.optional(),
+  shadow: shadowStyleSchema.optional(),
 });
 
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
@@ -406,7 +407,6 @@ export const imageNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("image"),
   src: z.string(),
   sizing: imageSizingSchema.optional(),
-  shadow: shadowStyleSchema.optional(),
 });
 
 const iconNameSchema = z.enum(Object.keys(ICON_DATA) as [string, ...string[]]);
@@ -474,7 +474,6 @@ export const shapeNodeSchema = basePOMNodeSchema.extend({
   text: z.string().optional(),
   fill: fillStyleSchema.optional(),
   line: borderStyleSchema.optional(),
-  shadow: shadowStyleSchema.optional(),
   fontSize: z.number().optional(),
   color: z.string().optional(),
   textAlign: z.enum(["left", "center", "right"]).optional(),
@@ -757,7 +756,6 @@ export type VStackNode = BasePOMNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
-  shadow?: ShadowStyle;
   flexWrap?: FlexWrap;
 };
 
@@ -767,7 +765,6 @@ export type HStackNode = BasePOMNode & {
   gap?: number;
   alignItems?: AlignItems;
   justifyContent?: JustifyContent;
-  shadow?: ShadowStyle;
   flexWrap?: FlexWrap;
 };
 
@@ -809,7 +806,6 @@ const vStackNodeSchemaBase = basePOMNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
-  shadow: shadowStyleSchema.optional(),
   flexWrap: flexWrapSchema.optional(),
 });
 
@@ -819,7 +815,6 @@ const hStackNodeSchemaBase = basePOMNodeSchema.extend({
   gap: z.number().optional(),
   alignItems: alignItemsSchema.optional(),
   justifyContent: justifyContentSchema.optional(),
-  shadow: shadowStyleSchema.optional(),
   flexWrap: flexWrapSchema.optional(),
 });
 
