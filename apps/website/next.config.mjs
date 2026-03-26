@@ -12,7 +12,14 @@ export default withNextra({
   outputFileTracingRoot: dirname(
     dirname(dirname(fileURLToPath(import.meta.url))),
   ),
-  serverExternalPackages: ["@resvg/resvg-js"],
+  serverExternalPackages: [
+    "@resvg/resvg-js",
+    "pptxgenjs",
+    "yoga-layout",
+    "fast-xml-parser",
+    "opentype.js",
+    "image-size",
+  ],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // workspace リンクされた @hirokisakabe/pom はバンドルに含まれるが、
