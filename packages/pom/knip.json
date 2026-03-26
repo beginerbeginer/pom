@@ -1,6 +1,10 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["scripts/convertFontToBase64.ts", "scripts/generate-icon-data.ts", "scripts/format-bench-comment.ts"],
+  "entry": [
+    "scripts/convertFontToBase64.ts",
+    "scripts/generate-icon-data.ts",
+    "scripts/format-bench-comment.ts"
+  ],
   "project": [
     "src/**/*.ts",
     "vrt/**/*.ts",

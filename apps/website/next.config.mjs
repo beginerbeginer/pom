@@ -9,6 +9,8 @@ export default withNextra({
   eslint: {
     ignoreDuringBuilds: true,
   },
-  outputFileTracingRoot: dirname(dirname(dirname(fileURLToPath(import.meta.url)))),
+  outputFileTracingRoot: dirname(
+    dirname(dirname(fileURLToPath(import.meta.url))),
+  ),
   serverExternalPackages: ["@resvg/resvg-js", "@hirokisakabe/pom"],
 });
