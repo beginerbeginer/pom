@@ -2,7 +2,7 @@
   "name": "pom-vscode",
   "displayName": "pom",
   "description": "Live preview for pom-md presentations",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "hirokisakabe",
   "license": "MIT",
   "repository": {
