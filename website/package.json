@@ -16,7 +16,7 @@
     "@codemirror/lint": "^6.9.5",
     "@codemirror/state": "^6.5.4",
     "@codemirror/view": "^6.39.15",
-    "@hirokisakabe/pom": "workspace:*",
+    "@hirokisakabe/pom": "^6.0.0",
     "@hono/zod-validator": "^0.7.6",
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
