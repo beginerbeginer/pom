@@ -1,15 +1,6 @@
-import { createRequire } from "module";
 import * as fs from "fs";
+import { imageSize } from "image-size";
 import type { DiagnosticCollector } from "../diagnostics.ts";
-
-const require = createRequire(import.meta.url);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const imageSizeModule = require("image-size");
-// CommonJS モジュールは .default または直接エクスポートされる場合がある
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
-const imageSize: typeof import("image-size").default =
-  imageSizeModule.default ?? imageSizeModule;
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 
 type ImageSizeCache = Map<string, { widthPx: number; heightPx: number }>;
 type ImageDataCache = Map<string, string>;
