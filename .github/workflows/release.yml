@@ -24,7 +24,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+      - run: pnpm --filter @hirokisakabe/pom-md run build
       - run: pnpm run test:run
+      - run: pnpm --filter @hirokisakabe/pom-md run fmt:check
+      - run: pnpm --filter @hirokisakabe/pom-md run lint
+      - run: pnpm --filter @hirokisakabe/pom-md run typecheck
+      - run: pnpm --filter @hirokisakabe/pom-md run test:run
 
       - name: Check for changesets
         id: changesets-check

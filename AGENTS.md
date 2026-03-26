@@ -185,6 +185,14 @@ When modifying main.ts to verify PPTX output, follow these steps:
 
 Managed as a pnpm workspace. All packages share a single `pnpm-lock.yaml` at the root.
 
+### Release Flow (Changesets)
+
+The root package (`@hirokisakabe/pom`) and `@hirokisakabe/pom-md` use [Changesets](https://github.com/changesets/changesets) for versioning and npm publishing. The unified workflow (`release.yml`) handles both packages.
+
+1. Add a changeset: `pnpm exec changeset add`
+2. Push to main → GitHub Actions creates a Release PR (version bump + CHANGELOG)
+3. Merge the Release PR → `changeset publish` publishes to npm
+
 ### pom-md (`packages/pom-md/`)
 
 Markdown → pom XML converter. Converts Markdown with `pomxml` code fences into pom XML strings.
