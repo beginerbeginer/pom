@@ -15,10 +15,11 @@ export default withNextra({
   serverExternalPackages: ["@resvg/resvg-js", "@hirokisakabe/pom"],
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // workspace リンクされたパッケージは serverExternalPackages だけでは
-      // 外部化されないため、webpack externals で明示的に除外する
+      // workspace リンクされた @hirokisakabe/pom は serverExternalPackages では
+      // 外部化されず、内部の @resvg/resvg-js native バイナリの解析に失敗する。
+      // @resvg 関連パッケージのみ webpack externals で明示的に除外する。
       config.externals = config.externals || [];
-      config.externals.push("@hirokisakabe/pom", "@resvg/resvg-js");
+      config.externals.push(/^@resvg\//);
     }
     return config;
   },
