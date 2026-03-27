@@ -10,11 +10,9 @@ npm install @hirokisakabe/pom-md @hirokisakabe/pom
 
 ## Usage
 
-```ts
-import { parseMd } from "@hirokisakabe/pom-md";
-import { buildPptx } from "@hirokisakabe/pom";
+Create a `.pom.md` file:
 
-const markdown = `
+````markdown
 ---
 size: 16:9
 ---
@@ -28,23 +26,31 @@ size: 16:9
 
 ## Detailed Data
 
-\`\`\`pomxml
+```pomxml
 <Chart type="bar" labels="Q1,Q2,Q3,Q4" values="100,80,120,150" />
-\`\`\`
+```
 
 ---
 
 ## Process
 
-\`\`\`pomxml
+```pomxml
 <Flow>
   <Step>Plan</Step>
   <Step>Develop</Step>
   <Step>Release</Step>
 </Flow>
-\`\`\`
-`;
+```
+````
 
+Then convert it to PPTX:
+
+```ts
+import { readFileSync } from "node:fs";
+import { parseMd } from "@hirokisakabe/pom-md";
+import { buildPptx } from "@hirokisakabe/pom";
+
+const markdown = readFileSync("slides.pom.md", "utf-8");
 const xml = parseMd(markdown);
 const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
 await pptx.writeFile({ fileName: "output.pptx" });
