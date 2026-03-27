@@ -31,7 +31,7 @@ A compact reference for the pom XML format, designed to be pasted into LLM promp
 | `bottom`          | number                                                     | Bottom offset (when using position)        |
 | `left`            | number                                                     | Left offset (when using position)          |
 | `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`            | Override parent's alignItems for this node |
-| `shadow`          | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Drop shadow                    |
+| `shadow`          | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Drop shadow (not supported on Line) |
 
 ## Layout Nodes
 
