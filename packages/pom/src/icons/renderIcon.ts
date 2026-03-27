@@ -1,4 +1,3 @@
-import { Resvg, initWasm } from "@resvg/resvg-wasm";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -6,6 +5,12 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ICON_DATA } from "./iconData.ts";
 
+// @resvg/resvg-wasm を遅延ロードする。
+// webpack (Next.js) のスタティック解析が .wasm ファイルまで追跡するのを防ぐため、
+// createRequire で動的に読み込み、モジュール名は文字列結合で構築する。
+type ResvgWasm = typeof import("@resvg/resvg-wasm");
+const RESVG_PKG = ["@resvg", "resvg-wasm"].join("/");
+let resvgModule: ResvgWasm | undefined;
 let wasmInitPromise: Promise<void> | undefined;
 
 /**
@@ -18,21 +23,30 @@ function resolveWasmPath(): string {
   const localPath = join(dir, "index_bg.wasm");
   if (existsSync(localPath)) return localPath;
   const require = createRequire(import.meta.url);
-  return require.resolve("@resvg/resvg-wasm/index_bg.wasm");
+  return require.resolve(`${RESVG_PKG}/index_bg.wasm`);
 }
 
 /**
- * WASM モジュールを初期化する。並行呼び出しでも安全（Promise をキャッシュ）。
+ * WASM モジュールを初期化し、Resvg クラスを返す。
+ * 並行呼び出しでも安全（Promise をキャッシュ）。
  */
 function ensureWasmInitialized(): Promise<void> {
   if (!wasmInitPromise) {
     wasmInitPromise = (async () => {
+      const req = createRequire(import.meta.url);
+      const mod = req(RESVG_PKG) as ResvgWasm;
       const wasmPath = resolveWasmPath();
       const wasmBuffer = await readFile(wasmPath);
-      await initWasm(wasmBuffer);
+      await mod.initWasm(wasmBuffer);
+      resvgModule = mod;
     })();
   }
   return wasmInitPromise;
+}
+
+function getResvg() {
+  if (!resvgModule) throw new Error("WASM not initialized");
+  return resvgModule.Resvg;
 }
 
 function buildIconSvg(name: string, size: number, color: string): string {
@@ -54,6 +68,7 @@ export async function rasterizeIcon(
   if (cached) return cached;
 
   await ensureWasmInitialized();
+  const Resvg = getResvg();
   const svg = buildIconSvg(name, size, color);
   const resvg = new Resvg(svg, { fitTo: { mode: "width", value: size } });
   const pngData = resvg.render();
@@ -106,6 +121,7 @@ export async function rasterizeSvgContent(
   });
 
   await ensureWasmInitialized();
+  const Resvg = getResvg();
   const resvg = new Resvg(svg, { fitTo: { mode: "width", value: size } });
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();

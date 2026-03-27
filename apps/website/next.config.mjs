@@ -11,7 +11,7 @@ export default withNextra({
     ignoreDuringBuilds: true,
   },
   outputFileTracingRoot: dirname(dirname(__dirname)),
-  serverExternalPackages: ["@resvg/resvg-js"],
+  serverExternalPackages: ["@resvg/resvg-wasm"],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // workspace link の @hirokisakabe/pom は dist/ を参照するため
