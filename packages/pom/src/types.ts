@@ -342,8 +342,6 @@ const textRunSchema = z.object({
   italic: z.boolean().optional(),
 });
 
-type TextRun = z.infer<typeof textRunSchema>;
-
 // ===== Non-recursive Node Types =====
 export const textNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("text"),
