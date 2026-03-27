@@ -23,6 +23,8 @@ if (!vsixFile) {
 
 // ワークスペース外の一時ディレクトリに拡張をインストール
 const extensionsDir = mkdtempSync(join(tmpdir(), "pom-vsix-ext-"));
+// macOS の Unix ソケットパス上限(103文字)を回避するため、短いパスを使用
+const userDataDir = mkdtempSync(join(tmpdir(), "pom-ud-"));
 
 try {
   const vscodeExecutablePath = await downloadAndUnzipVSCode();
@@ -43,10 +45,17 @@ try {
     vscodeExecutablePath,
     extensionDevelopmentPath: resolve("test-vsix-harness"),
     extensionTestsPath: resolve("dist/test/vsix-runner.js"),
-    launchArgs: ["--extensions-dir", extensionsDir, "."],
+    launchArgs: [
+      "--extensions-dir",
+      extensionsDir,
+      "--user-data-dir",
+      userDataDir,
+      ".",
+    ],
   });
 
   process.exit(exitCode);
 } finally {
   rmSync(extensionsDir, { recursive: true, force: true });
+  rmSync(userDataDir, { recursive: true, force: true });
 }
