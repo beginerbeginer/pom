@@ -43,7 +43,7 @@ export async function buildPptx(
         map = await calcYogaLayout(node, slideSize, ctx);
       }
       const layoutMap = extractLayoutResults(map);
-      const positioned = toPositioned(node, ctx, layoutMap);
+      const positioned = await toPositioned(node, ctx, layoutMap);
       positionedPages.push(positioned);
     } finally {
       if (map) freeYogaTree(map);

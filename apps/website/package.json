@@ -19,7 +19,6 @@
     "@codemirror/view": "^6.39.15",
     "@hirokisakabe/pom": "workspace:*",
     "@hono/zod-validator": "^0.7.6",
-    "@resvg/resvg-js": "^2.6.2",
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

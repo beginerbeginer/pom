@@ -1,5 +1,7 @@
 import * as esbuild from "esbuild";
 import fs from "fs";
+import path from "path";
+import { createRequire } from "module";
 
 const watch = process.argv.includes("--watch");
 const buildTest = process.argv.includes("--test");
@@ -22,6 +24,25 @@ const sharpStubPlugin = {
       contents: "module.exports = {};",
       loader: "js",
     }));
+  },
+};
+
+// @resvg/resvg-wasm の WASM バイナリを dist にコピーするプラグイン。
+// pom が依存する resvg-wasm の WASM ファイルを pom の node_modules 経由で解決する。
+const resvgWasmPlugin = {
+  name: "resvg-wasm-copy",
+  setup(build) {
+    // pom パッケージの node_modules から解決する
+    const pomDir = path.resolve(import.meta.dirname, "../pom");
+    const pomRequire = createRequire(path.join(pomDir, "package.json"));
+    const wasmSrc = pomRequire.resolve("@resvg/resvg-wasm/index_bg.wasm");
+    const outdir = path.dirname(build.initialOptions.outfile);
+    const wasmDest = path.join(outdir, "index_bg.wasm");
+
+    build.onEnd(() => {
+      fs.mkdirSync(outdir, { recursive: true });
+      fs.copyFileSync(wasmSrc, wasmDest);
+    });
   },
 };
 
@@ -52,7 +73,7 @@ const buildOptions = {
   platform: "node",
   target: "node18",
   sourcemap: true,
-  plugins: [sharpStubPlugin, importMetaPlugin],
+  plugins: [sharpStubPlugin, resvgWasmPlugin, importMetaPlugin],
 };
 
 /** @type {import('esbuild').BuildOptions} */

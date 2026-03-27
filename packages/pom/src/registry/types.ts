@@ -36,7 +36,7 @@ export interface NodeDefinition {
     layout: { width: number; height: number },
     ctx: BuildContext,
     map: LayoutResultMap,
-  ) => PositionedNode;
+  ) => PositionedNode | Promise<PositionedNode>;
 
   /** PositionedNode をスライドにレンダリングする（リーフノード用） */
   render?: (node: PositionedNode, ctx: RenderContext) => void;
