@@ -516,4 +516,6 @@ export const CHILD_ELEMENT_COERCION_MAP: Record<
     fontSize: "number",
     fontFamily: "string",
   },
+  B: {},
+  I: {},
 };

@@ -335,10 +335,20 @@ const basePOMNodeSchema = z.object({
 
 type BasePOMNode = z.infer<typeof basePOMNodeSchema>;
 
+// ===== Inline text run (partial bold/italic within a text node) =====
+const textRunSchema = z.object({
+  text: z.string(),
+  bold: z.boolean().optional(),
+  italic: z.boolean().optional(),
+});
+
+type TextRun = z.infer<typeof textRunSchema>;
+
 // ===== Non-recursive Node Types =====
 export const textNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("text"),
   text: z.string(),
+  runs: z.array(textRunSchema).optional(),
   fontSize: z.number().optional(),
   color: z.string().optional(),
   textAlign: z.enum(["left", "center", "right"]).optional(),
@@ -353,6 +363,7 @@ export const textNodeSchema = basePOMNodeSchema.extend({
 
 export const liNodeSchema = z.object({
   text: z.string(),
+  runs: z.array(textRunSchema).optional(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   underline: underlineSchema.optional(),
@@ -439,6 +450,7 @@ export type IconNode = z.infer<typeof iconNodeSchema>;
 
 const tableCellSchema = z.object({
   text: z.string(),
+  runs: z.array(textRunSchema).optional(),
   fontSize: z.number().optional(),
   color: z.string().optional(),
   bold: z.boolean().optional(),

@@ -221,7 +221,89 @@ size: A4
   });
 });
 
-// ===== 3. タグ名整合性チェック =====
+// ===== 3. インラインフォーマット統合テスト =====
+describe("インラインフォーマット統合テスト", () => {
+  function assertParsable(md: string): void {
+    const xml = parseMd(md);
+    if (!xml.trim()) return;
+    expect(() => parseXml(xml)).not.toThrow();
+  }
+
+  it("太字を含む段落が parseXml でパースできる", () => {
+    assertParsable("通常テキスト **太字** テキスト");
+  });
+
+  it("斜体を含む段落が parseXml でパースできる", () => {
+    assertParsable("通常テキスト *斜体* テキスト");
+  });
+
+  it("太字斜体（ネスト）が parseXml でパースできる", () => {
+    assertParsable("***太字斜体***");
+  });
+
+  it("太字を含むリストが parseXml でパースできる", () => {
+    assertParsable("- 通常 **太字** 項目\n- *斜体* 項目");
+  });
+
+  it("太字を含むテーブルが parseXml でパースできる", () => {
+    assertParsable(`| 名前 | 値 |
+| --- | --- |
+| **重要** | *注記* |`);
+  });
+
+  it("太字を含む見出しが parseXml でパースできる", () => {
+    assertParsable("# 見出し **強調**");
+  });
+
+  it("太字を含む段落が runs を持つ", () => {
+    const xml = parseMd("通常 **太字** テキスト");
+    const nodes = parseXml(xml);
+    // VStack → children → Text
+    const vstack = nodes[0] as Record<string, unknown>;
+    const children = vstack.children as Record<string, unknown>[];
+    const textNode = children[0];
+    expect(textNode.type).toBe("text");
+    expect(textNode.runs).toBeDefined();
+    const runs = textNode.runs as {
+      text: string;
+      bold?: boolean;
+      italic?: boolean;
+    }[];
+    expect(runs).toHaveLength(3);
+    expect(runs[0]).toEqual({ text: "通常 " });
+    expect(runs[1]).toEqual({ text: "太字", bold: true });
+    expect(runs[2]).toEqual({ text: " テキスト" });
+  });
+
+  it("斜体を含む段落が runs を持つ", () => {
+    const xml = parseMd("通常 *斜体* テキスト");
+    const nodes = parseXml(xml);
+    const vstack = nodes[0] as Record<string, unknown>;
+    const children = vstack.children as Record<string, unknown>[];
+    const textNode = children[0];
+    const runs = textNode.runs as {
+      text: string;
+      bold?: boolean;
+      italic?: boolean;
+    }[];
+    expect(runs).toHaveLength(3);
+    expect(runs[0]).toEqual({ text: "通常 " });
+    expect(runs[1]).toEqual({ text: "斜体", italic: true });
+    expect(runs[2]).toEqual({ text: " テキスト" });
+  });
+
+  it("書式なしテキストは runs を持たない", () => {
+    const xml = parseMd("プレーンテキスト");
+    const nodes = parseXml(xml);
+    const vstack = nodes[0] as Record<string, unknown>;
+    const children = vstack.children as Record<string, unknown>[];
+    const textNode = children[0];
+    expect(textNode.runs).toBeUndefined();
+    expect(textNode.text).toBe("プレーンテキスト");
+  });
+});
+
+// ===== 4. タグ名整合性チェック =====
 describe("タグ名整合性チェック", () => {
   /**
    * pom-md が生成しうるタグ名一覧。

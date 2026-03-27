@@ -95,6 +95,49 @@ export const page1TextXml = `
 `;
 
 // ============================================================
+// Page 36: Inline Formatting Test (B/I tags)
+// テスト対象: Text, Li, TableCell 内のインライン書式
+// ============================================================
+export const page36InlineFormattingXml = `
+<VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 36: Inline Formatting (B/I tags)</Text>
+  <!-- Text with B/I -->
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
+    <Text fontSize="14" bold="true">Text with inline B/I:</Text>
+    <Text fontSize="16">Normal <B>bold text</B> normal</Text>
+    <Text fontSize="16">Normal <I>italic text</I> normal</Text>
+    <Text fontSize="16">Normal <B>bold</B> and <I>italic</I> mixed</Text>
+    <Text fontSize="16"><B><I>Bold italic nested</I></B></Text>
+  </VStack>
+  <!-- Li with B/I -->
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
+    <Text fontSize="14" bold="true">Ul with inline B/I:</Text>
+    <Ul fontSize="14">
+      <Li>Normal <B>bold</B> item</Li>
+      <Li>Normal <I>italic</I> item</Li>
+      <Li><B>All bold</B></Li>
+    </Ul>
+  </VStack>
+  <!-- Table with B/I -->
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
+    <Text fontSize="14" bold="true">Table with inline B/I:</Text>
+    <Table>
+      <TableColumn width="200" />
+      <TableColumn width="200" />
+      <TableRow>
+        <TableCell fontSize="14" bold="true">Header</TableCell>
+        <TableCell fontSize="14" bold="true">Value</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell fontSize="13"><B>Bold</B> cell</TableCell>
+        <TableCell fontSize="13"><I>Italic</I> cell</TableCell>
+      </TableRow>
+    </Table>
+  </VStack>
+</VStack>
+`;
+
+// ============================================================
 // Page 2: List Test (Ul / Ol)
 // テスト対象: Ul, Ol, Li, numberType, numberStartAt, Li style override
 // ============================================================
