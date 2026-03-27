@@ -40,6 +40,7 @@ jobs:
       - run: pnpm --filter @hirokisakabe/pom run build
       - run: pnpm --filter pom-docs run fmt:check
       - run: pnpm --filter pom-docs run lint
+      - run: pnpm --filter pom-docs run knip
       - run: pnpm --filter pom-docs run typecheck
       - run: pnpm --filter pom-docs run test:run
       - run: pnpm --filter pom-docs run build
