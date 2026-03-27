@@ -3,6 +3,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { generatePreviewSvg } from "../generatePreview.js";
 
 // esbuild が CJS にバンドルするため、実行時に __dirname は利用可能
 declare const __dirname: string;
@@ -74,6 +75,64 @@ suite("pom-vscode Extension", () => {
 
     await waitFor(() => hasPreviewTab());
     assert.ok(hasPreviewTab(), "Preview panel should be opened");
+  });
+
+  test("fontDirs resolves to existing fonts directory with required font files", async () => {
+    const ext = vscode.extensions.getExtension("hirokisakabe.pom-vscode");
+    assert.ok(ext, "Extension should be installed");
+    const fontsDir = path.join(ext.extensionPath, "fonts");
+    assert.ok(
+      fs.existsSync(fontsDir),
+      `fonts directory should exist at ${fontsDir}`,
+    );
+    const files = fs.readdirSync(fontsDir);
+    // CJK フォントが存在すること（.notdef 回避に必須）
+    assert.ok(
+      files.includes("NotoSansCJKjp-Regular.otf"),
+      "fonts directory should contain NotoSansCJKjp-Regular.otf for CJK rendering",
+    );
+    // ラテン文字フォントが存在すること
+    assert.ok(
+      files.includes("Carlito-Regular.ttf"),
+      "fonts directory should contain Carlito-Regular.ttf for Latin rendering",
+    );
+  });
+
+  test("generated SVG does not contain .notdef glyphs", async () => {
+    const ext = vscode.extensions.getExtension("hirokisakabe.pom-vscode");
+    assert.ok(ext, "Extension should be installed");
+    const fontDirs = [path.join(ext.extensionPath, "fonts")];
+    // 日本語文字を含む入力で CJK フォント解決を検証する
+    const markdown = [
+      "---",
+      "size: 16:9",
+      "---",
+      "",
+      "# 日本語テキストのテスト",
+      "",
+      "- ライブプレビュー機能",
+      "- 編集すると即座に反映",
+    ].join("\n");
+
+    const result = await generatePreviewSvg(markdown, fontDirs);
+    assert.strictEqual(
+      result.type,
+      "success",
+      "Preview generation should succeed",
+    );
+    assert.ok(
+      result.type === "success" && result.svgs.length > 0,
+      "Should produce at least one SVG",
+    );
+    if (result.type === "success") {
+      for (const svg of result.svgs) {
+        assert.ok(svg.includes("<svg"), "Output should be valid SVG");
+        assert.ok(
+          !svg.includes(".notdef"),
+          "SVG should not contain .notdef glyph references",
+        );
+      }
+    }
   });
 
   test("updates preview on text change", async () => {
