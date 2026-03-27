@@ -23,7 +23,6 @@ export class PomPreviewPanel {
     document: vscode.TextDocument,
   ) {
     this.panel = panel;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment -- typescript-eslint@8 は TS6 未対応
     this.fontDirs = [path.join(extensionPath, "fonts")];
     this.documentUri = document.uri;
 

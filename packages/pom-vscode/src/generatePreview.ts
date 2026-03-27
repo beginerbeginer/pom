@@ -28,7 +28,6 @@ export async function generatePreviewSvg(
   fontDirs: string[],
 ): Promise<PreviewResult> {
   try {
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument -- typescript-eslint@8 は TS6 未対応 */
     const xml = parseMd(markdown);
     if (!xml.trim()) {
       return { type: "empty" };
@@ -39,7 +38,6 @@ export async function generatePreviewSvg(
       { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
     );
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
 
     const buffer = await pptx.write({ outputType: "uint8array" });
     if (!(buffer instanceof Uint8Array)) {

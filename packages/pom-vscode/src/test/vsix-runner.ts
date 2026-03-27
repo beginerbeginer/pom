@@ -10,7 +10,6 @@ declare const __dirname: string;
  */
 export async function run(): Promise<void> {
   const mocha = new Mocha({ ui: "tdd", timeout: 20000 });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- typescript-eslint@8 は TS6 未対応
   mocha.addFile(path.resolve(__dirname, "extension.test.js"));
 
   return new Promise<void>((resolve, reject) => {
