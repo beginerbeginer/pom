@@ -52,7 +52,6 @@
     "eslint": "^10.1.0",
     "globals": "^17.4.0",
     "happy-dom": "^20.8.4",
-    "knip": "^6.0.6",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "typescript-eslint": "^8.57.1",
