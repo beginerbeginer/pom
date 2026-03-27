@@ -7,6 +7,24 @@ const buildTest = process.argv.includes("--test");
 // CJS バンドルで import.meta.url が空になる問題を解消するプラグイン。
 // pom の dist ファイルが createRequire(import.meta.url) を使用しているため、
 // CJS 互換の __filename ベース URL に置き換える。
+// pptx-glimpse が sharp をトップレベルで import しているが、
+// pom-vscode では convertPptxToSvg のみ使用し sharp は不要。
+// sharp はネイティブバイナリを含むため VSIX にバンドルできないので、
+// 空のスタブモジュールに置き換える。
+const sharpStubPlugin = {
+  name: "sharp-stub",
+  setup(build) {
+    build.onResolve({ filter: /^sharp$/ }, () => ({
+      path: "sharp",
+      namespace: "sharp-stub",
+    }));
+    build.onLoad({ filter: /.*/, namespace: "sharp-stub" }, () => ({
+      contents: "module.exports = {};",
+      loader: "js",
+    }));
+  },
+};
+
 const importMetaPlugin = {
   name: "import-meta-url-shim",
   setup(build) {
@@ -28,13 +46,13 @@ const buildOptions = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
   outfile: "dist/extension.js",
-  external: ["vscode", "sharp"],
+  external: ["vscode"],
   loader: { ".node": "copy" },
   format: "cjs",
   platform: "node",
   target: "node18",
   sourcemap: true,
-  plugins: [importMetaPlugin],
+  plugins: [sharpStubPlugin, importMetaPlugin],
 };
 
 /** @type {import('esbuild').BuildOptions} */
@@ -42,13 +60,13 @@ const testBuildOptions = {
   entryPoints: ["src/test/extension.test.ts"],
   bundle: true,
   outfile: "dist/test/extension.test.js",
-  external: ["vscode", "mocha", "assert", "sharp"],
+  external: ["vscode", "mocha", "assert"],
   loader: { ".node": "copy" },
   format: "cjs",
   platform: "node",
   target: "node18",
   sourcemap: true,
-  plugins: [importMetaPlugin],
+  plugins: [sharpStubPlugin, importMetaPlugin],
 };
 
 /** @type {import('esbuild').BuildOptions} */
