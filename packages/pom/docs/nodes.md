@@ -6,26 +6,27 @@ This document provides a complete reference for all node types available in pom.
 
 Layout attributes that all nodes can have.
 
-| Attribute         | Type                                                       | Description                       |
-| ----------------- | ---------------------------------------------------------- | --------------------------------- |
-| `w`               | number / `"max"` / `"50%"`                                 | Width                             |
-| `h`               | number / `"max"` / `"50%"`                                 | Height                            |
-| `minW` `maxW`     | number                                                     | Min/Max width                     |
-| `minH` `maxH`     | number                                                     | Min/Max height                    |
-| `padding`         | number / `padding.top="8" padding.bottom="8"`              | Padding                           |
-| `backgroundColor` | hex                                                        | Background color (e.g., `F8F9FA`) |
-| `backgroundImage` | `backgroundImage.src="url" backgroundImage.sizing="cover"` | Background image                  |
-| `border`          | `border.color="333" border.width="1"`                      | Border                            |
-| `borderRadius`    | number                                                     | Corner radius (px)                |
-| `opacity`         | 0-1                                                        | Background transparency           |
-| `margin`          | number / `margin.top="8" margin.bottom="8"`                | Outer margin                      |
-| `zIndex`          | number                                                     | Stacking order (higher = on top)  |
-| `position`        | `relative` / `absolute`                                    | Positioning mode                  |
-| `top`             | number                                                     | Top offset (with position)        |
-| `right`           | number                                                     | Right offset (with position)      |
-| `bottom`          | number                                                     | Bottom offset (with position)     |
-| `left`            | number                                                     | Left offset (with position)       |
-| `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`            | Override parent alignItems        |
+| Attribute         | Type                                                                       | Description                         |
+| ----------------- | -------------------------------------------------------------------------- | ----------------------------------- |
+| `w`               | number / `"max"` / `"50%"`                                                 | Width                               |
+| `h`               | number / `"max"` / `"50%"`                                                 | Height                              |
+| `minW` `maxW`     | number                                                                     | Min/Max width                       |
+| `minH` `maxH`     | number                                                                     | Min/Max height                      |
+| `padding`         | number / `padding.top="8" padding.bottom="8"`                              | Padding                             |
+| `backgroundColor` | hex                                                                        | Background color (e.g., `F8F9FA`)   |
+| `backgroundImage` | `backgroundImage.src="url" backgroundImage.sizing="cover"`                 | Background image                    |
+| `border`          | `border.color="333" border.width="1"`                                      | Border                              |
+| `borderRadius`    | number                                                                     | Corner radius (px)                  |
+| `opacity`         | 0-1                                                                        | Background transparency             |
+| `margin`          | number / `margin.top="8" margin.bottom="8"`                                | Outer margin                        |
+| `zIndex`          | number                                                                     | Stacking order (higher = on top)    |
+| `position`        | `relative` / `absolute`                                                    | Positioning mode                    |
+| `top`             | number                                                                     | Top offset (with position)          |
+| `right`           | number                                                                     | Right offset (with position)        |
+| `bottom`          | number                                                                     | Bottom offset (with position)       |
+| `left`            | number                                                                     | Left offset (with position)         |
+| `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`                            | Override parent alignItems          |
+| `shadow`          | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Drop shadow (not supported on Line) |
 
 - `backgroundImage`: `src` accepts a URL or local file path. `sizing` controls how the image fits: `"cover"` (default) fills the area, `"contain"` fits within the area.
 - `border`: Can be combined with `color`, `width`, and `dashType` (`"solid"` / `"dash"` / `"dashDot"` / `"lgDash"` / `"lgDashDot"` / `"lgDashDotDot"` / `"sysDash"` / `"sysDot"`).
@@ -128,7 +129,6 @@ A node for displaying images.
 | --------- | ----------------------------------------------------------------------------------------------- |
 | `src`     | string (URL / path / base64)                                                                    |
 | `sizing`  | `'{"type":"contain"}'` / `'{"type":"cover"}'` / `'{"type":"crop","x":0,"y":0,"w":100,"h":100}'` |
-| `shadow`  | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`                      |
 
 - If `w` and `h` are not specified, the actual image size is automatically used.
 - If size is specified, the image is displayed at that size (aspect ratio is not preserved).
@@ -182,7 +182,6 @@ A node for drawing shapes. Different representations are possible with or withou
 | `text`          | string (text inside the shape)                                                                            |
 | `fill`          | `fill.color="hex" fill.transparency="0.5"`                                                                |
 | `line`          | `line.color="hex" line.width="2" line.dashType="dash"`                                                    |
-| `shadow`        | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`                                |
 | Text attributes | `fontSize` `color` `textAlign` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineHeight` |
 
 **Common Shape Types:**
@@ -252,7 +251,6 @@ Arranges child elements **vertically**.
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 | `flexWrap`       | `nowrap` / `wrap` / `wrapReverse`                                           |
-| `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 > **Note:** Child elements of VStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based heights combined with `gap` will shrink automatically to fit within the parent.
 
@@ -275,7 +273,6 @@ Arranges child elements **horizontally**.
 | `alignItems`     | `start` / `center` / `end` / `stretch`                                      |
 | `justifyContent` | `start` / `center` / `end` / `spaceBetween` / `spaceAround` / `spaceEvenly` |
 | `flexWrap`       | `nowrap` / `wrap` / `wrapReverse`                                           |
-| `shadow`         | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"`  |
 
 > **Note:** Child elements of HStack have `flexShrink=1` by default (same as CSS Flexbox), so percentage-based widths combined with `gap` will shrink automatically to fit within the parent.
 

@@ -278,6 +278,7 @@ const BASE_RULES: Record<string, CoercionRule> = {
   bottom: "number",
   left: "number",
   alignSelf: "string",
+  shadow: SHADOW_STYLE_RULE,
 };
 
 // テキスト系の共通属性
@@ -317,7 +318,6 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     ...BASE_RULES,
     src: "string",
     sizing: IMAGE_SIZING_RULE,
-    shadow: SHADOW_STYLE_RULE,
   },
   icon: {
     ...BASE_RULES,
@@ -339,7 +339,6 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     text: "string",
     fill: FILL_STYLE_RULE,
     line: BORDER_STYLE_RULE,
-    shadow: SHADOW_STYLE_RULE,
     ...TEXT_STYLE_RULES,
   },
   chart: {
@@ -423,7 +422,6 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     gap: "number",
     alignItems: "string",
     justifyContent: "string",
-    shadow: SHADOW_STYLE_RULE,
     flexWrap: "string",
   },
   hstack: {
@@ -431,7 +429,6 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     gap: "number",
     alignItems: "string",
     justifyContent: "string",
-    shadow: SHADOW_STYLE_RULE,
     flexWrap: "string",
   },
   layer: {

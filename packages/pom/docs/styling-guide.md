@@ -173,7 +173,7 @@ Round corners with `borderRadius`:
 
 ## Shadow
 
-Add drop shadows to VStack, HStack, Image, and Shape nodes:
+Add drop shadows to any node (except Line):
 
 ```xml
 <VStack shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000000" shadow.opacity="0.3" padding="16">
