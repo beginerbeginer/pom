@@ -14,7 +14,7 @@ export const iconNodeDef: NodeDefinition = {
     const totalSize = n.variant ? Math.ceil(iconSize * 1.75) : iconSize;
     yn.setMeasureFunc(() => ({ width: totalSize, height: totalSize }));
   },
-  toPositioned(pom, absoluteX, absoluteY, layout, ctx) {
+  async toPositioned(pom, absoluteX, absoluteY, layout, ctx) {
     const n = pom as Extract<POMNode, { type: "icon" }>;
     const iconSize = n.size ?? 24;
 
@@ -33,13 +33,13 @@ export const iconNodeDef: NodeDefinition = {
       iconSize,
     );
     const iconImageData = n.svgContent
-      ? rasterizeSvgContent(
+      ? await rasterizeSvgContent(
           n.svgContent,
           rasterSize,
           n.color,
           ctx.iconRasterCache,
         )
-      : rasterizeIcon(
+      : await rasterizeIcon(
           n.name!,
           rasterSize,
           n.color ?? "#000000",

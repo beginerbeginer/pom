@@ -12,13 +12,13 @@ import { getNodeDef } from "../registry/index.ts";
  * @param parentY 親ノードの絶対Y座標
  * @returns PositionedNode ツリー
  */
-export function toPositioned(
+export async function toPositioned(
   pom: POMNode,
   ctx: BuildContext,
   map: LayoutResultMap,
   parentX = 0,
   parentY = 0,
-): PositionedNode {
+): Promise<PositionedNode> {
   const layout = map.get(pom);
   if (!layout) {
     throw new Error("Layout result not found in map for POMNode");
@@ -55,8 +55,10 @@ export function toPositioned(
         y: absoluteY,
         w: layout.width,
         h: layout.height,
-        children: containerNode.children.map((child) =>
-          toPositioned(child, ctx, map, absoluteX, absoluteY),
+        children: await Promise.all(
+          containerNode.children.map((child) =>
+            toPositioned(child, ctx, map, absoluteX, absoluteY),
+          ),
         ),
       } as PositionedNode;
     }
