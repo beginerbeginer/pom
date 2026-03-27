@@ -370,6 +370,60 @@ function getTextContent(node: XmlElement): string | undefined {
   return textParts.length > 0 ? textParts.join("") : undefined;
 }
 
+function getRawChildren(node: XmlElement): XmlNode[] {
+  const tagName = getTagName(node);
+  return (node[tagName] as XmlNode[] | undefined) ?? [];
+}
+
+const INLINE_FORMAT_TAGS = new Set(["B", "I"]);
+
+function hasInlineFormatChildren(childElements: XmlElement[]): boolean {
+  return (
+    childElements.length > 0 &&
+    childElements.every((el) => INLINE_FORMAT_TAGS.has(getTagName(el)))
+  );
+}
+
+type TextRunResult = { text: string; bold?: boolean; italic?: boolean };
+
+function extractTextRuns(
+  children: XmlNode[],
+  inheritBold?: boolean,
+  inheritItalic?: boolean,
+): TextRunResult[] {
+  const runs: TextRunResult[] = [];
+  for (const child of children) {
+    if (isTextNode(child)) {
+      const run: TextRunResult = { text: child["#text"] };
+      if (inheritBold) run.bold = true;
+      if (inheritItalic) run.italic = true;
+      runs.push(run);
+    } else {
+      const tag = getTagName(child);
+      const innerChildren = getRawChildren(child);
+      if (tag === "B") {
+        runs.push(...extractTextRuns(innerChildren, true, inheritItalic));
+      } else if (tag === "I") {
+        runs.push(...extractTextRuns(innerChildren, inheritBold, true));
+      }
+    }
+  }
+  return runs;
+}
+
+function buildRunsAndText(
+  node: XmlElement,
+): { runs: TextRunResult[]; text: string } | null {
+  const rawChildren = getRawChildren(node);
+  const childElements = rawChildren.filter(
+    (c): c is XmlElement => !isTextNode(c),
+  );
+  if (!hasInlineFormatChildren(childElements)) return null;
+  const runs = extractTextRuns(rawChildren);
+  const text = runs.map((r) => r.text).join("");
+  return { runs, text };
+}
+
 function coerceChildAttrs(
   parentTagName: string,
   tagName: string,
@@ -450,6 +504,7 @@ type ChildElementConverter = (
   childElements: XmlElement[],
   result: Record<string, unknown>,
   errors: string[],
+  node?: XmlElement,
 ) => void;
 
 function convertProcessArrowChildren(
@@ -673,9 +728,15 @@ function convertTableChildren(
             getAttributes(cellEl),
             errors,
           );
-          const cellText = getTextContent(cellEl);
-          if (cellText !== undefined && !("text" in cellAttrs)) {
-            cellAttrs.text = cellText;
+          const runsResult = buildRunsAndText(cellEl);
+          if (runsResult) {
+            cellAttrs.runs = runsResult.runs;
+            cellAttrs.text = runsResult.text;
+          } else {
+            const cellText = getTextContent(cellEl);
+            if (cellText !== undefined && !("text" in cellAttrs)) {
+              cellAttrs.text = cellText;
+            }
           }
           cells.push(cellAttrs);
         }
@@ -794,9 +855,15 @@ function convertListChildren(
       getAttributes(child),
       errors,
     );
-    const textContent = getTextContent(child);
-    if (textContent !== undefined && !("text" in attrs)) {
-      attrs.text = textContent;
+    const runsResult = buildRunsAndText(child);
+    if (runsResult) {
+      attrs.runs = runsResult.runs;
+      attrs.text = runsResult.text;
+    } else {
+      const textContent = getTextContent(child);
+      if (textContent !== undefined && !("text" in attrs)) {
+        attrs.text = textContent;
+      }
     }
     items.push(attrs);
   }
@@ -844,7 +911,32 @@ function convertIconChildren(
   result.svgContent = serializeSvgElement(child);
 }
 
+function convertTextInlineChildren(
+  childElements: XmlElement[],
+  result: Record<string, unknown>,
+  errors: string[],
+  node?: XmlElement,
+): void {
+  // B/I 以外の子要素がある場合はエラー
+  for (const el of childElements) {
+    const tag = getTagName(el);
+    if (!INLINE_FORMAT_TAGS.has(tag)) {
+      errors.push(
+        `<Text>: Unexpected child element <${tag}>. Only <B> and <I> are allowed inside <Text>`,
+      );
+      return;
+    }
+  }
+  if (!node || childElements.length === 0) return;
+  const runsResult = buildRunsAndText(node);
+  if (runsResult) {
+    result.runs = runsResult.runs;
+    result.text = runsResult.text;
+  }
+}
+
 const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
+  text: convertTextInlineChildren,
   ul: (childElements, result, errors) =>
     convertListChildren("Ul", childElements, result, errors),
   ol: (childElements, result, errors) =>
@@ -879,6 +971,7 @@ function convertElement(
       childElements,
       textContent,
       errors,
+      node,
     );
   } else {
     errors.push(`Unknown tag: <${tagName}>`);
@@ -893,6 +986,7 @@ function convertPomNode(
   childElements: XmlElement[],
   textContent: string | undefined,
   errors: string[],
+  xmlNode?: XmlElement,
 ): Record<string, unknown> {
   const result: Record<string, unknown> = { type: nodeType };
 
@@ -972,7 +1066,7 @@ function convertPomNode(
   // Child element notation for complex properties
   const childConverter = CHILD_ELEMENT_CONVERTERS[nodeType];
   if (childConverter && childElements.length > 0) {
-    childConverter(childElements, result, errors);
+    childConverter(childElements, result, errors, xmlNode);
   }
   // Children for container nodes
   else if (CONTAINER_TYPES.has(nodeType) && childElements.length > 0) {

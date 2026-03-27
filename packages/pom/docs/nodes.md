@@ -55,6 +55,15 @@ A node for displaying text.
 | `fontFamily`             | string (default: `Noto Sans JP`)                           |
 | `lineHeight`             | number (default: 1.3)                                      |
 
+**Inline Formatting:**
+
+Use `<B>` and `<I>` child elements for partial bold/italic within a single text node:
+
+```xml
+<Text fontSize="16">Normal <B>bold</B> and <I>italic</I> text</Text>
+<Text fontSize="16"><B><I>Bold italic</I></B></Text>
+```
+
 See [Styling Guide](./styling-guide.md#font-size-guide) for recommended font sizes.
 
 **UnderlineStyle:**
@@ -96,6 +105,8 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 | `underline`              | `true` / underline options |
 | `highlight`              | hex (highlight color)      |
 | `fontFamily`             | string                     |
+
+Li also supports `<B>` and `<I>` inline formatting: `<Li>Normal <B>bold</B> item</Li>`
 
 ### 3. Ol (Ordered List)
 
@@ -160,7 +171,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 - `<TableColumn>`: `width` (omit for even distribution)
 - `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`
+- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>` and `<I>` inline formatting
 
 | Attribute          | Values               |
 | ------------------ | -------------------- |

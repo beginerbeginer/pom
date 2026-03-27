@@ -35,8 +35,10 @@ const textSample = `
       <Text textAlign="right" w="150" backgroundColor="${palette.lightBlue}">Right aligned</Text>
     </VStack>
     <VStack gap="8">
-      <Text fontSize="14" bold="true">Bullet List</Text>
-      <Ul fontSize="14"><Li>Item 1</Li><Li>Item 2</Li><Li>Item 3</Li></Ul>
+      <Text fontSize="14" bold="true">Inline Formatting</Text>
+      <Text>Normal <B>bold</B> text</Text>
+      <Text>Normal <I>italic</I> text</Text>
+      <Text><B><I>Bold italic</I></B></Text>
     </VStack>
   </HStack>
 </VStack>

@@ -1,5 +1,9 @@
 export { palette } from "./palette.js";
-export { page1TextXml, page2ListXml } from "./text.js";
+export {
+  page1TextXml,
+  page2ListXml,
+  page36InlineFormattingXml,
+} from "./text.js";
 export { page3ImageXml, page3bImageSizingXml } from "./image.js";
 export { page4TableXml } from "./table.js";
 export { page5ShapeXml } from "./shape.js";

@@ -449,6 +449,80 @@ describe("parseXml", () => {
     });
   });
 
+  // ===== インラインフォーマット (B/I タグ) =====
+  describe("インラインフォーマット", () => {
+    it("B タグを太字の run に変換する", () => {
+      const result = parseXml("<Text>通常 <B>太字</B> テキスト</Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 太字 テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "太字", bold: true },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("I タグを斜体の run に変換する", () => {
+      const result = parseXml("<Text>通常 <I>斜体</I> テキスト</Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 斜体 テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "斜体", italic: true },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("B と I のネストを処理する", () => {
+      const result = parseXml("<Text><B><I>太字斜体</I></B></Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "太字斜体",
+        runs: [{ text: "太字斜体", bold: true, italic: true }],
+      });
+    });
+
+    it("B/I が無い場合は runs を持たない", () => {
+      const result = parseXml("<Text>プレーンテキスト</Text>");
+      expect(result[0]).toEqual({
+        type: "text",
+        text: "プレーンテキスト",
+      });
+      expect(result[0]).not.toHaveProperty("runs");
+    });
+
+    it("Li 内の B タグを処理する", () => {
+      const result = parseXml("<Ul><Li>通常 <B>太字</B></Li></Ul>");
+      const ulNode = result[0] as Record<string, unknown>;
+      const items = ulNode.items as Record<string, unknown>[];
+      expect(items[0]).toMatchObject({
+        text: "通常 太字",
+        runs: [{ text: "通常 " }, { text: "太字", bold: true }],
+      });
+    });
+
+    it("TableCell 内の B タグを処理する", () => {
+      const result = parseXml(
+        "<Table><TableRow><TableCell><B>太字</B> セル</TableCell></TableRow></Table>",
+      );
+      const tableNode = result[0] as Record<string, unknown>;
+      const rows = tableNode.rows as Record<string, unknown>[];
+      const cells = rows[0].cells as Record<string, unknown>[];
+      expect(cells[0]).toMatchObject({
+        text: "太字 セル",
+        runs: [{ text: "太字", bold: true }, { text: " セル" }],
+      });
+    });
+
+    it("Text 内の B/I 以外の子要素はエラーになる", () => {
+      expect(() => parseXml("<Text><B>ok</B><Foo>ng</Foo></Text>")).toThrow();
+    });
+  });
+
   // ===== ネスト構造 =====
   describe("ネスト構造", () => {
     it("深いネスト構造を正しく変換する", () => {

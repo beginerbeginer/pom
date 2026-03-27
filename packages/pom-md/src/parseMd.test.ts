@@ -217,6 +217,85 @@ some content
     });
   });
 
+  describe("インラインフォーマット", () => {
+    it("太字を <B> タグに変換する", () => {
+      const result = parseMd("**太字テキスト**");
+      expect(result).toContain("<Text><B>太字テキスト</B></Text>");
+    });
+
+    it("斜体を <I> タグに変換する", () => {
+      const result = parseMd("*斜体テキスト*");
+      expect(result).toContain("<Text><I>斜体テキスト</I></Text>");
+    });
+
+    it("太字と通常テキストの混在を変換する", () => {
+      const result = parseMd("通常 **太字** テキスト");
+      expect(result).toContain("<Text>通常 <B>太字</B> テキスト</Text>");
+    });
+
+    it("斜体と通常テキストの混在を変換する", () => {
+      const result = parseMd("通常 *斜体* テキスト");
+      expect(result).toContain("<Text>通常 <I>斜体</I> テキスト</Text>");
+    });
+
+    it("太字と斜体の混在を変換する", () => {
+      const result = parseMd("**太字** と *斜体*");
+      expect(result).toContain("<B>太字</B> と <I>斜体</I>");
+    });
+
+    it("太字斜体（ネスト）を変換する", () => {
+      const result = parseMd("***太字斜体***");
+      // markdown-it は em > strong の順でネストする
+      expect(result).toContain("<B>");
+      expect(result).toContain("<I>");
+      expect(result).toContain("太字斜体");
+    });
+
+    it("書式なしテキストはタグを含まない", () => {
+      const result = parseMd("プレーンテキスト");
+      expect(result).toContain("<Text>プレーンテキスト</Text>");
+      expect(result).not.toContain("<B>");
+      expect(result).not.toContain("<I>");
+    });
+
+    it("見出し内の太字を変換する", () => {
+      const result = parseMd("# 見出し **強調**");
+      expect(result).toContain("<B>強調</B>");
+      expect(result).toContain('bold="true"');
+    });
+
+    it("リスト項目内の太字を変換する", () => {
+      const result = parseMd("- 通常 **太字** 項目");
+      expect(result).toContain("<Li>通常 <B>太字</B> 項目</Li>");
+    });
+
+    it("リスト項目内の斜体を変換する", () => {
+      const result = parseMd("- 通常 *斜体* 項目");
+      expect(result).toContain("<Li>通常 <I>斜体</I> 項目</Li>");
+    });
+
+    it("テーブルセル内の太字を変換する", () => {
+      const md = `| 名前 | 値 |
+| --- | --- |
+| **重要** | 100 |`;
+      const result = parseMd(md);
+      expect(result).toContain("<TableCell><B>重要</B></TableCell>");
+    });
+
+    it("テーブルセル内の斜体を変換する", () => {
+      const md = `| 名前 | 値 |
+| --- | --- |
+| *注記* | 100 |`;
+      const result = parseMd(md);
+      expect(result).toContain("<TableCell><I>注記</I></TableCell>");
+    });
+
+    it("インラインフォーマットの特殊文字をエスケープする", () => {
+      const result = parseMd("**A < B**");
+      expect(result).toContain("<B>A &lt; B</B>");
+    });
+  });
+
   describe("複合テスト", () => {
     it("issue #435 のサンプルを変換できる", () => {
       const md = `---

@@ -20,6 +20,56 @@ function resolveStyle(li: LiNode, parent: UlPositionedNode | OlPositionedNode) {
   };
 }
 
+function buildListTextItems(
+  items: LiNode[],
+  parent: UlPositionedNode | OlPositionedNode,
+  bullet: boolean | Record<string, unknown>,
+) {
+  const textItems: { text: string; options: Record<string, unknown> }[] = [];
+  for (let i = 0; i < items.length; i++) {
+    const li = items[i];
+    const style = resolveStyle(li, parent);
+    const isLast = i === items.length - 1;
+    const baseOptions = {
+      fontSize: pxToPt(style.fontSize),
+      fontFace: style.fontFamily,
+      color: style.color,
+      underline: convertUnderline(style.underline),
+      strike: convertStrike(style.strike),
+      highlight: style.highlight,
+    };
+
+    if (li.runs && li.runs.length > 0) {
+      for (let j = 0; j < li.runs.length; j++) {
+        const run = li.runs[j];
+        const isLastRun = j === li.runs.length - 1;
+        let text = run.text;
+        if (isLastRun && !isLast) text += "\n";
+        textItems.push({
+          text,
+          options: {
+            ...baseOptions,
+            bold: run.bold ?? style.bold,
+            italic: run.italic ?? style.italic,
+            bullet: j === 0 ? bullet : false,
+          },
+        });
+      }
+    } else {
+      textItems.push({
+        text: isLast ? li.text : li.text + "\n",
+        options: {
+          ...baseOptions,
+          bold: style.bold,
+          italic: style.italic,
+          bullet,
+        },
+      });
+    }
+  }
+  return textItems;
+}
+
 function hasItemStyleOverride(items: LiNode[]): boolean {
   return items.some(
     (li) =>
@@ -30,7 +80,8 @@ function hasItemStyleOverride(items: LiNode[]): boolean {
       li.underline !== undefined ||
       li.strike !== undefined ||
       li.highlight !== undefined ||
-      li.fontFamily !== undefined,
+      li.fontFamily !== undefined ||
+      li.runs !== undefined,
   );
 }
 
@@ -42,23 +93,7 @@ export function renderUlNode(node: UlPositionedNode, ctx: RenderContext): void {
 
   if (hasItemStyleOverride(node.items)) {
     // Li に個別スタイルがある場合は配列形式を使用
-    const textItems = node.items.map((li, i) => {
-      const style = resolveStyle(li, node);
-      return {
-        text: i < node.items.length - 1 ? li.text + "\n" : li.text,
-        options: {
-          fontSize: pxToPt(style.fontSize),
-          fontFace: style.fontFamily,
-          color: style.color,
-          bold: style.bold,
-          italic: style.italic,
-          underline: convertUnderline(style.underline),
-          strike: convertStrike(style.strike),
-          highlight: style.highlight,
-          bullet: true as const,
-        },
-      };
-    });
+    const textItems = buildListTextItems(node.items, node, true);
 
     ctx.slide.addText(textItems, {
       x: pxToIn(content.x),
@@ -111,23 +146,7 @@ export function renderOlNode(node: OlPositionedNode, ctx: RenderContext): void {
   }
 
   if (hasItemStyleOverride(node.items)) {
-    const textItems = node.items.map((li, i) => {
-      const style = resolveStyle(li, node);
-      return {
-        text: i < node.items.length - 1 ? li.text + "\n" : li.text,
-        options: {
-          fontSize: pxToPt(style.fontSize),
-          fontFace: style.fontFamily,
-          color: style.color,
-          bold: style.bold,
-          italic: style.italic,
-          underline: convertUnderline(style.underline),
-          strike: convertStrike(style.strike),
-          highlight: style.highlight,
-          bullet: bulletOptions,
-        },
-      };
-    });
+    const textItems = buildListTextItems(node.items, node, bulletOptions);
 
     ctx.slide.addText(textItems, {
       x: pxToIn(content.x),

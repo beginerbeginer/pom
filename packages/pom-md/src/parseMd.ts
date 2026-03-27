@@ -66,19 +66,27 @@ function escapeXml(str: string): string {
 }
 
 /**
- * markdown-it の inline トークン列からテキストコンテンツを抽出する。
- * bold / italic のインラインマークアップは現時点では無視し、プレーンテキストとして結合する。
+ * markdown-it の inline トークン列から XML マークアップ付きテキストを生成する。
+ * bold (`**text**`) → `<B>text</B>`, italic (`*text*`) → `<I>text</I>` に変換する。
  */
-function extractInlineText(tokens: Token[]): string {
-  let text = "";
+function extractInlineXml(tokens: Token[]): string {
+  let xml = "";
   for (const t of tokens) {
     if (t.type === "text" || t.type === "code_inline") {
-      text += t.content;
+      xml += escapeXml(t.content);
     } else if (t.type === "softbreak" || t.type === "hardbreak") {
-      text += " ";
+      xml += " ";
+    } else if (t.type === "strong_open") {
+      xml += "<B>";
+    } else if (t.type === "strong_close") {
+      xml += "</B>";
+    } else if (t.type === "em_open") {
+      xml += "<I>";
+    } else if (t.type === "em_close") {
+      xml += "</I>";
     }
   }
-  return text;
+  return xml;
 }
 
 /** markdown-it トークン列から1つのスライド分の pom XML フラグメントを生成する */
@@ -94,12 +102,10 @@ function tokensToXml(tokens: Token[]): string {
       const level = parseInt(token.tag.slice(1), 10);
       const fontSize = HEADING_FONT_SIZE[level] ?? 14;
       const inlineToken = tokens[i + 1]; // inline
-      const text = inlineToken?.children
-        ? extractInlineText(inlineToken.children)
-        : (inlineToken?.content ?? "");
-      parts.push(
-        `<Text fontSize="${fontSize}" bold="true">${escapeXml(text)}</Text>`,
-      );
+      const xml = inlineToken?.children
+        ? extractInlineXml(inlineToken.children)
+        : escapeXml(inlineToken?.content ?? "");
+      parts.push(`<Text fontSize="${fontSize}" bold="true">${xml}</Text>`);
       i += 3; // heading_open, inline, heading_close
       continue;
     }
@@ -121,11 +127,11 @@ function tokensToXml(tokens: Token[]): string {
         continue;
       }
 
-      const text = inlineToken?.children
-        ? extractInlineText(inlineToken.children)
-        : (inlineToken?.content ?? "");
-      if (text.trim()) {
-        parts.push(`<Text>${escapeXml(text)}</Text>`);
+      const xml = inlineToken?.children
+        ? extractInlineXml(inlineToken.children)
+        : escapeXml(inlineToken?.content ?? "");
+      if (xml.trim()) {
+        parts.push(`<Text>${xml}</Text>`);
       }
       i += 3; // paragraph_open, inline, paragraph_close
       continue;
@@ -138,7 +144,7 @@ function tokensToXml(tokens: Token[]): string {
     ) {
       const tag = token.type === "bullet_list_open" ? "Ul" : "Ol";
       const items = collectListItems(tokens, i + 1);
-      const liXml = items.texts.map((t) => `<Li>${escapeXml(t)}</Li>`).join("");
+      const liXml = items.xmlTexts.map((t) => `<Li>${t}</Li>`).join("");
       parts.push(`<${tag}>${liXml}</${tag}>`);
       i = items.endIndex + 1;
       continue;
@@ -181,8 +187,8 @@ function tokensToXml(tokens: Token[]): string {
 function collectListItems(
   tokens: Token[],
   startIndex: number,
-): { texts: string[]; endIndex: number } {
-  const texts: string[] = [];
+): { xmlTexts: string[]; endIndex: number } {
+  const xmlTexts: string[] = [];
   let i = startIndex;
 
   while (i < tokens.length) {
@@ -191,22 +197,22 @@ function collectListItems(
       token.type === "bullet_list_close" ||
       token.type === "ordered_list_close"
     ) {
-      return { texts, endIndex: i };
+      return { xmlTexts, endIndex: i };
     }
 
     if (token.type === "list_item_open") {
       // list_item_open → paragraph_open → inline → paragraph_close → list_item_close
       const inlineToken = tokens[i + 2]; // inline
-      const text = inlineToken?.children
-        ? extractInlineText(inlineToken.children)
-        : (inlineToken?.content ?? "");
-      texts.push(text);
+      const xml = inlineToken?.children
+        ? extractInlineXml(inlineToken.children)
+        : escapeXml(inlineToken?.content ?? "");
+      xmlTexts.push(xml);
     }
 
     i++;
   }
 
-  return { texts, endIndex: i - 1 };
+  return { xmlTexts, endIndex: i - 1 };
 }
 
 /** テーブルトークンから pom Table XML を構築する */
@@ -231,7 +237,7 @@ function collectTable(
       if (headerRow.length > 0) {
         xml += "<TableRow>";
         for (const cell of headerRow) {
-          xml += `<TableCell>${escapeXml(cell)}</TableCell>`;
+          xml += `<TableCell>${cell}</TableCell>`;
         }
         xml += "</TableRow>";
       }
@@ -240,7 +246,7 @@ function collectTable(
       for (const row of dataRows) {
         xml += "<TableRow>";
         for (const cell of row) {
-          xml += `<TableCell>${escapeXml(cell)}</TableCell>`;
+          xml += `<TableCell>${cell}</TableCell>`;
         }
         xml += "</TableRow>";
       }
@@ -256,10 +262,10 @@ function collectTable(
       rows.push(currentRow);
     } else if (token.type === "th_open" || token.type === "td_open") {
       const inlineToken = tokens[i + 1];
-      const text = inlineToken?.children
-        ? extractInlineText(inlineToken.children)
-        : (inlineToken?.content ?? "");
-      currentRow.push(text);
+      const xmlText = inlineToken?.children
+        ? extractInlineXml(inlineToken.children)
+        : escapeXml(inlineToken?.content ?? "");
+      currentRow.push(xmlText);
     }
 
     i++;
