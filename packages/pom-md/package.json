@@ -44,6 +44,7 @@
     "fmt:check": "prettier --check .",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "knip": "knip",
     "test": "vitest",
     "test:run": "vitest run"
   },
@@ -52,9 +53,8 @@
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
-    "fast-xml-parser": "^5.5.9",
+    "knip": "^5.88.1",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.47.0",
-    "zod": "^4.3.6"
+    "typescript-eslint": "^8.47.0"
   }
 }

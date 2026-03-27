@@ -1,9 +1,9 @@
 import { ParseXmlError } from "@hirokisakabe/pom";
 import { XMLValidator } from "fast-xml-parser";
 
-export type ErrorType = "xml_syntax" | "schema" | "structure" | "unknown";
+type ErrorType = "xml_syntax" | "schema" | "structure" | "unknown";
 
-export interface StructuredError {
+interface StructuredError {
   type: ErrorType;
   message: string;
   line?: number;

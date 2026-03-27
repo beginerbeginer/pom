@@ -41,6 +41,7 @@ jobs:
         working-directory: .
       - run: pnpm run fmt:check
       - run: pnpm run lint
+      - run: pnpm run knip
       - run: pnpm run typecheck
       - run: pnpm run test:run
       - run: pnpm run build
