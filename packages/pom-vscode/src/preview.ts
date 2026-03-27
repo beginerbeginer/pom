@@ -1,12 +1,28 @@
+import * as crypto from "crypto";
 import * as path from "path";
 import * as vscode from "vscode";
 import {
   generatePreviewSvg,
   buildHtml,
   buildErrorHtml,
+  ZOOM_LEVELS,
+  type ZoomLevel,
 } from "./generatePreview.js";
 
 const DEBOUNCE_MS = 500;
+
+function getNonce(): string {
+  return crypto.randomBytes(16).toString("hex");
+}
+
+const VALID_ZOOM_VALUES = new Set<string>(ZOOM_LEVELS.map((z) => z.value));
+
+function getDefaultZoom(): ZoomLevel {
+  const value = vscode.workspace
+    .getConfiguration("pom.preview")
+    .get<string>("defaultZoom", "fit");
+  return VALID_ZOOM_VALUES.has(value) ? (value as ZoomLevel) : "fit";
+}
 
 export class PomPreviewPanel {
   private static instance: PomPreviewPanel | undefined;
@@ -50,7 +66,7 @@ export class PomPreviewPanel {
       "pomPreview",
       "pom Preview",
       vscode.ViewColumn.Beside,
-      { enableScripts: false },
+      { enableScripts: true },
     );
 
     PomPreviewPanel.instance = new PomPreviewPanel(
@@ -80,12 +96,15 @@ export class PomPreviewPanel {
 
     if (generation !== this.renderGeneration || this.disposed) return;
 
+    const nonce = getNonce();
+    const defaultZoom = getDefaultZoom();
+
     switch (result.type) {
       case "empty":
-        this.panel.webview.html = buildHtml([]);
+        this.panel.webview.html = buildHtml([], nonce, defaultZoom);
         break;
       case "success":
-        this.panel.webview.html = buildHtml(result.svgs);
+        this.panel.webview.html = buildHtml(result.svgs, nonce, defaultZoom);
         break;
       case "error":
         this.panel.webview.html = buildErrorHtml(result.message);

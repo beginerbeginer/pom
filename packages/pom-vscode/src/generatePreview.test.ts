@@ -22,6 +22,8 @@ import {
   buildErrorHtml,
   SLIDE_WIDTH,
   SLIDE_HEIGHT,
+  ZOOM_LEVELS,
+  type ZoomLevel,
 } from "./generatePreview.js";
 
 const mockParseMd = vi.mocked(parseMd);
@@ -159,8 +161,15 @@ describe("generatePreviewSvg", () => {
 });
 
 describe("buildHtml", () => {
+  const nonce = "test-nonce";
+  const defaultZoom: ZoomLevel = "fit";
+
   it("SVG が1つの場合、スライド番号付きの HTML を返す", () => {
-    const html = buildHtml(['<svg width="100" height="50"></svg>']);
+    const html = buildHtml(
+      ['<svg width="100" height="50"></svg>'],
+      nonce,
+      defaultZoom,
+    );
     expect(html).toContain("<!DOCTYPE html>");
     expect(html).toContain("Slide 1");
     expect(html).toContain('<svg width="100" height="50"></svg>');
@@ -173,7 +182,7 @@ describe("buildHtml", () => {
       '<svg id="s2"></svg>',
       '<svg id="s3"></svg>',
     ];
-    const html = buildHtml(svgs);
+    const html = buildHtml(svgs, nonce, defaultZoom);
     expect(html).toContain("Slide 1");
     expect(html).toContain("Slide 2");
     expect(html).toContain("Slide 3");
@@ -183,9 +192,33 @@ describe("buildHtml", () => {
   });
 
   it("空配列の場合、No slides メッセージを返す", () => {
-    const html = buildHtml([]);
+    const html = buildHtml([], nonce, defaultZoom);
     expect(html).toContain("No slides to preview");
     expect(html).not.toContain("Slide 1");
+  });
+
+  it("ズームコントロールのボタンを含む", () => {
+    const html = buildHtml(["<svg></svg>"], nonce, defaultZoom);
+    for (const { label } of ZOOM_LEVELS) {
+      expect(html).toContain(label);
+    }
+  });
+
+  it("data-zoom 属性にデフォルトズームが設定される", () => {
+    const html = buildHtml(["<svg></svg>"], nonce, "100");
+    expect(html).toContain('data-zoom="100"');
+  });
+
+  it("nonce が style と script タグに設定される", () => {
+    const html = buildHtml(["<svg></svg>"], "abc123", defaultZoom);
+    expect(html).toContain('nonce="abc123"');
+  });
+
+  it("Content-Security-Policy meta タグが出力される", () => {
+    const html = buildHtml(["<svg></svg>"], nonce, defaultZoom);
+    expect(html).toContain("Content-Security-Policy");
+    expect(html).toContain(`'nonce-${nonce}'`);
+    expect(html).toContain("default-src 'none'");
   });
 });
 
