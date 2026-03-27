@@ -81,6 +81,25 @@ Control line spacing with `lineHeight` (multiplier, default: `1.3`).
 <Text bold="true" italic="true">Bold italic</Text>
 ```
 
+### Inline Formatting
+
+Use `<B>` and `<I>` child elements to apply bold or italic to part of the text:
+
+```xml
+<Text fontSize="16">Normal <B>bold part</B> normal</Text>
+<Text fontSize="16">Normal <I>italic part</I> normal</Text>
+<Text fontSize="16"><B>bold</B> and <I>italic</I> mixed</Text>
+<Text fontSize="16"><B><I>Bold italic (nested)</I></B></Text>
+```
+
+This also works inside `<Li>` and `<TableCell>`:
+
+```xml
+<Ul fontSize="14">
+  <Li>Normal <B>bold</B> item</Li>
+</Ul>
+```
+
 ### Underline
 
 Simple underline:
