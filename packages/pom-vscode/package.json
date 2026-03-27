@@ -33,6 +33,30 @@
         "icon": "$(desktop-download)"
       }
     ],
+    "configuration": {
+      "title": "pom",
+      "properties": {
+        "pom.preview.defaultZoom": {
+          "type": "string",
+          "enum": [
+            "fit",
+            "50",
+            "75",
+            "100",
+            "150"
+          ],
+          "enumItemLabels": [
+            "Fit to Width",
+            "50%",
+            "75%",
+            "100%",
+            "150%"
+          ],
+          "default": "fit",
+          "description": "Default zoom level for the pom preview panel."
+        }
+      }
+    },
     "menus": {
       "editor/title": [
         {

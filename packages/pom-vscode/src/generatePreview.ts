@@ -58,7 +58,21 @@ export async function generatePreviewSvg(
   }
 }
 
-export function buildHtml(svgs: string[]): string {
+export type ZoomLevel = "fit" | "50" | "75" | "100" | "150";
+
+export const ZOOM_LEVELS: { value: ZoomLevel; label: string }[] = [
+  { value: "fit", label: "Fit to Width" },
+  { value: "50", label: "50%" },
+  { value: "75", label: "75%" },
+  { value: "100", label: "100%" },
+  { value: "150", label: "150%" },
+];
+
+export function buildHtml(
+  svgs: string[],
+  nonce: string,
+  defaultZoom: ZoomLevel,
+): string {
   if (svgs.length === 0) {
     return `<!DOCTYPE html>
 <html><body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;color:#888;">
@@ -69,20 +83,157 @@ export function buildHtml(svgs: string[]): string {
   const slideElements = svgs
     .map(
       (svg, i) => `
-    <div style="margin-bottom:24px;">
-      <div style="font-size:12px;color:#888;margin-bottom:4px;">Slide ${i + 1}</div>
-      <div style="border:1px solid #ddd;border-radius:4px;overflow:hidden;background:#fff;">
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide ${i + 1}</div>
+      <div class="slide-frame">
         ${svg}
       </div>
     </div>`,
     )
     .join("");
 
+  const zoomButtons = ZOOM_LEVELS.map(
+    ({ value, label }) =>
+      `<button class="zoom-btn" data-zoom="${value}">${label}</button>`,
+  ).join("");
+
   return `<!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:16px;background:#f5f5f5;font-family:sans-serif;">
-  ${slideElements}
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}'; img-src data:;">
+<style nonce="${nonce}">
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: sans-serif;
+  }
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 16px;
+    background: var(--vscode-editor-background, #f5f5f5);
+    border-bottom: 1px solid var(--vscode-panel-border, #ddd);
+  }
+  .zoom-btn {
+    padding: 3px 10px;
+    font-size: 12px;
+    border: 1px solid var(--vscode-button-border, #ccc);
+    border-radius: 3px;
+    background: var(--vscode-button-secondaryBackground, #fff);
+    color: var(--vscode-button-secondaryForeground, #333);
+    cursor: pointer;
+  }
+  .zoom-btn:hover {
+    background: var(--vscode-button-secondaryHoverBackground, #e8e8e8);
+  }
+  .zoom-btn.active {
+    background: var(--vscode-button-background, #007acc);
+    color: var(--vscode-button-foreground, #fff);
+    border-color: var(--vscode-button-background, #007acc);
+  }
+  .slides-container {
+    padding: 16px;
+  }
+  .slide-wrapper {
+    margin-bottom: 24px;
+  }
+  .slide-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+  .slide-frame {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    display: inline-block;
+  }
+  .slide-frame svg {
+    display: block;
+  }
+  /* Fit to Width: SVG の幅をコンテナに合わせる */
+  body[data-zoom="fit"] .slide-frame {
+    display: block;
+  }
+  body[data-zoom="fit"] .slide-frame svg {
+    width: 100%;
+    height: auto;
+  }
+  /* 固定ズーム: SVG 幅を SLIDE_WIDTH のパーセンテージに設定 */
+  body[data-zoom="50"] .slide-frame svg {
+    width: ${SLIDE_WIDTH * 0.5}px;
+    height: auto;
+  }
+  body[data-zoom="75"] .slide-frame svg {
+    width: ${SLIDE_WIDTH * 0.75}px;
+    height: auto;
+  }
+  body[data-zoom="100"] .slide-frame svg {
+    width: ${SLIDE_WIDTH}px;
+    height: auto;
+  }
+  body[data-zoom="150"] .slide-frame svg {
+    width: ${SLIDE_WIDTH * 1.5}px;
+    height: auto;
+  }
+</style>
+</head>
+<body data-zoom="${defaultZoom}">
+  <div class="toolbar">
+    ${zoomButtons}
+  </div>
+  <div class="slides-container">
+    ${slideElements}
+  </div>
+  <script nonce="${nonce}">
+    (function() {
+      const vscode = acquireVsCodeApi();
+
+      // 前回の状態を復元
+      const previousState = vscode.getState();
+      if (previousState && previousState.zoom) {
+        applyZoom(previousState.zoom);
+      }
+
+      // Extension からのメッセージを受信
+      window.addEventListener('message', function(event) {
+        const message = event.data;
+        if (message.type === 'setZoom') {
+          applyZoom(message.zoom);
+        }
+      });
+
+      // ズームボタンのクリックイベント
+      document.querySelectorAll('.zoom-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var zoom = this.getAttribute('data-zoom');
+          applyZoom(zoom);
+          vscode.setState({ zoom: zoom });
+          vscode.postMessage({ type: 'zoomChanged', zoom: zoom });
+        });
+      });
+
+      var VALID_ZOOMS = ['fit','50','75','100','150'];
+      function applyZoom(zoom) {
+        if (VALID_ZOOMS.indexOf(zoom) === -1) zoom = 'fit';
+        document.body.setAttribute('data-zoom', zoom);
+        document.querySelectorAll('.zoom-btn').forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-zoom') === zoom);
+        });
+      }
+
+      // 初期状態のボタンをアクティブにする
+      var currentZoom = document.body.getAttribute('data-zoom');
+      applyZoom(currentZoom);
+    })();
+  </script>
 </body>
 </html>`;
 }
