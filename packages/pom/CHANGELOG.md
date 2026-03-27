@@ -1,5 +1,13 @@
 # @hirokisakabe/pom
 
+## 6.0.2
+
+### Patch Changes
+
+- [#539](https://github.com/hirokisakabe/pom/pull/539) [`7a51188`](https://github.com/hirokisakabe/pom/commit/7a511883a976508b256ac5df769974b97fb1633b) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - TypeScript を 6.0.2 に統一し、ルート package.json に巻き上げ
+
+- [#530](https://github.com/hirokisakabe/pom/pull/530) [`947bb8c`](https://github.com/hirokisakabe/pom/commit/947bb8c07bf2aaa35189efedf05a0fd97bb79ff9) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - shadow プロパティを basePOMNodeSchema に移動し、全ノードタイプで共通利用可能にした
+
 ## 6.0.1
 
 ### Patch Changes
