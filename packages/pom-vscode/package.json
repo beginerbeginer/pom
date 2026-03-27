@@ -26,6 +26,11 @@
         "command": "pom.openPreview",
         "title": "pom: Open Preview",
         "icon": "$(open-preview)"
+      },
+      {
+        "command": "pom.exportPptx",
+        "title": "pom: Export PPTX",
+        "icon": "$(desktop-download)"
       }
     ],
     "menus": {
@@ -33,6 +38,11 @@
         {
           "when": "resourceFilename =~ /\\.pom\\.md$/",
           "command": "pom.openPreview",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceFilename =~ /\\.pom\\.md$/",
+          "command": "pom.exportPptx",
           "group": "navigation"
         }
       ]
