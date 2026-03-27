@@ -56,7 +56,6 @@
     "knip": "^6.0.6",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
     "typescript-eslint": "^8.57.1",
     "vitest": "^4.1.0"
   }
