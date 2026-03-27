@@ -1,5 +1,13 @@
 # @hirokisakabe/pom
 
+## 6.0.3
+
+### Patch Changes
+
+- [#542](https://github.com/hirokisakabe/pom/pull/542) [`4fd7496`](https://github.com/hirokisakabe/pom/commit/4fd7496b676389c5fdcac2e3e6376f598e91b6d2) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: .prettierignore に dist/ を追加し、publish 時の fmt:check 失敗を修正
+
+- [#540](https://github.com/hirokisakabe/pom/pull/540) [`e410c35`](https://github.com/hirokisakabe/pom/commit/e410c35aaa6567d4830f15b077177262ee536820) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - fix: @resvg/resvg-js を @resvg/resvg-wasm に置き換え、pom-vscode でのネイティブバイナリ読み込みエラーを解消
+
 ## 6.0.2
 
 ### Patch Changes
