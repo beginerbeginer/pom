@@ -15,7 +15,7 @@ const EXTRA_FONT_MAPPING: Record<string, string> = {
   "Yu Gothic Light": "Noto Sans CJK JP",
 };
 
-export type PreviewResult =
+type PreviewResult =
   | { type: "empty" }
   | { type: "success"; svgs: string[] }
   | { type: "error"; message: string };

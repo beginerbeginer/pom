@@ -228,6 +228,7 @@ pnpm --filter @hirokisakabe/pom-md run lint         # ESLint
 pnpm --filter @hirokisakabe/pom-md run fmt          # Prettier formatting
 pnpm --filter @hirokisakabe/pom-md run fmt:check    # Format check
 pnpm --filter @hirokisakabe/pom-md run typecheck    # Type checking
+pnpm --filter @hirokisakabe/pom-md run knip         # Detect unused code
 pnpm --filter @hirokisakabe/pom-md run test:run     # Run tests
 ```
 
@@ -244,6 +245,7 @@ pnpm --filter pom-vscode run lint        # ESLint
 pnpm --filter pom-vscode run fmt         # Prettier formatting
 pnpm --filter pom-vscode run fmt:check   # Format check
 pnpm --filter pom-vscode run typecheck   # Type checking
+pnpm --filter pom-vscode run knip        # Detect unused code
 ```
 
 Pipeline: `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
