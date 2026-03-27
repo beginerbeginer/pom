@@ -1,7 +1,7 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "$schema": "https://unpkg.com/knip@6/schema.json",
   "project": ["src/**/*.ts", "*.mjs"],
-  "ignoreBinaries": ["eslint", "prettier", "tsc", "vitest"],
+  "ignoreBinaries": ["eslint", "knip", "prettier", "tsc", "vitest"],
   "ignoreDependencies": ["typescript-eslint", "vitest", "sharp"],
   "vitest": {
     "config": ["vitest.config.ts"]
