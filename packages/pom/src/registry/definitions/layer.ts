@@ -21,7 +21,7 @@ export const layerNodeDef: NodeDefinition = {
       w: layout.width,
       h: layout.height,
       children: await Promise.all(
-        n.children.map((child) => {
+        n.children.map(async (child): Promise<PositionedLayerChild> => {
           const childX = child.x ?? 0;
           const childY = child.y ?? 0;
 
@@ -56,13 +56,13 @@ export const layerNodeDef: NodeDefinition = {
           const adjustedParentX = absoluteX + childX - childLayout.left;
           const adjustedParentY = absoluteY + childY - childLayout.top;
 
-          return toPositioned(
+          return (await toPositioned(
             child,
             ctx,
             map,
             adjustedParentX,
             adjustedParentY,
-          ) as Promise<PositionedLayerChild>;
+          )) as PositionedLayerChild;
         }),
       ),
     } as PositionedNode;

@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ICON_DATA } from "./iconData.ts";
 
-let wasmInitialized = false;
+let wasmInitPromise: Promise<void> | undefined;
 
 /**
  * WASM バイナリのパスを解決する。
@@ -22,14 +22,17 @@ function resolveWasmPath(): string {
 }
 
 /**
- * WASM モジュールを初期化する。複数回呼んでも安全。
+ * WASM モジュールを初期化する。並行呼び出しでも安全（Promise をキャッシュ）。
  */
-async function ensureWasmInitialized(): Promise<void> {
-  if (wasmInitialized) return;
-  const wasmPath = resolveWasmPath();
-  const wasmBuffer = await readFile(wasmPath);
-  await initWasm(wasmBuffer);
-  wasmInitialized = true;
+function ensureWasmInitialized(): Promise<void> {
+  if (!wasmInitPromise) {
+    wasmInitPromise = (async () => {
+      const wasmPath = resolveWasmPath();
+      const wasmBuffer = await readFile(wasmPath);
+      await initWasm(wasmBuffer);
+    })();
+  }
+  return wasmInitPromise;
 }
 
 function buildIconSvg(name: string, size: number, color: string): string {
