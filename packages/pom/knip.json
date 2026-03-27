@@ -12,7 +12,7 @@
     "scripts/docs-images/**/*.ts",
     "scripts/**/*.ts"
   ],
-  "ignoreBinaries": ["eslint", "prettier", "vitest"],
+  "ignoreBinaries": ["eslint", "prettier", "tsc", "vitest"],
   "ignoreDependencies": ["typescript-eslint", "vitest"],
   "vitest": {
     "config": ["vitest.config.ts"]
