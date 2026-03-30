@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 6.1.0
+
+### Minor Changes
+
+- [#560](https://github.com/hirokisakabe/pom/pull/560) [`9ed325f`](https://github.com/hirokisakabe/pom/commit/9ed325f6240b6a54926ab94c85a6cb99af7fd667) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Text, Li, TableCell ノード内で `<B>`/`<I>` タグによる部分的な太字・斜体をサポート。pom-md で Markdown の `**bold**` / `*italic*` が反映されるようになった。
+
 ## 6.0.3
 
 ### Patch Changes
