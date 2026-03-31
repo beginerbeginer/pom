@@ -518,7 +518,61 @@ describe("parseXml", () => {
       });
     });
 
-    it("Text 内の B/I 以外の子要素はエラーになる", () => {
+    it("A タグを href 付きの run に変換する", () => {
+      const result = parseXml(
+        '<Text>通常 <A href="https://example.com">リンク</A> テキスト</Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 リンク テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "リンク", href: "https://example.com" },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("A タグと B タグのネストを処理する", () => {
+      const result = parseXml(
+        '<Text><A href="https://example.com"><B>太字リンク</B></A></Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "太字リンク",
+        runs: [{ text: "太字リンク", bold: true, href: "https://example.com" }],
+      });
+    });
+
+    it("Li 内の A タグを処理する", () => {
+      const result = parseXml(
+        '<Ul><Li>詳細は <A href="https://example.com">こちら</A></Li></Ul>',
+      );
+      const ulNode = result[0] as Record<string, unknown>;
+      const items = ulNode.items as Record<string, unknown>[];
+      expect(items[0]).toMatchObject({
+        text: "詳細は こちら",
+        runs: [
+          { text: "詳細は " },
+          { text: "こちら", href: "https://example.com" },
+        ],
+      });
+    });
+
+    it("TableCell 内の A タグを処理する", () => {
+      const result = parseXml(
+        '<Table><TableRow><TableCell><A href="https://example.com">リンク</A></TableCell></TableRow></Table>',
+      );
+      const tableNode = result[0] as Record<string, unknown>;
+      const rows = tableNode.rows as Record<string, unknown>[];
+      const cells = rows[0].cells as Record<string, unknown>[];
+      expect(cells[0]).toMatchObject({
+        text: "リンク",
+        runs: [{ text: "リンク", href: "https://example.com" }],
+      });
+    });
+
+    it("Text 内の B/I/A 以外の子要素はエラーになる", () => {
       expect(() => parseXml("<Text><B>ok</B><Foo>ng</Foo></Text>")).toThrow();
     });
   });

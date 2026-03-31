@@ -296,6 +296,57 @@ some content
     });
   });
 
+  describe("リンク", () => {
+    it("リンクを <A> タグに変換する", () => {
+      const result = parseMd("[リンク](https://example.com)");
+      expect(result).toContain(
+        '<Text><A href="https://example.com">リンク</A></Text>',
+      );
+    });
+
+    it("テキスト中のリンクを変換する", () => {
+      const result = parseMd("詳細は [こちら](https://example.com) を参照");
+      expect(result).toContain('<A href="https://example.com">こちら</A>');
+      expect(result).toContain("詳細は ");
+      expect(result).toContain(" を参照");
+    });
+
+    it("リンク内の太字を変換する", () => {
+      const result = parseMd("[**太字リンク**](https://example.com)");
+      expect(result).toContain('<A href="https://example.com">');
+      expect(result).toContain("<B>太字リンク</B>");
+    });
+
+    it("リンクの href をエスケープする", () => {
+      const result = parseMd("[リンク](https://example.com?a=1&b=2)");
+      expect(result).toContain("href=");
+      expect(result).toContain("&amp;");
+    });
+
+    it("リスト項目内のリンクを変換する", () => {
+      const result = parseMd("- [リンク](https://example.com)");
+      expect(result).toContain(
+        '<Li><A href="https://example.com">リンク</A></Li>',
+      );
+    });
+
+    it("テーブルセル内のリンクを変換する", () => {
+      const md = `| 名前 |
+| --- |
+| [リンク](https://example.com) |`;
+      const result = parseMd(md);
+      expect(result).toContain(
+        '<TableCell><A href="https://example.com">リンク</A></TableCell>',
+      );
+    });
+
+    it("見出し内のリンクを変換する", () => {
+      const result = parseMd("# [タイトル](https://example.com)");
+      expect(result).toContain('<A href="https://example.com">');
+      expect(result).toContain("タイトル");
+    });
+  });
+
   describe("複合テスト", () => {
     it("issue #435 のサンプルを変換できる", () => {
       const md = `---

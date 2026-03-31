@@ -52,6 +52,7 @@ function buildListTextItems(
             bold: run.bold ?? style.bold,
             italic: run.italic ?? style.italic,
             bullet: j === 0 ? bullet : false,
+            ...(run.href ? { hyperlink: { url: run.href } } : {}),
           },
         });
       }

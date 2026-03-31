@@ -43,6 +43,7 @@ export function renderTableNode(
             underline: convertUnderline(cell.underline),
             strike: convertStrike(cell.strike),
             highlight: cell.highlight,
+            ...(run.href ? { hyperlink: { url: run.href } } : {}),
           },
         }));
         return {
