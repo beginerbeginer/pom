@@ -29,6 +29,7 @@ export function renderTextNode(
         underline: convertUnderline(node.underline),
         strike: convertStrike(node.strike),
         highlight: node.highlight,
+        ...(run.href ? { hyperlink: { url: run.href } } : {}),
       },
     }));
     ctx.slide.addText(textItems, {

@@ -340,6 +340,7 @@ const textRunSchema = z.object({
   text: z.string(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
+  href: z.string().optional(),
 });
 
 // ===== Non-recursive Node Types =====

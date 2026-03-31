@@ -84,6 +84,11 @@ function extractInlineXml(tokens: Token[]): string {
       xml += "<I>";
     } else if (t.type === "em_close") {
       xml += "</I>";
+    } else if (t.type === "link_open") {
+      const href = t.attrGet("href") ?? "";
+      xml += `<A href="${escapeXml(href)}">`;
+    } else if (t.type === "link_close") {
+      xml += "</A>";
     }
   }
   return xml;

@@ -375,7 +375,7 @@ function getRawChildren(node: XmlElement): XmlNode[] {
   return (node[tagName] as XmlNode[] | undefined) ?? [];
 }
 
-const INLINE_FORMAT_TAGS = new Set(["B", "I"]);
+const INLINE_FORMAT_TAGS = new Set(["B", "I", "A"]);
 
 function hasInlineFormatChildren(childElements: XmlElement[]): boolean {
   return (
@@ -384,12 +384,18 @@ function hasInlineFormatChildren(childElements: XmlElement[]): boolean {
   );
 }
 
-type TextRunResult = { text: string; bold?: boolean; italic?: boolean };
+type TextRunResult = {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  href?: string;
+};
 
 function extractTextRuns(
   children: XmlNode[],
   inheritBold?: boolean,
   inheritItalic?: boolean,
+  inheritHref?: string,
 ): TextRunResult[] {
   const runs: TextRunResult[] = [];
   for (const child of children) {
@@ -397,14 +403,24 @@ function extractTextRuns(
       const run: TextRunResult = { text: child["#text"] };
       if (inheritBold) run.bold = true;
       if (inheritItalic) run.italic = true;
+      if (inheritHref) run.href = inheritHref;
       runs.push(run);
     } else {
       const tag = getTagName(child);
       const innerChildren = getRawChildren(child);
       if (tag === "B") {
-        runs.push(...extractTextRuns(innerChildren, true, inheritItalic));
+        runs.push(
+          ...extractTextRuns(innerChildren, true, inheritItalic, inheritHref),
+        );
       } else if (tag === "I") {
-        runs.push(...extractTextRuns(innerChildren, inheritBold, true));
+        runs.push(
+          ...extractTextRuns(innerChildren, inheritBold, true, inheritHref),
+        );
+      } else if (tag === "A") {
+        const href = getAttributes(child).href ?? "";
+        runs.push(
+          ...extractTextRuns(innerChildren, inheritBold, inheritItalic, href),
+        );
       }
     }
   }
@@ -917,12 +933,12 @@ function convertTextInlineChildren(
   errors: string[],
   node?: XmlElement,
 ): void {
-  // B/I 以外の子要素がある場合はエラー
+  // B/I/A 以外の子要素がある場合はエラー
   for (const el of childElements) {
     const tag = getTagName(el);
     if (!INLINE_FORMAT_TAGS.has(tag)) {
       errors.push(
-        `<Text>: Unexpected child element <${tag}>. Only <B> and <I> are allowed inside <Text>`,
+        `<Text>: Unexpected child element <${tag}>. Only <B>, <I>, and <A> are allowed inside <Text>`,
       );
       return;
     }
