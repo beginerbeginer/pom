@@ -1,5 +1,13 @@
 # @hirokisakabe/pom-md
 
+## 0.3.0
+
+### Minor Changes
+
+- [#567](https://github.com/hirokisakabe/pom/pull/567) [`89b844d`](https://github.com/hirokisakabe/pom/commit/89b844df5802787adf7aa0a5c80e763cfc53aa03) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - リンク（ハイパーリンク）のサポートを追加
+  - pom core: `<A href="...">` タグによるインラインハイパーリンクをサポート。TextRun に `href` プロパティを追加し、pptxgenjs の `hyperlink` 機能と連携
+  - pom-md: Markdown のリンク記法 `[text](url)` を `<A href="...">` タグに変換
+
 ## 0.2.0
 
 ### Minor Changes
