@@ -87,13 +87,14 @@ Positions children using absolute coordinates. Children require `x` and `y`. Sou
 
 Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
-**Inline formatting:** Use `<B>` and `<I>` child elements for partial bold/italic:
+**Inline formatting:** Use `<B>`, `<I>`, and `<A>` child elements for partial bold/italic and hyperlinks:
 
 ```xml
 <Text fontSize="16">Normal <B>bold</B> and <I>italic</I> text</Text>
+<Text fontSize="16">Visit <A href="https://example.com">our site</A></Text>
 ```
 
-`<B>` and `<I>` also work inside `<Li>` and `<TableCell>`.
+`<B>`, `<I>`, and `<A>` also work inside `<Li>` and `<TableCell>`.
 
 ### Ul (Bullet List)
 
@@ -441,9 +442,9 @@ Others:
 | ---------------- | --------------------------------------------------- | ---------------------------- |
 | `<Chart>`        | `<ChartSeries>` > `<ChartDataPoint>`                | `data`                       |
 | `<Table>`        | `<TableColumn>`, `<TableRow>` > `<TableCell>`       | `columns`, `rows`            |
-| `<Text>`         | `<B>`, `<I>`                                        | `runs` (inline formatting)   |
-| `<Li>`           | `<B>`, `<I>`                                        | `runs` (inline formatting)   |
-| `<TableCell>`    | `<B>`, `<I>`                                        | `runs` (inline formatting)   |
+| `<Text>`         | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
+| `<Li>`           | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
+| `<TableCell>`    | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
 | `<Timeline>`     | `<TimelineItem>`                                    | `items`                      |
 | `<Matrix>`       | `<MatrixAxes>`, `<MatrixQuadrants>`, `<MatrixItem>` | `axes`, `quadrants`, `items` |
 | `<Tree>`         | `<TreeItem>` (recursive)                            | `data`                       |
