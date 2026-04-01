@@ -57,7 +57,7 @@ A node for displaying text.
 
 **Inline Formatting:**
 
-Use `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` child elements for partial bold/italic/underline/strikethrough/highlight and hyperlinks within a single text node:
+Use `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` child elements for partial bold/italic/underline/strikethrough/highlight/color and hyperlinks within a single text node:
 
 ```xml
 <Text fontSize="16">Normal <B>bold</B> and <I>italic</I> text</Text>
@@ -66,6 +66,8 @@ Use `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` child elements for partial b
 <Text fontSize="16">Normal <U>underline</U> and <S>strikethrough</S> text</Text>
 <Text fontSize="16"><Mark color="FFFF00">highlighted</Mark> text</Text>
 <Text fontSize="16"><B><U>Bold underline nested</U></B></Text>
+<Text fontSize="16">Normal <Span color="FF0000">red text</Span> normal</Text>
+<Text fontSize="16"><B><Span color="1D4ED8">bold blue</Span></B></Text>
 ```
 
 See [Styling Guide](./styling-guide.md#font-size-guide) for recommended font sizes.
@@ -110,7 +112,7 @@ A node for displaying bullet-point lists. Use `<Li>` child elements to define li
 | `highlight`              | hex (highlight color)      |
 | `fontFamily`             | string                     |
 
-Li also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` inline formatting: `<Li>Normal <B>bold</B> item</Li>`, `<Li>See <A href="https://example.com">link</A></Li>`, `<Li><U>underline</U> item</Li>`
+Li also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` inline formatting: `<Li>Normal <B>bold</B> item</Li>`, `<Li>See <A href="https://example.com">link</A></Li>`, `<Li><U>underline</U> item</Li>`, `<Li><Span color="FF0000">red</Span> item</Li>`
 
 ### 3. Ol (Ordered List)
 
@@ -175,7 +177,7 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 - `<TableColumn>`: `width` (omit for even distribution)
 - `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` inline formatting
+- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` inline formatting
 
 | Attribute          | Values               |
 | ------------------ | -------------------- |

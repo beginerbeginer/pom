@@ -375,7 +375,7 @@ function getRawChildren(node: XmlElement): XmlNode[] {
   return (node[tagName] as XmlNode[] | undefined) ?? [];
 }
 
-const INLINE_FORMAT_TAGS = new Set(["B", "I", "A", "U", "S", "Mark"]);
+const INLINE_FORMAT_TAGS = new Set(["B", "I", "A", "U", "S", "Mark", "Span"]);
 
 function hasInlineFormatChildren(childElements: XmlElement[]): boolean {
   return (
@@ -391,6 +391,7 @@ type TextRunResult = {
   underline?: boolean;
   strike?: boolean;
   highlight?: string;
+  color?: string;
   href?: string;
 };
 
@@ -402,6 +403,7 @@ function extractTextRuns(
   inheritUnderline?: boolean,
   inheritStrike?: boolean,
   inheritHighlight?: string,
+  inheritColor?: string,
 ): TextRunResult[] {
   const runs: TextRunResult[] = [];
   for (const child of children) {
@@ -412,6 +414,7 @@ function extractTextRuns(
       if (inheritUnderline) run.underline = true;
       if (inheritStrike) run.strike = true;
       if (inheritHighlight) run.highlight = inheritHighlight;
+      if (inheritColor) run.color = inheritColor;
       if (inheritHref) run.href = inheritHref;
       runs.push(run);
     } else {
@@ -427,6 +430,7 @@ function extractTextRuns(
             inheritUnderline,
             inheritStrike,
             inheritHighlight,
+            inheritColor,
           ),
         );
       } else if (tag === "I") {
@@ -439,6 +443,7 @@ function extractTextRuns(
             inheritUnderline,
             inheritStrike,
             inheritHighlight,
+            inheritColor,
           ),
         );
       } else if (tag === "A") {
@@ -452,6 +457,7 @@ function extractTextRuns(
             inheritUnderline,
             inheritStrike,
             inheritHighlight,
+            inheritColor,
           ),
         );
       } else if (tag === "U") {
@@ -464,6 +470,7 @@ function extractTextRuns(
             true,
             inheritStrike,
             inheritHighlight,
+            inheritColor,
           ),
         );
       } else if (tag === "S") {
@@ -476,6 +483,7 @@ function extractTextRuns(
             inheritUnderline,
             true,
             inheritHighlight,
+            inheritColor,
           ),
         );
       } else if (tag === "Mark") {
@@ -490,6 +498,23 @@ function extractTextRuns(
             inheritUnderline,
             inheritStrike,
             color,
+            inheritColor,
+          ),
+        );
+      } else if (tag === "Span") {
+        const rawSpanColor = getAttributes(child).color;
+        const spanColor =
+          rawSpanColor && rawSpanColor.trim() ? rawSpanColor : inheritColor;
+        runs.push(
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            inheritItalic,
+            inheritHref,
+            inheritUnderline,
+            inheritStrike,
+            inheritHighlight,
+            spanColor,
           ),
         );
       }
@@ -1009,7 +1034,7 @@ function convertTextInlineChildren(
     const tag = getTagName(el);
     if (!INLINE_FORMAT_TAGS.has(tag)) {
       errors.push(
-        `<Text>: Unexpected child element <${tag}>. Only <B>, <I>, <A>, <U>, <S>, and <Mark> are allowed inside <Text>`,
+        `<Text>: Unexpected child element <${tag}>. Only <B>, <I>, <A>, <U>, <S>, <Mark>, and <Span> are allowed inside <Text>`,
       );
       return;
     }

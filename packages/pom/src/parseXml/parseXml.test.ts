@@ -691,6 +691,87 @@ describe("parseXml", () => {
       });
     });
 
+    it("Span タグをインラインカラーの run に変換する", () => {
+      const result = parseXml(
+        '<Text>通常 <Span color="FF0000">赤色</Span> テキスト</Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 赤色 テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "赤色", color: "FF0000" },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("Span タグと B タグをネストできる", () => {
+      const result = parseXml(
+        '<Text><B><Span color="1D4ED8">太字で青</Span></B></Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "太字で青",
+        runs: [{ text: "太字で青", bold: true, color: "1D4ED8" }],
+      });
+    });
+
+    it("Li 内の Span タグを処理する", () => {
+      const result = parseXml(
+        '<Ul><Li><Span color="FF0000">赤</Span> アイテム</Li></Ul>',
+      );
+      const ulNode = result[0] as Record<string, unknown>;
+      const items = ulNode.items as Record<string, unknown>[];
+      expect(items[0]).toMatchObject({
+        text: "赤 アイテム",
+        runs: [{ text: "赤", color: "FF0000" }, { text: " アイテム" }],
+      });
+    });
+
+    it("Span ネスト時に内側が color 未指定なら親の色を継承する", () => {
+      const result = parseXml(
+        '<Text><Span color="FF0000">A<Span>B</Span>C</Span></Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "ABC",
+        runs: [
+          { text: "A", color: "FF0000" },
+          { text: "B", color: "FF0000" },
+          { text: "C", color: "FF0000" },
+        ],
+      });
+    });
+
+    it("Span ネスト時に内側が color 指定なら上書きする", () => {
+      const result = parseXml(
+        '<Text><Span color="FF0000">A<Span color="1D4ED8">B</Span>C</Span></Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "ABC",
+        runs: [
+          { text: "A", color: "FF0000" },
+          { text: "B", color: "1D4ED8" },
+          { text: "C", color: "FF0000" },
+        ],
+      });
+    });
+
+    it("TableCell 内の Span タグを処理する", () => {
+      const result = parseXml(
+        '<Table><TableRow><TableCell><Span color="1D4ED8">青</Span> セル</TableCell></TableRow></Table>',
+      );
+      const tableNode = result[0] as Record<string, unknown>;
+      const rows = tableNode.rows as Record<string, unknown>[];
+      const cells = rows[0].cells as Record<string, unknown>[];
+      expect(cells[0]).toMatchObject({
+        text: "青 セル",
+        runs: [{ text: "青", color: "1D4ED8" }, { text: " セル" }],
+      });
+    });
+
     it("Text 内のインラインフォーマットタグ以外の子要素はエラーになる", () => {
       expect(() => parseXml("<Text><B>ok</B><Foo>ng</Foo></Text>")).toThrow();
     });

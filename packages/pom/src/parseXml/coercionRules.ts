@@ -518,4 +518,5 @@ export const CHILD_ELEMENT_COERCION_MAP: Record<
   },
   B: {},
   I: {},
+  Span: { color: "string" },
 };

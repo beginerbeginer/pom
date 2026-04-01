@@ -37,7 +37,7 @@ export function renderTableNode(
           text: run.text,
           options: {
             fontSize: pxToPt(cell.fontSize ?? 18),
-            color: cell.color,
+            color: run.color ?? cell.color,
             bold: run.bold ?? cell.bold,
             italic: run.italic ?? cell.italic,
             underline: convertUnderline(run.underline ?? cell.underline),
