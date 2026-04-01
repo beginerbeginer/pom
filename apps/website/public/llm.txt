@@ -87,14 +87,16 @@ Positions children using absolute coordinates. Children require `x` and `y`. Sou
 
 Font size guide: Title 28-40 / Heading 18-24 / Body 13-16 / Caption 10-12
 
-**Inline formatting:** Use `<B>`, `<I>`, and `<A>` child elements for partial bold/italic and hyperlinks:
+**Inline formatting:** Use `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` child elements for partial bold/italic/underline/strikethrough/highlight and hyperlinks:
 
 ```xml
 <Text fontSize="16">Normal <B>bold</B> and <I>italic</I> text</Text>
 <Text fontSize="16">Visit <A href="https://example.com">our site</A></Text>
+<Text fontSize="16">Normal <U>underline</U> and <S>strikethrough</S> text</Text>
+<Text fontSize="16"><Mark color="FFFF00">highlighted</Mark> text</Text>
 ```
 
-`<B>`, `<I>`, and `<A>` also work inside `<Li>` and `<TableCell>`.
+`<B>`, `<I>`, `<A>`, `<U>`, `<S>`, and `<Mark>` also work inside `<Li>` and `<TableCell>`.
 
 ### Ul (Bullet List)
 
@@ -442,9 +444,9 @@ Others:
 | ---------------- | --------------------------------------------------- | ---------------------------- |
 | `<Chart>`        | `<ChartSeries>` > `<ChartDataPoint>`                | `data`                       |
 | `<Table>`        | `<TableColumn>`, `<TableRow>` > `<TableCell>`       | `columns`, `rows`            |
-| `<Text>`         | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
-| `<Li>`           | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
-| `<TableCell>`    | `<B>`, `<I>`, `<A>`                                 | `runs` (inline formatting)   |
+| `<Text>`         | `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`         | `runs` (inline formatting)   |
+| `<Li>`           | `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`         | `runs` (inline formatting)   |
+| `<TableCell>`    | `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`         | `runs` (inline formatting)   |
 | `<Timeline>`     | `<TimelineItem>`                                    | `items`                      |
 | `<Matrix>`       | `<MatrixAxes>`, `<MatrixQuadrants>`, `<MatrixItem>` | `axes`, `quadrants`, `items` |
 | `<Tree>`         | `<TreeItem>` (recursive)                            | `data`                       |

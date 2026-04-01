@@ -40,9 +40,9 @@ export function renderTableNode(
             color: cell.color,
             bold: run.bold ?? cell.bold,
             italic: run.italic ?? cell.italic,
-            underline: convertUnderline(cell.underline),
-            strike: convertStrike(cell.strike),
-            highlight: cell.highlight,
+            underline: convertUnderline(run.underline ?? cell.underline),
+            strike: convertStrike(run.strike ?? cell.strike),
+            highlight: run.highlight ?? cell.highlight,
             ...(run.href ? { hyperlink: { url: run.href } } : {}),
           },
         }));
