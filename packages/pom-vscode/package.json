@@ -3,7 +3,7 @@
   "private": true,
   "displayName": "pom",
   "description": "Live preview for pom-md / pom XML presentations",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "hirokisakabe",
   "license": "MIT",
   "repository": {
@@ -15,9 +15,21 @@
     "node": ">=20",
     "vscode": "^1.85.0"
   },
+  "icon": "icon.png",
   "categories": [
-    "Other"
+    "Visualization"
   ],
+  "keywords": [
+    "presentation",
+    "powerpoint",
+    "pptx",
+    "markdown",
+    "preview"
+  ],
+  "galleryBanner": {
+    "color": "#5B21B6",
+    "theme": "dark"
+  },
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
