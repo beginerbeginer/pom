@@ -83,7 +83,7 @@ Control line spacing with `lineHeight` (multiplier, default: `1.3`).
 
 ### Inline Formatting
 
-Use `<B>`, `<I>`, `<U>`, `<S>`, and `<Mark>` child elements to apply bold, italic, underline, strikethrough, or highlight to part of the text:
+Use `<B>`, `<I>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` child elements to apply bold, italic, underline, strikethrough, highlight, or color to part of the text:
 
 ```xml
 <Text fontSize="16">Normal <B>bold part</B> normal</Text>
@@ -94,6 +94,8 @@ Use `<B>`, `<I>`, `<U>`, `<S>`, and `<Mark>` child elements to apply bold, itali
 <Text fontSize="16">Normal <S>strikethrough part</S> normal</Text>
 <Text fontSize="16"><Mark color="FFFF00">highlighted part</Mark> normal</Text>
 <Text fontSize="16"><B><U>Bold underline (nested)</U></B></Text>
+<Text fontSize="16">Normal <Span color="FF0000">red part</Span> normal</Text>
+<Text fontSize="16"><B><Span color="1D4ED8">bold blue</Span></B></Text>
 ```
 
 This also works inside `<Li>` and `<TableCell>`:

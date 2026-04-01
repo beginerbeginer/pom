@@ -49,6 +49,7 @@ function buildListTextItems(
           text,
           options: {
             ...baseOptions,
+            color: run.color ?? style.color,
             bold: run.bold ?? style.bold,
             italic: run.italic ?? style.italic,
             underline: convertUnderline(run.underline ?? style.underline),

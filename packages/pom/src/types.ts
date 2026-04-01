@@ -343,6 +343,7 @@ const textRunSchema = z.object({
   underline: z.boolean().optional(),
   strike: z.boolean().optional(),
   highlight: z.string().optional(),
+  color: z.string().optional(),
   href: z.string().optional(),
 });
 

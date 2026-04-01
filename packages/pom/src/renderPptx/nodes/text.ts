@@ -23,7 +23,7 @@ export function renderTextNode(
       options: {
         fontSize: pxToPt(fontSizePx),
         fontFace: fontFamily,
-        color: node.color,
+        color: run.color ?? node.color,
         bold: run.bold ?? node.bold,
         italic: run.italic ?? node.italic,
         underline: convertUnderline(run.underline ?? node.underline),

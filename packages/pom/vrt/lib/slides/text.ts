@@ -118,6 +118,14 @@ export const page36InlineFormattingXml = `
     <Text fontSize="16"><B><U>Bold underline nested</U></B></Text>
     <Text fontSize="16"><Mark>Default highlight color</Mark></Text>
   </VStack>
+  <!-- Text with Span (inline color) -->
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
+    <Text fontSize="14" bold="true">Text with inline Span (color):</Text>
+    <Text fontSize="16">Normal <Span color="FF0000">red text</Span> normal</Text>
+    <Text fontSize="16">Normal <Span color="1D4ED8">blue text</Span> and <Span color="16A34A">green text</Span></Text>
+    <Text fontSize="16"><B><Span color="FF0000">bold red</Span></B></Text>
+    <Text fontSize="16"><Span color="1D4ED8"><I>italic blue</I></Span></Text>
+  </VStack>
   <!-- Li with B/I -->
   <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
     <Text fontSize="14" bold="true">Ul with inline B/I/U/S/Mark:</Text>
@@ -128,6 +136,7 @@ export const page36InlineFormattingXml = `
       <Li>Normal <U>underline</U> item</Li>
       <Li>Normal <S>strike</S> item</Li>
       <Li><Mark color="00FF00">highlighted</Mark> item</Li>
+      <Li><Span color="FF0000">red</Span> and <Span color="1D4ED8">blue</Span> item</Li>
     </Ul>
   </VStack>
   <!-- Table with B/I/U/S/Mark -->
@@ -151,6 +160,10 @@ export const page36InlineFormattingXml = `
       <TableRow>
         <TableCell fontSize="13"><Mark color="FFFF00">Highlight</Mark> cell</TableCell>
         <TableCell fontSize="13"><B><U><Mark color="00FFFF">All combined</Mark></U></B></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell fontSize="13"><Span color="FF0000">Red</Span> cell</TableCell>
+        <TableCell fontSize="13"><B><Span color="1D4ED8">Bold blue</Span></B> cell</TableCell>
       </TableRow>
     </Table>
   </VStack>
