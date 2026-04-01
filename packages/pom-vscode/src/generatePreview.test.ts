@@ -41,6 +41,7 @@ describe("generatePreviewSvg", () => {
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3])),
       },
+      diagnostics: [],
     } as never);
     mockConvertPptxToSvg.mockResolvedValue([
       { svg: '<svg width="1280" height="720">slide1</svg>' },
@@ -60,6 +61,7 @@ describe("generatePreviewSvg", () => {
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
       },
+      diagnostics: [],
     } as never);
     mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
 
@@ -87,6 +89,7 @@ describe("generatePreviewSvg", () => {
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
       },
+      diagnostics: [],
     } as never);
     mockConvertPptxToSvg.mockResolvedValue([
       { svg: "<svg>s1</svg>" },
@@ -149,6 +152,7 @@ describe("generatePreviewSvg", () => {
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
       },
+      diagnostics: [],
     } as never);
     mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
 
@@ -183,12 +187,50 @@ describe("generatePreviewSvg", () => {
     });
   });
 
+  it("diagnostics がある場合 success の diagnostics に含まれる", async () => {
+    const diags = [
+      { code: "AUTOFIT_OVERFLOW" as const, message: "Slide 1 overflows" },
+    ];
+    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockBuildPptx.mockResolvedValue({
+      pptx: {
+        write: vi.fn().mockResolvedValue(new Uint8Array([1])),
+      },
+      diagnostics: diags,
+    } as never);
+    mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
+
+    const result = await generatePreviewSvg("md", []);
+    expect(result.type).toBe("success");
+    if (result.type === "success") {
+      expect(result.diagnostics).toEqual(diags);
+    }
+  });
+
+  it("diagnostics が空の場合 success の diagnostics も空配列になる", async () => {
+    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockBuildPptx.mockResolvedValue({
+      pptx: {
+        write: vi.fn().mockResolvedValue(new Uint8Array([1])),
+      },
+      diagnostics: [],
+    } as never);
+    mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
+
+    const result = await generatePreviewSvg("md", []);
+    expect(result.type).toBe("success");
+    if (result.type === "success") {
+      expect(result.diagnostics).toEqual([]);
+    }
+  });
+
   it("pptx.write が Uint8Array 以外を返した場合 error を返す", async () => {
     mockParseMd.mockReturnValue("<Text>X</Text>");
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue("not-uint8array"),
       },
+      diagnostics: [],
     } as never);
 
     const result = await generatePreviewSvg("md", []);

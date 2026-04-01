@@ -1,5 +1,5 @@
 import { parseMd } from "@hirokisakabe/pom-md";
-import { buildPptx } from "@hirokisakabe/pom";
+import { buildPptx, type Diagnostic } from "@hirokisakabe/pom";
 import { convertPptxToSvg } from "pptx-glimpse";
 
 export const SLIDE_WIDTH = 1280;
@@ -20,7 +20,7 @@ const EXTRA_FONT_MAPPING: Record<string, string> = {
 
 type PreviewResult =
   | { type: "empty" }
-  | { type: "success"; svgs: string[] }
+  | { type: "success"; svgs: string[]; diagnostics: Diagnostic[] }
   | { type: "error"; message: string };
 
 /**
@@ -37,7 +37,7 @@ export async function generatePreviewSvg(
       return { type: "empty" };
     }
 
-    const { pptx } = await buildPptx(
+    const { pptx, diagnostics } = await buildPptx(
       xml,
       { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
@@ -55,7 +55,7 @@ export async function generatePreviewSvg(
     });
     const svgs = slides.map((s: { svg: string }) => s.svg);
 
-    return { type: "success", svgs };
+    return { type: "success", svgs, diagnostics };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     return { type: "error", message };

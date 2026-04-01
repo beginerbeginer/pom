@@ -1,6 +1,7 @@
 import * as crypto from "crypto";
 import * as path from "path";
 import * as vscode from "vscode";
+import type { Diagnostic, DiagnosticCode } from "@hirokisakabe/pom";
 import {
   generatePreviewSvg,
   buildHtml,
@@ -9,6 +10,26 @@ import {
   type ZoomLevel,
 } from "./generatePreview.js";
 import { detectFormat } from "./fileUtils.js";
+
+const SEVERITY_MAP: Record<DiagnosticCode, vscode.DiagnosticSeverity> = {
+  IMAGE_MEASURE_FAILED: vscode.DiagnosticSeverity.Error,
+  IMAGE_NOT_PREFETCHED: vscode.DiagnosticSeverity.Error,
+  AUTOFIT_OVERFLOW: vscode.DiagnosticSeverity.Warning,
+  SCALE_BELOW_THRESHOLD: vscode.DiagnosticSeverity.Warning,
+};
+
+function toVsDiagnostics(items: Diagnostic[]): vscode.Diagnostic[] {
+  const range = new vscode.Range(0, 0, 0, 0);
+  return items.map((d) => {
+    const diag = new vscode.Diagnostic(
+      range,
+      `[${d.code}] ${d.message}`,
+      SEVERITY_MAP[d.code],
+    );
+    diag.source = "pom";
+    return diag;
+  });
+}
 
 const DEBOUNCE_MS = 500;
 
@@ -27,6 +48,7 @@ function getDefaultZoom(): ZoomLevel {
 
 export class PomPreviewPanel {
   private static instance: PomPreviewPanel | undefined;
+  private static diagnosticCollection: vscode.DiagnosticCollection | undefined;
   private readonly panel: vscode.WebviewPanel;
   private readonly fontDirs: string[];
   private documentUri: vscode.Uri;
@@ -34,6 +56,12 @@ export class PomPreviewPanel {
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
   private renderGeneration = 0;
   private disposed = false;
+
+  static setDiagnosticCollection(
+    collection: vscode.DiagnosticCollection,
+  ): void {
+    PomPreviewPanel.diagnosticCollection = collection;
+  }
 
   private constructor(
     panel: vscode.WebviewPanel,
@@ -48,6 +76,7 @@ export class PomPreviewPanel {
     this.panel.onDidDispose(() => {
       this.disposed = true;
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
+      PomPreviewPanel.diagnosticCollection?.delete(this.documentUri);
       PomPreviewPanel.instance = undefined;
     });
 
@@ -59,6 +88,10 @@ export class PomPreviewPanel {
     document: vscode.TextDocument,
   ): void {
     if (PomPreviewPanel.instance) {
+      const oldUri = PomPreviewPanel.instance.documentUri;
+      if (oldUri.toString() !== document.uri.toString()) {
+        PomPreviewPanel.diagnosticCollection?.delete(oldUri);
+      }
       PomPreviewPanel.instance.documentUri = document.uri;
       PomPreviewPanel.instance.format = detectFormat(document.fileName);
       PomPreviewPanel.instance.panel.reveal(vscode.ViewColumn.Beside);
@@ -110,12 +143,22 @@ export class PomPreviewPanel {
     switch (result.type) {
       case "empty":
         this.panel.webview.html = buildHtml([], nonce, defaultZoom);
+        PomPreviewPanel.diagnosticCollection?.delete(this.documentUri);
         break;
       case "success":
         this.panel.webview.html = buildHtml(result.svgs, nonce, defaultZoom);
+        if (result.diagnostics.length > 0) {
+          PomPreviewPanel.diagnosticCollection?.set(
+            this.documentUri,
+            toVsDiagnostics(result.diagnostics),
+          );
+        } else {
+          PomPreviewPanel.diagnosticCollection?.delete(this.documentUri);
+        }
         break;
       case "error":
         this.panel.webview.html = buildErrorHtml(result.message);
+        PomPreviewPanel.diagnosticCollection?.delete(this.documentUri);
         break;
     }
   }
