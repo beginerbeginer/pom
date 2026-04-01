@@ -82,6 +82,7 @@
     "knip": "knip",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:integration": "node esbuild.mjs --test && vscode-test",
     "test:vsix": "node esbuild.mjs --test && vsce package --no-dependencies && node run-vsix-test.mjs",
     "test:vsix:clean": "rm -f *.vsix"
@@ -92,6 +93,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22",
     "@types/vscode": "^1.85.0",
+    "@vitest/coverage-v8": "^4.1.2",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.0.0",

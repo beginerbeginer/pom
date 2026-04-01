@@ -9,6 +9,10 @@ export default defineConfig({
     environment: "happy-dom",
     setupFiles: ["./vitest.setup.ts"],
     include: ["playground/**/*.test.{ts,tsx}"],
+    coverage: {
+      include: ["playground/**/*.{ts,tsx}"],
+      reporter: ["text", "html", "json", "json-summary"],
+    },
   },
   resolve: {
     alias: {

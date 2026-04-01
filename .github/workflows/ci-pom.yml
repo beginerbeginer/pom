@@ -94,6 +94,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key != ''
         uses: davelosert/vitest-coverage-report-action@v2
         with:
+          name: pom
           json-summary-path: packages/pom/coverage/coverage-summary.json
           json-summary-compare-path: __main_coverage/coverage-summary.json
 
@@ -101,6 +102,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key == ''
         uses: davelosert/vitest-coverage-report-action@v2
         with:
+          name: pom
           json-summary-path: packages/pom/coverage/coverage-summary.json
 
       - run: pnpm exec tsx main.ts

@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
     defaults:
       run:
         working-directory: packages/pom-md
@@ -43,5 +44,49 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run knip
       - run: pnpm run typecheck
-      - run: pnpm run test:run
+      - run: pnpm run test:coverage
+
+      - name: Cache main branch coverage
+        if: github.event_name == 'push'
+        uses: actions/cache/save@v4
+        with:
+          path: packages/pom-md/coverage/coverage-summary.json
+          key: coverage-pom-md-main-${{ github.sha }}
+
+      - name: Backup PR coverage
+        if: github.event_name == 'pull_request'
+        run: cp coverage/coverage-summary.json /tmp/pr-coverage-summary-pom-md.json
+
+      - name: Restore main branch coverage
+        id: restore-main-coverage
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: packages/pom-md/coverage/coverage-summary.json
+          key: coverage-pom-md-main-
+          restore-keys: coverage-pom-md-main-
+
+      - name: Prepare coverage for comparison
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key != ''
+        working-directory: .
+        run: |
+          mkdir -p __main_coverage_pom_md
+          mv packages/pom-md/coverage/coverage-summary.json __main_coverage_pom_md/
+          cp /tmp/pr-coverage-summary-pom-md.json packages/pom-md/coverage/coverage-summary.json
+
+      - name: Coverage summary comment (with comparison)
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key != ''
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: pom-md
+          json-summary-path: packages/pom-md/coverage/coverage-summary.json
+          json-summary-compare-path: __main_coverage_pom_md/coverage-summary.json
+
+      - name: Coverage summary comment (without comparison)
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key == ''
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: pom-md
+          json-summary-path: packages/pom-md/coverage/coverage-summary.json
+
       - run: pnpm run build
