@@ -11,3 +11,4 @@ vitest.config.ts
 run-vsix-test.mjs
 test-vsix-harness/**
 *.vsix
+icon.svg
