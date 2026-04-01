@@ -375,7 +375,7 @@ function getRawChildren(node: XmlElement): XmlNode[] {
   return (node[tagName] as XmlNode[] | undefined) ?? [];
 }
 
-const INLINE_FORMAT_TAGS = new Set(["B", "I", "A"]);
+const INLINE_FORMAT_TAGS = new Set(["B", "I", "A", "U", "S", "Mark"]);
 
 function hasInlineFormatChildren(childElements: XmlElement[]): boolean {
   return (
@@ -388,6 +388,9 @@ type TextRunResult = {
   text: string;
   bold?: boolean;
   italic?: boolean;
+  underline?: boolean;
+  strike?: boolean;
+  highlight?: string;
   href?: string;
 };
 
@@ -396,6 +399,9 @@ function extractTextRuns(
   inheritBold?: boolean,
   inheritItalic?: boolean,
   inheritHref?: string,
+  inheritUnderline?: boolean,
+  inheritStrike?: boolean,
+  inheritHighlight?: string,
 ): TextRunResult[] {
   const runs: TextRunResult[] = [];
   for (const child of children) {
@@ -403,6 +409,9 @@ function extractTextRuns(
       const run: TextRunResult = { text: child["#text"] };
       if (inheritBold) run.bold = true;
       if (inheritItalic) run.italic = true;
+      if (inheritUnderline) run.underline = true;
+      if (inheritStrike) run.strike = true;
+      if (inheritHighlight) run.highlight = inheritHighlight;
       if (inheritHref) run.href = inheritHref;
       runs.push(run);
     } else {
@@ -410,16 +419,78 @@ function extractTextRuns(
       const innerChildren = getRawChildren(child);
       if (tag === "B") {
         runs.push(
-          ...extractTextRuns(innerChildren, true, inheritItalic, inheritHref),
+          ...extractTextRuns(
+            innerChildren,
+            true,
+            inheritItalic,
+            inheritHref,
+            inheritUnderline,
+            inheritStrike,
+            inheritHighlight,
+          ),
         );
       } else if (tag === "I") {
         runs.push(
-          ...extractTextRuns(innerChildren, inheritBold, true, inheritHref),
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            true,
+            inheritHref,
+            inheritUnderline,
+            inheritStrike,
+            inheritHighlight,
+          ),
         );
       } else if (tag === "A") {
         const href = getAttributes(child).href ?? "";
         runs.push(
-          ...extractTextRuns(innerChildren, inheritBold, inheritItalic, href),
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            inheritItalic,
+            href,
+            inheritUnderline,
+            inheritStrike,
+            inheritHighlight,
+          ),
+        );
+      } else if (tag === "U") {
+        runs.push(
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            inheritItalic,
+            inheritHref,
+            true,
+            inheritStrike,
+            inheritHighlight,
+          ),
+        );
+      } else if (tag === "S") {
+        runs.push(
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            inheritItalic,
+            inheritHref,
+            inheritUnderline,
+            true,
+            inheritHighlight,
+          ),
+        );
+      } else if (tag === "Mark") {
+        const rawColor = getAttributes(child).color;
+        const color = rawColor && rawColor.trim() ? rawColor : "FFFF00";
+        runs.push(
+          ...extractTextRuns(
+            innerChildren,
+            inheritBold,
+            inheritItalic,
+            inheritHref,
+            inheritUnderline,
+            inheritStrike,
+            color,
+          ),
         );
       }
     }
@@ -933,12 +1004,12 @@ function convertTextInlineChildren(
   errors: string[],
   node?: XmlElement,
 ): void {
-  // B/I/A 以外の子要素がある場合はエラー
+  // インラインフォーマットタグ以外の子要素がある場合はエラー
   for (const el of childElements) {
     const tag = getTagName(el);
     if (!INLINE_FORMAT_TAGS.has(tag)) {
       errors.push(
-        `<Text>: Unexpected child element <${tag}>. Only <B>, <I>, and <A> are allowed inside <Text>`,
+        `<Text>: Unexpected child element <${tag}>. Only <B>, <I>, <A>, <U>, <S>, and <Mark> are allowed inside <Text>`,
       );
       return;
     }

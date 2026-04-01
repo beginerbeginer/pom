@@ -572,7 +572,126 @@ describe("parseXml", () => {
       });
     });
 
-    it("Text 内の B/I/A 以外の子要素はエラーになる", () => {
+    it("U タグを下線の run に変換する", () => {
+      const result = parseXml("<Text>通常 <U>下線</U> テキスト</Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 下線 テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "下線", underline: true },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("S タグを取り消し線の run に変換する", () => {
+      const result = parseXml("<Text>通常 <S>取り消し</S> テキスト</Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 取り消し テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "取り消し", strike: true },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("Mark タグをハイライトの run に変換する", () => {
+      const result = parseXml(
+        '<Text>通常 <Mark color="FFFF00">ハイライト</Mark> テキスト</Text>',
+      );
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "通常 ハイライト テキスト",
+        runs: [
+          { text: "通常 " },
+          { text: "ハイライト", highlight: "FFFF00" },
+          { text: " テキスト" },
+        ],
+      });
+    });
+
+    it("Mark タグの color 省略時はデフォルト FFFF00 になる", () => {
+      const result = parseXml("<Text><Mark>ハイライト</Mark></Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "ハイライト",
+        runs: [{ text: "ハイライト", highlight: "FFFF00" }],
+      });
+    });
+
+    it("B と U のネストを処理する", () => {
+      const result = parseXml("<Text><B><U>太字下線</U></B></Text>");
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "太字下線",
+        runs: [{ text: "太字下線", bold: true, underline: true }],
+      });
+    });
+
+    it("Li 内の U タグを処理する", () => {
+      const result = parseXml("<Ul><Li>通常 <U>下線</U></Li></Ul>");
+      const ulNode = result[0] as Record<string, unknown>;
+      const items = ulNode.items as Record<string, unknown>[];
+      expect(items[0]).toMatchObject({
+        text: "通常 下線",
+        runs: [{ text: "通常 " }, { text: "下線", underline: true }],
+      });
+    });
+
+    it("TableCell 内の S タグを処理する", () => {
+      const result = parseXml(
+        "<Table><TableRow><TableCell><S>取り消し</S> セル</TableCell></TableRow></Table>",
+      );
+      const tableNode = result[0] as Record<string, unknown>;
+      const rows = tableNode.rows as Record<string, unknown>[];
+      const cells = rows[0].cells as Record<string, unknown>[];
+      expect(cells[0]).toMatchObject({
+        text: "取り消し セル",
+        runs: [{ text: "取り消し", strike: true }, { text: " セル" }],
+      });
+    });
+
+    it("Li 内の Mark タグを処理する", () => {
+      const result = parseXml(
+        '<Ul><Li><Mark color="00FF00">ハイライト</Mark> アイテム</Li></Ul>',
+      );
+      const ulNode = result[0] as Record<string, unknown>;
+      const items = ulNode.items as Record<string, unknown>[];
+      expect(items[0]).toMatchObject({
+        text: "ハイライト アイテム",
+        runs: [
+          { text: "ハイライト", highlight: "00FF00" },
+          { text: " アイテム" },
+        ],
+      });
+    });
+
+    it("TableCell 内の Mark タグを処理する", () => {
+      const result = parseXml(
+        '<Table><TableRow><TableCell><Mark color="FFFF00">ハイライト</Mark> セル</TableCell></TableRow></Table>',
+      );
+      const tableNode = result[0] as Record<string, unknown>;
+      const rows = tableNode.rows as Record<string, unknown>[];
+      const cells = rows[0].cells as Record<string, unknown>[];
+      expect(cells[0]).toMatchObject({
+        text: "ハイライト セル",
+        runs: [{ text: "ハイライト", highlight: "FFFF00" }, { text: " セル" }],
+      });
+    });
+
+    it("Mark タグの color が空文字の場合はデフォルト FFFF00 になる", () => {
+      const result = parseXml('<Text><Mark color="">ハイライト</Mark></Text>');
+      expect(result[0]).toMatchObject({
+        type: "text",
+        text: "ハイライト",
+        runs: [{ text: "ハイライト", highlight: "FFFF00" }],
+      });
+    });
+
+    it("Text 内のインラインフォーマットタグ以外の子要素はエラーになる", () => {
       expect(() => parseXml("<Text><B>ok</B><Foo>ng</Foo></Text>")).toThrow();
     });
   });

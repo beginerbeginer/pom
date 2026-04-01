@@ -26,9 +26,9 @@ export function renderTextNode(
         color: node.color,
         bold: run.bold ?? node.bold,
         italic: run.italic ?? node.italic,
-        underline: convertUnderline(node.underline),
-        strike: convertStrike(node.strike),
-        highlight: node.highlight,
+        underline: convertUnderline(run.underline ?? node.underline),
+        strike: convertStrike(run.strike ?? node.strike),
+        highlight: run.highlight ?? node.highlight,
         ...(run.href ? { hyperlink: { url: run.href } } : {}),
       },
     }));

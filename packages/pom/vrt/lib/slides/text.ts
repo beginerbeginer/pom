@@ -100,7 +100,7 @@ export const page1TextXml = `
 // ============================================================
 export const page36InlineFormattingXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
-  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 36: Inline Formatting (B/I tags)</Text>
+  <Text fontSize="28" color="${palette.charcoal}" bold="true">Page 36: Inline Formatting (B/I/U/S/Mark tags)</Text>
   <!-- Text with B/I -->
   <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
     <Text fontSize="14" bold="true">Text with inline B/I:</Text>
@@ -109,18 +109,30 @@ export const page36InlineFormattingXml = `
     <Text fontSize="16">Normal <B>bold</B> and <I>italic</I> mixed</Text>
     <Text fontSize="16"><B><I>Bold italic nested</I></B></Text>
   </VStack>
+  <!-- Text with U/S/Mark -->
+  <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
+    <Text fontSize="14" bold="true">Text with inline U/S/Mark:</Text>
+    <Text fontSize="16">Normal <U>underline text</U> normal</Text>
+    <Text fontSize="16">Normal <S>strikethrough text</S> normal</Text>
+    <Text fontSize="16">Normal <Mark color="FFFF00">highlighted text</Mark> normal</Text>
+    <Text fontSize="16"><B><U>Bold underline nested</U></B></Text>
+    <Text fontSize="16"><Mark>Default highlight color</Mark></Text>
+  </VStack>
   <!-- Li with B/I -->
   <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
-    <Text fontSize="14" bold="true">Ul with inline B/I:</Text>
+    <Text fontSize="14" bold="true">Ul with inline B/I/U/S/Mark:</Text>
     <Ul fontSize="14">
       <Li>Normal <B>bold</B> item</Li>
       <Li>Normal <I>italic</I> item</Li>
       <Li><B>All bold</B></Li>
+      <Li>Normal <U>underline</U> item</Li>
+      <Li>Normal <S>strike</S> item</Li>
+      <Li><Mark color="00FF00">highlighted</Mark> item</Li>
     </Ul>
   </VStack>
-  <!-- Table with B/I -->
+  <!-- Table with B/I/U/S/Mark -->
   <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
-    <Text fontSize="14" bold="true">Table with inline B/I:</Text>
+    <Text fontSize="14" bold="true">Table with inline B/I/U/S/Mark:</Text>
     <Table>
       <TableColumn width="200" />
       <TableColumn width="200" />
@@ -131,6 +143,14 @@ export const page36InlineFormattingXml = `
       <TableRow>
         <TableCell fontSize="13"><B>Bold</B> cell</TableCell>
         <TableCell fontSize="13"><I>Italic</I> cell</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell fontSize="13"><U>Underline</U> cell</TableCell>
+        <TableCell fontSize="13"><S>Strike</S> cell</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell fontSize="13"><Mark color="FFFF00">Highlight</Mark> cell</TableCell>
+        <TableCell fontSize="13"><B><U><Mark color="00FFFF">All combined</Mark></U></B></TableCell>
       </TableRow>
     </Table>
   </VStack>
