@@ -170,13 +170,6 @@ export function AppLayout() {
       <header className="flex items-center justify-between border-b px-4 py-2">
         <span className="text-lg font-semibold">pom playground</span>
         <div className="flex items-center gap-2">
-          <a
-            href="/"
-            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
-          >
-            <BookOpen className="size-4" />
-            <span>Docs</span>
-          </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors">
@@ -197,6 +190,39 @@ export function AppLayout() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          <button
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors disabled:opacity-50"
+            onClick={handleManualPreview}
+            disabled={isLoading}
+          >
+            <RefreshCw className="size-4" />
+            <span>Refresh Preview</span>
+          </button>
+          <button
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors disabled:opacity-50"
+            onClick={() => void handleDownload()}
+            disabled={isDownloading}
+          >
+            <Download className="size-4" />
+            <span>Download</span>
+          </button>
+          <div className="bg-border mx-1 h-5 w-px" />
+          <a
+            href="/"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
+          >
+            <BookOpen className="size-4" />
+            <span>Docs</span>
+          </a>
+          <a
+            href="/nodes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
+          >
+            <BookOpen className="size-4" />
+            <span>XML Reference</span>
+          </a>
           <a
             href="https://github.com/hirokisakabe/pom"
             target="_blank"
@@ -216,31 +242,6 @@ export function AppLayout() {
           >
             <ExternalLink className="size-4" />
             <span>pptx-glimpse</span>
-          </a>
-          <button
-            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors disabled:opacity-50"
-            onClick={handleManualPreview}
-            disabled={isLoading}
-          >
-            <RefreshCw className="size-4" />
-            <span>Refresh Preview</span>
-          </button>
-          <button
-            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors disabled:opacity-50"
-            onClick={() => void handleDownload()}
-            disabled={isDownloading}
-          >
-            <Download className="size-4" />
-            <span>Download</span>
-          </button>
-          <a
-            href="/nodes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm transition-colors"
-          >
-            <BookOpen className="size-4" />
-            <span>XML Reference</span>
           </a>
         </div>
       </header>
