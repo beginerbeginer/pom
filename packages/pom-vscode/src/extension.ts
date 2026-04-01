@@ -11,6 +11,11 @@ function getPomExtension(fileName: string): string {
 }
 
 export function activate(context: vscode.ExtensionContext): void {
+  const diagnosticCollection =
+    vscode.languages.createDiagnosticCollection("pom");
+  context.subscriptions.push(diagnosticCollection);
+  PomPreviewPanel.setDiagnosticCollection(diagnosticCollection);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("pom.openPreview", () => {
       const editor = vscode.window.activeTextEditor;
