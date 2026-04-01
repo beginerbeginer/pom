@@ -1,7 +1,14 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { PomPreviewPanel } from "./preview.js";
+import { isPomFile, detectFormat } from "./fileUtils.js";
 import { generatePptxBuffer } from "./exportPptx.js";
+
+/** ファイル名から拡張子（.pom.md or .pom.xml）を取得する */
+function getPomExtension(fileName: string): string {
+  if (fileName.endsWith(".pom.xml")) return ".pom.xml";
+  return ".pom.md";
+}
 
 export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
@@ -11,9 +18,9 @@ export function activate(context: vscode.ExtensionContext): void {
         void vscode.window.showErrorMessage("No active editor");
         return;
       }
-      if (!editor.document.fileName.endsWith(".pom.md")) {
+      if (!isPomFile(editor.document.fileName)) {
         void vscode.window.showErrorMessage(
-          "This command is only available for .pom.md files",
+          "This command is only available for .pom.md or .pom.xml files",
         );
         return;
       }
@@ -28,14 +35,15 @@ export function activate(context: vscode.ExtensionContext): void {
         void vscode.window.showErrorMessage("No active editor");
         return;
       }
-      if (!editor.document.fileName.endsWith(".pom.md")) {
+      if (!isPomFile(editor.document.fileName)) {
         void vscode.window.showErrorMessage(
-          "This command is only available for .pom.md files",
+          "This command is only available for .pom.md or .pom.xml files",
         );
         return;
       }
 
-      const basename = path.basename(editor.document.fileName, ".pom.md");
+      const ext = getPomExtension(editor.document.fileName);
+      const basename = path.basename(editor.document.fileName, ext);
       const defaultUri = vscode.Uri.file(
         path.join(path.dirname(editor.document.fileName), `${basename}.pptx`),
       );
@@ -54,7 +62,11 @@ export function activate(context: vscode.ExtensionContext): void {
         },
         async () => {
           try {
-            const buffer = await generatePptxBuffer(editor.document.getText());
+            const format = detectFormat(editor.document.fileName);
+            const buffer = await generatePptxBuffer(
+              editor.document.getText(),
+              format,
+            );
             await vscode.workspace.fs.writeFile(saveUri, buffer);
             void vscode.window.showInformationMessage(
               `Exported to ${path.basename(saveUri.fsPath)}`,
@@ -71,7 +83,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // エディタ内容の変更を監視
   context.subscriptions.push(
     vscode.workspace.onDidChangeTextDocument((e) => {
-      if (e.document.fileName.endsWith(".pom.md")) {
+      if (isPomFile(e.document.fileName)) {
         PomPreviewPanel.update(e.document);
       }
     }),

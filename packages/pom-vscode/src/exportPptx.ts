@@ -1,14 +1,19 @@
 import { parseMd } from "@hirokisakabe/pom-md";
 import { buildPptx } from "@hirokisakabe/pom";
-import { SLIDE_WIDTH, SLIDE_HEIGHT } from "./generatePreview.js";
+import {
+  SLIDE_WIDTH,
+  SLIDE_HEIGHT,
+  type InputFormat,
+} from "./generatePreview.js";
 
 /**
- * Markdown から PPTX バッファを生成する
+ * Markdown または XML から PPTX バッファを生成する
  */
 export async function generatePptxBuffer(
-  markdown: string,
+  content: string,
+  format: InputFormat = "markdown",
 ): Promise<Uint8Array> {
-  const xml = parseMd(markdown);
+  const xml = format === "xml" ? content : parseMd(content);
   if (!xml.trim()) {
     throw new Error("No slides found in the document");
   }

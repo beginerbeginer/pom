@@ -60,12 +60,12 @@
     "menus": {
       "editor/title": [
         {
-          "when": "resourceFilename =~ /\\.pom\\.md$/",
+          "when": "resourceFilename =~ /\\.pom\\.(md|xml)$/",
           "command": "pom.openPreview",
           "group": "navigation"
         },
         {
-          "when": "resourceFilename =~ /\\.pom\\.md$/",
+          "when": "resourceFilename =~ /\\.pom\\.(md|xml)$/",
           "command": "pom.exportPptx",
           "group": "navigation"
         }

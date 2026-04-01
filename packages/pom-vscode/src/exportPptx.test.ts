@@ -88,4 +88,29 @@ describe("generatePptxBuffer", () => {
 
     await expect(generatePptxBuffer("bad")).rejects.toThrow("Unknown tag");
   });
+
+  it("XML 形式の場合 parseMd をスキップして直接 buildPptx に渡す", async () => {
+    const expected = new Uint8Array([1, 2, 3]);
+    mockBuildPptx.mockResolvedValue({
+      pptx: {
+        write: vi.fn().mockResolvedValue(expected),
+      },
+    } as never);
+
+    const result = await generatePptxBuffer("<Text>Hello</Text>", "xml");
+    expect(result).toBe(expected);
+    expect(mockParseMd).not.toHaveBeenCalled();
+    expect(mockBuildPptx).toHaveBeenCalledWith(
+      "<Text>Hello</Text>",
+      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { textMeasurement: "fallback" },
+    );
+  });
+
+  it("XML 形式で空文字列の場合エラーを投げる", async () => {
+    await expect(generatePptxBuffer("", "xml")).rejects.toThrow(
+      "No slides found in the document",
+    );
+    expect(mockBuildPptx).not.toHaveBeenCalled();
+  });
 });

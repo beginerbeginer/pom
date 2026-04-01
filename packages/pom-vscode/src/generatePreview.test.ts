@@ -144,6 +144,45 @@ describe("generatePreviewSvg", () => {
     expect(result).toEqual({ type: "error", message: "string error" });
   });
 
+  it("XML 形式の場合 parseMd をスキップして直接 buildPptx に渡す", async () => {
+    mockBuildPptx.mockResolvedValue({
+      pptx: {
+        write: vi.fn().mockResolvedValue(new Uint8Array([1])),
+      },
+    } as never);
+    mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
+
+    await generatePreviewSvg("<Text>Direct XML</Text>", [], "xml");
+
+    expect(mockParseMd).not.toHaveBeenCalled();
+    expect(mockBuildPptx).toHaveBeenCalledWith(
+      "<Text>Direct XML</Text>",
+      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { textMeasurement: "fallback" },
+    );
+  });
+
+  it("XML 形式で空文字列の場合 empty を返す", async () => {
+    const result = await generatePreviewSvg("", [], "xml");
+    expect(result).toEqual({ type: "empty" });
+    expect(mockBuildPptx).not.toHaveBeenCalled();
+  });
+
+  it("XML 形式で空白のみの場合 empty を返す", async () => {
+    const result = await generatePreviewSvg("   ", [], "xml");
+    expect(result).toEqual({ type: "empty" });
+  });
+
+  it("XML 形式で buildPptx がエラーを投げた場合 error を返す", async () => {
+    mockBuildPptx.mockRejectedValue(new Error("Unknown tag: BadTag"));
+
+    const result = await generatePreviewSvg("<BadTag/>", [], "xml");
+    expect(result).toEqual({
+      type: "error",
+      message: "Unknown tag: BadTag",
+    });
+  });
+
   it("pptx.write が Uint8Array 以外を返した場合 error を返す", async () => {
     mockParseMd.mockReturnValue("<Text>X</Text>");
     mockBuildPptx.mockResolvedValue({
