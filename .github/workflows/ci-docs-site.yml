@@ -29,6 +29,9 @@ on:
 jobs:
   docs-site:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -42,5 +45,48 @@ jobs:
       - run: pnpm --filter pom-docs run lint
       - run: pnpm --filter pom-docs run knip
       - run: pnpm --filter pom-docs run typecheck
-      - run: pnpm --filter pom-docs run test:run
+      - run: pnpm --filter pom-docs run test:coverage
+
+      - name: Cache main branch coverage
+        if: github.event_name == 'push'
+        uses: actions/cache/save@v4
+        with:
+          path: apps/website/coverage/coverage-summary.json
+          key: coverage-docs-site-main-${{ github.sha }}
+
+      - name: Backup PR coverage
+        if: github.event_name == 'pull_request'
+        run: cp apps/website/coverage/coverage-summary.json /tmp/pr-coverage-summary-docs-site.json
+
+      - name: Restore main branch coverage
+        id: restore-main-coverage
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/website/coverage/coverage-summary.json
+          key: coverage-docs-site-main-
+          restore-keys: coverage-docs-site-main-
+
+      - name: Prepare coverage for comparison
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key != ''
+        run: |
+          mkdir -p __main_coverage_docs_site
+          mv apps/website/coverage/coverage-summary.json __main_coverage_docs_site/
+          cp /tmp/pr-coverage-summary-docs-site.json apps/website/coverage/coverage-summary.json
+
+      - name: Coverage summary comment (with comparison)
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key != ''
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: docs-site
+          json-summary-path: apps/website/coverage/coverage-summary.json
+          json-summary-compare-path: __main_coverage_docs_site/coverage-summary.json
+
+      - name: Coverage summary comment (without comparison)
+        if: github.event_name == 'pull_request' && steps.restore-main-coverage.outputs.cache-matched-key == ''
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: docs-site
+          json-summary-path: apps/website/coverage/coverage-summary.json
+
       - run: pnpm --filter pom-docs run build

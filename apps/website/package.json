@@ -10,7 +10,8 @@
     "fmt:check": "prettier --check .",
     "knip": "knip",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@codemirror/lang-xml": "^6.1.0",

@@ -46,13 +46,15 @@
     "typecheck": "tsc --noEmit",
     "knip": "knip",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "markdown-it": "^14.1.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
+    "@vitest/coverage-v8": "^4.1.1",
     "typescript-eslint": "^8.47.0"
   }
 }
