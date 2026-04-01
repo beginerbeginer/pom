@@ -1,28 +1,25 @@
-<Slide>
+<VStack gap="24" padding="48">
   <Text fontSize="32" bold="true">pom-vscode Demo</Text>
   <Ul>
     <Li>Live preview for pom XML</Li>
     <Li>Edit and see changes instantly</Li>
   </Ul>
-</Slide>
-<Slide>
-  <Text fontSize="24" bold="true">Features</Text>
   <Table>
-    <Tr>
-      <Td bold="true">Feature</Td>
-      <Td bold="true">Status</Td>
-    </Tr>
-    <Tr>
-      <Td>Live preview</Td>
-      <Td>OK</Td>
-    </Tr>
-    <Tr>
-      <Td>Debounce</Td>
-      <Td>OK</Td>
-    </Tr>
-    <Tr>
-      <Td>Error display</Td>
-      <Td>OK</Td>
-    </Tr>
+    <TableRow>
+      <TableCell bold="true">Feature</TableCell>
+      <TableCell bold="true">Status</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Live preview</TableCell>
+      <TableCell>OK</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Debounce</TableCell>
+      <TableCell>OK</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Error display</TableCell>
+      <TableCell>OK</TableCell>
+    </TableRow>
   </Table>
-</Slide>
+</VStack>
