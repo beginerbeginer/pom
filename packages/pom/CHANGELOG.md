@@ -1,5 +1,13 @@
 # @hirokisakabe/pom
 
+## 6.3.0
+
+### Minor Changes
+
+- [#577](https://github.com/hirokisakabe/pom/pull/577) [`7575568`](https://github.com/hirokisakabe/pom/commit/75755684529c8bdc42d9103dc78acf7180bec7f5) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - インラインタグ `<U>`, `<S>`, `<Mark>` を追加（underline / strikethrough / highlight）
+
+- [#581](https://github.com/hirokisakabe/pom/pull/581) [`547efa9`](https://github.com/hirokisakabe/pom/commit/547efa9f0357c8312142cb85213ba9cf318d196c) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: インラインテキスト色指定 `<Span color="...">` タグを追加
+
 ## 6.2.0
 
 ### Minor Changes
