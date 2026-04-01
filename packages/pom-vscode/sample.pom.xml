@@ -1,0 +1,28 @@
+<Slide>
+  <Text fontSize="32" bold="true">pom-vscode Demo</Text>
+  <Ul>
+    <Li>Live preview for pom XML</Li>
+    <Li>Edit and see changes instantly</Li>
+  </Ul>
+</Slide>
+<Slide>
+  <Text fontSize="24" bold="true">Features</Text>
+  <Table>
+    <Tr>
+      <Td bold="true">Feature</Td>
+      <Td bold="true">Status</Td>
+    </Tr>
+    <Tr>
+      <Td>Live preview</Td>
+      <Td>OK</Td>
+    </Tr>
+    <Tr>
+      <Td>Debounce</Td>
+      <Td>OK</Td>
+    </Tr>
+    <Tr>
+      <Td>Error display</Td>
+      <Td>OK</Td>
+    </Tr>
+  </Table>
+</Slide>
