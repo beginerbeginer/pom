@@ -1,0 +1,106 @@
+# Markdown Syntax
+
+pom-md converts standard Markdown into pom XML. This page describes the supported syntax and how each element maps to pom nodes.
+
+## Slide Separator
+
+Use `---` (horizontal rule) to separate slides. Each section between separators becomes a separate slide.
+
+```markdown
+# Slide 1
+
+Content for slide 1
+
+---
+
+# Slide 2
+
+Content for slide 2
+```
+
+## Frontmatter
+
+Specify slide size in the frontmatter block at the top of the file:
+
+```markdown
+---
+size: 16:9
+---
+```
+
+Supported sizes:
+
+| Value  | Resolution         |
+| ------ | ------------------ |
+| `16:9` | 1280×720 (default) |
+| `4:3`  | 1024×768           |
+
+If no frontmatter is provided, the default size is `16:9`.
+
+## Markdown to pom XML Mapping
+
+| Markdown           | pom Node                                   |
+| ------------------ | ------------------------------------------ |
+| `# Heading`        | `<Text fontSize="28" bold="true">`         |
+| `## Heading`       | `<Text fontSize="24" bold="true">`         |
+| `### Heading`      | `<Text fontSize="20" bold="true">`         |
+| Paragraph text     | `<Text>`                                   |
+| `- List item`      | `<Ul><Li>`                                 |
+| `1. Numbered item` | `<Ol><Li>`                                 |
+| `**bold**`         | `<B>bold</B>` (inside Text/Li/TableCell)   |
+| `*italic*`         | `<I>italic</I>` (inside Text/Li/TableCell) |
+| `![](img.png)`     | `<Image src="img.png">`                    |
+| Table syntax       | `<Table>`                                  |
+| ` ```pomxml `      | XML passthrough                            |
+
+## Headings
+
+Headings are converted to bold `<Text>` nodes with different font sizes:
+
+```markdown
+# Heading 1 → fontSize="28"
+
+## Heading 2 → fontSize="24"
+
+### Heading 3 → fontSize="20"
+```
+
+## Lists
+
+Both unordered and ordered lists are supported:
+
+```markdown
+- Item A
+- Item B
+  - Nested item
+
+1. First
+2. Second
+```
+
+## Inline Formatting
+
+Bold and italic formatting is preserved inside text, list items, and table cells:
+
+```markdown
+This is **bold** and _italic_ text.
+```
+
+## Images
+
+Images are converted to `<Image>` nodes:
+
+```markdown
+![alt text](path/to/image.png)
+```
+
+## Tables
+
+Markdown tables are converted to `<Table>` nodes:
+
+```markdown
+| Name  | Value |
+| ----- | ----- |
+| Alpha | 100   |
+| Beta  | 200   |
+```
