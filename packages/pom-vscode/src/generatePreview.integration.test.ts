@@ -34,6 +34,9 @@ describe("generatePreviewSvg 統合テスト", () => {
         "utf-8",
       );
       const result = await generatePreviewSvg(sampleXml, fontDirs, "xml");
+      if (result.type === "error") {
+        throw new Error(`XML processing failed: ${result.message}`);
+      }
       expect(result.type).toBe("success");
       if (result.type === "success") {
         expect(result.svgs.length).toBeGreaterThan(0);
