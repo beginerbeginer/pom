@@ -5,6 +5,9 @@ import { convertPptxToSvg } from "pptx-glimpse";
 export const SLIDE_WIDTH = 1280;
 export const SLIDE_HEIGHT = 720;
 
+/** 入力形式 */
+export type InputFormat = "markdown" | "xml";
+
 /**
  * pptx-glimpse の DEFAULT_FONT_MAPPING に含まれないテーマフォントの追加マッピング。
  * pptxgenjs のテーマフォントに「游ゴシック Light」が含まれるが、
@@ -21,14 +24,15 @@ type PreviewResult =
   | { type: "error"; message: string };
 
 /**
- * Markdown から SVG プレビューを生成する純粋関数
+ * Markdown または XML から SVG プレビューを生成する純粋関数
  */
 export async function generatePreviewSvg(
-  markdown: string,
+  content: string,
   fontDirs: string[],
+  format: InputFormat = "markdown",
 ): Promise<PreviewResult> {
   try {
-    const xml = parseMd(markdown);
+    const xml = format === "xml" ? content : parseMd(content);
     if (!xml.trim()) {
       return { type: "empty" };
     }

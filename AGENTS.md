@@ -236,7 +236,7 @@ Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
 
 ### pom-vscode (`packages/pom-vscode/`)
 
-VS Code extension for live preview of `.pom.md` files. Converts pom-md to SVG via pptx-glimpse and displays in a webview panel.
+VS Code extension for live preview of `.pom.md` / `.pom.xml` files. Converts content to SVG via pptx-glimpse and displays in a webview panel.
 
 ```bash
 pnpm --filter pom-vscode run build       # esbuild bundle
@@ -248,7 +248,10 @@ pnpm --filter pom-vscode run typecheck   # Type checking
 pnpm --filter pom-vscode run knip        # Detect unused code
 ```
 
-Pipeline: `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
+Pipeline:
+
+- `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
+- `.pom.xml → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
 
 To test locally: open `packages/pom-vscode` in VS Code and press F5 to launch Extension Development Host.
 

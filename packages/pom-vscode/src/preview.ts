@@ -8,6 +8,7 @@ import {
   ZOOM_LEVELS,
   type ZoomLevel,
 } from "./generatePreview.js";
+import { detectFormat } from "./fileUtils.js";
 
 const DEBOUNCE_MS = 500;
 
@@ -29,6 +30,7 @@ export class PomPreviewPanel {
   private readonly panel: vscode.WebviewPanel;
   private readonly fontDirs: string[];
   private documentUri: vscode.Uri;
+  private format: "markdown" | "xml";
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
   private renderGeneration = 0;
   private disposed = false;
@@ -41,6 +43,7 @@ export class PomPreviewPanel {
     this.panel = panel;
     this.fontDirs = [path.join(extensionPath, "fonts")];
     this.documentUri = document.uri;
+    this.format = detectFormat(document.fileName);
 
     this.panel.onDidDispose(() => {
       this.disposed = true;
@@ -57,6 +60,7 @@ export class PomPreviewPanel {
   ): void {
     if (PomPreviewPanel.instance) {
       PomPreviewPanel.instance.documentUri = document.uri;
+      PomPreviewPanel.instance.format = detectFormat(document.fileName);
       PomPreviewPanel.instance.panel.reveal(vscode.ViewColumn.Beside);
       void PomPreviewPanel.instance.render(document.getText());
       return;
@@ -89,10 +93,14 @@ export class PomPreviewPanel {
     }, DEBOUNCE_MS);
   }
 
-  private async render(markdown: string): Promise<void> {
+  private async render(content: string): Promise<void> {
     const generation = ++this.renderGeneration;
 
-    const result = await generatePreviewSvg(markdown, this.fontDirs);
+    const result = await generatePreviewSvg(
+      content,
+      this.fontDirs,
+      this.format,
+    );
 
     if (generation !== this.renderGeneration || this.disposed) return;
 
