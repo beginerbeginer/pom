@@ -9,6 +9,7 @@ export default defineConfig([
       "dist/**",
       "**/*.test.ts",
       "node_modules/**",
+      "docs/**",
       "eslint.config.mts",
       "vitest.config.ts",
     ],
