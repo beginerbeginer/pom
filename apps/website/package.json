@@ -30,7 +30,7 @@
     "next": "^15",
     "nextra": "^4",
     "nextra-theme-docs": "^4",
-    "pptx-glimpse": "^0.10.1",
+    "pptx-glimpse": "^0.10.2",
     "radix-ui": "^1.4.3",
     "react": "^19",
     "react-dom": "^19",

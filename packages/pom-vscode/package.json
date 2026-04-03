@@ -111,7 +111,7 @@
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
     "mocha": "^11.7.5",
-    "pptx-glimpse": "^0.10.1",
+    "pptx-glimpse": "^0.10.2",
     "sharp": "^0.34.5",
     "typescript-eslint": "^8.47.0"
   }
