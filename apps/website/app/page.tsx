@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
+import { codeToHtml } from "shiki";
 import "./landing.css";
 
 import chartImg from "@/content/images/chart.png";
@@ -106,7 +107,20 @@ const xml = \`
 const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
 await pptx.writeFile({ fileName: "presentation.pptx" });`;
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const [highlightedCode, highlightedInstall, highlightedGenerate] =
+    await Promise.all([
+      codeToHtml(codeExample, { lang: "typescript", theme: "github-dark" }),
+      codeToHtml("npm install @hirokisakabe/pom", {
+        lang: "bash",
+        theme: "github-dark",
+      }),
+      codeToHtml(
+        `const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });\nawait pptx.writeFile({ fileName: "presentation.pptx" });`,
+        { lang: "typescript", theme: "github-dark" },
+      ),
+    ]);
+
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-white font-[family-name:var(--font-geist-sans)] text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100`}
@@ -206,11 +220,10 @@ export default function LandingPage() {
             <div className="h-3 w-3 rounded-full bg-green-400" />
             <span className="ml-2 text-xs text-gray-500">generate.ts</span>
           </div>
-          <pre className="overflow-x-auto bg-gray-950 p-6 text-sm leading-relaxed text-gray-300">
-            <code className="font-[family-name:var(--font-geist-mono)]">
-              {codeExample}
-            </code>
-          </pre>
+          <div
+            className="overflow-x-auto font-[family-name:var(--font-geist-mono)] text-sm leading-relaxed [&_pre]:p-6"
+            dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          />
         </div>
       </section>
 
@@ -259,24 +272,19 @@ export default function LandingPage() {
         <div className="space-y-6">
           <div>
             <p className="mb-2 text-sm font-medium text-gray-500">1. Install</p>
-            <div className="rounded-lg bg-gray-950 px-5 py-4">
-              <code className="font-[family-name:var(--font-geist-mono)] text-sm text-gray-300">
-                npm install @hirokisakabe/pom
-              </code>
-            </div>
+            <div
+              className="rounded-lg font-[family-name:var(--font-geist-mono)] text-sm [&_pre]:px-5 [&_pre]:py-4"
+              dangerouslySetInnerHTML={{ __html: highlightedInstall }}
+            />
           </div>
           <div>
             <p className="mb-2 text-sm font-medium text-gray-500">
               2. Generate
             </p>
-            <div className="overflow-x-auto rounded-lg bg-gray-950 px-5 py-4">
-              <pre className="text-sm leading-relaxed text-gray-300">
-                <code className="font-[family-name:var(--font-geist-mono)]">
-                  {`const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
-await pptx.writeFile({ fileName: "presentation.pptx" });`}
-                </code>
-              </pre>
-            </div>
+            <div
+              className="overflow-x-auto rounded-lg font-[family-name:var(--font-geist-mono)] text-sm leading-relaxed [&_pre]:px-5 [&_pre]:py-4"
+              dangerouslySetInnerHTML={{ __html: highlightedGenerate }}
+            />
           </div>
           <div>
             <p className="mb-2 text-sm font-medium text-gray-500">
