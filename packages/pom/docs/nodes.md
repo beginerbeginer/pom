@@ -179,9 +179,10 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 - `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
 - `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` inline formatting
 
-| Attribute          | Values               |
-| ------------------ | -------------------- |
-| `defaultRowHeight` | number (default: 32) |
+| Attribute          | Values                                         |
+| ------------------ | ---------------------------------------------- |
+| `defaultRowHeight` | number (default: 32)                           |
+| `cellBorder`       | `{color, width, dashType}` — cell border style |
 
 ### 6. Shape
 

@@ -38,6 +38,7 @@ import {
   page34CustomFontWrapXml,
   page35IconInlineSvgXml,
   page36InlineFormattingXml,
+  page37TableCellBorderXml,
 } from "./slides/index.js";
 
 export async function generatePptx(outputPath: string): Promise<void> {
@@ -79,6 +80,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page34CustomFontWrapXml,
     page35IconInlineSvgXml,
     page36InlineFormattingXml,
+    page37TableCellBorderXml,
   ].join("\n");
 
   const { pptx } = await buildPptx(

@@ -67,7 +67,7 @@ export function renderTableNode(
   );
 
   const content = getContentArea(node);
-  const tableOptions = {
+  const tableOptions: Record<string, unknown> = {
     x: pxToIn(content.x),
     y: pxToIn(content.y),
     w: pxToIn(content.w),
@@ -76,6 +76,15 @@ export function renderTableNode(
     rowH: resolveRowHeights(node).map((height) => pxToIn(height)),
     margin: 0,
   };
+
+  if (node.cellBorder) {
+    tableOptions.border = {
+      color: node.cellBorder.color ?? "000000",
+      pt:
+        node.cellBorder.width !== undefined ? pxToPt(node.cellBorder.width) : 1,
+      type: node.cellBorder.dashType ?? "solid",
+    };
+  }
 
   ctx.slide.addTable(tableRows, tableOptions);
 }

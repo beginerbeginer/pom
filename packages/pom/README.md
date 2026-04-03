@@ -141,7 +141,7 @@ For detailed node documentation, see [Nodes](./docs/nodes.md).
 ### Table
 
 ```xml
-<Table defaultRowHeight="36">
+<Table defaultRowHeight="36" cellBorder='{"color":"CBD5E1","width":1}'>
   <TableColumn width="80" />
   <TableColumn width="200" />
   <TableRow>

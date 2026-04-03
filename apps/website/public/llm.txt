@@ -278,6 +278,7 @@ Others:
 </Table>
 ```
 
+- `<Table>`: `defaultRowHeight` (default 32), `cellBorder` (`{color, width, dashType}` — cell border style)
 - `<TableColumn>`: `width` (omit for equal distribution)
 - `<TableRow>`: `height` (omit to use `defaultRowHeight`, default 32)
 - `<TableCell>`: text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`

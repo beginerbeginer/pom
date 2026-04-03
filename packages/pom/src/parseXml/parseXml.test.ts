@@ -226,6 +226,30 @@ describe("parseXml", () => {
         },
       ]);
     });
+
+    it("Table の cellBorder を JSON 形式で変換する", () => {
+      const result = parseXml(
+        `<Table cellBorder='{"color":"334155","width":1}'><TableRow><TableCell>A</TableCell></TableRow></Table>`,
+      );
+      const table = result[0] as Record<string, unknown>;
+      expect(table.cellBorder).toEqual({ color: "334155", width: 1 });
+    });
+
+    it("Table の cellBorder をドット記法で変換する", () => {
+      const result = parseXml(
+        `<Table cellBorder.color="334155" cellBorder.width="2"><TableRow><TableCell>A</TableCell></TableRow></Table>`,
+      );
+      const table = result[0] as Record<string, unknown>;
+      expect(table.cellBorder).toEqual({ color: "334155", width: 2 });
+    });
+
+    it("Table の cellBorder 省略時はプロパティが存在しない", () => {
+      const result = parseXml(
+        `<Table><TableRow><TableCell>A</TableCell></TableRow></Table>`,
+      );
+      const table = result[0] as Record<string, unknown>;
+      expect(table.cellBorder).toBeUndefined();
+    });
   });
 
   // ===== コンテナノード =====

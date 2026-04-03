@@ -481,6 +481,7 @@ export const tableNodeSchema = basePOMNodeSchema.extend({
   columns: z.array(tableColumnSchema),
   rows: z.array(tableRowSchema),
   defaultRowHeight: z.number().optional(),
+  cellBorder: borderStyleSchema.optional(),
 });
 
 export const shapeNodeSchema = basePOMNodeSchema.extend({
