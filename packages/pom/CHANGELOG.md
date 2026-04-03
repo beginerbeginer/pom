@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 6.4.0
+
+### Minor Changes
+
+- [#596](https://github.com/hirokisakabe/pom/pull/596) [`00ca36c`](https://github.com/hirokisakabe/pom/commit/00ca36c69bdcb796c99917bc2be6109671dfd503) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: テーブルのセルボーダー描画をサポート (`cellBorder` 属性)
+
 ## 6.3.0
 
 ### Minor Changes
