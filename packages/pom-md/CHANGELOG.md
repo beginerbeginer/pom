@@ -1,5 +1,11 @@
 # @hirokisakabe/pom-md
 
+## 0.4.0
+
+### Minor Changes
+
+- [#600](https://github.com/hirokisakabe/pom/pull/600) [`b79338b`](https://github.com/hirokisakabe/pom/commit/b79338be26be3f38982cf8fff6dd4655cd2ac85e) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - テーブル変換時にヘッダー行のスタイル（bold, backgroundColor）と cellBorder をデフォルト付与
+
 ## 0.3.0
 
 ### Minor Changes
