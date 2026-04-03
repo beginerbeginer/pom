@@ -100,10 +100,14 @@ describe("エッジケーステスト", () => {
       const md = `| Header1 | Header2 |
 | --- | --- |`;
       const result = parseMd(md);
-      expect(result).toContain("<Table>");
+      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
       expect(result).toContain("<TableRow>");
-      expect(result).toContain("<TableCell>Header1</TableCell>");
-      expect(result).toContain("<TableCell>Header2</TableCell>");
+      expect(result).toContain(
+        '<TableCell bold="true" backgroundColor="F1F5F9">Header1</TableCell>',
+      );
+      expect(result).toContain(
+        '<TableCell bold="true" backgroundColor="F1F5F9">Header2</TableCell>',
+      );
       expect(result).toContain("</Table>");
       // parseXml でもパースできること
       expect(() => parseXml(result)).not.toThrow();
@@ -114,8 +118,10 @@ describe("エッジケーステスト", () => {
 | --- |
 | B |`;
       const result = parseMd(md);
-      expect(result).toContain("<Table>");
-      expect(result).toContain("<TableCell>A</TableCell>");
+      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
+      expect(result).toContain(
+        '<TableCell bold="true" backgroundColor="F1F5F9">A</TableCell>',
+      );
       expect(result).toContain("<TableCell>B</TableCell>");
       expect(() => parseXml(result)).not.toThrow();
     });
