@@ -6,6 +6,8 @@ on:
     paths:
       - "apps/website/**"
       - "packages/pom/docs/**"
+      - "packages/pom-md/docs/**"
+      - "packages/pom-vscode/docs/**"
       - "packages/pom/src/**"
       - "package.json"
       - "packages/pom/package.json"
@@ -18,6 +20,8 @@ on:
     paths:
       - "apps/website/**"
       - "packages/pom/docs/**"
+      - "packages/pom-md/docs/**"
+      - "packages/pom-vscode/docs/**"
       - "packages/pom/src/**"
       - "package.json"
       - "packages/pom/package.json"
