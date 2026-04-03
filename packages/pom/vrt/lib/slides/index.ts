@@ -26,6 +26,7 @@ export { page20BackgroundImageXml } from "./backgroundImage.js";
 export { page21XmlChildElementsXml } from "./xmlChildElements.js";
 export { page22CompositeScaleToFitXml } from "./compositeScaleToFit.js";
 export { page23TableColspanRowspanXml } from "./tableColspanRowspan.js";
+export { page37TableCellBorderXml } from "./tableCellBorder.js";
 export { page24PyramidXml } from "./pyramid.js";
 export {
   page25IconXml,

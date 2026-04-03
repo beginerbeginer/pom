@@ -332,6 +332,7 @@ export const NODE_COERCION_MAP: Record<string, Record<string, CoercionRule>> = {
     columns: "json",
     rows: "json",
     defaultRowHeight: "number",
+    cellBorder: BORDER_STYLE_RULE,
   },
   shape: {
     ...BASE_RULES,
