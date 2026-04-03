@@ -135,6 +135,38 @@ suite("pom-vscode Extension", () => {
     }
   });
 
+  test("generates preview with Icon nodes (resvg-wasm bundled)", async () => {
+    const ext = vscode.extensions.getExtension("hirokisakabe.pom-vscode");
+    assert.ok(ext, "Extension should be installed");
+    const fontDirs = [path.join(ext.extensionPath, "fonts")];
+    // Icon ノードを含む XML でプレビュー生成を検証
+    // バンドル後の環境で @resvg/resvg-wasm が正しく解決されることを確認する
+    const xml = [
+      '<HStack w="1280" h="720" gap="24" alignItems="center">',
+      '  <Icon name="star" size="48" color="#f59e0b" />',
+      '  <Text fontSize="24">Icon test</Text>',
+      "</HStack>",
+    ].join("\n");
+
+    const result = await generatePreviewSvg(xml, fontDirs, "xml");
+    assert.strictEqual(
+      result.type,
+      "success",
+      `Preview with Icon should succeed, got: ${result.type === "error" ? result.message : result.type}`,
+    );
+    if (result.type === "success") {
+      assert.ok(result.svgs.length > 0, "Should produce at least one SVG");
+      // アイコンがラスタライズされ、base64 PNG として埋め込まれていることを確認
+      const hasPngEmbed = result.svgs.some((svg) =>
+        svg.includes("data:image/png;base64,"),
+      );
+      assert.ok(
+        hasPngEmbed,
+        "SVG should contain base64-encoded PNG icon image",
+      );
+    }
+  });
+
   test("updates preview on text change", async () => {
     const tmpFile = createTempPomFile();
     const doc = await vscode.workspace.openTextDocument(tmpFile);

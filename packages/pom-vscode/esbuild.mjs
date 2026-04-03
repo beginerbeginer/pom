@@ -46,6 +46,46 @@ const resvgWasmPlugin = {
   },
 };
 
+// @resvg/resvg-wasm の JS モジュールをバンドルに含めるプラグイン。
+// renderIcon.js は文字列結合 + createRequire で動的にモジュールをロードするため、
+// esbuild が静的解析できない。onLoad で静的 require に書き換えることで
+// esbuild が依存を認識しバンドルに含めるようにする。
+const resvgModulePlugin = {
+  name: "resvg-module-resolve",
+  setup(build) {
+    const targetSuffix = path.join("dist", "icons", "renderIcon.js");
+    build.onLoad({ filter: /renderIcon\.js$/ }, async (args) => {
+      if (!args.path.endsWith(targetSuffix)) return undefined;
+      let contents = await fs.promises.readFile(args.path, "utf8");
+      const original = contents;
+      // 動的 require を静的 require に書き換え
+      contents = contents.replace(
+        /const req = createRequire\(import\.meta\.url\);\s*\n\s*const mod = req\(RESVG_PKG\)/,
+        'const mod = require("@resvg/resvg-wasm")',
+      );
+      if (contents === original) {
+        throw new Error(
+          "Failed to patch renderIcon.js: dynamic require pattern not found. " +
+            "The upstream code in @hirokisakabe/pom may have changed.",
+        );
+      }
+      // このプラグインが先に処理するため importMetaPlugin が適用されない。
+      // CJS バンドルで import.meta.url が空になる問題を同様に解消する。
+      // fileURLToPath(import.meta.url) → __filename（既にパスなので変換不要）
+      contents = contents.replace(
+        /fileURLToPath\(import\.meta\.url\)/g,
+        "__filename",
+      );
+      // createRequire(import.meta.url) → createRequire(__filename)
+      contents = contents.replace(
+        /createRequire\(import\.meta\.url\)/g,
+        "createRequire(__filename)",
+      );
+      return { contents, loader: "js" };
+    });
+  },
+};
+
 const importMetaPlugin = {
   name: "import-meta-url-shim",
   setup(build) {
@@ -73,7 +113,12 @@ const buildOptions = {
   platform: "node",
   target: "node18",
   sourcemap: true,
-  plugins: [sharpStubPlugin, resvgWasmPlugin, importMetaPlugin],
+  plugins: [
+    sharpStubPlugin,
+    resvgWasmPlugin,
+    resvgModulePlugin,
+    importMetaPlugin,
+  ],
 };
 
 /** @type {import('esbuild').BuildOptions} */
@@ -87,7 +132,12 @@ const testBuildOptions = {
   platform: "node",
   target: "node18",
   sourcemap: true,
-  plugins: [sharpStubPlugin, importMetaPlugin],
+  plugins: [
+    sharpStubPlugin,
+    resvgWasmPlugin,
+    resvgModulePlugin,
+    importMetaPlugin,
+  ],
 };
 
 /** @type {import('esbuild').BuildOptions} */
