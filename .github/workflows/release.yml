@@ -23,8 +23,13 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - run: pnpm install --frozen-lockfile
-      - name: Upgrade npm for trusted publishing (OIDC)
-        run: npm install -g npm@^11.5.1
+      # Workaround: Node 22.22.2 のバンドル npm にモジュール欠損 (promise-retry) があり
+      # 直接 npm install -g が失敗するため、npx 経由で正常な npm を取得してインストールする。
+      # Node/npm の修正版がリリースされたらこのステップを削除して良い。
+      # https://github.com/npm/cli/issues/9151
+      # https://github.com/nodejs/node/issues/62425
+      - name: Upgrade npm for Trusted Publishing
+        run: npx -y npm@11 install -g npm@11
       - run: pnpm --filter @hirokisakabe/pom run build
       - run: pnpm --filter @hirokisakabe/pom-md run build
       - run: pnpm --filter @hirokisakabe/pom run test:run

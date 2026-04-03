@@ -30,6 +30,13 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
 
+      # Workaround: Node 22.22.2 のバンドル npm にモジュール欠損 (promise-retry) があり
+      # 直接 npm install -g が失敗するため、npx 経由で正常な npm を取得してインストールする。
+      # https://github.com/npm/cli/issues/9151
+      # https://github.com/nodejs/node/issues/62425
+      - name: Upgrade npm
+        run: npx -y npm@11 install -g npm@11
+
       - name: Check Marketplace
         id: marketplace
         run: |
@@ -107,6 +114,11 @@ jobs:
       - name: Integration Test
         working-directory: packages/pom-vscode
         run: xvfb-run -a pnpm run test:integration
+
+      # Workaround: Node 22.22.2 バンドル npm 回避 (release job でも必要)
+      # https://github.com/npm/cli/issues/9151
+      - name: Upgrade npm
+        run: npx -y npm@11 install -g npm@11
 
       - name: Publish to VS Code Marketplace
         if: needs.check.outputs.marketplace_published == 'false'
