@@ -75,9 +75,13 @@ describe("parseMd", () => {
 | A | 100 |
 | B | 200 |`;
       const result = parseMd(md);
-      expect(result).toContain("<Table>");
-      expect(result).toContain("<TableCell>名前</TableCell>");
-      expect(result).toContain("<TableCell>値</TableCell>");
+      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
+      expect(result).toContain(
+        '<TableCell bold="true" backgroundColor="F1F5F9">名前</TableCell>',
+      );
+      expect(result).toContain(
+        '<TableCell bold="true" backgroundColor="F1F5F9">値</TableCell>',
+      );
       expect(result).toContain("<TableCell>A</TableCell>");
       expect(result).toContain("<TableCell>100</TableCell>");
       expect(result).toContain("<TableCell>B</TableCell>");

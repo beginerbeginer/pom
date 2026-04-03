@@ -79,19 +79,19 @@ Supported sizes:
 
 ### Markdown → pom XML Mapping
 
-| Markdown           | pom Node                                   |
-| ------------------ | ------------------------------------------ |
-| `# Heading`        | `<Text fontSize="28" bold="true">`         |
-| `## Heading`       | `<Text fontSize="24" bold="true">`         |
-| `### Heading`      | `<Text fontSize="20" bold="true">`         |
-| Paragraph text     | `<Text>`                                   |
-| `- List item`      | `<Ul><Li>`                                 |
-| `1. Numbered item` | `<Ol><Li>`                                 |
-| `**bold**`         | `<B>bold</B>` (inside Text/Li/TableCell)   |
-| `*italic*`         | `<I>italic</I>` (inside Text/Li/TableCell) |
-| `![](img.png)`     | `<Image src="img.png">`                    |
-| Table syntax       | `<Table>`                                  |
-| ` ```pomxml `      | XML passthrough                            |
+| Markdown           | pom Node                                          |
+| ------------------ | ------------------------------------------------- |
+| `# Heading`        | `<Text fontSize="28" bold="true">`                |
+| `## Heading`       | `<Text fontSize="24" bold="true">`                |
+| `### Heading`      | `<Text fontSize="20" bold="true">`                |
+| Paragraph text     | `<Text>`                                          |
+| `- List item`      | `<Ul><Li>`                                        |
+| `1. Numbered item` | `<Ol><Li>`                                        |
+| `**bold**`         | `<B>bold</B>` (inside Text/Li/TableCell)          |
+| `*italic*`         | `<I>italic</I>` (inside Text/Li/TableCell)        |
+| `![](img.png)`     | `<Image src="img.png">`                           |
+| Table syntax       | `<Table>` (header: bold + background, cellBorder) |
+| ` ```pomxml `      | XML passthrough                                   |
 
 ### `pomxml` Code Fence
 

@@ -236,13 +236,13 @@ function collectTable(
       const headerRow = rows[0] ?? [];
       const dataRows = rows.slice(1);
 
-      let xml = "<Table>";
+      let xml = `<Table cellBorder='{"color":"CBD5E1"}'>`;
 
       // ヘッダー行
       if (headerRow.length > 0) {
         xml += "<TableRow>";
         for (const cell of headerRow) {
-          xml += `<TableCell>${cell}</TableCell>`;
+          xml += `<TableCell bold="true" backgroundColor="F1F5F9">${cell}</TableCell>`;
         }
         xml += "</TableRow>";
       }
@@ -276,7 +276,10 @@ function collectTable(
     i++;
   }
 
-  return { xml: "<Table></Table>", endIndex: i - 1 };
+  return {
+    xml: `<Table cellBorder='{"color":"CBD5E1"}'></Table>`,
+    endIndex: i - 1,
+  };
 }
 
 /**
