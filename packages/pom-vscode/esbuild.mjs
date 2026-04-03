@@ -71,7 +71,16 @@ const resvgModulePlugin = {
       }
       // このプラグインが先に処理するため importMetaPlugin が適用されない。
       // CJS バンドルで import.meta.url が空になる問題を同様に解消する。
-      contents = contents.replace(/import\.meta\.url/g, "__filename");
+      // fileURLToPath(import.meta.url) → __filename（既にパスなので変換不要）
+      contents = contents.replace(
+        /fileURLToPath\(import\.meta\.url\)/g,
+        "__filename",
+      );
+      // createRequire(import.meta.url) → createRequire(__filename)
+      contents = contents.replace(
+        /createRequire\(import\.meta\.url\)/g,
+        "createRequire(__filename)",
+      );
       return { contents, loader: "js" };
     });
   },
