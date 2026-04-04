@@ -1,4 +1,4 @@
 export const siteUrl = "https://pom.pptx.app";
 export const siteName = "pom";
 export const siteDescription =
-  "A library for declaratively describing PowerPoint presentations in TypeScript";
+  "AI-friendly PowerPoint generation with a Flexbox layout engine.";

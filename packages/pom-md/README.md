@@ -1,6 +1,6 @@
 # @hirokisakabe/pom-md
 
-Markdown wrapper for [pom](https://github.com/hirokisakabe/pom) — write slides in Markdown with `pomxml` code fences for complex diagrams.
+Markdown wrapper for [pom](https://github.com/hirokisakabe/pom) — write slides in Markdown with `pomxml` code fences.
 
 ## Install
 
