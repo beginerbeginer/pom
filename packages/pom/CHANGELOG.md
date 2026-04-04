@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 7.0.0
+
+### Major Changes
+
+- [#607](https://github.com/hirokisakabe/pom/pull/607) [`9f26a87`](https://github.com/hirokisakabe/pom/commit/9f26a8770deb18916d8855e0ea90ff7e593260db) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - Table の子タグ名を HTML 風の短縮名に変更: `<TableColumn>` → `<Col>`, `<TableRow>` → `<Tr>`, `<TableCell>` → `<Td>`
+
 ## 6.4.0
 
 ### Minor Changes
