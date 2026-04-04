@@ -1,3 +1,8 @@
+# Override global gitignore to track .claude/rules/
+!.claude/
+.claude/*
+!.claude/rules/
+
 # Created by https://www.toptal.com/developers/gitignore/api/node
 
 # Edit at https://www.toptal.com/developers/gitignore?templates=node

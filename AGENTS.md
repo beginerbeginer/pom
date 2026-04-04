@@ -1,269 +1,59 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+pom (PowerPoint Object Model) — TypeScript library for declaratively describing PowerPoint presentations. Calculates Flexbox-style layouts with yoga-layout and generates PPTX files with pptxgenjs.
 
-## Project Overview
+## Tech Stack
 
-pom (PowerPoint Object Model) is a library for declaratively describing PowerPoint presentations in TypeScript. It calculates Flexbox-style layouts with yoga-layout and generates PPTX files with pptxgenjs.
+TypeScript 5.x, yoga-layout 3.2.1, pptxgenjs 4.0.1, opentype.js 1.3.x, fast-xml-parser 5.x, zod 4.x, Vitest, ESLint, Prettier, pnpm workspace
 
-## Commands
+## Behavioral Principles
 
-Core package commands (run from `packages/pom/`):
+- Read existing code before making changes — especially check the 3-stage pipeline impact scope
+- When adding features, follow the Feature Addition Checklist (injected via `.claude/rules/` when editing `packages/pom/src/`)
+- VRT baseline updates must use Docker environment (`pnpm run vrt:docker:update`)
+- When changes span multiple packages, explicitly state the impact scope
 
-```bash
-pnpm run build             # TypeScript compilation
-pnpm run lint              # ESLint
-pnpm run fmt               # Prettier formatting
-pnpm run fmt:check         # Format check
-pnpm run typecheck         # Type checking
-pnpm run knip              # Detect unused code
-pnpm run test:run          # Run tests
-pnpm run test              # Tests (watch mode)
-pnpm run test:ui           # Tests (UI mode)
-pnpm run test:coverage     # Tests (with coverage)
-pnpm run size              # Bundle size check (size-limit)
-pnpm exec tsx main.ts      # Run sample (generates sample.pptx)
-pnpm run vrt                     # Run VRT (local)
-pnpm run vrt:update              # Update VRT baseline (local)
-pnpm run vrt:docker              # Run VRT (Docker environment)
-pnpm run vrt:docker:update       # Update VRT baseline (Docker environment)
-pnpm run preview                 # Preview (local)
-pnpm run preview:docker          # Preview (convert main.ts PPTX to PNG, Docker)
-pnpm run docs:images             # Generate documentation node images (local)
-pnpm run docs:images:docker        # Generate documentation node images (Docker environment)
-pnpm run docs:images:docker:update # Rebuild & generate documentation node images
-pnpm run docs:images:vrt           # Check documentation images (local)
-pnpm run docs:images:vrt:docker    # Check documentation images (Docker)
-```
-
-Or from the repository root using pnpm filter:
+## Commands (from `packages/pom/`)
 
 ```bash
-pnpm --filter @hirokisakabe/pom run build
-pnpm --filter @hirokisakabe/pom run test:run
+pnpm run build           # TypeScript compilation
+pnpm run lint            # ESLint
+pnpm run fmt             # Prettier formatting
+pnpm run typecheck       # Type checking
+pnpm run knip            # Detect unused code
+pnpm run test:run        # Run tests
+pnpm run vrt:docker:update  # Update VRT baseline (Docker)
 ```
+
+Root: `pnpm --filter @hirokisakabe/pom run <script>`
 
 ## Directory Structure
 
 ```
 packages/
-├── pom/                  # Core library (@hirokisakabe/pom)
-│   ├── src/
-│   │   ├── index.ts              # Public API
-│   │   ├── types.ts              # Type definitions
-│   │   ├── buildPptx.ts          # Main processing (XML → parseXml → layout → PPTX)
-│   │   ├── buildContext.ts        # Build context (caches, measurement mode)
-│   │   ├── diagnostics.ts         # Diagnostics system (error collection & reporting)
-│   │   ├── autoFit/              # Slide overflow auto-fit engine
-│   │   │   ├── autoFit.ts        # Auto-fit logic
-│   │   │   └── strategies/       # Adjustment strategies (font size, gap, table row height, uniform scale)
-│   │   ├── registry/             # Node registry system
-│   │   │   ├── nodeRegistry.ts   # Node definition registration & management
-│   │   │   ├── types.ts          # Registry types
-│   │   │   └── definitions/      # Node type definitions (text, list, image, table, shape, chart, icon, etc.)
-│   │   ├── icons/                # Icon feature
-│   │   │   ├── index.ts          # Icon module exports
-│   │   │   ├── renderIcon.ts     # SVG icon rasterization
-│   │   │   └── iconData.ts       # Icon preset library data
-│   │   ├── shared/               # Shared code used across multiple pipeline stages
-│   │   │   ├── measureImage.ts   # Image size measurement & caching
-│   │   │   ├── tableUtils.ts     # Table size calculation utilities
-│   │   │   ├── freeYogaTree.ts   # Yoga node tree cleanup
-│   │   │   ├── processArrowConstants.ts # ProcessArrow constants
-│   │   │   └── walkTree.ts       # Tree traversal utility
-│   │   ├── parseXml/             # XML input parser (fast-xml-parser, internal)
-│   │   │   ├── parseXml.ts       # XML parser core
-│   │   │   └── coercionRules.ts  # Attribute coercion rules
-│   │   ├── calcYogaLayout/       # Layout calculation (yoga-layout)
-│   │   ├── toPositioned/         # Absolute coordinate conversion
-│   │   └── renderPptx/           # PPTX rendering (pptxgenjs)
-│   ├── vrt/                      # Visual Regression Test
-│   ├── preview/                  # Preview infrastructure (for Claude Code)
-│   ├── bench/                    # Benchmarks
-│   ├── docs/                     # Documentation (Single Source of Truth, symlinked from apps/website/content)
-│   │   ├── index.mdx             # Documentation top page
-│   │   ├── _meta.ts              # Navigation metadata
-│   │   ├── nodes.md              # Nodes (with images)
-│   │   ├── master-slide.md       # Master slide documentation
-│   │   ├── text-measurement.md   # Text measurement documentation
-│   │   ├── api-reference.md      # API reference
-│   │   ├── layout-system.md      # Layout system guide
-│   │   ├── styling-guide.md      # Styling guide
-│   │   └── images/               # Sample images per node type (auto-generated)
-│   ├── scripts/
-│   │   ├── convertFontToBase64.ts        # Font file to Base64 conversion utility
-│   │   └── docs-images/                  # Documentation image generation scripts
-│   │       ├── generateNodeImages.ts     # Main execution script
-│   │       ├── config.ts                 # Node type list & output settings
-│   │       └── sampleNodes.ts            # Sample XML for each node
-│   ├── sample_images/            # Sample output images
-│   ├── docker-compose.yml        # Docker services (VRT, preview, docs-images)
-│   ├── main.ts                   # Sample entry point
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vitest.config.ts
-├── pom-md/               # Markdown → pom XML converter (@hirokisakabe/pom-md)
-│   ├── src/
-│   │   ├── index.ts      # Public API (parseMd)
-│   │   └── parseMd.ts    # Markdown → pom XML conversion logic
-│   ├── package.json
-│   └── tsconfig.json
-├── pom-vscode/           # VS Code extension for live preview
-│   ├── src/
-│   │   ├── extension.ts  # Extension entry point (activate/deactivate)
-│   │   └── preview.ts    # Preview webview panel logic
-│   ├── esbuild.mjs       # Build script (esbuild)
-│   ├── package.json      # VS Code extension manifest
-│   └── tsconfig.json
+├── pom/              # Core library — src/ (parseXml/ → calcYogaLayout/ → toPositioned/ → renderPptx/), vrt/, preview/, docs/, main.ts
+├── pom-md/           # Markdown → pom XML converter
+├── pom-vscode/       # VS Code extension for live preview
 apps/
-└── website/              # Documentation website (Next.js)
-    ├── content -> ../../packages/pom/docs  # Symlink to docs
-    ├── app/
-    ├── playground/
-    └── package.json
+└── website/          # Documentation website (Next.js), content → pom/docs symlink
 ```
 
 ## Architecture
 
-PPTX generation follows a 3-stage pipeline:
-
-1. **calcYogaLayout** (`packages/pom/src/calcYogaLayout/`) - Traverses the POMNode tree and calculates layout with yoga-layout. Sets `yogaNode` on each node
-2. **toPositioned** (`packages/pom/src/toPositioned/`) - Generates a PositionedNode tree with absolute coordinates from the calculated layout
-3. **renderPptx** (`packages/pom/src/renderPptx/`) - Converts PositionedNodes to pptxgenjs API calls for slide rendering
-
-Additionally, **autoFit** (`packages/pom/src/autoFit/`) adjusts slides when content overflows vertically, applying strategies such as font size reduction, gap reduction, table row height reduction, and uniform scaling.
+PPTX generation pipeline: **calcYogaLayout** → **toPositioned** → **renderPptx**. Additionally, **autoFit** adjusts slides when content overflows.
 
 ### Public API
 
-- `buildPptx(xml: string, slideSize, options?)` - Main function that takes an XML string and generates PPTX
-- `BuildPptxResult` - Return type of buildPptx
-- `ParseXmlError` - Error class thrown on XML parse failure
-- `DiagnosticsError` - Error class containing collected diagnostics (IMAGE_MEASURE_FAILED, IMAGE_NOT_PREFETCHED, AUTOFIT_OVERFLOW, SCALE_BELOW_THRESHOLD)
-- `Diagnostic` / `DiagnosticCode` - Diagnostic entry type and code type
-- `TextMeasurementMode` - Text measurement mode (`"opentype"` | `"fallback"` | `"auto"`)
-- `SlideMasterOptions` - Slide master settings (title, background, margin, objects, slideNumber)
+- `buildPptx(xml, slideSize, options?)` — XML string → PPTX
+- `BuildPptxResult`, `ParseXmlError`, `DiagnosticsError`, `Diagnostic`, `DiagnosticCode`
+- `TextMeasurementMode` (`"opentype"` | `"fallback"` | `"auto"`), `SlideMasterOptions`
 
 ### Key Internal Types
 
-- `POMNode` - Input node type (internal. Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, VStack, HStack, Icon)
-- `PositionedNode` - Node with position info (has x, y, w, h)
-- `parseXml` - Internal function that converts XML strings to POMNode arrays (tag names are PascalCase, attribute values are type-converted via Zod schema, unknown tags produce errors)
+- `POMNode` — Input node (Text, Ul, Ol, Image, Table, Shape, Chart, Timeline, Matrix, Tree, Flow, ProcessArrow, Pyramid, Line, Layer, VStack, HStack, Icon)
+- `PositionedNode` — Node with absolute position (x, y, w, h)
+- `parseXml` — XML strings → POMNode arrays (PascalCase tags, Zod-validated attributes)
 
-### Unit Conversion
+## Packages
 
-- User input: pixels (px)
-- Internal layout: pixels (yoga-layout)
-- PPTX output: inches (converted via `pxToIn`, 96 DPI basis)
-
-### Text Measurement
-
-Text width measurement uses `opentype.js`. The Noto Sans JP font is bundled with the library and works in both Node.js and browser environments.
-
-- `packages/pom/src/calcYogaLayout/measureText.ts` - Text measurement logic
-- `packages/pom/src/calcYogaLayout/fontLoader.ts` - Font loading (opentype.js)
-- `packages/pom/src/calcYogaLayout/fonts/` - Bundled fonts (Base64)
-- The `textMeasurement` option in `buildPptx` allows explicit specification of the measurement method
-  - `"opentype"`: Always measure with opentype.js (default)
-  - `"fallback"`: Always use fallback calculation (CJK characters = 1em, alphanumeric = 0.5em)
-  - `"auto"`: Measure with opentype.js (default)
-
-## Feature Addition Checklist
-
-When adding new properties or features, update the following files:
-
-1. **Type definitions**: `packages/pom/src/types.ts` - Add new types or properties
-2. **Coercion rules**: `packages/pom/src/parseXml/coercionRules.ts` - Add attribute coercion rules
-3. **XML parser**: `packages/pom/src/parseXml/parseXml.ts` - Add XML tag/attribute conversion logic
-4. **Node registry**: `packages/pom/src/registry/definitions/` - Add node definition to the registry
-5. **Rendering**: Under `packages/pom/src/renderPptx/` - Implement pptxgenjs conversion
-6. **VRT test data**: `packages/pom/vrt/lib/generatePptx.ts` - Add test cases for the new feature
-7. **Update VRT baseline**: Run `pnpm run vrt:docker:update` (from `packages/pom/`)
-8. **Documentation updates**:
-   - `packages/pom/README.md` - User-facing documentation
-   - `packages/pom/docs/nodes.md` - Nodes
-   - `apps/website/public/llm.txt` - XML reference for LLMs (for prompts)
-   - `CLAUDE.md` - Add to Key Internal Types section
-9. **Documentation image updates** (when adding new node types):
-   - Add to `NODE_TYPES` in `packages/pom/scripts/docs-images/config.ts`
-   - Define sample XML in `packages/pom/scripts/docs-images/sampleNodes.ts`
-   - Run `pnpm run docs:images:docker:update` (from `packages/pom/`)
-10. **Add changeset**: Run `pnpm exec changeset add` before creating a PR
-
-## Preview Workflow (for Claude Code)
-
-When modifying main.ts to verify PPTX output, follow these steps:
-
-1. Edit `packages/pom/main.ts` (and modify logic under `packages/pom/src/` as needed)
-2. Run `pnpm run preview:docker` from `packages/pom/`
-3. Visually verify `packages/pom/preview/output/sample.png` using the Read tool
-4. If there are layout issues, fix and return to step 2
-5. If everything looks good, commit
-
-### Output Files
-
-- `packages/pom/preview/output/sample.pptx` - Generated PPTX
-- `packages/pom/preview/output/sample.png` - PNG image (for layout verification)
-
-## Packages (packages/)
-
-Managed as a pnpm workspace. All packages share a single `pnpm-lock.yaml` at the root.
-
-### Release Flow (Changesets)
-
-`@hirokisakabe/pom`, `@hirokisakabe/pom-md`, and `pom-vscode` use [Changesets](https://github.com/changesets/changesets) for versioning. The unified workflow (`release.yml`) handles all packages.
-
-1. Add a changeset: `pnpm exec changeset add`
-2. Push to main → GitHub Actions creates a Release PR (version bump + CHANGELOG)
-3. Merge the Release PR → `changeset publish` publishes pom/pom-md to npm, then detects pom-vscode version change → `vsce publish` to VS Code Marketplace + Git tag + GitHub Release
-
-### pom-md (`packages/pom-md/`)
-
-Markdown → pom XML converter. Converts Markdown with `pomxml` code fences into pom XML strings.
-
-```bash
-pnpm --filter @hirokisakabe/pom-md run build       # TypeScript compilation
-pnpm --filter @hirokisakabe/pom-md run lint         # ESLint
-pnpm --filter @hirokisakabe/pom-md run fmt          # Prettier formatting
-pnpm --filter @hirokisakabe/pom-md run fmt:check    # Format check
-pnpm --filter @hirokisakabe/pom-md run typecheck    # Type checking
-pnpm --filter @hirokisakabe/pom-md run knip         # Detect unused code
-pnpm --filter @hirokisakabe/pom-md run test:run     # Run tests
-```
-
-Pipeline: `Markdown → parseMd() → pom XML string → buildPptx() (core)`
-
-### pom-vscode (`packages/pom-vscode/`)
-
-VS Code extension for live preview of `.pom.md` / `.pom.xml` files. Converts content to SVG via pptx-glimpse and displays in a webview panel.
-
-```bash
-pnpm --filter pom-vscode run build       # esbuild bundle
-pnpm --filter pom-vscode run watch       # esbuild watch mode
-pnpm --filter pom-vscode run lint        # ESLint
-pnpm --filter pom-vscode run fmt         # Prettier formatting
-pnpm --filter pom-vscode run fmt:check   # Format check
-pnpm --filter pom-vscode run typecheck   # Type checking
-pnpm --filter pom-vscode run knip        # Detect unused code
-```
-
-Pipeline:
-
-- `.pom.md → parseMd() → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
-- `.pom.xml → buildPptx() → pptx-glimpse (convertPptxToSvg) → Webview`
-
-To test locally: open `packages/pom-vscode` in VS Code and press F5 to launch Extension Development Host.
-
-#### Release Flow
-
-pom-vscode uses Changesets for versioning (`privatePackages` config). The release is handled by the unified `release.yml` workflow.
-
-1. Add a changeset including pom-vscode: `pnpm exec changeset add`
-2. Release PR merges → `changeset version` bumps pom-vscode's `package.json` version
-3. `release.yml` detects pom-vscode version change → builds, tests, and publishes to VS Code Marketplace + creates Git tag (`pom-vscode-v{version}`) + GitHub Release
-
-Each publish/tag/release step is idempotent: if the workflow fails midway, re-running will skip already-completed steps and resume from the point of failure.
-
-## Language Rules
-
-- Documentation and UI text: English
-- Source code comments: Japanese is acceptable
+Managed as a pnpm workspace. Sub-package details are injected via `.claude/rules/` when editing the respective directory.
