@@ -112,7 +112,6 @@ jobs:
         working-directory: packages/pom-vscode
         run: xvfb-run -a pnpm run test:integration
       - name: VSIX E2E Test
-        continue-on-error: true # TODO: #508 修正後に除去
         working-directory: packages/pom-vscode
         run: xvfb-run -a pnpm run test:vsix
       - name: Clean VSIX artifacts
