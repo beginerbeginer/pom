@@ -36,25 +36,25 @@ const features = [
   {
     title: "AI Friendly",
     description:
-      "Simple XML structure suited for LLM code generation. Include llm.txt in your prompt and go.",
+      "Simple XML structure designed for LLM code generation. Include llm.txt in your system prompt for XML reference.",
     icon: "🤖",
   },
   {
     title: "Declarative",
     description:
-      "Describe slides in XML. No imperative API calls needed — just data in, PPTX out.",
+      "Describe slides as XML. No imperative API calls needed — just data in, PPTX out.",
     icon: "📝",
   },
   {
     title: "Flexible Layout",
     description:
-      "Flexbox-style layout powered by yoga-layout. Use VStack and HStack to compose any arrangement.",
+      "Flexbox-style layout with VStack / HStack, powered by yoga-layout.",
     icon: "📐",
   },
   {
-    title: "18 Built-in Nodes",
+    title: "Rich Nodes",
     description:
-      "Charts, flowcharts, tables, timelines, matrices, pyramids, and more — all out of the box.",
+      "18 built-in node types: charts, flowcharts, tables, timelines, org trees, and more.",
     icon: "🧩",
   },
   {
@@ -66,7 +66,7 @@ const features = [
   {
     title: "Master Slide",
     description:
-      "Define headers, footers, and page numbers once and apply to all slides automatically.",
+      "Define headers, footers, and page numbers once — applied to all slides automatically.",
     icon: "🎨",
   },
 ];
@@ -162,7 +162,7 @@ export default async function LandingPage() {
           Declarative PowerPoint
           <br />
           <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-violet-400">
-            in TypeScript
+            from XML
           </span>
         </h1>
         <p className="mb-10 max-w-2xl text-lg text-gray-600 dark:text-gray-400">

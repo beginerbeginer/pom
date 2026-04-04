@@ -200,7 +200,7 @@ export default async function Image() {
           marginTop: 8,
         }}
       >
-        Declarative PowerPoint in TypeScript
+        Declarative PowerPoint from XML
       </div>
     </div>,
     {
