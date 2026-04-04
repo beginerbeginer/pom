@@ -15,6 +15,8 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -47,6 +49,109 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      # --- pom-vscode: Changesets 統合リリース ---
+      - name: Check pom-vscode version change
+        id: pom-vscode-check
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: |
+          if git diff HEAD~1 --quiet -- packages/pom-vscode/package.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            VERSION=$(node -p "require('./packages/pom-vscode/package.json').version")
+            TAG="pom-vscode-v${VERSION}"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+            echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Format check (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: pnpm run fmt:check
+
+      - name: Lint (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: pnpm run lint
+
+      - name: Type check (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: pnpm run typecheck
+
+      - name: Test (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: pnpm run test:run
+
+      - name: Build (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: pnpm run build
+
+      - name: Integration Test (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        working-directory: packages/pom-vscode
+        run: xvfb-run -a pnpm run test:integration
+
+      - name: Publish to VS Code Marketplace
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        run: |
+          npm install -g @vscode/vsce
+          PKG_NAME=$(node -p "require('./packages/pom-vscode/package.json').name")
+          PUBLISHER=$(node -p "require('./packages/pom-vscode/package.json').publisher")
+          EXTENSION_ID="${PUBLISHER}.${PKG_NAME}"
+          VERSION="${{ steps.pom-vscode-check.outputs.version }}"
+          ALREADY_PUBLISHED=false
+          if SHOW_OUTPUT=$(vsce show "${EXTENSION_ID}" --json 2>/dev/null); then
+            PUBLISHED_VERSION=$(echo "${SHOW_OUTPUT}" | node -p "try{JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).versions[0].version}catch(e){''}")
+            if [ "${PUBLISHED_VERSION}" = "${VERSION}" ]; then
+              ALREADY_PUBLISHED=true
+            fi
+          fi
+          if [ "${ALREADY_PUBLISHED}" = "false" ]; then
+            cd packages/pom-vscode
+            vsce publish
+          else
+            echo "Version ${VERSION} already published, skipping"
+          fi
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Create Git tag (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        run: |
+          TAG="${{ steps.pom-vscode-check.outputs.tag }}"
+          if git ls-remote --tags origin "${TAG}" | grep -q "${TAG}"; then
+            echo "Tag ${TAG} already exists, skipping"
+          else
+            git tag "${TAG}"
+            git push origin "${TAG}"
+          fi
+
+      - name: Create GitHub Release (pom-vscode)
+        if: steps.pom-vscode-check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.pom-vscode-check.outputs.tag }}"
+          VERSION="${{ steps.pom-vscode-check.outputs.version }}"
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists, skipping"
+          else
+            PREV_TAG=$(git tag -l 'pom-vscode-v*' --sort=-v:refname | grep -v "^${TAG}$" | head -1)
+            if [ -n "${PREV_TAG}" ]; then
+              gh release create "${TAG}" \
+                --title "pom-vscode v${VERSION}" \
+                --generate-notes \
+                --notes-start-tag "${PREV_TAG}"
+            else
+              gh release create "${TAG}" \
+                --title "pom-vscode v${VERSION}" \
+                --generate-notes
+            fi
+          fi
 
       - name: Sync pnpm-lock.yaml on Release PR branch
         if: steps.changesets.outputs.pullRequestNumber
