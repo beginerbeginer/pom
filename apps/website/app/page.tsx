@@ -1,8 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import Image, { type StaticImageData } from "next/image";
+import { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { codeToHtml } from "shiki";
 import "./landing.css";
+import { NodeGallery } from "./NodeGallery";
 
 import chartImg from "@/content/images/chart.png";
 import flowImg from "@/content/images/flow.png";
@@ -236,26 +237,7 @@ export default async function LandingPage() {
           From simple text to complex charts and diagrams — everything renders
           as native PowerPoint shapes.
         </p>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {nodes.map((node) => (
-            <div
-              key={node.name}
-              className="group overflow-hidden rounded-xl border border-gray-200 transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
-            >
-              <div className="bg-gray-50 p-3 dark:bg-gray-900">
-                <Image
-                  src={node.image}
-                  alt={`${node.name} node example`}
-                  className="w-full rounded"
-                  placeholder="blur"
-                />
-              </div>
-              <div className="px-3 py-2">
-                <span className="text-sm font-medium">{node.name}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <NodeGallery nodes={nodes} />
         <div className="mt-8 text-center">
           <Link
             href="/nodes"
