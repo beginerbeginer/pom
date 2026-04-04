@@ -210,11 +210,11 @@ Managed as a pnpm workspace. All packages share a single `pnpm-lock.yaml` at the
 
 ### Release Flow (Changesets)
 
-`@hirokisakabe/pom` and `@hirokisakabe/pom-md` use [Changesets](https://github.com/changesets/changesets) for versioning and npm publishing. The unified workflow (`release.yml`) handles both packages.
+`@hirokisakabe/pom`, `@hirokisakabe/pom-md`, and `pom-vscode` use [Changesets](https://github.com/changesets/changesets) for versioning. The unified workflow (`release.yml`) handles all packages.
 
 1. Add a changeset: `pnpm exec changeset add`
 2. Push to main → GitHub Actions creates a Release PR (version bump + CHANGELOG)
-3. Merge the Release PR → `changeset publish` publishes to npm
+3. Merge the Release PR → `changeset publish` publishes pom/pom-md to npm, then detects pom-vscode version change → `vsce publish` to VS Code Marketplace + Git tag + GitHub Release
 
 ### pom-md (`packages/pom-md/`)
 
@@ -255,15 +255,13 @@ To test locally: open `packages/pom-vscode` in VS Code and press F5 to launch Ex
 
 #### Release Flow
 
-pom-vscode uses a Git tag-driven release workflow (changeset is not supported for VS Code extensions).
+pom-vscode uses Changesets for versioning (`privatePackages` config). The release is handled by the unified `release.yml` workflow.
 
-1. Manually update `version` in `packages/pom-vscode/package.json` and merge to main
-2. GitHub Actions (`release-pom-vscode.yml`) triggers on push to main
-3. The workflow checks both Marketplace publish status and Git tag existence independently
-4. If unpublished → `vsce publish` to VS Code Marketplace
-5. If tag missing → create `pom-vscode-v{version}` Git tag and GitHub Release
+1. Add a changeset including pom-vscode: `pnpm exec changeset add`
+2. Release PR merges → `changeset version` bumps pom-vscode's `package.json` version
+3. `release.yml` detects pom-vscode version change → builds, tests, and publishes to VS Code Marketplace + creates Git tag (`pom-vscode-v{version}`) + GitHub Release
 
-Each step is idempotent: if the workflow fails midway (e.g., tag push fails after successful publish), re-running will skip already-completed steps and resume from the point of failure.
+Each publish/tag/release step is idempotent: if the workflow fails midway, re-running will skip already-completed steps and resume from the point of failure.
 
 ## Language Rules
 
