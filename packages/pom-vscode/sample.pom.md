@@ -1,5 +1,6 @@
 ---
 size: 16:9
+backgroundColor: "#F0F4F8"
 ---
 
 # pom-md Feature Showcase
@@ -9,6 +10,8 @@ This is a **paragraph** demonstrating inline formatting: **bold**, _italic_, and
 You can also add [links](https://github.com/hirokisakabe/pom) inline.
 
 ---
+
+<!-- backgroundColor: "#E0F2FE" -->
 
 ## Lists
 
@@ -22,6 +25,8 @@ You can also add [links](https://github.com/hirokisakabe/pom) inline.
 
 ---
 
+<!-- backgroundColor: "#FEF3C7" -->
+
 ## Table
 
 | Feature       | Status | Description        |
@@ -31,6 +36,8 @@ You can also add [links](https://github.com/hirokisakabe/pom) inline.
 | Error display | OK     | Inline diagnostics |
 
 ---
+
+<!-- backgroundColor: "#F0FDF4" -->
 
 ## pomxml Code Fence
 
