@@ -47,7 +47,7 @@ export default async function Image() {
           ry="20"
           fill="url(#bg13)"
         />
-        {/* Back page: XML code */}
+        {/* Back page: XML code (lines as rects) */}
         <rect
           x="14"
           y="14"
@@ -57,46 +57,42 @@ export default async function Image() {
           fill="#6D28D9"
           opacity="0.2"
         />
-        <text
-          x="24"
-          y="32"
-          fontFamily="monospace"
-          fontSize="9"
+        <rect
+          x="22"
+          y="26"
+          width="40"
+          height="4"
+          rx="2"
           fill="#6D28D9"
-          opacity="0.5"
-        >
-          {"<VStack>"}
-        </text>
-        <text
-          x="31"
-          y="43"
-          fontFamily="monospace"
-          fontSize="8"
+          opacity="0.4"
+        />
+        <rect
+          x="28"
+          y="36"
+          width="32"
+          height="4"
+          rx="2"
           fill="#6D28D9"
-          opacity="0.35"
-        >
-          {"<Text />"}
-        </text>
-        <text
-          x="31"
-          y="53"
-          fontFamily="monospace"
-          fontSize="8"
+          opacity="0.3"
+        />
+        <rect
+          x="28"
+          y="46"
+          width="36"
+          height="4"
+          rx="2"
           fill="#6D28D9"
-          opacity="0.35"
-        >
-          {"<Table />"}
-        </text>
-        <text
-          x="24"
-          y="63"
-          fontFamily="monospace"
-          fontSize="9"
+          opacity="0.3"
+        />
+        <rect
+          x="22"
+          y="56"
+          width="44"
+          height="4"
+          rx="2"
           fill="#6D28D9"
-          opacity="0.5"
-        >
-          {"</VStack>"}
-        </text>
+          opacity="0.4"
+        />
         {/* Front page: PPTX slide */}
         <rect
           x="38"
