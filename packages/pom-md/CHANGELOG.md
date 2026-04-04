@@ -1,5 +1,18 @@
 # @hirokisakabe/pom-md
 
+## 2.0.0
+
+### Major Changes
+
+- [#628](https://github.com/hirokisakabe/pom/pull/628) [`568b406`](https://github.com/hirokisakabe/pom/commit/568b40642737d305fbbad44c2354caf9940922e9) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: Directive 対応（frontmatter 拡張 + コメント directive）
+
+  ### Breaking Change
+  - `parseMd()` の返り値を `string` から `{ xml: string; meta: ParseMdMeta }` に変更
+
+  ### 新機能
+  - frontmatter に `masterPptx` と `backgroundColor` を追加
+  - コメント directive（`<!-- backgroundColor: value -->`）でスライド単位の背景色指定に対応
+
 ## 1.0.0
 
 ### Major Changes

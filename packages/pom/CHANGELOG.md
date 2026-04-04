@@ -1,5 +1,15 @@
 # @hirokisakabe/pom
 
+## 7.1.0
+
+### Minor Changes
+
+- [#618](https://github.com/hirokisakabe/pom/pull/618) [`ef2add9`](https://github.com/hirokisakabe/pom/commit/ef2add93e05825cbe0cc9b78d618314baaf6f2f7) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - feat: `masterPptx` オプションで既存 PPTX ファイルの背景をスライドマスターに適用可能に
+
+### Patch Changes
+
+- [#614](https://github.com/hirokisakabe/pom/pull/614) [`db87b95`](https://github.com/hirokisakabe/pom/commit/db87b955e1f00ef512d6f195a6229dd1bba817de) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - docs: ドキュメント用ノード画像のサンプル XML を改善（センタリング・サイズ調整）
+
 ## 7.0.0
 
 ### Major Changes
