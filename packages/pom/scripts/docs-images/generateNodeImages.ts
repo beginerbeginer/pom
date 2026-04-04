@@ -27,7 +27,7 @@ async function generateNodeImage(
   const { pptx } = await buildPptx(
     sampleXml,
     { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
-    { textMeasurement: "fallback" },
+    { textMeasurement: "opentype" },
   );
 
   // PPTXをバッファとして取得

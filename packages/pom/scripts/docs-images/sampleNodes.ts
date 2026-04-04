@@ -14,7 +14,7 @@ const palette = {
 
 const textSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Text Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Text Node Example</Text>
   <HStack gap="60">
     <VStack gap="12">
       <Text fontSize="16" bold="true">Font Sizes</Text>
@@ -48,7 +48,7 @@ const sampleImageUrl = "sample_images/sample_0.png";
 
 const imageSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Image Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Image Node Example</Text>
   <HStack gap="60" alignItems="center">
     <Image src="${sampleImageUrl}" w="300" h="220" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="20" />
     <Image src="${sampleImageUrl}" w="250" h="250" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" borderRadius="8" padding="20" />
@@ -59,7 +59,7 @@ const imageSample = `
 
 const tableSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Table Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Table Node Example</Text>
   <Table defaultRowHeight="48">
     <Col width="120" />
     <Col width="300" />
@@ -101,7 +101,7 @@ const tableSample = `
 
 const shapeSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Shape Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Shape Node Example</Text>
   <HStack gap="40" alignItems="center">
     <Shape shapeType="rect" w="180" h="120" fill.color="${palette.blue}" text="Rectangle" color="FFFFFF" fontSize="16" textAlign="center" />
     <Shape shapeType="roundRect" w="180" h="120" fill.color="${palette.green}" text="Rounded" color="FFFFFF" fontSize="16" textAlign="center" />
@@ -114,7 +114,7 @@ const shapeSample = `
 
 const chartSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Chart Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Chart Node Example</Text>
   <HStack gap="40">
     <Chart chartType="bar" w="360" h="300" showTitle="true" title="Bar Chart" showLegend="true" chartColors='["${palette.blue}","${palette.green}","${palette.red}"]'>
       <ChartSeries name="Q1">
@@ -156,7 +156,7 @@ const chartSample = `
 
 const timelineSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Timeline Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Timeline Node Example</Text>
   <Timeline direction="horizontal" w="100%" h="300">
     <TimelineItem date="2024 Q1" title="Phase 1" description="Planning &amp; Research" color="${palette.blue}" />
     <TimelineItem date="2024 Q2" title="Phase 2" description="Development" color="${palette.green}" />
@@ -168,7 +168,7 @@ const timelineSample = `
 
 const matrixSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Matrix Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Matrix Node Example</Text>
   <Matrix w="700" h="500">
     <MatrixAxes x="Cost" y="Impact" />
     <MatrixQuadrants topLeft="Low Cost\nHigh Impact" topRight="High Cost\nHigh Impact" bottomLeft="Low Cost\nLow Impact" bottomRight="High Cost\nLow Impact" />
@@ -182,7 +182,7 @@ const matrixSample = `
 
 const treeSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Tree Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Tree Node Example</Text>
   <Tree layout="vertical" nodeShape="roundRect" w="100%" h="500" connectorStyle.color="${palette.charcoal}" connectorStyle.width="2">
     <TreeItem label="CEO" color="${palette.navy}">
       <TreeItem label="CTO" color="${palette.blue}">
@@ -204,7 +204,7 @@ const treeSample = `
 
 const flowSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Flow Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Flow Node Example</Text>
   <Flow direction="horizontal" w="100%" h="400" connectorStyle.color="${palette.charcoal}" connectorStyle.width="2">
     <FlowNode id="start" shape="flowChartTerminator" text="Start" color="${palette.green}" />
     <FlowNode id="input" shape="flowChartInputOutput" text="Input Data" color="${palette.lightBlue}" />
@@ -221,7 +221,7 @@ const flowSample = `
 
 const processArrowSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">ProcessArrow Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">ProcessArrow Node Example</Text>
   <ProcessArrow direction="horizontal" w="100%" h="120">
     <ProcessArrowStep label="Planning" color="4472C4" />
     <ProcessArrowStep label="Design" color="5B9BD5" />
@@ -252,7 +252,7 @@ const processArrowSample = `
 
 const pyramidSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Pyramid Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Pyramid Node Example</Text>
   <HStack gap="60" alignItems="center">
     <VStack gap="12">
       <Text fontSize="14" bold="true">direction: up (default)</Text>
@@ -278,7 +278,7 @@ const pyramidSample = `
 
 const vstackSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">VStack Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">VStack Node Example</Text>
   <HStack gap="48">
     <VStack w="280" h="350" gap="12" alignItems="start" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="20">
       <Text fontSize="14" bold="true">alignItems: start</Text>
@@ -304,7 +304,7 @@ const vstackSample = `
 
 const hstackSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">HStack Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">HStack Node Example</Text>
   <VStack gap="20">
     <HStack w="100%" h="120" gap="20" justifyContent="start" alignItems="center" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" padding="20">
       <Text fontSize="14" bold="true" w="200">justifyContent: start</Text>
@@ -330,7 +330,7 @@ const hstackSample = `
 
 const iconSample = `
 <VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
-  <Text fontSize="28" bold="true" color="${palette.navy}">Icon Node Example</Text>
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Icon Node Example</Text>
   <HStack gap="32">
     <VStack gap="20" padding="24" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
       <Text fontSize="16" bold="true">Basic Icons</Text>
