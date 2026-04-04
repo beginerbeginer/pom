@@ -10,54 +10,54 @@ export const page37TableCellBorderXml = `
   <VStack padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' gap="12">
     <Text fontSize="14" bold="true">cellBorder with default style:</Text>
     <Table defaultRowHeight="32" cellBorder='{"color":"${palette.navy}","width":1}'>
-      <TableColumn width="150" />
-      <TableColumn width="150" />
-      <TableColumn width="150" />
-      <TableRow>
-        <TableCell fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 1</TableCell>
-        <TableCell fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 2</TableCell>
-        <TableCell fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 3</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13">Cell A</TableCell>
-        <TableCell fontSize="13">Cell B</TableCell>
-        <TableCell fontSize="13">Cell C</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13">Cell D</TableCell>
-        <TableCell fontSize="13">Cell E</TableCell>
-        <TableCell fontSize="13">Cell F</TableCell>
-      </TableRow>
+      <Col width="150" />
+      <Col width="150" />
+      <Col width="150" />
+      <Tr>
+        <Td fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 1</Td>
+        <Td fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 2</Td>
+        <Td fontSize="14" bold="true" backgroundColor="${palette.lightBlue}">Header 3</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13">Cell A</Td>
+        <Td fontSize="13">Cell B</Td>
+        <Td fontSize="13">Cell C</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13">Cell D</Td>
+        <Td fontSize="13">Cell E</Td>
+        <Td fontSize="13">Cell F</Td>
+      </Tr>
     </Table>
   </VStack>
   <VStack padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' gap="12">
     <Text fontSize="14" bold="true">cellBorder with dashType:</Text>
     <Table defaultRowHeight="32" cellBorder='{"color":"${palette.blue}","width":2,"dashType":"dash"}'>
-      <TableColumn width="150" />
-      <TableColumn width="150" />
-      <TableRow>
-        <TableCell fontSize="13">Dashed</TableCell>
-        <TableCell fontSize="13">Border</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13">Style</TableCell>
-        <TableCell fontSize="13">Test</TableCell>
-      </TableRow>
+      <Col width="150" />
+      <Col width="150" />
+      <Tr>
+        <Td fontSize="13">Dashed</Td>
+        <Td fontSize="13">Border</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13">Style</Td>
+        <Td fontSize="13">Test</Td>
+      </Tr>
     </Table>
   </VStack>
   <VStack padding="16" backgroundColor="FFFFFF" border='{"color":"${palette.border}","width":1}' gap="12">
     <Text fontSize="14" bold="true">Table without cellBorder (default = no border):</Text>
     <Table defaultRowHeight="32">
-      <TableColumn width="150" />
-      <TableColumn width="150" />
-      <TableRow>
-        <TableCell fontSize="13" backgroundColor="${palette.lightBlue}">No</TableCell>
-        <TableCell fontSize="13" backgroundColor="${palette.lightBlue}">Border</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13">Default</TableCell>
-        <TableCell fontSize="13">Behavior</TableCell>
-      </TableRow>
+      <Col width="150" />
+      <Col width="150" />
+      <Tr>
+        <Td fontSize="13" backgroundColor="${palette.lightBlue}">No</Td>
+        <Td fontSize="13" backgroundColor="${palette.lightBlue}">Border</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13">Default</Td>
+        <Td fontSize="13">Behavior</Td>
+      </Tr>
     </Table>
   </VStack>
 </VStack>

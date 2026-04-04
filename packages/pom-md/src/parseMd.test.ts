@@ -77,15 +77,15 @@ describe("parseMd", () => {
       const result = parseMd(md);
       expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
       expect(result).toContain(
-        '<TableCell bold="true" backgroundColor="F1F5F9">名前</TableCell>',
+        '<Td bold="true" backgroundColor="F1F5F9">名前</Td>',
       );
       expect(result).toContain(
-        '<TableCell bold="true" backgroundColor="F1F5F9">値</TableCell>',
+        '<Td bold="true" backgroundColor="F1F5F9">値</Td>',
       );
-      expect(result).toContain("<TableCell>A</TableCell>");
-      expect(result).toContain("<TableCell>100</TableCell>");
-      expect(result).toContain("<TableCell>B</TableCell>");
-      expect(result).toContain("<TableCell>200</TableCell>");
+      expect(result).toContain("<Td>A</Td>");
+      expect(result).toContain("<Td>100</Td>");
+      expect(result).toContain("<Td>B</Td>");
+      expect(result).toContain("<Td>200</Td>");
       expect(result).toContain("</Table>");
     });
   });
@@ -283,7 +283,7 @@ some content
 | --- | --- |
 | **重要** | 100 |`;
       const result = parseMd(md);
-      expect(result).toContain("<TableCell><B>重要</B></TableCell>");
+      expect(result).toContain("<Td><B>重要</B></Td>");
     });
 
     it("テーブルセル内の斜体を変換する", () => {
@@ -291,7 +291,7 @@ some content
 | --- | --- |
 | *注記* | 100 |`;
       const result = parseMd(md);
-      expect(result).toContain("<TableCell><I>注記</I></TableCell>");
+      expect(result).toContain("<Td><I>注記</I></Td>");
     });
 
     it("インラインフォーマットの特殊文字をエスケープする", () => {
@@ -340,7 +340,7 @@ some content
 | [リンク](https://example.com) |`;
       const result = parseMd(md);
       expect(result).toContain(
-        '<TableCell><A href="https://example.com">リンク</A></TableCell>',
+        '<Td><A href="https://example.com">リンク</A></Td>',
       );
     });
 

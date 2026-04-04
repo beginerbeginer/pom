@@ -73,16 +73,16 @@ export const page30LeafPaddingXml = `
     <VStack gap="4" w="50%">
       <Text fontSize="12" bold="true">Table padding=20</Text>
       <Table padding="20" w="350" h="180" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
-        <TableColumn width="150" />
-        <TableColumn width="150" />
-        <TableRow>
-          <TableCell fontSize="14" bold="true">A1</TableCell>
-          <TableCell fontSize="14" bold="true">B1</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="14">A2</TableCell>
-          <TableCell fontSize="14">B2</TableCell>
-        </TableRow>
+        <Col width="150" />
+        <Col width="150" />
+        <Tr>
+          <Td fontSize="14" bold="true">A1</Td>
+          <Td fontSize="14" bold="true">B1</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="14">A2</Td>
+          <Td fontSize="14">B2</Td>
+        </Tr>
       </Table>
     </VStack>
   </HStack>

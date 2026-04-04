@@ -489,10 +489,10 @@ export const CHILD_ELEMENT_COERCION_MAP: Record<
     label: "string",
     color: "string",
   },
-  TableColumn: {
+  Col: {
     width: "number",
   },
-  TableCell: {
+  Td: {
     text: "string",
     fontSize: "number",
     color: "string",

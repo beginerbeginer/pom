@@ -33,29 +33,29 @@ const complexXml = `
     <VStack gap="8">
       <Text fontSize="14" bold="true">Section B</Text>
       <Table defaultRowHeight="32">
-        <TableColumn width="100" />
-        <TableColumn width="100" />
-        <TableColumn width="100" />
-        <TableRow>
-          <TableCell fontSize="11" bold="true">Header 1</TableCell>
-          <TableCell fontSize="11" bold="true">Header 2</TableCell>
-          <TableCell fontSize="11" bold="true">Header 3</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11">Cell A1</TableCell>
-          <TableCell fontSize="11">Cell A2</TableCell>
-          <TableCell fontSize="11">Cell A3</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11">Cell B1</TableCell>
-          <TableCell fontSize="11">Cell B2</TableCell>
-          <TableCell fontSize="11">Cell B3</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11">Cell C1</TableCell>
-          <TableCell fontSize="11">Cell C2</TableCell>
-          <TableCell fontSize="11">Cell C3</TableCell>
-        </TableRow>
+        <Col width="100" />
+        <Col width="100" />
+        <Col width="100" />
+        <Tr>
+          <Td fontSize="11" bold="true">Header 1</Td>
+          <Td fontSize="11" bold="true">Header 2</Td>
+          <Td fontSize="11" bold="true">Header 3</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11">Cell A1</Td>
+          <Td fontSize="11">Cell A2</Td>
+          <Td fontSize="11">Cell A3</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11">Cell B1</Td>
+          <Td fontSize="11">Cell B2</Td>
+          <Td fontSize="11">Cell B3</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11">Cell C1</Td>
+          <Td fontSize="11">Cell C2</Td>
+          <Td fontSize="11">Cell C3</Td>
+        </Tr>
       </Table>
     </VStack>
   </HStack>

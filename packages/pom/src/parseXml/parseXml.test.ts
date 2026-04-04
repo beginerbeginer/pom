@@ -229,7 +229,7 @@ describe("parseXml", () => {
 
     it("Table の cellBorder を JSON 形式で変換する", () => {
       const result = parseXml(
-        `<Table cellBorder='{"color":"334155","width":1}'><TableRow><TableCell>A</TableCell></TableRow></Table>`,
+        `<Table cellBorder='{"color":"334155","width":1}'><Tr><Td>A</Td></Tr></Table>`,
       );
       const table = result[0] as Record<string, unknown>;
       expect(table.cellBorder).toEqual({ color: "334155", width: 1 });
@@ -237,16 +237,14 @@ describe("parseXml", () => {
 
     it("Table の cellBorder をドット記法で変換する", () => {
       const result = parseXml(
-        `<Table cellBorder.color="334155" cellBorder.width="2"><TableRow><TableCell>A</TableCell></TableRow></Table>`,
+        `<Table cellBorder.color="334155" cellBorder.width="2"><Tr><Td>A</Td></Tr></Table>`,
       );
       const table = result[0] as Record<string, unknown>;
       expect(table.cellBorder).toEqual({ color: "334155", width: 2 });
     });
 
     it("Table の cellBorder 省略時はプロパティが存在しない", () => {
-      const result = parseXml(
-        `<Table><TableRow><TableCell>A</TableCell></TableRow></Table>`,
-      );
+      const result = parseXml(`<Table><Tr><Td>A</Td></Tr></Table>`);
       const table = result[0] as Record<string, unknown>;
       expect(table.cellBorder).toBeUndefined();
     });
@@ -529,9 +527,9 @@ describe("parseXml", () => {
       });
     });
 
-    it("TableCell 内の B タグを処理する", () => {
+    it("Td 内の B タグを処理する", () => {
       const result = parseXml(
-        "<Table><TableRow><TableCell><B>太字</B> セル</TableCell></TableRow></Table>",
+        "<Table><Tr><Td><B>太字</B> セル</Td></Tr></Table>",
       );
       const tableNode = result[0] as Record<string, unknown>;
       const rows = tableNode.rows as Record<string, unknown>[];
@@ -583,9 +581,9 @@ describe("parseXml", () => {
       });
     });
 
-    it("TableCell 内の A タグを処理する", () => {
+    it("Td 内の A タグを処理する", () => {
       const result = parseXml(
-        '<Table><TableRow><TableCell><A href="https://example.com">リンク</A></TableCell></TableRow></Table>',
+        '<Table><Tr><Td><A href="https://example.com">リンク</A></Td></Tr></Table>',
       );
       const tableNode = result[0] as Record<string, unknown>;
       const rows = tableNode.rows as Record<string, unknown>[];
@@ -665,9 +663,9 @@ describe("parseXml", () => {
       });
     });
 
-    it("TableCell 内の S タグを処理する", () => {
+    it("Td 内の S タグを処理する", () => {
       const result = parseXml(
-        "<Table><TableRow><TableCell><S>取り消し</S> セル</TableCell></TableRow></Table>",
+        "<Table><Tr><Td><S>取り消し</S> セル</Td></Tr></Table>",
       );
       const tableNode = result[0] as Record<string, unknown>;
       const rows = tableNode.rows as Record<string, unknown>[];
@@ -693,9 +691,9 @@ describe("parseXml", () => {
       });
     });
 
-    it("TableCell 内の Mark タグを処理する", () => {
+    it("Td 内の Mark タグを処理する", () => {
       const result = parseXml(
-        '<Table><TableRow><TableCell><Mark color="FFFF00">ハイライト</Mark> セル</TableCell></TableRow></Table>',
+        '<Table><Tr><Td><Mark color="FFFF00">ハイライト</Mark> セル</Td></Tr></Table>',
       );
       const tableNode = result[0] as Record<string, unknown>;
       const rows = tableNode.rows as Record<string, unknown>[];
@@ -783,9 +781,9 @@ describe("parseXml", () => {
       });
     });
 
-    it("TableCell 内の Span タグを処理する", () => {
+    it("Td 内の Span タグを処理する", () => {
       const result = parseXml(
-        '<Table><TableRow><TableCell><Span color="1D4ED8">青</Span> セル</TableCell></TableRow></Table>',
+        '<Table><Tr><Td><Span color="1D4ED8">青</Span> セル</Td></Tr></Table>',
       );
       const tableNode = result[0] as Record<string, unknown>;
       const rows = tableNode.rows as Record<string, unknown>[];
@@ -1481,19 +1479,19 @@ describe("parseXml", () => {
 
     // ----- Table -----
     describe("Table", () => {
-      it("TableColumn/TableRow/TableCell 子要素から columns/rows を構築する", () => {
+      it("Col/Tr/Td 子要素から columns/rows を構築する", () => {
         const xml = `
           <Table>
-            <TableColumn width="200" />
-            <TableColumn width="100" />
-            <TableRow>
-              <TableCell>太郎</TableCell>
-              <TableCell>30</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>花子</TableCell>
-              <TableCell>25</TableCell>
-            </TableRow>
+            <Col width="200" />
+            <Col width="100" />
+            <Tr>
+              <Td>太郎</Td>
+              <Td>30</Td>
+            </Tr>
+            <Tr>
+              <Td>花子</Td>
+              <Td>25</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1509,13 +1507,13 @@ describe("parseXml", () => {
         ]);
       });
 
-      it("TableCell に属性（fontSize, bold等）を設定する", () => {
+      it("Td に属性（fontSize, bold等）を設定する", () => {
         const xml = `
           <Table>
-            <TableColumn width="200" />
-            <TableRow>
-              <TableCell fontSize="14" bold="true" color="FF0000">Header</TableCell>
-            </TableRow>
+            <Col width="200" />
+            <Tr>
+              <Td fontSize="14" bold="true" color="FF0000">Header</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1532,13 +1530,13 @@ describe("parseXml", () => {
         });
       });
 
-      it("TableCell の text 属性がテキストコンテンツより優先される", () => {
+      it("Td の text 属性がテキストコンテンツより優先される", () => {
         const xml = `
           <Table>
-            <TableColumn />
-            <TableRow>
-              <TableCell text="from attr">from content</TableCell>
-            </TableRow>
+            <Col />
+            <Tr>
+              <Td text="from attr">from content</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1550,13 +1548,13 @@ describe("parseXml", () => {
         expect(cells[0].text).toBe("from attr");
       });
 
-      it("TableRow に height 属性を設定する", () => {
+      it("Tr に height 属性を設定する", () => {
         const xml = `
           <Table>
-            <TableColumn />
-            <TableRow height="50">
-              <TableCell>A</TableCell>
-            </TableRow>
+            <Col />
+            <Tr height="50">
+              <Td>A</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1567,13 +1565,13 @@ describe("parseXml", () => {
         expect(rows[0].height).toBe(50);
       });
 
-      it("TableColumn なしで TableRow のみを指定する", () => {
+      it("Col なしで Tr のみを指定する", () => {
         const xml = `
           <Table>
-            <TableRow>
-              <TableCell>A</TableCell>
-              <TableCell>B</TableCell>
-            </TableRow>
+            <Tr>
+              <Td>A</Td>
+              <Td>B</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1582,17 +1580,17 @@ describe("parseXml", () => {
         expect(node.rows).toEqual([{ cells: [{ text: "A" }, { text: "B" }] }]);
       });
 
-      it("TableColumn なしで colspan を含む TableRow から正しい列数を推定する", () => {
+      it("Col なしで colspan を含む Tr から正しい列数を推定する", () => {
         const xml = `
           <Table>
-            <TableRow>
-              <TableCell colspan="3">Header</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>A</TableCell>
-              <TableCell>B</TableCell>
-              <TableCell>C</TableCell>
-            </TableRow>
+            <Tr>
+              <Td colspan="3">Header</Td>
+            </Tr>
+            <Tr>
+              <Td>A</Td>
+              <Td>B</Td>
+              <Td>C</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1611,11 +1609,11 @@ describe("parseXml", () => {
         expect(node.rows).toEqual([{ cells: [{ text: "A" }] }]);
       });
 
-      it("TableRow 内の未知タグでエラーをスローする", () => {
+      it("Tr 内の未知タグでエラーをスローする", () => {
         expect(() =>
-          parseXml("<Table><TableRow><Unknown>x</Unknown></TableRow></Table>"),
+          parseXml("<Table><Tr><Unknown>x</Unknown></Tr></Table>"),
         ).toThrow(
-          "Unknown child element <Unknown> inside <TableRow>. Expected: <TableCell>",
+          "Unknown child element <Unknown> inside <Tr>. Expected: <Td>",
         );
       });
 
@@ -1623,24 +1621,24 @@ describe("parseXml", () => {
         expect(() =>
           parseXml('<Table><Unknown width="100" /></Table>'),
         ).toThrow(
-          "Unknown child element <Unknown> inside <Table>. Expected: <TableColumn> or <TableRow>",
+          "Unknown child element <Unknown> inside <Table>. Expected: <Col> or <Tr>",
         );
       });
 
-      it("TableCell に colspan/rowspan を設定する", () => {
+      it("Td に colspan/rowspan を設定する", () => {
         const xml = `
           <Table>
-            <TableColumn width="100" />
-            <TableColumn width="100" />
-            <TableColumn width="100" />
-            <TableRow>
-              <TableCell colspan="3">Header</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell rowspan="2">Left</TableCell>
-              <TableCell>A</TableCell>
-              <TableCell>B</TableCell>
-            </TableRow>
+            <Col width="100" />
+            <Col width="100" />
+            <Col width="100" />
+            <Tr>
+              <Td colspan="3">Header</Td>
+            </Tr>
+            <Tr>
+              <Td rowspan="2">Left</Td>
+              <Td>A</Td>
+              <Td>B</Td>
+            </Tr>
           </Table>
         `;
         const result = parseXml(xml);
@@ -1773,8 +1771,8 @@ describe("parseXml", () => {
         const xml = `
           <HStack gap="16">
             <Table>
-              <TableColumn width="200" />
-              <TableRow><TableCell>A</TableCell></TableRow>
+              <Col width="200" />
+              <Tr><Td>A</Td></Tr>
             </Table>
             <Text>Notes</Text>
           </HStack>

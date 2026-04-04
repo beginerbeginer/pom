@@ -98,7 +98,7 @@ Use `<B>`, `<I>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` child elements to apply b
 <Text fontSize="16"><B><Span color="1D4ED8">bold blue</Span></B></Text>
 ```
 
-This also works inside `<Li>` and `<TableCell>`:
+This also works inside `<Li>` and `<Td>`:
 
 ```xml
 <Ul fontSize="14">

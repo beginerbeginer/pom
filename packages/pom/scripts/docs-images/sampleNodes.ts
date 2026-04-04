@@ -61,34 +61,34 @@ const tableSample = `
 <VStack w="100%" h="max" padding="40" gap="24" backgroundColor="${palette.background}">
   <Text fontSize="28" bold="true" color="${palette.navy}">Table Node Example</Text>
   <Table defaultRowHeight="36">
-    <TableColumn width="80" />
-    <TableColumn width="200" />
-    <TableColumn width="100" />
-    <TableColumn width="120" />
-    <TableRow>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">ID</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Name</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Status</TableCell>
-      <TableCell bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Progress</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell textAlign="center">001</TableCell>
-      <TableCell>Project Alpha</TableCell>
-      <TableCell color="${palette.green}">Active</TableCell>
-      <TableCell textAlign="right">75%</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell textAlign="center">002</TableCell>
-      <TableCell>Project Beta</TableCell>
-      <TableCell color="${palette.accent}">Pending</TableCell>
-      <TableCell textAlign="right">30%</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell textAlign="center">003</TableCell>
-      <TableCell>Project Gamma</TableCell>
-      <TableCell color="${palette.blue}">Complete</TableCell>
-      <TableCell textAlign="right">100%</TableCell>
-    </TableRow>
+    <Col width="80" />
+    <Col width="200" />
+    <Col width="100" />
+    <Col width="120" />
+    <Tr>
+      <Td bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">ID</Td>
+      <Td bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Name</Td>
+      <Td bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Status</Td>
+      <Td bold="true" backgroundColor="${palette.navy}" color="FFFFFF" textAlign="center">Progress</Td>
+    </Tr>
+    <Tr>
+      <Td textAlign="center">001</Td>
+      <Td>Project Alpha</Td>
+      <Td color="${palette.green}">Active</Td>
+      <Td textAlign="right">75%</Td>
+    </Tr>
+    <Tr>
+      <Td textAlign="center">002</Td>
+      <Td>Project Beta</Td>
+      <Td color="${palette.accent}">Pending</Td>
+      <Td textAlign="right">30%</Td>
+    </Tr>
+    <Tr>
+      <Td textAlign="center">003</Td>
+      <Td>Project Gamma</Td>
+      <Td color="${palette.blue}">Complete</Td>
+      <Td textAlign="right">100%</Td>
+    </Tr>
   </Table>
 </VStack>
 `;

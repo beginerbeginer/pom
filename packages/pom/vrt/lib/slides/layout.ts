@@ -170,19 +170,19 @@ export const page17HStackTableXml = `
     <HStack gap="16">
       <Text fontSize="14">Left text</Text>
       <Table defaultRowHeight="28">
-        <TableColumn width="80" />
-        <TableColumn width="120" />
-        <TableColumn width="80" />
-        <TableRow>
-          <TableCell fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">A</TableCell>
-          <TableCell fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">B</TableCell>
-          <TableCell fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">C</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="12">1</TableCell>
-          <TableCell fontSize="12">Data</TableCell>
-          <TableCell fontSize="12">OK</TableCell>
-        </TableRow>
+        <Col width="80" />
+        <Col width="120" />
+        <Col width="80" />
+        <Tr>
+          <Td fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">A</Td>
+          <Td fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">B</Td>
+          <Td fontSize="12" bold="true" backgroundColor="${palette.lightBlue}">C</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="12">1</Td>
+          <Td fontSize="12">Data</Td>
+          <Td fontSize="12">OK</Td>
+        </Tr>
       </Table>
       <Text fontSize="14">Right text</Text>
     </HStack>

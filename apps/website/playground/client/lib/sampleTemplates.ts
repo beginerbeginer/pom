@@ -22,46 +22,46 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
         <Text fontSize="14" color="FFFFFF" textAlign="center" bold="true">主要経営指標（連結）</Text>
       </VStack>
       <Table w="max" defaultRowHeight="38">
-        <TableColumn width="140" />
-        <TableColumn width="110" />
-        <TableColumn width="110" />
-        <TableColumn width="80" />
-        <TableRow>
-          <TableCell fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">項目</TableCell>
-          <TableCell fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">当期実績</TableCell>
-          <TableCell fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">前年同期</TableCell>
-          <TableCell fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">増減率</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">売上高</TableCell>
-          <TableCell fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">4,285億円</TableCell>
-          <TableCell fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">3,892億円</TableCell>
-          <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+10.1%</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">営業利益</TableCell>
-          <TableCell fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">512億円</TableCell>
-          <TableCell fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">438億円</TableCell>
-          <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+16.9%</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">経常利益</TableCell>
-          <TableCell fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">498億円</TableCell>
-          <TableCell fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">421億円</TableCell>
-          <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+18.3%</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">当期純利益</TableCell>
-          <TableCell fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">328億円</TableCell>
-          <TableCell fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">276億円</TableCell>
-          <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+18.8%</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">営業利益率</TableCell>
-          <TableCell fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">11.9%</TableCell>
-          <TableCell fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">11.3%</TableCell>
-          <TableCell fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+0.6pt</TableCell>
-        </TableRow>
+        <Col width="140" />
+        <Col width="110" />
+        <Col width="110" />
+        <Col width="80" />
+        <Tr>
+          <Td fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">項目</Td>
+          <Td fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">当期実績</Td>
+          <Td fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">前年同期</Td>
+          <Td fontSize="11" color="FFFFFF" bold="true" textAlign="center" backgroundColor="1A1980">増減率</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">売上高</Td>
+          <Td fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">4,285億円</Td>
+          <Td fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">3,892億円</Td>
+          <Td fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+10.1%</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">営業利益</Td>
+          <Td fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">512億円</Td>
+          <Td fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">438億円</Td>
+          <Td fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+16.9%</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">経常利益</Td>
+          <Td fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">498億円</Td>
+          <Td fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">421億円</Td>
+          <Td fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+18.3%</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">当期純利益</Td>
+          <Td fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">328億円</Td>
+          <Td fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">276億円</Td>
+          <Td fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+18.8%</Td>
+        </Tr>
+        <Tr>
+          <Td fontSize="11" color="0E0D6A" bold="true" backgroundColor="E8EAF6">営業利益率</Td>
+          <Td fontSize="11" color="1A1A1A" textAlign="right" backgroundColor="FFFFFF">11.9%</Td>
+          <Td fontSize="11" color="5A5A5A" textAlign="right" backgroundColor="FFFFFF">11.3%</Td>
+          <Td fontSize="11" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+0.6pt</Td>
+        </Tr>
       </Table>
       <VStack w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
         <VStack gap="6">
@@ -114,32 +114,32 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
       </VStack>
       <VStack w="max" padding="10" backgroundColor="FFFFFF" border.color="C5CAE9" border.width="1">
         <Table w="max" defaultRowHeight="28">
-          <TableColumn width="100" />
-          <TableColumn width="90" />
-          <TableColumn width="90" />
-          <TableColumn width="90" />
-          <TableColumn width="90" />
-          <TableRow>
-            <TableCell fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">指標</TableCell>
-            <TableCell fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q1</TableCell>
-            <TableCell fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q2</TableCell>
-            <TableCell fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q3</TableCell>
-            <TableCell fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">通期予想</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell fontSize="10" color="0E0D6A" backgroundColor="E8EAF6">売上高成長率</TableCell>
-            <TableCell fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">+8.2%</TableCell>
-            <TableCell fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">+9.5%</TableCell>
-            <TableCell fontSize="10" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+10.1%</TableCell>
-            <TableCell fontSize="10" color="E65100" textAlign="center" backgroundColor="FFF3E0">+9.8%</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell fontSize="10" color="0E0D6A" backgroundColor="E8EAF6">営業利益率</TableCell>
-            <TableCell fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">11.7%</TableCell>
-            <TableCell fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">11.8%</TableCell>
-            <TableCell fontSize="10" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">11.9%</TableCell>
-            <TableCell fontSize="10" color="E65100" textAlign="center" backgroundColor="FFF3E0">12.0%</TableCell>
-          </TableRow>
+          <Col width="100" />
+          <Col width="90" />
+          <Col width="90" />
+          <Col width="90" />
+          <Col width="90" />
+          <Tr>
+            <Td fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">指標</Td>
+            <Td fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q1</Td>
+            <Td fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q2</Td>
+            <Td fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">Q3</Td>
+            <Td fontSize="10" color="FFFFFF" bold="true" textAlign="center" backgroundColor="3949AB">通期予想</Td>
+          </Tr>
+          <Tr>
+            <Td fontSize="10" color="0E0D6A" backgroundColor="E8EAF6">売上高成長率</Td>
+            <Td fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">+8.2%</Td>
+            <Td fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">+9.5%</Td>
+            <Td fontSize="10" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">+10.1%</Td>
+            <Td fontSize="10" color="E65100" textAlign="center" backgroundColor="FFF3E0">+9.8%</Td>
+          </Tr>
+          <Tr>
+            <Td fontSize="10" color="0E0D6A" backgroundColor="E8EAF6">営業利益率</Td>
+            <Td fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">11.7%</Td>
+            <Td fontSize="10" color="1A1A1A" textAlign="center" backgroundColor="FFFFFF">11.8%</Td>
+            <Td fontSize="10" color="0D7A3E" bold="true" textAlign="center" backgroundColor="E3F2E8">11.9%</Td>
+            <Td fontSize="10" color="E65100" textAlign="center" backgroundColor="FFF3E0">12.0%</Td>
+          </Tr>
         </Table>
       </VStack>
     </VStack>
@@ -830,44 +830,44 @@ export const SAMPLE_TEMPLATES: SampleTemplate[] = [
             <Text fontSize="13" color="CBD5E1" bold="true">プラン別 主要メトリクス</Text>
           </HStack>
           <Table w="max" defaultRowHeight="28">
-            <TableColumn width="90" />
-            <TableColumn width="80" />
-            <TableColumn width="80" />
-            <TableColumn width="80" />
-            <TableColumn width="70" />
-            <TableColumn width="70" />
-            <TableRow>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">プラン</TableCell>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">契約数</TableCell>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">MRR貢献</TableCell>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">ARPU</TableCell>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">Churn</TableCell>
-              <TableCell fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">NRR</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell fontSize="10" color="38BDF8" bold="true" backgroundColor="1E293B">Starter</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">1,240</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥6.2M</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥5,000</TableCell>
-              <TableCell fontSize="10" color="F87171" textAlign="center" backgroundColor="1E293B">3.2%</TableCell>
-              <TableCell fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">102%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell fontSize="10" color="34D399" bold="true" backgroundColor="162032">Growth</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">680</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">¥20.4M</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">¥30,000</TableCell>
-              <TableCell fontSize="10" color="FBBF24" textAlign="center" backgroundColor="162032">1.5%</TableCell>
-              <TableCell fontSize="10" color="34D399" textAlign="center" backgroundColor="162032">115%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell fontSize="10" color="A78BFA" bold="true" backgroundColor="1E293B">Enterprise</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">142</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥21.6M</TableCell>
-              <TableCell fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥152,000</TableCell>
-              <TableCell fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">0.4%</TableCell>
-              <TableCell fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">128%</TableCell>
-            </TableRow>
+            <Col width="90" />
+            <Col width="80" />
+            <Col width="80" />
+            <Col width="80" />
+            <Col width="70" />
+            <Col width="70" />
+            <Tr>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">プラン</Td>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">契約数</Td>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">MRR貢献</Td>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">ARPU</Td>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">Churn</Td>
+              <Td fontSize="10" color="94A3B8" bold="true" backgroundColor="0F172A" textAlign="center">NRR</Td>
+            </Tr>
+            <Tr>
+              <Td fontSize="10" color="38BDF8" bold="true" backgroundColor="1E293B">Starter</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">1,240</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥6.2M</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥5,000</Td>
+              <Td fontSize="10" color="F87171" textAlign="center" backgroundColor="1E293B">3.2%</Td>
+              <Td fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">102%</Td>
+            </Tr>
+            <Tr>
+              <Td fontSize="10" color="34D399" bold="true" backgroundColor="162032">Growth</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">680</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">¥20.4M</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="162032">¥30,000</Td>
+              <Td fontSize="10" color="FBBF24" textAlign="center" backgroundColor="162032">1.5%</Td>
+              <Td fontSize="10" color="34D399" textAlign="center" backgroundColor="162032">115%</Td>
+            </Tr>
+            <Tr>
+              <Td fontSize="10" color="A78BFA" bold="true" backgroundColor="1E293B">Enterprise</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">142</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥21.6M</Td>
+              <Td fontSize="10" color="E2E8F0" textAlign="center" backgroundColor="1E293B">¥152,000</Td>
+              <Td fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">0.4%</Td>
+              <Td fontSize="10" color="34D399" textAlign="center" backgroundColor="1E293B">128%</Td>
+            </Tr>
           </Table>
         </VStack>
       </VStack>

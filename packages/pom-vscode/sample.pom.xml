@@ -17,18 +17,18 @@
     <VStack gap="16" w="50%">
       <Text fontSize="20" bold="true" color="1D4ED8">Table</Text>
       <Table>
-        <TableRow>
-          <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">Feature</TableCell>
-          <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">Status</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Live preview</TableCell>
-          <TableCell>OK</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Debounce</TableCell>
-          <TableCell>OK</TableCell>
-        </TableRow>
+        <Tr>
+          <Td bold="true" backgroundColor="0F172A" color="FFFFFF">Feature</Td>
+          <Td bold="true" backgroundColor="0F172A" color="FFFFFF">Status</Td>
+        </Tr>
+        <Tr>
+          <Td>Live preview</Td>
+          <Td>OK</Td>
+        </Tr>
+        <Tr>
+          <Td>Debounce</Td>
+          <Td>OK</Td>
+        </Tr>
       </Table>
     </VStack>
   </HStack>
