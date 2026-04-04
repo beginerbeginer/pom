@@ -19,20 +19,20 @@ export const page21XmlChildElementsXml = `
       </Chart>
       <Text fontSize="14" bold="true" color="${palette.charcoal}">Table (Column/Row/Cell)</Text>
       <Table w="380">
-        <TableColumn width="190" />
-        <TableColumn width="190" />
-        <TableRow>
-          <TableCell bold="true" backgroundColor="${palette.lightBlue}">Name</TableCell>
-          <TableCell bold="true" backgroundColor="${palette.lightBlue}">Score</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Alice</TableCell>
-          <TableCell>95</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Bob</TableCell>
-          <TableCell>87</TableCell>
-        </TableRow>
+        <Col width="190" />
+        <Col width="190" />
+        <Tr>
+          <Td bold="true" backgroundColor="${palette.lightBlue}">Name</Td>
+          <Td bold="true" backgroundColor="${palette.lightBlue}">Score</Td>
+        </Tr>
+        <Tr>
+          <Td>Alice</Td>
+          <Td>95</Td>
+        </Tr>
+        <Tr>
+          <Td>Bob</Td>
+          <Td>87</Td>
+        </Tr>
       </Table>
     </VStack>
     <VStack gap="8" w="380">

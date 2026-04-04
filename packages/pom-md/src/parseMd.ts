@@ -240,20 +240,20 @@ function collectTable(
 
       // ヘッダー行
       if (headerRow.length > 0) {
-        xml += "<TableRow>";
+        xml += "<Tr>";
         for (const cell of headerRow) {
-          xml += `<TableCell bold="true" backgroundColor="F1F5F9">${cell}</TableCell>`;
+          xml += `<Td bold="true" backgroundColor="F1F5F9">${cell}</Td>`;
         }
-        xml += "</TableRow>";
+        xml += "</Tr>";
       }
 
       // データ行
       for (const row of dataRows) {
-        xml += "<TableRow>";
+        xml += "<Tr>";
         for (const cell of row) {
-          xml += `<TableCell>${cell}</TableCell>`;
+          xml += `<Td>${cell}</Td>`;
         }
-        xml += "</TableRow>";
+        xml += "</Tr>";
       }
 
       xml += "</Table>";

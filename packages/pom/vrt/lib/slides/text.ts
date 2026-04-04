@@ -96,7 +96,7 @@ export const page1TextXml = `
 
 // ============================================================
 // Page 36: Inline Formatting Test (B/I tags)
-// テスト対象: Text, Li, TableCell 内のインライン書式
+// テスト対象: Text, Li, Td 内のインライン書式
 // ============================================================
 export const page36InlineFormattingXml = `
 <VStack w="100%" h="max" padding="48" gap="20" alignItems="stretch" backgroundColor="${palette.background}">
@@ -143,28 +143,28 @@ export const page36InlineFormattingXml = `
   <VStack padding="16" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1" gap="8">
     <Text fontSize="14" bold="true">Table with inline B/I/U/S/Mark:</Text>
     <Table>
-      <TableColumn width="200" />
-      <TableColumn width="200" />
-      <TableRow>
-        <TableCell fontSize="14" bold="true">Header</TableCell>
-        <TableCell fontSize="14" bold="true">Value</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13"><B>Bold</B> cell</TableCell>
-        <TableCell fontSize="13"><I>Italic</I> cell</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13"><U>Underline</U> cell</TableCell>
-        <TableCell fontSize="13"><S>Strike</S> cell</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13"><Mark color="FFFF00">Highlight</Mark> cell</TableCell>
-        <TableCell fontSize="13"><B><U><Mark color="00FFFF">All combined</Mark></U></B></TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell fontSize="13"><Span color="FF0000">Red</Span> cell</TableCell>
-        <TableCell fontSize="13"><B><Span color="1D4ED8">Bold blue</Span></B> cell</TableCell>
-      </TableRow>
+      <Col width="200" />
+      <Col width="200" />
+      <Tr>
+        <Td fontSize="14" bold="true">Header</Td>
+        <Td fontSize="14" bold="true">Value</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13"><B>Bold</B> cell</Td>
+        <Td fontSize="13"><I>Italic</I> cell</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13"><U>Underline</U> cell</Td>
+        <Td fontSize="13"><S>Strike</S> cell</Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13"><Mark color="FFFF00">Highlight</Mark> cell</Td>
+        <Td fontSize="13"><B><U><Mark color="00FFFF">All combined</Mark></U></B></Td>
+      </Tr>
+      <Tr>
+        <Td fontSize="13"><Span color="FF0000">Red</Span> cell</Td>
+        <Td fontSize="13"><B><Span color="1D4ED8">Bold blue</Span></B> cell</Td>
+      </Tr>
     </Table>
   </VStack>
 </VStack>

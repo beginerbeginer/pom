@@ -142,16 +142,16 @@ For detailed node documentation, see [Nodes](./docs/nodes.md).
 
 ```xml
 <Table defaultRowHeight="36" cellBorder='{"color":"CBD5E1","width":1}'>
-  <TableColumn width="80" />
-  <TableColumn width="200" />
-  <TableRow>
-    <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">ID</TableCell>
-    <TableCell bold="true" backgroundColor="0F172A" color="FFFFFF">Name</TableCell>
-  </TableRow>
-  <TableRow>
-    <TableCell>001</TableCell>
-    <TableCell>Project Alpha</TableCell>
-  </TableRow>
+  <Col width="80" />
+  <Col width="200" />
+  <Tr>
+    <Td bold="true" backgroundColor="0F172A" color="FFFFFF">ID</Td>
+    <Td bold="true" backgroundColor="0F172A" color="FFFFFF">Name</Td>
+  </Tr>
+  <Tr>
+    <Td>001</Td>
+    <Td>Project Alpha</Td>
+  </Tr>
 </Table>
 ```
 

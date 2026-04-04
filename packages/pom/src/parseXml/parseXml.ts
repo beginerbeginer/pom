@@ -818,24 +818,24 @@ function convertTableChildren(
   for (const child of childElements) {
     const tag = getTagName(child);
     switch (tag) {
-      case "TableColumn":
+      case "Col":
         columns.push(
           coerceChildAttrs("Table", tag, getAttributes(child), errors),
         );
         break;
-      case "TableRow": {
+      case "Tr": {
         const rowAttrs = getAttributes(child);
         const cells: Record<string, unknown>[] = [];
         for (const cellEl of getChildElements(child)) {
           const cellTag = getTagName(cellEl);
-          if (cellTag !== "TableCell") {
+          if (cellTag !== "Td") {
             errors.push(
-              `Unknown child element <${cellTag}> inside <TableRow>. Expected: <TableCell>`,
+              `Unknown child element <${cellTag}> inside <Tr>. Expected: <Td>`,
             );
             continue;
           }
           const cellAttrs = coerceChildAttrs(
-            "TableRow",
+            "Tr",
             cellTag,
             getAttributes(cellEl),
             errors,
@@ -857,7 +857,7 @@ function convertTableChildren(
           const h = Number(rowAttrs.height);
           if (isNaN(h)) {
             errors.push(
-              `Cannot convert "${rowAttrs.height}" to number in <TableRow> "height" attribute`,
+              `Cannot convert "${rowAttrs.height}" to number in <Tr> "height" attribute`,
             );
           } else {
             row.height = h;
@@ -868,14 +868,14 @@ function convertTableChildren(
       }
       default:
         errors.push(
-          `Unknown child element <${tag}> inside <Table>. Expected: <TableColumn> or <TableRow>`,
+          `Unknown child element <${tag}> inside <Table>. Expected: <Col> or <Tr>`,
         );
     }
   }
   if (columns.length > 0) {
     result.columns = columns;
   } else if (rows.length > 0) {
-    // TableColumn が未指定の場合、行のセル数（colspan 考慮）からデフォルトの columns を自動生成
+    // Col が未指定の場合、行のセル数（colspan 考慮）からデフォルトの columns を自動生成
     const maxCells = Math.max(
       ...rows.map((row) =>
         (row.cells as Record<string, unknown>[]).reduce(

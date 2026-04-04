@@ -101,12 +101,12 @@ describe("エッジケーステスト", () => {
 | --- | --- |`;
       const result = parseMd(md);
       expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
-      expect(result).toContain("<TableRow>");
+      expect(result).toContain("<Tr>");
       expect(result).toContain(
-        '<TableCell bold="true" backgroundColor="F1F5F9">Header1</TableCell>',
+        '<Td bold="true" backgroundColor="F1F5F9">Header1</Td>',
       );
       expect(result).toContain(
-        '<TableCell bold="true" backgroundColor="F1F5F9">Header2</TableCell>',
+        '<Td bold="true" backgroundColor="F1F5F9">Header2</Td>',
       );
       expect(result).toContain("</Table>");
       // parseXml でもパースできること
@@ -120,9 +120,9 @@ describe("エッジケーステスト", () => {
       const result = parseMd(md);
       expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
       expect(result).toContain(
-        '<TableCell bold="true" backgroundColor="F1F5F9">A</TableCell>',
+        '<Td bold="true" backgroundColor="F1F5F9">A</Td>',
       );
-      expect(result).toContain("<TableCell>B</TableCell>");
+      expect(result).toContain("<Td>B</Td>");
       expect(() => parseXml(result)).not.toThrow();
     });
 

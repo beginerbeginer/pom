@@ -162,22 +162,22 @@ A node for drawing tables. Column widths and row heights are declared in px, wit
 
 ```xml
 <Table>
-  <TableColumn width="200" />
-  <TableColumn width="100" />
-  <TableRow>
-    <TableCell bold="true" backgroundColor="DBEAFE">Name</TableCell>
-    <TableCell bold="true" backgroundColor="DBEAFE">Score</TableCell>
-  </TableRow>
-  <TableRow>
-    <TableCell>Alice</TableCell>
-    <TableCell>95</TableCell>
-  </TableRow>
+  <Col width="200" />
+  <Col width="100" />
+  <Tr>
+    <Td bold="true" backgroundColor="DBEAFE">Name</Td>
+    <Td bold="true" backgroundColor="DBEAFE">Score</Td>
+  </Tr>
+  <Tr>
+    <Td>Alice</Td>
+    <Td>95</Td>
+  </Tr>
 </Table>
 ```
 
-- `<TableColumn>`: `width` (omit for even distribution)
-- `<TableRow>`: `height` (omit to apply `defaultRowHeight`, default 32)
-- `<TableCell>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` inline formatting
+- `<Col>`: `width` (omit for even distribution)
+- `<Tr>`: `height` (omit to apply `defaultRowHeight`, default 32)
+- `<Td>`: Text content + `fontSize` `color` `bold` `italic` `underline` `strike` `highlight` `textAlign` `backgroundColor` `colspan` `rowspan`. Also supports `<B>`, `<I>`, `<A>`, `<U>`, `<S>`, `<Mark>`, and `<Span>` inline formatting
 
 | Attribute          | Values                                         |
 | ------------------ | ---------------------------------------------- |

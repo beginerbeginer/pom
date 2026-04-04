@@ -47,8 +47,8 @@ If no frontmatter is provided, the default size is `16:9`.
 | Paragraph text     | `<Text>`                                          |
 | `- List item`      | `<Ul><Li>`                                        |
 | `1. Numbered item` | `<Ol><Li>`                                        |
-| `**bold**`         | `<B>bold</B>` (inside Text/Li/TableCell)          |
-| `*italic*`         | `<I>italic</I>` (inside Text/Li/TableCell)        |
+| `**bold**`         | `<B>bold</B>` (inside Text/Li/Td)                 |
+| `*italic*`         | `<I>italic</I>` (inside Text/Li/Td)               |
 | `![](img.png)`     | `<Image src="img.png">`                           |
 | Table syntax       | `<Table>` (header: bold + background, cellBorder) |
 | ` ```pomxml `      | XML passthrough                                   |
