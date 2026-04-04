@@ -6,6 +6,7 @@ import type { YogaNodeMap } from "./calcYogaLayout/types.ts";
 import { extractLayoutResults } from "./calcYogaLayout/types.ts";
 import type { Diagnostic } from "./diagnostics.ts";
 import { DiagnosticsError } from "./diagnostics.ts";
+import { parseMasterPptx } from "./parseMasterPptx.ts";
 import { parseXml } from "./parseXml/parseXml.ts";
 import { renderPptx } from "./renderPptx/renderPptx.ts";
 import { freeYogaTree } from "./shared/freeYogaTree.ts";
@@ -24,6 +25,7 @@ export async function buildPptx(
   slideSize: { w: number; h: number },
   options?: {
     master?: SlideMasterOptions;
+    masterPptx?: ArrayBuffer | Uint8Array;
     textMeasurement?: TextMeasurementMode;
     autoFit?: boolean;
     strict?: boolean;
@@ -50,12 +52,29 @@ export async function buildPptx(
     }
   }
 
-  const pptx = await renderPptx(
-    positionedPages,
-    slideSize,
-    ctx,
-    options?.master,
-  );
+  // masterPptx から背景を抽出し、master オプションにマージ
+  let master = options?.master;
+  if (options?.masterPptx) {
+    try {
+      const bg = await parseMasterPptx(options.masterPptx);
+      if (bg) {
+        if (master) {
+          // 明示的に background が指定されていない場合のみ、masterPptx の背景を使用
+          if (!master.background) {
+            master = { ...master, background: bg };
+          }
+        } else {
+          master = { background: bg };
+        }
+      }
+    } catch (e) {
+      const message =
+        e instanceof Error ? e.message : "Unknown error parsing masterPptx";
+      ctx.diagnostics.add("MASTER_PPTX_PARSE_FAILED", message);
+    }
+  }
+
+  const pptx = await renderPptx(positionedPages, slideSize, ctx, master);
   const diagnostics = ctx.diagnostics.items;
 
   if (options?.strict && diagnostics.length > 0) {
