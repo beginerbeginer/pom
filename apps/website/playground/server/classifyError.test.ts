@@ -53,9 +53,7 @@ describe("classifyError", () => {
     });
 
     it("must have exactly を structure に分類する", () => {
-      const error = new ParseXmlError([
-        "<Table> must have exactly one <Tr>",
-      ]);
+      const error = new ParseXmlError(["<Table> must have exactly one <Tr>"]);
       const result = classifyError(error, "<Table />");
       expect(result[0].type).toBe("structure");
     });
