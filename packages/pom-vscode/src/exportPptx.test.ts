@@ -11,10 +11,21 @@ vi.mock("@hirokisakabe/pom", () => ({
 import { parseMd } from "@hirokisakabe/pom-md";
 import { buildPptx } from "@hirokisakabe/pom";
 import { generatePptxBuffer } from "./exportPptx.js";
-import { SLIDE_WIDTH, SLIDE_HEIGHT } from "./generatePreview.js";
+import {
+  DEFAULT_SLIDE_WIDTH,
+  DEFAULT_SLIDE_HEIGHT,
+} from "./generatePreview.js";
 
 const mockParseMd = vi.mocked(parseMd);
 const mockBuildPptx = vi.mocked(buildPptx);
+
+/** parseMd のモック返り値を生成するヘルパー */
+function mdResult(xml: string) {
+  return {
+    xml,
+    meta: { size: { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT } },
+  };
+}
 
 describe("generatePptxBuffer", () => {
   beforeEach(() => {
@@ -23,7 +34,9 @@ describe("generatePptxBuffer", () => {
 
   it("正常な Markdown から Uint8Array を返す", async () => {
     const expected = new Uint8Array([1, 2, 3]);
-    mockParseMd.mockReturnValue("<Text>Hello</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>Hello</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(expected),
@@ -35,7 +48,9 @@ describe("generatePptxBuffer", () => {
   });
 
   it("パイプライン各段階が正しい引数で呼ばれる", async () => {
-    mockParseMd.mockReturnValue("<Text>Test</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>Test</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
@@ -47,13 +62,13 @@ describe("generatePptxBuffer", () => {
     expect(mockParseMd).toHaveBeenCalledWith("# Test");
     expect(mockBuildPptx).toHaveBeenCalledWith(
       "<Text>Test</Text>",
-      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
     );
   });
 
   it("parseMd が空文字列を返す場合エラーを投げる", async () => {
-    mockParseMd.mockReturnValue("");
+    mockParseMd.mockReturnValue(mdResult("") as ReturnType<typeof parseMd>);
 
     await expect(generatePptxBuffer("")).rejects.toThrow(
       "No slides found in the document",
@@ -62,7 +77,7 @@ describe("generatePptxBuffer", () => {
   });
 
   it("parseMd が空白のみを返す場合エラーを投げる", async () => {
-    mockParseMd.mockReturnValue("   ");
+    mockParseMd.mockReturnValue(mdResult("   ") as ReturnType<typeof parseMd>);
 
     await expect(generatePptxBuffer("   ")).rejects.toThrow(
       "No slides found in the document",
@@ -70,7 +85,9 @@ describe("generatePptxBuffer", () => {
   });
 
   it("pptx.write が Uint8Array 以外を返した場合エラーを投げる", async () => {
-    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>X</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue("not-uint8array"),
@@ -83,7 +100,9 @@ describe("generatePptxBuffer", () => {
   });
 
   it("buildPptx がエラーを投げた場合そのまま伝搬する", async () => {
-    mockParseMd.mockReturnValue("<InvalidTag/>");
+    mockParseMd.mockReturnValue(
+      mdResult("<InvalidTag/>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockRejectedValue(new Error("Unknown tag"));
 
     await expect(generatePptxBuffer("bad")).rejects.toThrow("Unknown tag");
@@ -102,7 +121,7 @@ describe("generatePptxBuffer", () => {
     expect(mockParseMd).not.toHaveBeenCalled();
     expect(mockBuildPptx).toHaveBeenCalledWith(
       "<Text>Hello</Text>",
-      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
     );
   });

@@ -134,6 +134,7 @@ export class PomPreviewPanel {
       content,
       this.fontDirs,
       this.format,
+      this.documentUri.fsPath,
     );
 
     if (generation !== this.renderGeneration || this.disposed) return;
@@ -147,7 +148,12 @@ export class PomPreviewPanel {
         PomPreviewPanel.diagnosticCollection?.delete(this.documentUri);
         break;
       case "success":
-        this.panel.webview.html = buildHtml(result.svgs, nonce, defaultZoom);
+        this.panel.webview.html = buildHtml(
+          result.svgs,
+          nonce,
+          defaultZoom,
+          result.slideWidth,
+        );
         if (result.diagnostics.length > 0) {
           PomPreviewPanel.diagnosticCollection?.set(
             this.documentUri,
