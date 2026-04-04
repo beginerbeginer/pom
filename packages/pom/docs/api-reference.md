@@ -12,6 +12,7 @@ async function buildPptx(
   slideSize: { w: number; h: number },
   options?: {
     master?: SlideMasterOptions;
+    masterPptx?: ArrayBuffer | Uint8Array;
     textMeasurement?: TextMeasurementMode;
     autoFit?: boolean;
   },
@@ -49,12 +50,13 @@ The slide dimensions in pixels. Internally converted to inches at 96 DPI.
 
 #### `options` (optional)
 
-| Property          | Type                  | Default     | Description                                               |
-| ----------------- | --------------------- | ----------- | --------------------------------------------------------- |
-| `master`          | `SlideMasterOptions`  | `undefined` | Slide master settings                                     |
-| `textMeasurement` | `TextMeasurementMode` | `"auto"`    | Text width measurement method                             |
-| `autoFit`         | `boolean`             | `true`      | Auto-fit content when it overflows slides                 |
-| `strict`          | `boolean`             | `false`     | Throw `DiagnosticsError` if any diagnostics are collected |
+| Property          | Type                        | Default     | Description                                                                                       |
+| ----------------- | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
+| `master`          | `SlideMasterOptions`        | `undefined` | Slide master settings                                                                             |
+| `masterPptx`      | `ArrayBuffer \| Uint8Array` | `undefined` | Existing PPTX file to use as master (extracts background). See [Master Slide](./master-slide.md). |
+| `textMeasurement` | `TextMeasurementMode`       | `"auto"`    | Text width measurement method                                                                     |
+| `autoFit`         | `boolean`                   | `true`      | Auto-fit content when it overflows slides                                                         |
+| `strict`          | `boolean`                   | `false`     | Throw `DiagnosticsError` if any diagnostics are collected                                         |
 
 ### Return Value
 

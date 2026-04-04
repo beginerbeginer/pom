@@ -190,6 +190,46 @@ background: {
 }
 ```
 
+## Using an Existing PPTX as Master
+
+You can pass an existing PPTX file as a master template via the `masterPptx` option. The background (solid color or image) from the slide master or slide layout will be extracted and applied to the output.
+
+```typescript
+import fs from "fs";
+import { buildPptx } from "@hirokisakabe/pom";
+
+const { pptx } = await buildPptx(
+  xml,
+  { w: 1280, h: 720 },
+  {
+    masterPptx: fs.readFileSync("template.pptx"),
+  },
+);
+```
+
+### Priority Rules
+
+- If both `masterPptx` and `master.background` are specified, `master.background` takes priority
+- `masterPptx` only extracts the background; other master settings (objects, margin, slideNumber) are not affected
+
+### Supported Backgrounds
+
+- Solid color fills (`a:solidFill` / `a:srgbClr`)
+- Image fills (`a:blipFill` / `a:blip`)
+
+### Lookup Order
+
+1. Slide master (`ppt/slideMasters/slideMaster1.xml`)
+2. Slide layouts (`ppt/slideLayouts/slideLayoutN.xml`)
+
+### Not Supported
+
+- Theme colors (`a:schemeClr`)
+- Gradient fills (`a:gradFill`)
+- Static objects (logos, decorations)
+- Slide size inheritance
+- Font/theme/placeholder inheritance
+
 ## Notes
 
 - All coordinates and dimensions are specified in **pixels** (px)
