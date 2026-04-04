@@ -59,55 +59,23 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 
 This repository is a pnpm monorepo containing the following packages:
 
-| Package | Description | npm |
-| ------- | ----------- | --- |
-| [packages/pom](./packages/pom/) | Core library — XML to PPTX conversion | [`@hirokisakabe/pom`](https://www.npmjs.com/package/@hirokisakabe/pom) |
-| [packages/pom-md](./packages/pom-md/) | Markdown to pom XML converter | [`@hirokisakabe/pom-md`](https://www.npmjs.com/package/@hirokisakabe/pom-md) |
-| [packages/pom-vscode](./packages/pom-vscode/) | VS Code extension for live preview | [Marketplace](https://marketplace.visualstudio.com/items?itemName=hirokisakabe.pom-vscode) |
-| [apps/website](./apps/website/) | Documentation website ([pom.pptx.app](https://pom.pptx.app)) | — |
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- [pnpm](https://pnpm.io/) 10+
-
-### Setup
-
-```bash
-pnpm install
-```
-
-### Common Commands
-
-```bash
-# Core library
-pnpm --filter @hirokisakabe/pom run build
-pnpm --filter @hirokisakabe/pom run test:run
-pnpm --filter @hirokisakabe/pom run lint
-
-# Markdown converter
-pnpm --filter @hirokisakabe/pom-md run build
-pnpm --filter @hirokisakabe/pom-md run test:run
-
-# VS Code extension
-pnpm --filter pom-vscode run build
-
-# Documentation website
-pnpm --filter pom-docs run dev
-```
+| Package                                       | Description                                                  | npm                                                                                        |
+| --------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| [packages/pom](./packages/pom/)               | Core library — XML to PPTX conversion                        | [`@hirokisakabe/pom`](https://www.npmjs.com/package/@hirokisakabe/pom)                     |
+| [packages/pom-md](./packages/pom-md/)         | Markdown to pom XML converter                                | [`@hirokisakabe/pom-md`](https://www.npmjs.com/package/@hirokisakabe/pom-md)               |
+| [packages/pom-vscode](./packages/pom-vscode/) | VS Code extension for live preview                           | [Marketplace](https://marketplace.visualstudio.com/items?itemName=hirokisakabe.pom-vscode) |
+| [apps/website](./apps/website/)               | Documentation website ([pom.pptx.app](https://pom.pptx.app)) | —                                                                                          |
 
 ## Documentation
 
-| Document | Description |
-| -------- | ----------- |
-| [API Reference](./packages/pom/docs/api-reference.md) | `buildPptx()` function and options |
-| [Nodes](./packages/pom/docs/nodes.md) | Complete reference for all node types |
-| [Master Slide](./packages/pom/docs/master-slide.md) | Headers, footers, and page numbers |
+| Document                                                    | Description                           |
+| ----------------------------------------------------------- | ------------------------------------- |
+| [API Reference](./packages/pom/docs/api-reference.md)       | `buildPptx()` function and options    |
+| [Nodes](./packages/pom/docs/nodes.md)                       | Complete reference for all node types |
+| [Master Slide](./packages/pom/docs/master-slide.md)         | Headers, footers, and page numbers    |
 | [Text Measurement](./packages/pom/docs/text-measurement.md) | Text measurement options and settings |
-| [llm.txt](https://pom.pptx.app/llm.txt) | Compact XML reference for LLM prompts |
-| [Playground](https://pom.pptx.app/playground) | Try pom XML in the browser |
+| [llm.txt](https://pom.pptx.app/llm.txt)                     | Compact XML reference for LLM prompts |
+| [Playground](https://pom.pptx.app/playground)               | Try pom XML in the browser            |
 
 ## License
 
