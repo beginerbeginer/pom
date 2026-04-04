@@ -108,7 +108,6 @@ pnpm --filter pom-docs run dev
 | [Text Measurement](./packages/pom/docs/text-measurement.md) | Text measurement options and settings |
 | [llm.txt](https://pom.pptx.app/llm.txt) | Compact XML reference for LLM prompts |
 | [Playground](https://pom.pptx.app/playground) | Try pom XML in the browser |
-| [Roadmap](./ROADMAP.md) | Ecosystem direction and priorities |
 
 ## License
 
