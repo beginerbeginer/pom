@@ -60,9 +60,11 @@ jobs:
           else
             VERSION=$(node -p "require('./packages/pom-vscode/package.json').version")
             TAG="pom-vscode-v${VERSION}"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-            echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+            {
+              echo "changed=true"
+              echo "version=${VERSION}"
+              echo "tag=${TAG}"
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Format check (pom-vscode)
