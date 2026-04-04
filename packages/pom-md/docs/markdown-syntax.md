@@ -20,13 +20,21 @@ Content for slide 2
 
 ## Frontmatter
 
-Specify slide size in the frontmatter block at the top of the file:
+Specify global settings in the frontmatter block at the top of the file:
 
 ```markdown
 ---
 size: 16:9
+backgroundColor: "#f0f0f0"
+masterPptx: ./template.pptx
 ---
 ```
+
+| Key               | Description                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| `size`            | Slide size preset (see below)                               |
+| `backgroundColor` | Default background color for all slides (applied to VStack) |
+| `masterPptx`      | Path to an existing PPTX file to use as master template     |
 
 Supported sizes:
 
@@ -36,6 +44,22 @@ Supported sizes:
 | `4:3`  | 1024×768           |
 
 If no frontmatter is provided, the default size is `16:9`.
+
+## Comment Directive
+
+Use HTML comments in Marp-style to set per-slide properties. Place them at the top of a slide section.
+
+```markdown
+<!-- backgroundColor: red -->
+
+# This slide has a red background
+```
+
+| Directive         | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| `backgroundColor` | Background color for this slide (overrides frontmatter default) |
+
+Comment directives override frontmatter defaults for the slide they appear in. Slides without a directive inherit the frontmatter default.
 
 ## Markdown to pom XML Mapping
 
