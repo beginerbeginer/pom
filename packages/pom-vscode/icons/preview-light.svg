@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!-- Slide frame -->
+  <rect x="1" y="2" width="14" height="10.5" rx="1.5" fill="none" stroke="#424242" stroke-width="1.2"/>
+  <!-- Title bar -->
+  <rect x="3.5" y="4.5" width="5" height="1.2" rx="0.6" fill="#424242"/>
+  <!-- Body lines -->
+  <rect x="3.5" y="7.2" width="9" height="0.8" rx="0.4" fill="#424242" opacity="0.6"/>
+  <rect x="3.5" y="9" width="7" height="0.8" rx="0.4" fill="#424242" opacity="0.6"/>
+  <!-- Play/preview triangle -->
+  <polygon points="11,3.8 14,5.75 11,7.7" fill="#424242" opacity="0.8"/>
+</svg>

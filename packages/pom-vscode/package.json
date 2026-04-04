@@ -37,12 +37,14 @@
       {
         "command": "pom.openPreview",
         "title": "pom: Open Preview",
-        "icon": "$(open-preview)"
+        "icon": {
+          "dark": "icons/preview-dark.svg",
+          "light": "icons/preview-light.svg"
+        }
       },
       {
         "command": "pom.exportPptx",
-        "title": "pom: Export PPTX",
-        "icon": "$(desktop-download)"
+        "title": "pom: Export PPTX"
       }
     ],
     "configuration": {
