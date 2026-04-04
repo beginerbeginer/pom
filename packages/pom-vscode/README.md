@@ -39,36 +39,6 @@ Search for **pom** in the VS Code Extensions view, or install from the [Visual S
 1. Open a `.pom.md` or `.pom.xml` file in VS Code
 2. Click the preview icon in the editor title bar, or run `pom: Open Preview` from the Command Palette
 
-## Development
-
-### Prerequisites
-
-- Node.js 20+
-- [pnpm](https://pnpm.io/) 10+
-
-### Setup
-
-```bash
-# From the repository root
-pnpm install
-```
-
-### Commands
-
-```bash
-pnpm --filter pom-vscode run build       # esbuild bundle
-pnpm --filter pom-vscode run watch       # esbuild watch mode
-pnpm --filter pom-vscode run lint        # ESLint
-pnpm --filter pom-vscode run fmt         # Prettier formatting
-pnpm --filter pom-vscode run fmt:check   # Format check
-pnpm --filter pom-vscode run typecheck   # Type checking
-pnpm --filter pom-vscode run test:run   # Run unit tests
-```
-
-### Testing Locally
-
-Open `packages/pom-vscode` in VS Code and press **F5** to launch the Extension Development Host.
-
 ## License
 
 MIT
