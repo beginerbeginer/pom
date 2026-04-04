@@ -20,8 +20,8 @@ import {
   generatePreviewSvg,
   buildHtml,
   buildErrorHtml,
-  SLIDE_WIDTH,
-  SLIDE_HEIGHT,
+  DEFAULT_SLIDE_WIDTH,
+  DEFAULT_SLIDE_HEIGHT,
   ZOOM_LEVELS,
   type ZoomLevel,
 } from "./generatePreview.js";
@@ -30,13 +30,29 @@ const mockParseMd = vi.mocked(parseMd);
 const mockBuildPptx = vi.mocked(buildPptx);
 const mockConvertPptxToSvg = vi.mocked(convertPptxToSvg);
 
+/** parseMd のモック返り値を生成するヘルパー */
+function mdResult(
+  xml: string,
+  meta?: { size?: { w: number; h: number }; masterPptx?: string },
+) {
+  return {
+    xml,
+    meta: {
+      size: meta?.size ?? { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT },
+      ...(meta?.masterPptx ? { masterPptx: meta.masterPptx } : {}),
+    },
+  };
+}
+
 describe("generatePreviewSvg", () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
   it("正常な Markdown から success を返す", async () => {
-    mockParseMd.mockReturnValue("<Text>Hello</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>Hello</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3])),
@@ -56,7 +72,9 @@ describe("generatePreviewSvg", () => {
   });
 
   it("パイプライン各段階が正しい引数で呼ばれる", async () => {
-    mockParseMd.mockReturnValue("<Text>Test</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>Test</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
@@ -70,11 +88,11 @@ describe("generatePreviewSvg", () => {
     expect(mockParseMd).toHaveBeenCalledWith("# Test");
     expect(mockBuildPptx).toHaveBeenCalledWith(
       "<Text>Test</Text>",
-      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
     );
     expect(mockConvertPptxToSvg).toHaveBeenCalledWith(expect.any(Uint8Array), {
-      width: SLIDE_WIDTH,
+      width: DEFAULT_SLIDE_WIDTH,
       fontDirs: ["/path/to/fonts"],
       fontMapping: {
         "游ゴシック Light": "Noto Sans CJK JP",
@@ -84,7 +102,9 @@ describe("generatePreviewSvg", () => {
   });
 
   it("複数スライドの SVG を返す", async () => {
-    mockParseMd.mockReturnValue("<Text>A</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>A</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
@@ -104,7 +124,7 @@ describe("generatePreviewSvg", () => {
   });
 
   it("parseMd が空文字列を返す場合 empty を返す", async () => {
-    mockParseMd.mockReturnValue("");
+    mockParseMd.mockReturnValue(mdResult("") as ReturnType<typeof parseMd>);
 
     const result = await generatePreviewSvg("", []);
     expect(result).toEqual({ type: "empty" });
@@ -112,7 +132,7 @@ describe("generatePreviewSvg", () => {
   });
 
   it("parseMd が空白のみを返す場合 empty を返す", async () => {
-    mockParseMd.mockReturnValue("   ");
+    mockParseMd.mockReturnValue(mdResult("   ") as ReturnType<typeof parseMd>);
 
     const result = await generatePreviewSvg("   ", []);
     expect(result).toEqual({ type: "empty" });
@@ -128,7 +148,9 @@ describe("generatePreviewSvg", () => {
   });
 
   it("buildPptx がエラーを投げた場合 error を返す", async () => {
-    mockParseMd.mockReturnValue("<InvalidTag/>");
+    mockParseMd.mockReturnValue(
+      mdResult("<InvalidTag/>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockRejectedValue(new Error("Unknown tag: InvalidTag"));
 
     const result = await generatePreviewSvg("bad xml", []);
@@ -161,7 +183,7 @@ describe("generatePreviewSvg", () => {
     expect(mockParseMd).not.toHaveBeenCalled();
     expect(mockBuildPptx).toHaveBeenCalledWith(
       "<Text>Direct XML</Text>",
-      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
+      { w: DEFAULT_SLIDE_WIDTH, h: DEFAULT_SLIDE_HEIGHT },
       { textMeasurement: "fallback" },
     );
   });
@@ -191,7 +213,9 @@ describe("generatePreviewSvg", () => {
     const diags = [
       { code: "AUTOFIT_OVERFLOW" as const, message: "Slide 1 overflows" },
     ];
-    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>X</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
@@ -208,7 +232,9 @@ describe("generatePreviewSvg", () => {
   });
 
   it("diagnostics が空の場合 success の diagnostics も空配列になる", async () => {
-    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>X</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue(new Uint8Array([1])),
@@ -225,7 +251,9 @@ describe("generatePreviewSvg", () => {
   });
 
   it("pptx.write が Uint8Array 以外を返した場合 error を返す", async () => {
-    mockParseMd.mockReturnValue("<Text>X</Text>");
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>X</Text>") as ReturnType<typeof parseMd>,
+    );
     mockBuildPptx.mockResolvedValue({
       pptx: {
         write: vi.fn().mockResolvedValue("not-uint8array"),
@@ -237,6 +265,33 @@ describe("generatePreviewSvg", () => {
     expect(result.type).toBe("error");
     if (result.type === "error") {
       expect(result.message).toBe("Unexpected output type from pptx.write");
+    }
+  });
+
+  it("meta.size が 4:3 の場合、slideSize に反映される", async () => {
+    mockParseMd.mockReturnValue(
+      mdResult("<Text>Test</Text>", {
+        size: { w: 1024, h: 768 },
+      }) as ReturnType<typeof parseMd>,
+    );
+    mockBuildPptx.mockResolvedValue({
+      pptx: {
+        write: vi.fn().mockResolvedValue(new Uint8Array([1])),
+      },
+      diagnostics: [],
+    } as never);
+    mockConvertPptxToSvg.mockResolvedValue([{ svg: "<svg></svg>" }] as never);
+
+    const result = await generatePreviewSvg("# Test", []);
+
+    expect(mockBuildPptx).toHaveBeenCalledWith(
+      "<Text>Test</Text>",
+      { w: 1024, h: 768 },
+      { textMeasurement: "fallback" },
+    );
+    expect(result.type).toBe("success");
+    if (result.type === "success") {
+      expect(result.slideWidth).toBe(1024);
     }
   });
 });
@@ -301,6 +356,12 @@ describe("buildHtml", () => {
     expect(html).toContain(`'nonce-${nonce}'`);
     expect(html).toContain("default-src 'none'");
   });
+
+  it("slideWidth パラメータで zoom CSS が変わる", () => {
+    const html = buildHtml(["<svg></svg>"], nonce, defaultZoom, 1024);
+    expect(html).toContain("width: 512px"); // 1024 * 0.5
+    expect(html).toContain("width: 1024px");
+  });
 });
 
 describe("buildErrorHtml", () => {
@@ -329,11 +390,11 @@ describe("buildErrorHtml", () => {
 });
 
 describe("定数", () => {
-  it("SLIDE_WIDTH が 1280", () => {
-    expect(SLIDE_WIDTH).toBe(1280);
+  it("DEFAULT_SLIDE_WIDTH が 1280", () => {
+    expect(DEFAULT_SLIDE_WIDTH).toBe(1280);
   });
 
-  it("SLIDE_HEIGHT が 720", () => {
-    expect(SLIDE_HEIGHT).toBe(720);
+  it("DEFAULT_SLIDE_HEIGHT が 720", () => {
+    expect(DEFAULT_SLIDE_HEIGHT).toBe(720);
   });
 });

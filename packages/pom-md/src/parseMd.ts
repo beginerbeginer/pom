@@ -21,6 +21,18 @@ const HEADING_FONT_SIZE: Record<number, number> = {
 
 interface Frontmatter {
   size?: { w: number; h: number };
+  masterPptx?: string;
+  backgroundColor?: string;
+}
+
+export interface ParseMdMeta {
+  size: { w: number; h: number };
+  masterPptx?: string;
+}
+
+export interface ParseMdResult {
+  xml: string;
+  meta: ParseMdMeta;
 }
 
 /**
@@ -50,6 +62,10 @@ function parseFrontmatter(markdown: string): {
       if (trimmed in SIZE_PRESETS) {
         frontmatter.size = SIZE_PRESETS[trimmed];
       }
+    } else if (key === "masterPptx") {
+      frontmatter.masterPptx = value.trim().replace(/^["']|["']$/g, "");
+    } else if (key === "backgroundColor") {
+      frontmatter.backgroundColor = value.trim().replace(/^["']|["']$/g, "");
     }
   }
 
@@ -294,7 +310,7 @@ function collectTable(
  * import { parseMd } from "@hirokisakabe/pom-md";
  * import { buildPptx } from "@hirokisakabe/pom";
  *
- * const xml = parseMd(`
+ * const { xml, meta } = parseMd(`
  * ---
  * size: 16:9
  * ---
@@ -313,51 +329,104 @@ function collectTable(
  * \`\`\`
  * `);
  *
- * const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
+ * const { pptx } = await buildPptx(xml, meta.size);
  * ```
  */
-export function parseMd(markdown: string): string {
+export function parseMd(markdown: string): ParseMdResult {
   // CRLF を LF に正規化
   const normalized = markdown.replace(/\r\n?/g, "\n").trim();
 
   const { frontmatter, body } = parseFrontmatter(normalized);
   const size = frontmatter.size ?? DEFAULT_SIZE;
+  const globalBgColor = frontmatter.backgroundColor;
+
+  // コメント directive をパース前に抽出（html: false を維持するため前処理で対応）
+  const { slides: slideTexts } = extractSlideDirectivesFromText(body);
 
   const md = new MarkdownIt({ html: false });
-  const allTokens = md.parse(body, {});
-
-  // トークンベースでスライド分割（hr トークンで区切る）
-  // コードフェンス内の `---` は markdown-it が hr として扱わないため安全
-  const slideTokenGroups = splitTokensByHr(allTokens);
 
   const xmlSlides: string[] = [];
 
-  for (const tokens of slideTokenGroups) {
+  for (const { text: slideText, directives } of slideTexts) {
+    const tokens = md.parse(slideText, {});
     const content = tokensToXml(tokens);
     if (!content.trim()) continue;
 
+    const bgColor = directives.backgroundColor ?? globalBgColor;
+    const bgAttr = bgColor ? ` backgroundColor="${escapeXml(bgColor)}"` : "";
+
     xmlSlides.push(
-      `<VStack w="${size.w}" h="${size.h}" padding="48" gap="16">\n${content}\n</VStack>`,
+      `<VStack w="${size.w}" h="${size.h}" padding="48" gap="16"${bgAttr}>\n${content}\n</VStack>`,
     );
   }
 
-  return xmlSlides.join("\n");
+  const meta: ParseMdMeta = { size };
+  if (frontmatter.masterPptx) {
+    meta.masterPptx = frontmatter.masterPptx;
+  }
+
+  return { xml: xmlSlides.join("\n"), meta };
 }
 
-/** トークン列を hr トークンで分割する */
-function splitTokensByHr(tokens: Token[]): Token[][] {
-  const groups: Token[][] = [];
-  let current: Token[] = [];
+// ===== コメント directive =====
+const DIRECTIVE_PATTERN = /^<!--\s*(\w+)\s*:\s*(.*?)\s*-->$/;
+const SUPPORTED_DIRECTIVES = new Set(["backgroundColor"]);
 
-  for (const token of tokens) {
-    if (token.type === "hr") {
-      groups.push(current);
-      current = [];
+interface SlideDirectives {
+  backgroundColor?: string;
+}
+
+interface SlideWithDirectives {
+  text: string;
+  directives: SlideDirectives;
+}
+
+/**
+ * Markdown テキストをスライド分割し、各スライドからコメント directive を抽出する。
+ * markdown-it の html: false を維持するため、パース前にテキストベースで処理する。
+ *
+ * スライド区切りは段落間の `---`（前後に空行がある水平線）。
+ * コードフェンス内の `---` はスライド区切りとして扱わない。
+ */
+function extractSlideDirectivesFromText(body: string): {
+  slides: SlideWithDirectives[];
+} {
+  // コードフェンス外の --- でスライドを分割
+  // markdown-it と同様に、段落間の --- をスライド区切りとして認識する
+  const lines = body.split("\n");
+  const slideTexts: string[][] = [[]];
+  let inCodeFence = false;
+
+  for (const line of lines) {
+    if (/^```/.test(line)) {
+      inCodeFence = !inCodeFence;
+    }
+
+    if (!inCodeFence && /^---\s*$/.test(line.trim())) {
+      slideTexts.push([]);
     } else {
-      current.push(token);
+      slideTexts[slideTexts.length - 1].push(line);
     }
   }
 
-  groups.push(current);
-  return groups;
+  const slides: SlideWithDirectives[] = slideTexts.map((slideLines) => {
+    const directives: SlideDirectives = {};
+    const contentLines: string[] = [];
+
+    for (const line of slideLines) {
+      const match = line.trim().match(DIRECTIVE_PATTERN);
+      if (match && SUPPORTED_DIRECTIVES.has(match[1])) {
+        const [, key, value] = match;
+        if (key === "backgroundColor") {
+          directives.backgroundColor = value.replace(/^["']|["']$/g, "");
+        }
+      } else {
+        contentLines.push(line);
+      }
+    }
+
+    return { text: contentLines.join("\n"), directives };
+  });
+
+  return { slides };
 }

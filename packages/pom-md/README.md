@@ -51,8 +51,8 @@ import { parseMd } from "@hirokisakabe/pom-md";
 import { buildPptx } from "@hirokisakabe/pom";
 
 const markdown = readFileSync("slides.pom.md", "utf-8");
-const xml = parseMd(markdown);
-const { pptx } = await buildPptx(xml, { w: 1280, h: 720 });
+const { xml, meta } = parseMd(markdown);
+const { pptx } = await buildPptx(xml, meta.size);
 await pptx.writeFile({ fileName: "output.pptx" });
 ```
 
@@ -64,18 +64,37 @@ Use `---` (horizontal rule) to separate slides.
 
 ### Frontmatter
 
-Specify slide size in the frontmatter block:
+Specify global settings in the frontmatter block:
 
 ```markdown
 ---
 size: 16:9
+backgroundColor: "#f0f0f0"
+masterPptx: ./template.pptx
 ---
 ```
 
-Supported sizes:
+| Key               | Description                                                       |
+| ----------------- | ----------------------------------------------------------------- |
+| `size`            | Slide size preset: `16:9` (1280×720, default) or `4:3` (1024×768) |
+| `backgroundColor` | Default background color for all slides (applied to VStack)       |
+| `masterPptx`      | Path to an existing PPTX file to use as master template           |
 
-- `16:9` — 1280×720 (default)
-- `4:3` — 1024×768
+### Comment Directive
+
+Use HTML comments in Marp-style to override settings per slide:
+
+```markdown
+<!-- backgroundColor: red -->
+
+# This slide has a red background
+```
+
+Supported directives:
+
+| Directive         | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| `backgroundColor` | Background color for this slide (overrides frontmatter default) |
 
 ### Markdown → pom XML Mapping
 
@@ -107,9 +126,23 @@ The content inside `pomxml` fences is passed through to the output as-is.
 
 ## API
 
-### `parseMd(markdown: string): string`
+### `parseMd(markdown: string): ParseMdResult`
 
-Converts a Markdown string into a pom XML string. The returned XML can be passed directly to `buildPptx()` from `@hirokisakabe/pom`.
+Converts a Markdown string into a pom XML string and metadata.
+
+```ts
+interface ParseMdResult {
+  xml: string;
+  meta: ParseMdMeta;
+}
+
+interface ParseMdMeta {
+  size: { w: number; h: number };
+  masterPptx?: string;
+}
+```
+
+The returned `xml` can be passed directly to `buildPptx()` from `@hirokisakabe/pom`. The `meta` contains parsed frontmatter settings such as slide size and master PPTX path.
 
 ## License
 

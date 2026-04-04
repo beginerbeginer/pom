@@ -4,67 +4,67 @@ import { parseMd } from "./parseMd.ts";
 describe("parseMd", () => {
   describe("見出し", () => {
     it("h1 を fontSize=28 bold の Text に変換する", () => {
-      const result = parseMd("# タイトル");
-      expect(result).toContain('fontSize="28"');
-      expect(result).toContain('bold="true"');
-      expect(result).toContain("タイトル");
+      const { xml } = parseMd("# タイトル");
+      expect(xml).toContain('fontSize="28"');
+      expect(xml).toContain('bold="true"');
+      expect(xml).toContain("タイトル");
     });
 
     it("h2 を fontSize=24 bold の Text に変換する", () => {
-      const result = parseMd("## サブタイトル");
-      expect(result).toContain('fontSize="24"');
-      expect(result).toContain("サブタイトル");
+      const { xml } = parseMd("## サブタイトル");
+      expect(xml).toContain('fontSize="24"');
+      expect(xml).toContain("サブタイトル");
     });
 
     it("h3 を fontSize=20 bold の Text に変換する", () => {
-      const result = parseMd("### 小見出し");
-      expect(result).toContain('fontSize="20"');
-      expect(result).toContain("小見出し");
+      const { xml } = parseMd("### 小見出し");
+      expect(xml).toContain('fontSize="20"');
+      expect(xml).toContain("小見出し");
     });
   });
 
   describe("段落", () => {
     it("段落テキストを Text ノードに変換する", () => {
-      const result = parseMd("これは段落です。");
-      expect(result).toContain("<Text>これは段落です。</Text>");
+      const { xml } = parseMd("これは段落です。");
+      expect(xml).toContain("<Text>これは段落です。</Text>");
     });
 
     it("空入力は空文字列を返す", () => {
-      const result = parseMd("");
-      expect(result).toBe("");
+      const { xml } = parseMd("");
+      expect(xml).toBe("");
     });
   });
 
   describe("リスト", () => {
     it("箇条書きリストを Ul/Li に変換する", () => {
-      const result = parseMd("- 項目1\n- 項目2\n- 項目3");
-      expect(result).toContain("<Ul>");
-      expect(result).toContain("<Li>項目1</Li>");
-      expect(result).toContain("<Li>項目2</Li>");
-      expect(result).toContain("<Li>項目3</Li>");
-      expect(result).toContain("</Ul>");
+      const { xml } = parseMd("- 項目1\n- 項目2\n- 項目3");
+      expect(xml).toContain("<Ul>");
+      expect(xml).toContain("<Li>項目1</Li>");
+      expect(xml).toContain("<Li>項目2</Li>");
+      expect(xml).toContain("<Li>項目3</Li>");
+      expect(xml).toContain("</Ul>");
     });
 
     it("番号付きリストを Ol/Li に変換する", () => {
-      const result = parseMd("1. 最初\n2. 次\n3. 最後");
-      expect(result).toContain("<Ol>");
-      expect(result).toContain("<Li>最初</Li>");
-      expect(result).toContain("<Li>次</Li>");
-      expect(result).toContain("<Li>最後</Li>");
-      expect(result).toContain("</Ol>");
+      const { xml } = parseMd("1. 最初\n2. 次\n3. 最後");
+      expect(xml).toContain("<Ol>");
+      expect(xml).toContain("<Li>最初</Li>");
+      expect(xml).toContain("<Li>次</Li>");
+      expect(xml).toContain("<Li>最後</Li>");
+      expect(xml).toContain("</Ol>");
     });
   });
 
   describe("画像", () => {
     it("画像を Image ノードに変換する", () => {
-      const result = parseMd("![alt text](image.png)");
-      expect(result).toContain('<Image src="image.png" />');
+      const { xml } = parseMd("![alt text](image.png)");
+      expect(xml).toContain('<Image src="image.png" />');
     });
 
     it("画像 src の特殊文字をエスケープする", () => {
-      const result = parseMd("![](path/to/image.png?v=1&w=100)");
-      expect(result).toContain("src=");
-      expect(result).toContain("&amp;");
+      const { xml } = parseMd("![](path/to/image.png?v=1&w=100)");
+      expect(xml).toContain("src=");
+      expect(xml).toContain("&amp;");
     });
   });
 
@@ -74,19 +74,17 @@ describe("parseMd", () => {
 | --- | --- |
 | A | 100 |
 | B | 200 |`;
-      const result = parseMd(md);
-      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
-      expect(result).toContain(
+      const { xml } = parseMd(md);
+      expect(xml).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
+      expect(xml).toContain(
         '<Td bold="true" backgroundColor="F1F5F9">名前</Td>',
       );
-      expect(result).toContain(
-        '<Td bold="true" backgroundColor="F1F5F9">値</Td>',
-      );
-      expect(result).toContain("<Td>A</Td>");
-      expect(result).toContain("<Td>100</Td>");
-      expect(result).toContain("<Td>B</Td>");
-      expect(result).toContain("<Td>200</Td>");
-      expect(result).toContain("</Table>");
+      expect(xml).toContain('<Td bold="true" backgroundColor="F1F5F9">値</Td>');
+      expect(xml).toContain("<Td>A</Td>");
+      expect(xml).toContain("<Td>100</Td>");
+      expect(xml).toContain("<Td>B</Td>");
+      expect(xml).toContain("<Td>200</Td>");
+      expect(xml).toContain("</Table>");
     });
   });
 
@@ -97,16 +95,16 @@ describe("parseMd", () => {
 \`\`\`pomxml
 <Chart type="bar" labels="Q1,Q2" values="100,200" />
 \`\`\``;
-      const result = parseMd(md);
-      expect(result).toContain(
+      const { xml } = parseMd(md);
+      expect(xml).toContain(
         '<Chart type="bar" labels="Q1,Q2" values="100,200" />',
       );
     });
 
     it("pomxml 以外のコードフェンスは無視する", () => {
       const md = "```javascript\nconsole.log('hello');\n```";
-      const result = parseMd(md);
-      expect(result).not.toContain("console.log");
+      const { xml } = parseMd(md);
+      expect(xml).not.toContain("console.log");
     });
   });
 
@@ -117,11 +115,11 @@ describe("parseMd", () => {
 ---
 
 # スライド2`;
-      const result = parseMd(md);
-      const vstackCount = (result.match(/<VStack/g) ?? []).length;
+      const { xml } = parseMd(md);
+      const vstackCount = (xml.match(/<VStack/g) ?? []).length;
       expect(vstackCount).toBe(2);
-      expect(result).toContain("スライド1");
-      expect(result).toContain("スライド2");
+      expect(xml).toContain("スライド1");
+      expect(xml).toContain("スライド2");
     });
 
     it("空のスライドは無視する", () => {
@@ -132,8 +130,8 @@ describe("parseMd", () => {
 ---
 
 # スライド2`;
-      const result = parseMd(md);
-      const vstackCount = (result.match(/<VStack/g) ?? []).length;
+      const { xml } = parseMd(md);
+      const vstackCount = (xml.match(/<VStack/g) ?? []).length;
       expect(vstackCount).toBe(2);
     });
   });
@@ -145,9 +143,10 @@ size: 16:9
 ---
 
 # タイトル`;
-      const result = parseMd(md);
-      expect(result).toContain('w="1280"');
-      expect(result).toContain('h="720"');
+      const { xml, meta } = parseMd(md);
+      expect(xml).toContain('w="1280"');
+      expect(xml).toContain('h="720"');
+      expect(meta.size).toEqual({ w: 1280, h: 720 });
     });
 
     it("size: 4:3 でサイズを変更する", () => {
@@ -156,41 +155,82 @@ size: 4:3
 ---
 
 # タイトル`;
-      const result = parseMd(md);
-      expect(result).toContain('w="1024"');
-      expect(result).toContain('h="768"');
+      const { xml, meta } = parseMd(md);
+      expect(xml).toContain('w="1024"');
+      expect(xml).toContain('h="768"');
+      expect(meta.size).toEqual({ w: 1024, h: 768 });
     });
 
     it("frontmatter なしの場合はデフォルト 16:9 を使う", () => {
-      const result = parseMd("# タイトル");
-      expect(result).toContain('w="1280"');
-      expect(result).toContain('h="720"');
+      const { xml, meta } = parseMd("# タイトル");
+      expect(xml).toContain('w="1280"');
+      expect(xml).toContain('h="720"');
+      expect(meta.size).toEqual({ w: 1280, h: 720 });
+    });
+
+    it("masterPptx を meta に含める", () => {
+      const md = `---
+masterPptx: ./template.pptx
+---
+
+# タイトル`;
+      const { meta } = parseMd(md);
+      expect(meta.masterPptx).toBe("./template.pptx");
+    });
+
+    it("masterPptx が未指定の場合は meta に含めない", () => {
+      const md = `---
+size: 16:9
+---
+
+# タイトル`;
+      const { meta } = parseMd(md);
+      expect(meta.masterPptx).toBeUndefined();
+    });
+
+    it("backgroundColor を全スライドの VStack に適用する", () => {
+      const md = `---
+backgroundColor: "#f0f0f0"
+---
+
+# スライド1
+
+---
+
+# スライド2`;
+      const { xml } = parseMd(md);
+      const bgMatches = xml.match(/backgroundColor="[^"]*"/g) ?? [];
+      // 全スライドに backgroundColor が付与される
+      const vstackBgMatches = bgMatches.filter(
+        (m) => m === 'backgroundColor="#f0f0f0"',
+      );
+      expect(vstackBgMatches.length).toBe(2);
     });
   });
 
   describe("スライドラッパー", () => {
     it("各スライドを VStack で囲む", () => {
-      const result = parseMd("# タイトル");
-      expect(result).toContain("<VStack");
-      expect(result).toContain('padding="48"');
-      expect(result).toContain('gap="16"');
-      expect(result).toContain("</VStack>");
+      const { xml } = parseMd("# タイトル");
+      expect(xml).toContain("<VStack");
+      expect(xml).toContain('padding="48"');
+      expect(xml).toContain('gap="16"');
+      expect(xml).toContain("</VStack>");
     });
   });
 
   describe("CRLF 対応", () => {
     it("CRLF 改行の frontmatter を正しくパースする", () => {
       const md = "---\r\nsize: 4:3\r\n---\r\n\r\n# タイトル";
-      const result = parseMd(md);
-      expect(result).toContain('w="1024"');
-      expect(result).toContain('h="768"');
-      expect(result).toContain("タイトル");
+      const { xml } = parseMd(md);
+      expect(xml).toContain('w="1024"');
+      expect(xml).toContain('h="768"');
+      expect(xml).toContain("タイトル");
     });
 
     it("CRLF 改行のスライド分割が正しく動作する", () => {
       const md = "# スライド1\r\n\r\n---\r\n\r\n# スライド2";
-      const result = parseMd(md);
-      const vstackCount = (result.match(/<VStack/g) ?? []).length;
+      const { xml } = parseMd(md);
+      const vstackCount = (xml.match(/<VStack/g) ?? []).length;
       expect(vstackCount).toBe(2);
     });
   });
@@ -206,130 +246,130 @@ some content
 \`\`\`
 
 次の段落`;
-      const result = parseMd(md);
-      const vstackCount = (result.match(/<VStack/g) ?? []).length;
+      const { xml } = parseMd(md);
+      const vstackCount = (xml.match(/<VStack/g) ?? []).length;
       expect(vstackCount).toBe(1);
-      expect(result).toContain("タイトル");
-      expect(result).toContain("次の段落");
+      expect(xml).toContain("タイトル");
+      expect(xml).toContain("次の段落");
     });
   });
 
   describe("XML エスケープ", () => {
     it("特殊文字をエスケープする", () => {
-      const result = parseMd("A < B & C > D");
-      expect(result).toContain("A &lt; B &amp; C &gt; D");
+      const { xml } = parseMd("A < B & C > D");
+      expect(xml).toContain("A &lt; B &amp; C &gt; D");
     });
   });
 
   describe("インラインフォーマット", () => {
     it("太字を <B> タグに変換する", () => {
-      const result = parseMd("**太字テキスト**");
-      expect(result).toContain("<Text><B>太字テキスト</B></Text>");
+      const { xml } = parseMd("**太字テキスト**");
+      expect(xml).toContain("<Text><B>太字テキスト</B></Text>");
     });
 
     it("斜体を <I> タグに変換する", () => {
-      const result = parseMd("*斜体テキスト*");
-      expect(result).toContain("<Text><I>斜体テキスト</I></Text>");
+      const { xml } = parseMd("*斜体テキスト*");
+      expect(xml).toContain("<Text><I>斜体テキスト</I></Text>");
     });
 
     it("太字と通常テキストの混在を変換する", () => {
-      const result = parseMd("通常 **太字** テキスト");
-      expect(result).toContain("<Text>通常 <B>太字</B> テキスト</Text>");
+      const { xml } = parseMd("通常 **太字** テキスト");
+      expect(xml).toContain("<Text>通常 <B>太字</B> テキスト</Text>");
     });
 
     it("斜体と通常テキストの混在を変換する", () => {
-      const result = parseMd("通常 *斜体* テキスト");
-      expect(result).toContain("<Text>通常 <I>斜体</I> テキスト</Text>");
+      const { xml } = parseMd("通常 *斜体* テキスト");
+      expect(xml).toContain("<Text>通常 <I>斜体</I> テキスト</Text>");
     });
 
     it("太字と斜体の混在を変換する", () => {
-      const result = parseMd("**太字** と *斜体*");
-      expect(result).toContain("<B>太字</B> と <I>斜体</I>");
+      const { xml } = parseMd("**太字** と *斜体*");
+      expect(xml).toContain("<B>太字</B> と <I>斜体</I>");
     });
 
     it("太字斜体（ネスト）を変換する", () => {
-      const result = parseMd("***太字斜体***");
+      const { xml } = parseMd("***太字斜体***");
       // markdown-it は em > strong の順でネストする
-      expect(result).toContain("<B>");
-      expect(result).toContain("<I>");
-      expect(result).toContain("太字斜体");
+      expect(xml).toContain("<B>");
+      expect(xml).toContain("<I>");
+      expect(xml).toContain("太字斜体");
     });
 
     it("書式なしテキストはタグを含まない", () => {
-      const result = parseMd("プレーンテキスト");
-      expect(result).toContain("<Text>プレーンテキスト</Text>");
-      expect(result).not.toContain("<B>");
-      expect(result).not.toContain("<I>");
+      const { xml } = parseMd("プレーンテキスト");
+      expect(xml).toContain("<Text>プレーンテキスト</Text>");
+      expect(xml).not.toContain("<B>");
+      expect(xml).not.toContain("<I>");
     });
 
     it("見出し内の太字を変換する", () => {
-      const result = parseMd("# 見出し **強調**");
-      expect(result).toContain("<B>強調</B>");
-      expect(result).toContain('bold="true"');
+      const { xml } = parseMd("# 見出し **強調**");
+      expect(xml).toContain("<B>強調</B>");
+      expect(xml).toContain('bold="true"');
     });
 
     it("リスト項目内の太字を変換する", () => {
-      const result = parseMd("- 通常 **太字** 項目");
-      expect(result).toContain("<Li>通常 <B>太字</B> 項目</Li>");
+      const { xml } = parseMd("- 通常 **太字** 項目");
+      expect(xml).toContain("<Li>通常 <B>太字</B> 項目</Li>");
     });
 
     it("リスト項目内の斜体を変換する", () => {
-      const result = parseMd("- 通常 *斜体* 項目");
-      expect(result).toContain("<Li>通常 <I>斜体</I> 項目</Li>");
+      const { xml } = parseMd("- 通常 *斜体* 項目");
+      expect(xml).toContain("<Li>通常 <I>斜体</I> 項目</Li>");
     });
 
     it("テーブルセル内の太字を変換する", () => {
       const md = `| 名前 | 値 |
 | --- | --- |
 | **重要** | 100 |`;
-      const result = parseMd(md);
-      expect(result).toContain("<Td><B>重要</B></Td>");
+      const { xml } = parseMd(md);
+      expect(xml).toContain("<Td><B>重要</B></Td>");
     });
 
     it("テーブルセル内の斜体を変換する", () => {
       const md = `| 名前 | 値 |
 | --- | --- |
 | *注記* | 100 |`;
-      const result = parseMd(md);
-      expect(result).toContain("<Td><I>注記</I></Td>");
+      const { xml } = parseMd(md);
+      expect(xml).toContain("<Td><I>注記</I></Td>");
     });
 
     it("インラインフォーマットの特殊文字をエスケープする", () => {
-      const result = parseMd("**A < B**");
-      expect(result).toContain("<B>A &lt; B</B>");
+      const { xml } = parseMd("**A < B**");
+      expect(xml).toContain("<B>A &lt; B</B>");
     });
   });
 
   describe("リンク", () => {
     it("リンクを <A> タグに変換する", () => {
-      const result = parseMd("[リンク](https://example.com)");
-      expect(result).toContain(
+      const { xml } = parseMd("[リンク](https://example.com)");
+      expect(xml).toContain(
         '<Text><A href="https://example.com">リンク</A></Text>',
       );
     });
 
     it("テキスト中のリンクを変換する", () => {
-      const result = parseMd("詳細は [こちら](https://example.com) を参照");
-      expect(result).toContain('<A href="https://example.com">こちら</A>');
-      expect(result).toContain("詳細は ");
-      expect(result).toContain(" を参照");
+      const { xml } = parseMd("詳細は [こちら](https://example.com) を参照");
+      expect(xml).toContain('<A href="https://example.com">こちら</A>');
+      expect(xml).toContain("詳細は ");
+      expect(xml).toContain(" を参照");
     });
 
     it("リンク内の太字を変換する", () => {
-      const result = parseMd("[**太字リンク**](https://example.com)");
-      expect(result).toContain('<A href="https://example.com">');
-      expect(result).toContain("<B>太字リンク</B>");
+      const { xml } = parseMd("[**太字リンク**](https://example.com)");
+      expect(xml).toContain('<A href="https://example.com">');
+      expect(xml).toContain("<B>太字リンク</B>");
     });
 
     it("リンクの href をエスケープする", () => {
-      const result = parseMd("[リンク](https://example.com?a=1&b=2)");
-      expect(result).toContain("href=");
-      expect(result).toContain("&amp;");
+      const { xml } = parseMd("[リンク](https://example.com?a=1&b=2)");
+      expect(xml).toContain("href=");
+      expect(xml).toContain("&amp;");
     });
 
     it("リスト項目内のリンクを変換する", () => {
-      const result = parseMd("- [リンク](https://example.com)");
-      expect(result).toContain(
+      const { xml } = parseMd("- [リンク](https://example.com)");
+      expect(xml).toContain(
         '<Li><A href="https://example.com">リンク</A></Li>',
       );
     });
@@ -338,16 +378,103 @@ some content
       const md = `| 名前 |
 | --- |
 | [リンク](https://example.com) |`;
-      const result = parseMd(md);
-      expect(result).toContain(
+      const { xml } = parseMd(md);
+      expect(xml).toContain(
         '<Td><A href="https://example.com">リンク</A></Td>',
       );
     });
 
     it("見出し内のリンクを変換する", () => {
-      const result = parseMd("# [タイトル](https://example.com)");
-      expect(result).toContain('<A href="https://example.com">');
-      expect(result).toContain("タイトル");
+      const { xml } = parseMd("# [タイトル](https://example.com)");
+      expect(xml).toContain('<A href="https://example.com">');
+      expect(xml).toContain("タイトル");
+    });
+  });
+
+  describe("コメント directive", () => {
+    it("backgroundColor directive をそのスライドの VStack に適用する", () => {
+      const md = `<!-- backgroundColor: red -->
+
+# タイトル`;
+      const { xml } = parseMd(md);
+      expect(xml).toContain('backgroundColor="red"');
+    });
+
+    it("スライドごとに異なる backgroundColor を適用する", () => {
+      const md = `<!-- backgroundColor: red -->
+
+# スライド1
+
+---
+
+<!-- backgroundColor: blue -->
+
+# スライド2`;
+      const { xml } = parseMd(md);
+      expect(xml).toContain('backgroundColor="red"');
+      expect(xml).toContain('backgroundColor="blue"');
+    });
+
+    it("directive のないスライドには backgroundColor を付与しない", () => {
+      const md = `<!-- backgroundColor: red -->
+
+# スライド1
+
+---
+
+# スライド2`;
+      const { xml } = parseMd(md);
+      // スライド1 には backgroundColor あり
+      const vstacks = xml.split("</VStack>");
+      expect(vstacks[0]).toContain('backgroundColor="red"');
+      // スライド2 には backgroundColor なし（VStack の属性として）
+      expect(vstacks[1]).not.toContain("backgroundColor=");
+    });
+
+    it("frontmatter の backgroundColor をコメント directive で上書きする", () => {
+      const md = `---
+backgroundColor: "#f0f0f0"
+---
+
+# スライド1
+
+---
+
+<!-- backgroundColor: blue -->
+
+# スライド2`;
+      const { xml } = parseMd(md);
+      const vstacks = xml.split("</VStack>");
+      // スライド1 は frontmatter のデフォルト
+      expect(vstacks[0]).toContain('backgroundColor="#f0f0f0"');
+      // スライド2 はコメント directive で上書き
+      expect(vstacks[1]).toContain('backgroundColor="blue"');
+    });
+
+    it("directive の値をクォートで囲んでも正しくパースする", () => {
+      const md = `<!-- backgroundColor: "#ff0000" -->
+
+# タイトル`;
+      const { xml } = parseMd(md);
+      expect(xml).toContain('backgroundColor="#ff0000"');
+    });
+
+    it("directive コメントは XML 出力に含めない", () => {
+      const md = `<!-- backgroundColor: red -->
+
+# タイトル`;
+      const { xml } = parseMd(md);
+      expect(xml).not.toContain("<!--");
+    });
+
+    it("サポート外の directive コメントは directive として処理しない", () => {
+      const md = `<!-- unknownKey: value -->
+
+# タイトル`;
+      const { xml } = parseMd(md);
+      // サポート外のコメントは directive として抽出されず、VStack 属性に影響しない
+      expect(xml).not.toContain("unknownKey=");
+      expect(xml).toContain("タイトル");
     });
   });
 
@@ -381,24 +508,24 @@ size: 16:9
   <Step>リリース</Step>
 </Flow>
 \`\`\``;
-      const result = parseMd(md);
+      const { xml } = parseMd(md);
 
       // 3 スライド
-      const vstackCount = (result.match(/<VStack/g) ?? []).length;
+      const vstackCount = (xml.match(/<VStack/g) ?? []).length;
       expect(vstackCount).toBe(3);
 
       // スライド 1
-      expect(result).toContain("売上報告");
-      expect(result).toContain("<Ul>");
-      expect(result).toContain("<Li>Q1は好調</Li>");
+      expect(xml).toContain("売上報告");
+      expect(xml).toContain("<Ul>");
+      expect(xml).toContain("<Li>Q1は好調</Li>");
 
       // スライド 2
-      expect(result).toContain("詳細データ");
-      expect(result).toContain('<Chart type="bar"');
+      expect(xml).toContain("詳細データ");
+      expect(xml).toContain('<Chart type="bar"');
 
       // スライド 3
-      expect(result).toContain("プロセス");
-      expect(result).toContain("<Flow>");
+      expect(xml).toContain("プロセス");
+      expect(xml).toContain("<Flow>");
     });
   });
 });

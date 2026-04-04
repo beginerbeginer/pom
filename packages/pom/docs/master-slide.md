@@ -207,6 +207,20 @@ const { pptx } = await buildPptx(
 );
 ```
 
+### Usage from pom-md
+
+When using `@hirokisakabe/pom-md`, you can specify `masterPptx` in the frontmatter:
+
+```markdown
+---
+masterPptx: ./template.pptx
+---
+
+# Slide content
+```
+
+The path is resolved relative to the `.pom.md` file.
+
 ### Priority Rules
 
 - If both `masterPptx` and `master.background` are specified, `master.background` takes priority

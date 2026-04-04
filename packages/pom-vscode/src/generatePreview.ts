@@ -1,9 +1,11 @@
+import * as fs from "fs";
+import * as path from "path";
 import { parseMd } from "@hirokisakabe/pom-md";
 import { buildPptx, type Diagnostic } from "@hirokisakabe/pom";
 import { convertPptxToSvg } from "pptx-glimpse";
 
-export const SLIDE_WIDTH = 1280;
-export const SLIDE_HEIGHT = 720;
+export const DEFAULT_SLIDE_WIDTH = 1280;
+export const DEFAULT_SLIDE_HEIGHT = 720;
 
 /** 入力形式 */
 export type InputFormat = "markdown" | "xml";
@@ -20,7 +22,12 @@ const EXTRA_FONT_MAPPING: Record<string, string> = {
 
 type PreviewResult =
   | { type: "empty" }
-  | { type: "success"; svgs: string[]; diagnostics: Diagnostic[] }
+  | {
+      type: "success";
+      svgs: string[];
+      diagnostics: Diagnostic[];
+      slideWidth: number;
+    }
   | { type: "error"; message: string };
 
 /**
@@ -30,17 +37,49 @@ export async function generatePreviewSvg(
   content: string,
   fontDirs: string[],
   format: InputFormat = "markdown",
+  documentPath?: string,
 ): Promise<PreviewResult> {
   try {
-    const xml = format === "xml" ? content : parseMd(content);
+    let xml: string;
+    let slideWidth = DEFAULT_SLIDE_WIDTH;
+    let slideHeight = DEFAULT_SLIDE_HEIGHT;
+    let masterPptxData: Uint8Array | undefined;
+
+    if (format === "xml") {
+      xml = content;
+    } else {
+      const result = parseMd(content);
+      xml = result.xml;
+      slideWidth = result.meta.size.w;
+      slideHeight = result.meta.size.h;
+
+      if (result.meta.masterPptx && documentPath) {
+        const masterPath = path.resolve(
+          path.dirname(documentPath),
+          result.meta.masterPptx,
+        );
+        try {
+          masterPptxData = new Uint8Array(fs.readFileSync(masterPath));
+        } catch (e: unknown) {
+          // ファイルが見つからない場合のみ無視（プレビュー時に masterPptx なしで続行）
+          if (!(e instanceof Error && "code" in e && e.code === "ENOENT")) {
+            throw e;
+          }
+        }
+      }
+    }
+
     if (!xml.trim()) {
       return { type: "empty" };
     }
 
     const { pptx, diagnostics } = await buildPptx(
       xml,
-      { w: SLIDE_WIDTH, h: SLIDE_HEIGHT },
-      { textMeasurement: "fallback" },
+      { w: slideWidth, h: slideHeight },
+      {
+        textMeasurement: "fallback",
+        ...(masterPptxData ? { masterPptx: masterPptxData } : {}),
+      },
     );
 
     const buffer = await pptx.write({ outputType: "uint8array" });
@@ -49,13 +88,13 @@ export async function generatePreviewSvg(
     }
 
     const slides = await convertPptxToSvg(buffer, {
-      width: SLIDE_WIDTH,
+      width: slideWidth,
       fontDirs,
       fontMapping: EXTRA_FONT_MAPPING,
     });
     const svgs = slides.map((s: { svg: string }) => s.svg);
 
-    return { type: "success", svgs, diagnostics };
+    return { type: "success", svgs, diagnostics, slideWidth };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     return { type: "error", message };
@@ -76,6 +115,7 @@ export function buildHtml(
   svgs: string[],
   nonce: string,
   defaultZoom: ZoomLevel,
+  slideWidth: number = DEFAULT_SLIDE_WIDTH,
 ): string {
   if (svgs.length === 0) {
     return `<!DOCTYPE html>
@@ -172,19 +212,19 @@ export function buildHtml(
   }
   /* 固定ズーム: SVG 幅を SLIDE_WIDTH のパーセンテージに設定 */
   body[data-zoom="50"] .slide-frame svg {
-    width: ${SLIDE_WIDTH * 0.5}px;
+    width: ${slideWidth * 0.5}px;
     height: auto;
   }
   body[data-zoom="75"] .slide-frame svg {
-    width: ${SLIDE_WIDTH * 0.75}px;
+    width: ${slideWidth * 0.75}px;
     height: auto;
   }
   body[data-zoom="100"] .slide-frame svg {
-    width: ${SLIDE_WIDTH}px;
+    width: ${slideWidth}px;
     height: auto;
   }
   body[data-zoom="150"] .slide-frame svg {
-    width: ${SLIDE_WIDTH * 1.5}px;
+    width: ${slideWidth * 1.5}px;
     height: auto;
   }
 </style>

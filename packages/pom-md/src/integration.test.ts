@@ -6,7 +6,7 @@ import { parseXml, TAG_TO_TYPE } from "../../pom/src/parseXml/parseXml.ts";
 describe("pom core 統合テスト", () => {
   /** parseMd の出力を parseXml に通してエラーなくパースできることを検証する */
   function assertParsable(md: string): void {
-    const xml = parseMd(md);
+    const { xml } = parseMd(md);
     if (!xml.trim()) return; // 空出力は検証不要
     expect(() => parseXml(xml)).not.toThrow();
   }
@@ -99,31 +99,29 @@ describe("エッジケーステスト", () => {
     it("空テーブル（ヘッダーのみ、データ行なし）", () => {
       const md = `| Header1 | Header2 |
 | --- | --- |`;
-      const result = parseMd(md);
-      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
-      expect(result).toContain("<Tr>");
-      expect(result).toContain(
+      const { xml } = parseMd(md);
+      expect(xml).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
+      expect(xml).toContain("<Tr>");
+      expect(xml).toContain(
         '<Td bold="true" backgroundColor="F1F5F9">Header1</Td>',
       );
-      expect(result).toContain(
+      expect(xml).toContain(
         '<Td bold="true" backgroundColor="F1F5F9">Header2</Td>',
       );
-      expect(result).toContain("</Table>");
+      expect(xml).toContain("</Table>");
       // parseXml でもパースできること
-      expect(() => parseXml(result)).not.toThrow();
+      expect(() => parseXml(xml)).not.toThrow();
     });
 
     it("1セルだけのテーブル", () => {
       const md = `| A |
 | --- |
 | B |`;
-      const result = parseMd(md);
-      expect(result).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
-      expect(result).toContain(
-        '<Td bold="true" backgroundColor="F1F5F9">A</Td>',
-      );
-      expect(result).toContain("<Td>B</Td>");
-      expect(() => parseXml(result)).not.toThrow();
+      const { xml } = parseMd(md);
+      expect(xml).toContain(`<Table cellBorder='{"color":"CBD5E1"}'>`);
+      expect(xml).toContain('<Td bold="true" backgroundColor="F1F5F9">A</Td>');
+      expect(xml).toContain("<Td>B</Td>");
+      expect(() => parseXml(xml)).not.toThrow();
     });
 
     it('テーブルセル内の特殊文字（<, &, "）', () => {
@@ -131,12 +129,12 @@ describe("エッジケーステスト", () => {
 | --- | --- |
 | a<b | c&d |
 | e"f | g>h |`;
-      const result = parseMd(md);
-      expect(result).toContain("&lt;");
-      expect(result).toContain("&amp;");
-      expect(result).toContain("&quot;");
-      expect(result).toContain("&gt;");
-      expect(() => parseXml(result)).not.toThrow();
+      const { xml } = parseMd(md);
+      expect(xml).toContain("&lt;");
+      expect(xml).toContain("&amp;");
+      expect(xml).toContain("&quot;");
+      expect(xml).toContain("&gt;");
+      expect(() => parseXml(xml)).not.toThrow();
     });
   });
 
@@ -146,18 +144,18 @@ describe("エッジケーステスト", () => {
   - 子項目1
   - 子項目2
 - 親項目2`;
-      const result = parseMd(md);
-      expect(result).toContain("<Ul>");
+      const { xml } = parseMd(md);
+      expect(xml).toContain("<Ul>");
       // ネストリストが何らかの形で出力されること（エラーにならないこと）
-      expect(() => parseXml(result)).not.toThrow();
+      expect(() => parseXml(xml)).not.toThrow();
     });
   });
 
   describe("画像", () => {
     it("画像の alt テキストに特殊文字", () => {
-      const result = parseMd("![a<b](img.png)");
-      expect(result).toContain("img.png");
-      expect(() => parseXml(result)).not.toThrow();
+      const { xml } = parseMd("![a<b](img.png)");
+      expect(xml).toContain("img.png");
+      expect(() => parseXml(xml)).not.toThrow();
     });
   });
 
@@ -172,10 +170,10 @@ describe("エッジケーステスト", () => {
 \`\`\`pomxml
 <Text>ブロックB</Text>
 \`\`\``;
-      const result = parseMd(md);
-      expect(result).toContain("ブロックA");
-      expect(result).toContain("ブロックB");
-      expect(() => parseXml(result)).not.toThrow();
+      const { xml } = parseMd(md);
+      expect(xml).toContain("ブロックA");
+      expect(xml).toContain("ブロックB");
+      expect(() => parseXml(xml)).not.toThrow();
     });
   });
 
@@ -186,9 +184,9 @@ size: A4
 ---
 
 # タイトル`;
-      const result = parseMd(md);
-      expect(result).toContain('w="1280"');
-      expect(result).toContain('h="720"');
+      const { xml } = parseMd(md);
+      expect(xml).toContain('w="1280"');
+      expect(xml).toContain('h="720"');
     });
   });
 
@@ -199,30 +197,30 @@ size: A4
 ---
 
 ---`;
-      const result = parseMd(md);
+      const { xml } = parseMd(md);
       // 空スライドはフィルタリングされて空文字列になる
-      expect(result).toBe("");
+      expect(xml).toBe("");
     });
   });
 
   describe("見出し", () => {
     it("h4 を fontSize=18 bold の Text に変換する", () => {
-      const result = parseMd("#### h4見出し");
-      expect(result).toContain('fontSize="18"');
-      expect(result).toContain('bold="true"');
-      expect(result).toContain("h4見出し");
+      const { xml } = parseMd("#### h4見出し");
+      expect(xml).toContain('fontSize="18"');
+      expect(xml).toContain('bold="true"');
+      expect(xml).toContain("h4見出し");
     });
 
     it("h5 を fontSize=16 bold の Text に変換する", () => {
-      const result = parseMd("##### h5見出し");
-      expect(result).toContain('fontSize="16"');
-      expect(result).toContain("h5見出し");
+      const { xml } = parseMd("##### h5見出し");
+      expect(xml).toContain('fontSize="16"');
+      expect(xml).toContain("h5見出し");
     });
 
     it("h6 を fontSize=14 bold の Text に変換する", () => {
-      const result = parseMd("###### h6見出し");
-      expect(result).toContain('fontSize="14"');
-      expect(result).toContain("h6見出し");
+      const { xml } = parseMd("###### h6見出し");
+      expect(xml).toContain('fontSize="14"');
+      expect(xml).toContain("h6見出し");
     });
   });
 });
@@ -230,7 +228,7 @@ size: A4
 // ===== 3. インラインフォーマット統合テスト =====
 describe("インラインフォーマット統合テスト", () => {
   function assertParsable(md: string): void {
-    const xml = parseMd(md);
+    const { xml } = parseMd(md);
     if (!xml.trim()) return;
     expect(() => parseXml(xml)).not.toThrow();
   }
@@ -262,7 +260,7 @@ describe("インラインフォーマット統合テスト", () => {
   });
 
   it("太字を含む段落が runs を持つ", () => {
-    const xml = parseMd("通常 **太字** テキスト");
+    const { xml } = parseMd("通常 **太字** テキスト");
     const nodes = parseXml(xml);
     // VStack → children → Text
     const vstack = nodes[0] as Record<string, unknown>;
@@ -282,7 +280,7 @@ describe("インラインフォーマット統合テスト", () => {
   });
 
   it("斜体を含む段落が runs を持つ", () => {
-    const xml = parseMd("通常 *斜体* テキスト");
+    const { xml } = parseMd("通常 *斜体* テキスト");
     const nodes = parseXml(xml);
     const vstack = nodes[0] as Record<string, unknown>;
     const children = vstack.children as Record<string, unknown>[];
@@ -299,7 +297,7 @@ describe("インラインフォーマット統合テスト", () => {
   });
 
   it("書式なしテキストは runs を持たない", () => {
-    const xml = parseMd("プレーンテキスト");
+    const { xml } = parseMd("プレーンテキスト");
     const nodes = parseXml(xml);
     const vstack = nodes[0] as Record<string, unknown>;
     const children = vstack.children as Record<string, unknown>[];
@@ -340,7 +338,7 @@ describe("タグ名整合性チェック", () => {
     const md = `| A | B |
 | --- | --- |
 | 1 | 2 |`;
-    const xml = parseMd(md);
+    const { xml } = parseMd(md);
     expect(() => parseXml(xml)).not.toThrow();
   });
 });

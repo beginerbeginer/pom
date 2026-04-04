@@ -71,6 +71,7 @@ export function activate(context: vscode.ExtensionContext): void {
             const buffer = await generatePptxBuffer(
               editor.document.getText(),
               format,
+              editor.document.uri.fsPath,
             );
             await vscode.workspace.fs.writeFile(saveUri, buffer);
             void vscode.window.showInformationMessage(
