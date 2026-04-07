@@ -972,10 +972,114 @@ describe("parseXml", () => {
       expect(node.endArrow).toEqual({ type: "triangle" });
     });
 
-    it("ドット記法と通常属性の競合でエラーになる", () => {
+    it("padding と dot 記法を混在指定できる（number shorthand を 4方向展開）", () => {
+      const result = parseXml(
+        '<VStack padding="16" padding.top="4"><Text>A</Text></VStack>',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.padding).toEqual({ top: 4, right: 16, bottom: 16, left: 16 });
+    });
+
+    it("margin と dot 記法を混在指定できる（number shorthand を 4方向展開）", () => {
+      const result = parseXml(
+        '<VStack margin="12" margin.left="20"><Text>A</Text></VStack>',
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.margin).toEqual({
+        top: 12,
+        right: 12,
+        bottom: 12,
+        left: 20,
+      });
+    });
+
+    it("border の JSON shorthand と dot 記法を混在指定できる", () => {
       const border = JSON.stringify({ color: "000000", width: 2 });
+      const result = parseXml(
+        `<Text border='${border}' border.color="FF0000">test</Text>`,
+      );
+      expect((result[0] as Record<string, unknown>).border).toEqual({
+        color: "FF0000",
+        width: 2,
+      });
+    });
+
+    it("cellBorder の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Table cellBorder='{"color":"334155","width":1}' cellBorder.width="2"><Tr><Td>A</Td></Tr></Table>`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.cellBorder).toEqual({ color: "334155", width: 2 });
+    });
+
+    it("line の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Shape shapeType="rect" line='{"color":"333333","width":1}' line.width="4" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.line).toEqual({ color: "333333", width: 4 });
+    });
+
+    it("fill の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Shape shapeType="rect" fill='{"color":"1D4ED8","transparency":0.1}' fill.transparency="0.4" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.fill).toEqual({ color: "1D4ED8", transparency: 0.4 });
+    });
+
+    it("shadow の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<VStack shadow='{"type":"outer","color":"000000","blur":2}' shadow.blur="6"><Text>A</Text></VStack>`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.shadow).toEqual({ type: "outer", color: "000000", blur: 6 });
+    });
+
+    it("underline の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Text underline='{"style":"sng","color":"000000"}' underline.color="FF0000">test</Text>`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.underline).toEqual({ style: "sng", color: "FF0000" });
+    });
+
+    it("beginArrow の object shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Line x1="0" y1="0" x2="100" y2="100" beginArrow='{"type":"oval"}' beginArrow.type="diamond" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.beginArrow).toEqual({ type: "diamond" });
+    });
+
+    it("backgroundImage の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<VStack backgroundImage='{"src":"bg.png","sizing":"contain"}' backgroundImage.sizing="cover"><Text>A</Text></VStack>`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.backgroundImage).toEqual({ src: "bg.png", sizing: "cover" });
+    });
+
+    it("connectorStyle の JSON shorthand と dot 記法を混在指定できる", () => {
+      const data = JSON.stringify({ label: "Root", children: [] });
+      const result = parseXml(
+        `<Tree layout="vertical" data='${data}' connectorStyle='{"color":"999999","width":1}' connectorStyle.width="3" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.connectorStyle).toEqual({ color: "999999", width: 3 });
+    });
+
+    it("sizing の JSON shorthand と dot 記法を混在指定できる", () => {
+      const result = parseXml(
+        `<Image src="image.png" sizing='{"type":"crop","x":0,"y":0,"w":100,"h":100}' sizing.w="120" />`,
+      );
+      const node = result[0] as Record<string, unknown>;
+      expect(node.sizing).toEqual({ type: "crop", x: 0, y: 0, w: 120, h: 100 });
+    });
+
+    it("展開できない shorthand は従来どおり競合エラーになる", () => {
       expect(() =>
-        parseXml(`<Text border='${border}' border.color="FF0000">test</Text>`),
+        parseXml('<Text border="solid" border.color="FF0000">test</Text>'),
       ).toThrow("conflicts with dot-notation");
     });
 
