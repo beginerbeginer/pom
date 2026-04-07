@@ -30,9 +30,9 @@ export function renderBackgroundAndBorder(
   const hasBackgroundImage = Boolean(backgroundImage);
   const hasBorder = Boolean(
     border &&
-      (border.color !== undefined ||
-        border.width !== undefined ||
-        border.dashType !== undefined),
+    (border.color !== undefined ||
+      border.width !== undefined ||
+      border.dashType !== undefined),
   );
   const hasShadow = Boolean(shadow);
 

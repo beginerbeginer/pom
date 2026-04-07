@@ -268,9 +268,9 @@ export async function renderPptx(
           const { border, borderRadius } = node;
           const hasBorder = Boolean(
             border &&
-              (border.color !== undefined ||
-                border.width !== undefined ||
-                border.dashType !== undefined),
+            (border.color !== undefined ||
+              border.width !== undefined ||
+              border.dashType !== undefined),
           );
           if (hasBorder) {
             const line = {
