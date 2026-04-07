@@ -1,5 +1,11 @@
 # @hirokisakabe/pom
 
+## 7.2.0
+
+### Minor Changes
+
+- [#650](https://github.com/hirokisakabe/pom/pull/650) [`ed7a1c6`](https://github.com/hirokisakabe/pom/commit/ed7a1c6a03bd8c5cf86fd4e02e1ad2c06eb09231) Thanks [@hirokisakabe](https://github.com/hirokisakabe)! - padding 等のショートハンド属性とドット記法属性 (padding.top など) を同一ノードで混在指定できるようにした。ショートハンドが全方向のデフォルトとして展開され、ドット記法側のキーで個別上書きされる。
+
 ## 7.1.0
 
 ### Minor Changes
