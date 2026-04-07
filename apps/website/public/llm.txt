@@ -8,6 +8,7 @@ A compact reference for the pom XML format, designed to be pasted into LLM promp
 - Colors: 6-digit hex (no `#` prefix) e.g. `FF0000`
 - Attribute values are written as strings. Numbers and booleans are auto-converted
 - Nested object attributes use dot notation (e.g. `fill.color="1D4ED8"`)
+- For shorthand + dot-notation attributes (e.g. `padding` + `padding.top`), both can be mixed on the same node. Shorthand sets defaults; dot-notation keys override per side/property.
 
 ## Common Attributes (All Nodes)
 
@@ -17,13 +18,13 @@ A compact reference for the pom XML format, designed to be pasted into LLM promp
 | `h`               | number / `"max"` / `"50%"`                                 | Height                                     |
 | `minW` `maxW`     | number                                                     | Min / max width                            |
 | `minH` `maxH`     | number                                                     | Min / max height                           |
-| `padding`         | number / `padding.top="8" padding.bottom="8"`              | Padding                                    |
+| `padding`         | number / `padding.top="8" padding.bottom="8"`              | Padding (shorthand + dot notation can be mixed) |
 | `backgroundColor` | hex                                                        | Background color                           |
 | `backgroundImage` | `backgroundImage.src="url" backgroundImage.sizing="cover"` | Background image                           |
-| `border`          | `border.color="333" border.width="1"`                      | Border                                     |
+| `border`          | `border.color="333" border.width="1"`                      | Border (shorthand + dot notation can be mixed) |
 | `borderRadius`    | number                                                     | Border radius (px)                         |
 | `opacity`         | 0-1                                                        | Background opacity                         |
-| `margin`          | number / `margin.top="8" margin.bottom="8"`                | Margin                                     |
+| `margin`          | number / `margin.top="8" margin.bottom="8"`                | Margin (shorthand + dot notation can be mixed) |
 | `zIndex`          | number                                                     | Stacking order (higher = on top)           |
 | `position`        | `relative` / `absolute`                                    | Positioning mode                           |
 | `top`             | number                                                     | Top offset (when using position)           |
@@ -31,7 +32,7 @@ A compact reference for the pom XML format, designed to be pasted into LLM promp
 | `bottom`          | number                                                     | Bottom offset (when using position)        |
 | `left`            | number                                                     | Left offset (when using position)          |
 | `alignSelf`       | `auto` / `start` / `center` / `end` / `stretch`            | Override parent's alignItems for this node |
-| `shadow`          | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Drop shadow (not supported on Line) |
+| `shadow`          | `shadow.type="outer" shadow.blur="4" shadow.offset="2" shadow.color="000"` | Drop shadow (shorthand + dot notation can be mixed; not supported on Line) |
 
 ## Layout Nodes
 
@@ -209,6 +210,8 @@ For the full icon list, see https://lucide.dev/icons/ (use the icon name in keba
 | `fill`          | `fill.color="hex" fill.transparency="0.5"`                                                                |
 | `line`          | `line.color="hex" line.width="2" line.dashType="dash"`                                                    |
 | Text attributes | `fontSize` `color` `textAlign` `bold` `italic` `underline` `strike` `highlight` `fontFamily` `lineHeight` |
+
+`fill`, `line`, and other style objects also allow mixing shorthand + dot notation on the same node (dot notation overrides specific keys).
 
 **Full shapeType list:**
 

@@ -25,7 +25,7 @@ import {
   coerceWithRule,
   coerceFallback,
   getObjectShapeFromRule,
-  isBooleanObjectUnionRule,
+  resolveMixedNotationShorthand,
 } from "./coercionRules.ts";
 
 // ===== ParseXmlError =====
@@ -574,16 +574,18 @@ function coerceChildAttrs(
   // Process regular attributes
   for (const [key, value] of Object.entries(regularAttrs)) {
     if (key in dotGroups) {
-      // When the rule is a union of boolean and object,
-      // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
-      if (
-        rules &&
-        rules[key] &&
-        isBooleanObjectUnionRule(rules[key]) &&
-        (value === "true" || value === "false")
-      ) {
-        // Silently skip the boolean value; dot-notation takes priority
-        continue;
+      if (rules && rules[key]) {
+        const resolved = resolveMixedNotationShorthand(value, rules[key]);
+        if (resolved.mode === "ignore") {
+          continue;
+        }
+        if (resolved.mode === "merge") {
+          result[key] = {
+            ...resolved.value,
+            ...(result[key] as Record<string, unknown>),
+          };
+          continue;
+        }
       }
       errors.push(
         `<${parentTagName}>.<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes. Use one or the other, not both`,
@@ -1127,16 +1129,19 @@ function convertPomNode(
     if (key === "type") continue;
     // Conflict check: dot-notation and regular attribute for the same key
     if (key in dotGroups) {
-      // When the rule is a union of boolean and object (e.g., endArrow),
-      // allow boolean shorthand to coexist with dot-notation by ignoring the boolean value.
       const ruleForConflict = getCoercionRule(nodeType, key);
-      if (
-        ruleForConflict &&
-        isBooleanObjectUnionRule(ruleForConflict) &&
-        (value === "true" || value === "false")
-      ) {
-        // Silently skip the boolean value; dot-notation takes priority
-        continue;
+      if (ruleForConflict) {
+        const resolved = resolveMixedNotationShorthand(value, ruleForConflict);
+        if (resolved.mode === "ignore") {
+          continue;
+        }
+        if (resolved.mode === "merge") {
+          result[key] = {
+            ...resolved.value,
+            ...(result[key] as Record<string, unknown>),
+          };
+          continue;
+        }
       }
       errors.push(
         `<${tagName}>: Attribute "${key}" conflicts with dot-notation attributes (e.g., "${key}.xxx"). Use one or the other, not both`,

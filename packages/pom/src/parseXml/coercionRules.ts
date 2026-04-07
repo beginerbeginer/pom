@@ -172,6 +172,70 @@ export function isBooleanObjectUnionRule(rule: CoercionRule): boolean {
   return hasBoolean && hasObject;
 }
 
+type ResolvedMixedNotationShorthand =
+  | { mode: "merge"; value: Record<string, unknown> }
+  | { mode: "ignore" }
+  | { mode: "conflict" };
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isDirectionalBoxShape(shape: Record<string, CoercionRule>): boolean {
+  const keys = Object.keys(shape).sort();
+  return (
+    keys.length === 4 &&
+    keys[0] === "bottom" &&
+    keys[1] === "left" &&
+    keys[2] === "right" &&
+    keys[3] === "top"
+  );
+}
+
+/**
+ * 同一属性で shorthand と dot notation を併用したときに、
+ * shorthand 側をどのように扱うかを解決する。
+ *
+ * - merge: shorthand をオブジェクト化して dot notation 側で上書き
+ * - ignore: boolean shorthand を無視して dot notation を優先
+ * - conflict: 併用不可（従来どおりエラー）
+ */
+export function resolveMixedNotationShorthand(
+  value: string,
+  rule: CoercionRule,
+): ResolvedMixedNotationShorthand {
+  const objectShape = getObjectShapeFromRule(rule);
+  if (!objectShape) return { mode: "conflict" };
+
+  if (
+    isBooleanObjectUnionRule(rule) &&
+    (value === "true" || value === "false")
+  ) {
+    return { mode: "ignore" };
+  }
+
+  const coerced = coerceWithRule(value, rule);
+  if (coerced.error !== null) return { mode: "conflict" };
+
+  if (isPlainObject(coerced.value)) {
+    return { mode: "merge", value: coerced.value };
+  }
+
+  if (typeof coerced.value === "number" && isDirectionalBoxShape(objectShape)) {
+    return {
+      mode: "merge",
+      value: {
+        top: coerced.value,
+        right: coerced.value,
+        bottom: coerced.value,
+        left: coerced.value,
+      },
+    };
+  }
+
+  return { mode: "conflict" };
+}
+
 // ===== 共通変換ルール =====
 
 const LENGTH_RULE: CoercionRule = {

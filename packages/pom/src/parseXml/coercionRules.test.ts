@@ -5,6 +5,7 @@ import {
   coerceFallback,
   getObjectShapeFromRule,
   isBooleanObjectUnionRule,
+  resolveMixedNotationShorthand,
   type CoercionRule,
 } from "./coercionRules.ts";
 
@@ -237,6 +238,63 @@ describe("coercionRules", () => {
           shape: { x: "number" },
         }),
       ).toBe(false);
+    });
+  });
+
+  describe("resolveMixedNotationShorthand", () => {
+    it("padding の number shorthand を 4方向オブジェクトに展開する", () => {
+      const rule: CoercionRule = {
+        type: "union",
+        options: [
+          "number",
+          {
+            type: "object",
+            shape: {
+              top: "number",
+              right: "number",
+              bottom: "number",
+              left: "number",
+            },
+          },
+        ],
+      };
+      expect(resolveMixedNotationShorthand("12", rule)).toEqual({
+        mode: "merge",
+        value: { top: 12, right: 12, bottom: 12, left: 12 },
+      });
+    });
+
+    it("object shorthand はそのまま merge 対象として扱う", () => {
+      const rule: CoercionRule = {
+        type: "object",
+        shape: { color: "string", width: "number" },
+      };
+      expect(
+        resolveMixedNotationShorthand('{"color":"333333","width":1}', rule),
+      ).toEqual({
+        mode: "merge",
+        value: { color: "333333", width: 1 },
+      });
+    });
+
+    it("boolean|object の boolean shorthand は ignore になる", () => {
+      const rule: CoercionRule = {
+        type: "union",
+        options: ["boolean", { type: "object", shape: { type: "string" } }],
+      };
+      expect(resolveMixedNotationShorthand("true", rule)).toEqual({
+        mode: "ignore",
+      });
+    });
+
+    it("展開不能な shorthand は conflict になる", () => {
+      const rule: CoercionRule = {
+        type: "object",
+        shape: { color: "string", width: "number" },
+      };
+      expect(resolveMixedNotationShorthand("solid", rule)).toEqual({
+        mode: "conflict",
+      });
     });
   });
 });

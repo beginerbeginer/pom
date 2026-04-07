@@ -38,6 +38,7 @@
 - **AI Friendly** — Simple XML structure designed for LLM code generation. Include [llm.txt](./website/public/llm.txt) in your system prompt for XML reference. Also available at `https://pom.pptx.app/llm.txt`.
 - **Declarative** — Describe slides as XML. No imperative API calls needed — just data in, PPTX out.
 - **Flexible Layout** — Flexbox-style layout with VStack / HStack, powered by yoga-layout.
+- **Shorthand + Dot Notation** — Layout/style attributes (e.g. `padding`, `margin`, `border`, `fill`, `shadow`) can mix shorthand and dot notation on the same node. Shorthand sets defaults and dot notation overrides specific keys.
 - **Rich Nodes** — 18 built-in node types: charts, flowcharts, tables, timelines, org trees, and more.
 - **Schema-validated** — XML input is validated with Zod schemas at runtime with clear error messages.
 - **PowerPoint Native** — Generates real editable PowerPoint shapes — not images. Recipients can modify everything.
