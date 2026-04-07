@@ -139,7 +139,7 @@ A node for displaying images.
 ![Image Node Example](./images/image.png)
 
 ```xml
-<Image src="https://example.com/img.png" w="200" h="150" />
+<Image src="https://placehold.co/200x150" w="200" h="150" />
 ```
 
 | Attribute | Values                                                                                          |
