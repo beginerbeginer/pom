@@ -785,34 +785,22 @@ A container for absolute positioning of child elements. Child elements are posit
 
 ### 18. Icon
 
-A node for displaying icons. Supports both preset icons from the Lucide icon library and inline SVG. Icons are rendered as PNG images at the specified size and color.
+A node for displaying icons from the Lucide icon library. Icons are rendered as PNG images at the specified size and color.
 
 ![Icon Node Example](./images/icon.png)
 
 ```xml
-<!-- Preset icon -->
 <Icon name="cpu" size="32" color="#1D4ED8" />
 <Icon name="cpu" variant="circle-filled" bgColor="#E8F0FE" color="#1D4ED8" />
-
-<!-- Inline SVG -->
-<Icon size="32" color="#1D4ED8">
-  <svg viewBox="0 0 24 24">
-    <path d="M12 2L2 22h20z" fill="none" stroke-width="2"/>
-  </svg>
-</Icon>
 ```
 
 | Attribute | Values                                                                      |
 | --------- | --------------------------------------------------------------------------- |
-| `name`    | icon name (required if no `<svg>` child)                                    |
+| `name`    | icon name (required)                                                        |
 | `size`    | number (default: 24, in px)                                                 |
 | `color`   | hex color (default: `#000000`)                                              |
 | `variant` | `circle-filled`, `circle-outlined`, `square-filled`, `square-outlined`      |
 | `bgColor` | hex color for the background shape (default: `#E0E0E0` when variant is set) |
-
-Either `name` attribute or a `<svg>` child element is required. Both cannot be specified at the same time.
-
-When using inline SVG, the `color` attribute sets `stroke` and `fill="none"` on the root `<svg>` element. If child elements within the SVG have explicit `stroke` or `fill` attributes, those take precedence over the root-level values.
 
 All [Lucide icons](https://lucide.dev/icons/) are available. Below are common examples:
 
@@ -829,3 +817,27 @@ All [Lucide icons](https://lucide.dev/icons/) are available. Below are common ex
 | Content       | `file`, `folder`, `image`, `calendar`, `clock`, `bookmark`                     |
 | Navigation    | `arrow-right`, `arrow-left`, `arrow-up`, `arrow-down`, `external-link`         |
 | Other         | `star`, `heart`, `zap`, `target`, `lightbulb`                                  |
+
+### 19. Svg
+
+A node for rendering inline SVG graphics. SVGs are rasterized to PNG at the specified size.
+
+![Svg Node Example](./images/svg.png)
+
+```xml
+<Svg w="32" h="32" color="#1D4ED8">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2L2 22h20z" fill="none" stroke-width="2"/>
+  </svg>
+</Svg>
+```
+
+| Attribute | Values                             |
+| --------- | ---------------------------------- |
+| `w`       | number (default: 24, width in px)  |
+| `h`       | number (default: 24, height in px) |
+| `color`   | hex color                          |
+
+A `<svg>` child element is required.
+
+When `color` is specified, it sets `stroke` and `fill="none"` on the root `<svg>` element. If child elements within the SVG have explicit `stroke` or `fill` attributes, those take precedence over the root-level values.

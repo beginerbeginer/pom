@@ -181,14 +181,27 @@ describe("parseXml", () => {
       ).toThrow();
     });
 
-    it("Icon ノードでインライン SVG を変換する", () => {
+    it("Icon ノードで子要素はエラーになる", () => {
+      expect(() =>
+        parseXml(
+          '<Icon name="cpu"><svg viewBox="0 0 24 24"><path d="M12 2"/></svg></Icon>',
+        ),
+      ).toThrow();
+    });
+
+    it("Icon ノードで name がない場合はエラーになる", () => {
+      expect(() => parseXml("<Icon />")).toThrow();
+    });
+
+    it("Svg ノードでインライン SVG を変換する", () => {
       const result = parseXml(
-        '<Icon size="32"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20z"/></svg></Icon>',
+        '<Svg w="32" h="32"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20z"/></svg></Svg>',
       );
       expect(result).toEqual([
         {
-          type: "icon",
-          size: 32,
+          type: "svg",
+          w: 32,
+          h: 32,
           svgContent: expect.stringContaining("<svg"),
         },
       ]);
@@ -198,20 +211,27 @@ describe("parseXml", () => {
       );
     });
 
-    it("Icon ノードで name と svg の同時指定はエラーになる", () => {
-      expect(() =>
-        parseXml(
-          '<Icon name="cpu"><svg viewBox="0 0 24 24"><path d="M12 2"/></svg></Icon>',
-        ),
-      ).toThrow();
+    it("Svg ノードで color を指定できる", () => {
+      const result = parseXml(
+        '<Svg w="32" h="32" color="1D4ED8"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></Svg>',
+      );
+      expect(result).toEqual([
+        {
+          type: "svg",
+          w: 32,
+          h: 32,
+          color: "#1D4ED8",
+          svgContent: expect.stringContaining("<svg"),
+        },
+      ]);
     });
 
-    it("Icon ノードで svg 以外の子要素はエラーになる", () => {
-      expect(() => parseXml("<Icon><Text>hello</Text></Icon>")).toThrow();
+    it("Svg ノードで svg 以外の子要素はエラーになる", () => {
+      expect(() => parseXml("<Svg><Text>hello</Text></Svg>")).toThrow();
     });
 
-    it("Icon ノードで name も svg もない場合はエラーになる", () => {
-      expect(() => parseXml("<Icon />")).toThrow();
+    it("Svg ノードで svg 子要素がない場合はエラーになる", () => {
+      expect(() => parseXml("<Svg />")).toThrow();
     });
 
     it("Table ノードを変換する", () => {
