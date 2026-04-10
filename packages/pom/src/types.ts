@@ -441,8 +441,7 @@ const iconVariantSchema = z
 
 export const iconNodeSchema = basePOMNodeSchema.extend({
   type: z.literal("icon"),
-  name: iconNameSchema.optional(),
-  svgContent: z.string().optional(),
+  name: iconNameSchema,
   size: z.number().positive().max(1024).optional(),
   color: iconColorSchema,
   variant: iconVariantSchema,
@@ -450,6 +449,16 @@ export const iconNodeSchema = basePOMNodeSchema.extend({
 });
 
 export type IconNode = z.infer<typeof iconNodeSchema>;
+
+export const svgNodeSchema = basePOMNodeSchema.extend({
+  type: z.literal("svg"),
+  svgContent: z.string(),
+  w: z.number().positive().max(1024).optional(),
+  h: z.number().positive().max(1024).optional(),
+  color: iconColorSchema,
+});
+
+export type SvgNode = z.infer<typeof svgNodeSchema>;
 
 const tableCellSchema = z.object({
   text: z.string(),
@@ -813,7 +822,8 @@ export type POMNode =
   | PyramidNode
   | LineNode
   | LayerNode
-  | IconNode;
+  | IconNode
+  | SvgNode;
 
 // Define schemas using passthrough to maintain type safety
 const vStackNodeSchemaBase = basePOMNodeSchema.extend({
@@ -868,6 +878,7 @@ const pomNodeSchema: z.ZodType<POMNode> = z.lazy(() =>
     lineNodeSchema,
     layerNodeSchemaBase,
     iconNodeSchema,
+    svgNodeSchema,
   ]),
 ) as z.ZodType<POMNode>;
 
@@ -916,7 +927,8 @@ export type PositionedNode =
         iconY?: number;
         iconW?: number;
         iconH?: number;
-      });
+      })
+  | (SvgNode & PositionedBase & { iconImageData: string });
 
 const positionedLayerChildSchema: z.ZodType<PositionedLayerChild> = z.lazy(() =>
   positionedNodeSchema.and(
@@ -955,6 +967,9 @@ const positionedNodeSchema: z.ZodType<PositionedNode> = z.lazy(() =>
       children: z.array(positionedLayerChildSchema),
     }),
     iconNodeSchema.merge(positionedBaseSchema).extend({
+      iconImageData: z.string(),
+    }),
+    svgNodeSchema.merge(positionedBaseSchema).extend({
       iconImageData: z.string(),
     }),
   ]),

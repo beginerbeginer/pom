@@ -84,11 +84,13 @@ export async function rasterizeIcon(
  */
 export async function rasterizeSvgContent(
   svgContent: string,
-  size: number,
+  width: number,
   color: string | undefined,
   cache: Map<string, string>,
+  height?: number,
 ): Promise<string> {
-  const key = `svg:${svgContent}|${size}|${color ?? ""}`;
+  const h = height ?? width;
+  const key = `svg:${svgContent}|${width}|${h}|${color ?? ""}`;
   const cached = cache.get(key);
   if (cached) return cached;
 
@@ -105,7 +107,7 @@ export async function rasterizeSvgContent(
     let newAttrs = attrs
       .replace(/\bwidth\s*=\s*"[^"]*"/g, "")
       .replace(/\bheight\s*=\s*"[^"]*"/g, "");
-    newAttrs += ` width="${size}" height="${size}"`;
+    newAttrs += ` width="${width}" height="${h}"`;
 
     // color 指定時は stroke / fill を設定（プリセットアイコンとの一貫性）
     if (color) {
@@ -122,7 +124,7 @@ export async function rasterizeSvgContent(
 
   await ensureWasmInitialized();
   const Resvg = getResvg();
-  const resvg = new Resvg(svg, { fitTo: { mode: "width", value: size } });
+  const resvg = new Resvg(svg, { fitTo: { mode: "width", value: width } });
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
   const result = `image/png;base64,${Buffer.from(pngBuffer).toString("base64")}`;

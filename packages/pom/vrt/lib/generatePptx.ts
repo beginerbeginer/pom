@@ -36,7 +36,7 @@ import {
   page32CenterAlignHStackXml,
   page33CustomFontXml,
   page34CustomFontWrapXml,
-  page35IconInlineSvgXml,
+  page35SvgNodeXml,
   page36InlineFormattingXml,
   page37TableCellBorderXml,
 } from "./slides/index.js";
@@ -78,7 +78,7 @@ export async function generatePptx(outputPath: string): Promise<void> {
     page32CenterAlignHStackXml,
     page33CustomFontXml,
     page34CustomFontWrapXml,
-    page35IconInlineSvgXml,
+    page35SvgNodeXml,
     page36InlineFormattingXml,
     page37TableCellBorderXml,
   ].join("\n");

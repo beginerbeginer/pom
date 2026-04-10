@@ -1,6 +1,6 @@
 import type { POMNode, PositionedNode } from "../../types.ts";
 import type { NodeDefinition } from "../types.ts";
-import { rasterizeIcon, rasterizeSvgContent } from "../../icons/index.ts";
+import { rasterizeIcon } from "../../icons/index.ts";
 import { renderIconNode } from "../../renderPptx/nodes/icon.ts";
 import { getContentArea } from "../../renderPptx/utils/contentArea.ts";
 
@@ -32,19 +32,12 @@ export const iconNodeDef: NodeDefinition = {
       Math.ceil(n.variant ? iconSize : Math.min(content.w, content.h)),
       iconSize,
     );
-    const iconImageData = n.svgContent
-      ? await rasterizeSvgContent(
-          n.svgContent,
-          rasterSize,
-          n.color,
-          ctx.iconRasterCache,
-        )
-      : await rasterizeIcon(
-          n.name!,
-          rasterSize,
-          n.color ?? "#000000",
-          ctx.iconRasterCache,
-        );
+    const iconImageData = await rasterizeIcon(
+      n.name,
+      rasterSize,
+      n.color ?? "#000000",
+      ctx.iconRasterCache,
+    );
 
     const positioned: Record<string, unknown> = {
       ...n,

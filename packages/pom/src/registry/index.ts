@@ -17,6 +17,7 @@ import {
 } from "./definitions/compositeNodes.ts";
 import { vstackNodeDef, hstackNodeDef } from "./definitions/stack.ts";
 import { layerNodeDef } from "./definitions/layer.ts";
+import { svgNodeDef } from "./definitions/svg.ts";
 
 // 全ノード定義を登録
 registerNode(textNodeDef);
@@ -37,5 +38,6 @@ registerNode(pyramidNodeDef);
 registerNode(vstackNodeDef);
 registerNode(hstackNodeDef);
 registerNode(layerNodeDef);
+registerNode(svgNodeDef);
 
 export { getNodeDef } from "./nodeRegistry.ts";

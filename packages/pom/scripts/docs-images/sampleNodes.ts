@@ -375,6 +375,62 @@ const iconSample = `
 </VStack>
 `;
 
+const svgSample = `
+<VStack w="100%" h="max" padding="40" gap="32" justifyContent="center" alignItems="center" backgroundColor="${palette.background}">
+  <Text fontSize="28" bold="true" color="${palette.navy}" w="100%" textAlign="center">Svg Node Example</Text>
+  <HStack gap="32">
+    <VStack gap="20" padding="24" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+      <Text fontSize="16" bold="true">Basic SVGs</Text>
+      <HStack gap="24" alignItems="center">
+        <Svg w="48" h="48">
+          <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+        </Svg>
+        <Svg w="48" h="48">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="black" stroke-width="2"/></svg>
+        </Svg>
+        <Svg w="48" h="48">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="black" stroke-width="2"/></svg>
+        </Svg>
+      </HStack>
+    </VStack>
+    <VStack gap="20" padding="24" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+      <Text fontSize="16" bold="true">Size Variations</Text>
+      <HStack gap="16" alignItems="end">
+        <Svg w="20" h="20">
+          <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+        </Svg>
+        <Svg w="32" h="32">
+          <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+        </Svg>
+        <Svg w="48" h="48">
+          <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+        </Svg>
+        <Svg w="64" h="64">
+          <svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"/></svg>
+        </Svg>
+      </HStack>
+    </VStack>
+    <VStack gap="20" padding="24" backgroundColor="FFFFFF" border.color="${palette.border}" border.width="1">
+      <Text fontSize="16" bold="true">Color Variations</Text>
+      <HStack gap="24" alignItems="center">
+        <Svg w="48" h="48" color="#${palette.navy}">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+        </Svg>
+        <Svg w="48" h="48" color="#${palette.blue}">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+        </Svg>
+        <Svg w="48" h="48" color="#${palette.red}">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+        </Svg>
+        <Svg w="48" h="48" color="#${palette.green}">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2"/></svg>
+        </Svg>
+      </HStack>
+    </VStack>
+  </HStack>
+</VStack>
+`;
+
 export const sampleNodes: Record<NodeType, string> = {
   text: textSample,
   image: imageSample,
@@ -390,4 +446,5 @@ export const sampleNodes: Record<NodeType, string> = {
   vstack: vstackSample,
   hstack: hstackSample,
   icon: iconSample,
+  svg: svgSample,
 };
