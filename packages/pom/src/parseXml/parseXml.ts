@@ -59,6 +59,7 @@ export const TAG_TO_TYPE: Record<string, string> = {
   HStack: "hstack",
   Layer: "layer",
   Icon: "icon",
+  Svg: "svg",
 };
 
 // Reverse mapping: node type → tag name
@@ -209,7 +210,8 @@ const CHILD_ELEMENT_PROPS: Record<string, Set<string>> = {
   tree: new Set(["data"]),
   ul: new Set(["items"]),
   ol: new Set(["items"]),
-  icon: new Set(["name", "svgContent"]),
+  icon: new Set(["name"]),
+  svg: new Set(["svgContent"]),
 };
 
 function validateLeafNode(
@@ -995,14 +997,14 @@ function serializeSvgElement(svgElement: XmlElement): string {
   return String(svgBuilder.build([svgElement]));
 }
 
-function convertIconChildren(
+function convertSvgChildren(
   childElements: XmlElement[],
   result: Record<string, unknown>,
   errors: string[],
 ): void {
   if (childElements.length !== 1) {
     errors.push(
-      `<Icon>: Expected exactly one <svg> child element, but found ${childElements.length} child element(s)`,
+      `<Svg>: Expected exactly one <svg> child element, but found ${childElements.length} child element(s)`,
     );
     return;
   }
@@ -1010,15 +1012,7 @@ function convertIconChildren(
   const child = childElements[0];
   const tag = getTagName(child);
   if (tag !== "svg") {
-    errors.push(`<Icon>: Expected <svg> child element, but found <${tag}>`);
-    return;
-  }
-
-  // name と svg の排他バリデーション
-  if (result.name !== undefined) {
-    errors.push(
-      '<Icon>: Cannot specify both "name" attribute and <svg> child element',
-    );
+    errors.push(`<Svg>: Expected <svg> child element, but found <${tag}>`);
     return;
   }
 
@@ -1063,7 +1057,7 @@ const CHILD_ELEMENT_CONVERTERS: Record<string, ChildElementConverter> = {
   chart: convertChartChildren,
   table: convertTableChildren,
   tree: convertTreeChildren,
-  icon: convertIconChildren,
+  svg: convertSvgChildren,
 };
 
 // ===== Node conversion =====
@@ -1208,7 +1202,7 @@ function convertPomNode(
     validateLeafNode(nodeType, result, errors);
   }
 
-  // Icon: normalize color / bgColor and validate name vs svgContent
+  // Icon: normalize color / bgColor
   if (nodeType === "icon") {
     if (typeof result.color === "string" && !result.color.startsWith("#")) {
       result.color = `#${result.color}`;
@@ -1216,11 +1210,15 @@ function convertPomNode(
     if (typeof result.bgColor === "string" && !result.bgColor.startsWith("#")) {
       result.bgColor = `#${result.bgColor}`;
     }
-    // name も svgContent もない場合はエラー
-    if (result.name === undefined && result.svgContent === undefined) {
-      errors.push(
-        '<Icon>: Either "name" attribute or <svg> child element is required',
-      );
+  }
+
+  // Svg: normalize color and validate svgContent
+  if (nodeType === "svg") {
+    if (typeof result.color === "string" && !result.color.startsWith("#")) {
+      result.color = `#${result.color}`;
+    }
+    if (result.svgContent === undefined) {
+      errors.push("<Svg>: A <svg> child element is required");
     }
   }
 

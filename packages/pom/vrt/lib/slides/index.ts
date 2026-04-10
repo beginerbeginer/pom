@@ -31,7 +31,7 @@ export { page24PyramidXml } from "./pyramid.js";
 export {
   page25IconXml,
   page29IconInHStackXml,
-  page35IconInlineSvgXml,
+  page35SvgNodeXml,
 } from "./icon.js";
 export { page27HStackFlexShrinkXml } from "./flexShrink.js";
 export { page28LayoutV2Xml } from "./layoutV2.js";

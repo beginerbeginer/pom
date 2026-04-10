@@ -89,7 +89,8 @@ await pptx.writeFile({ fileName: "presentation.pptx" });
 | Layer        | Absolute-positioned overlay container                                                                   |
 | VStack       | Vertical stack layout                                                                                   |
 | HStack       | Horizontal stack layout                                                                                 |
-| Icon         | Lucide icons / inline SVG                                                                               |
+| Icon         | Lucide icons                                                                                            |
+| Svg          | Inline SVG graphics                                                                                     |
 
 For detailed node documentation, see [Nodes](./docs/nodes.md).
 
