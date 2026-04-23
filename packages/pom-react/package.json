@@ -1,0 +1,60 @@
+{
+  "name": "@miyabi/pom-react",
+  "version": "0.1.0",
+  "description": "React JSX layer for pom — declaratively build PowerPoint slides with React components.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./jsx-runtime": {
+      "types": "./dist/jsx-runtime.d.ts",
+      "import": "./dist/jsx-runtime.js"
+    },
+    "./jsx-dev-runtime": {
+      "types": "./dist/jsx-runtime.d.ts",
+      "import": "./dist/jsx-runtime.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "powerpoint",
+    "pptx",
+    "presentation",
+    "slides",
+    "react",
+    "jsx",
+    "declarative"
+  ],
+  "author": "masashimiyagaki",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "demo": "tsx --tsconfig tsconfig.demo.json demo.tsx",
+    "preview": "pnpm run demo && open sample-q3.pptx"
+  },
+  "peerDependencies": {
+    "@hirokisakabe/pom": ">=7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "@vitest/coverage-v8": "^4.1.2",
+    "tsx": "4.21.0",
+    "typescript-eslint": "^8.58.0"
+  }
+}
