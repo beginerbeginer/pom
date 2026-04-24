@@ -3,6 +3,7 @@
 // JSX → POMElement 変換が完結する。react をバンドルしたくないユーザー向けの
 // ライトウェイト API として維持している。
 import type { POMElement, POMFC } from "./types.ts";
+import { POM_TAG } from "./pom-tag.ts";
 
 export type { POMElement };
 
@@ -20,7 +21,7 @@ export function jsx(
 
   if (typeof type === "function") {
     const stringText = extractStringChildren(rawChildren);
-    const tag = (type as { pomTag?: string }).pomTag ?? "";
+    const tag = (type as Record<symbol, string | undefined>)[POM_TAG] ?? "";
     if (stringText !== null && TEXT_CONTENT_TAGS.has(tag)) {
       return type({ ...rest, text: stringText, children: [] }) ?? createEmptyFragment();
     }

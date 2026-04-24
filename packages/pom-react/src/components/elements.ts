@@ -1,19 +1,5 @@
-/**
- * JSXで使用できるPOMコンポーネント関数群。
- *
- * <VStack> のような大文字のJSXタグは変数参照として解決されるため、
- * 各コンポーネントをnamed exportとして提供する必要がある。
- *
- * 使用例:
- *   import { VStack, HStack, Text } from "@miyabi/pom-react";
- *   // または
- *   import * as POM from "@miyabi/pom-react";
- *
- * 各関数はJSXファクトリから { tag, props, children } を受け取り、
- * そのままPOMElementとして返す薄いラッパー。
- * 実際のロジックはjsx-runtime.tsとrenderer.tsが担当する。
- */
 import type { POMElement } from "../types.ts";
+import { POM_TAG } from "../pom-tag.ts";
 import type {
   VStackProps,
   HStackProps,
@@ -38,13 +24,12 @@ import type {
 
 type WithChildren<P> = P & { children?: POMElement[] };
 
-/** jsx-runtimeがタグ名を識別できるよう pomTag を付与する */
 function makeElement(tag: string) {
   function component(props: WithChildren<Record<string, unknown>>): POMElement {
     const { children = [], ...rest } = props;
     return { tag, props: rest, children };
   }
-  (component as unknown as { pomTag: string }).pomTag = tag;
+  (component as unknown as Record<symbol, string>)[POM_TAG] = tag;
   return component;
 }
 
