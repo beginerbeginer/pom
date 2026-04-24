@@ -12,12 +12,9 @@ import {
   VStack,
   HStack,
   Text,
+  Shape,
 } from "./react-renderer.ts";
 import { serializeToXml } from "./serializer.ts";
-
-// ============================================================
-// Phase 2-Green: React context / hooks を使えることを検証するテスト
-// ============================================================
 
 describe("React context による props の共有", () => {
   it("useContext でテーマカラーを参照できる", () => {
@@ -64,7 +61,6 @@ describe("React context による props の共有", () => {
     const nodes = renderToSerializableNodes(element);
     const xml = serializeToXml(nodes);
 
-    // outside は default color FFFFFF、inside は FF0000
     expect(xml).toContain('text="outside"');
     expect(xml).toContain('text="inside"');
     expect(xml).toContain("FF0000");
@@ -139,5 +135,42 @@ describe("ThemeProvider による一括スタイル適用", () => {
     expect(xml).toContain('color="FFFFFF"');
     expect(xml).toContain('text="Q3 Results"');
     expect(xml).toContain('padding="16"');
+  });
+});
+
+describe("文字列 children の text prop 昇格", () => {
+  it("<Text>文字列</Text> 構文で text prop が設定される", () => {
+    const nodes = renderToSerializableNodes(<Text fontSize={12}>Hello World</Text>);
+    expect(nodes[0].props.text).toBe("Hello World");
+    // children として残らず text prop に昇格していること
+    expect(nodes[0].children).toHaveLength(0);
+  });
+
+  it("<Shape>文字列</Shape> 構文で text prop が設定される", () => {
+    const nodes = renderToSerializableNodes(
+      <Shape shapeType="ellipse">42</Shape>
+    );
+    expect(nodes[0].props.text).toBe("42");
+  });
+
+  it("ThemeProvider 配下でも文字列 children の昇格が機能する", () => {
+    const theme = { colors: { primary: "0E0D6A" } };
+    function Title() {
+      const { colors } = useTheme() as typeof theme;
+      return <Text color={colors.primary}>タイトル</Text>;
+    }
+    const xml = serializeToXml(
+      renderToSerializableNodes(
+        <ThemeProvider theme={theme}><Title /></ThemeProvider>
+      )
+    );
+    expect(xml).toContain('text="タイトル"');
+    expect(xml).toContain('color="0E0D6A"');
+  });
+
+  it("HStack の文字列 children は昇格しない", () => {
+    // TEXT_CONTENT_TAGS に含まれない要素は文字列 children を無視する
+    const nodes = renderToSerializableNodes(<HStack gap={8} />);
+    expect(nodes[0].props).not.toHaveProperty("text");
   });
 });
