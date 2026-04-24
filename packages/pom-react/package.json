@@ -17,6 +17,10 @@
     "./jsx-dev-runtime": {
       "types": "./dist/jsx-runtime.d.ts",
       "import": "./dist/jsx-runtime.js"
+    },
+    "./react": {
+      "types": "./dist/react-renderer.d.ts",
+      "import": "./dist/react-renderer.js"
     }
   },
   "files": [
