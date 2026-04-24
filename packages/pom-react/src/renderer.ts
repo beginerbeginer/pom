@@ -1,10 +1,3 @@
-/**
- * POMElement[] → シリアライズ可能なノードオブジェクトへの変換。
- *
- * JSXファクトリが作ったPOMElementツリーを、
- * serializeToXml() が処理できる形式に変換する。
- * タグ名はXMLと同じPascalCaseを使用（VStack, HStack, Text...）。
- */
 import { Fragment } from "./jsx-runtime.ts";
 import type { POMElement } from "./types.ts";
 
@@ -14,7 +7,6 @@ export type SerializableNode = {
   children: SerializableNode[];
 };
 
-/** JSXルート要素（単一スライドまたはFragment）をSerializableNodeの配列に変換 */
 export function renderToPOMNodes(element: POMElement): SerializableNode[] {
   if (element.tag === Fragment) {
     return element.children.flatMap((child) => renderToPOMNodes(child));
@@ -32,10 +24,9 @@ function elementToSerializable(element: POMElement): SerializableNode {
   return { tag, props, children: resolvedChildren };
 }
 
-/**
- * JSXタグ名の検証。
- * @hirokisakabe/pom の parseXml/parseXml.ts:TAG_TO_TYPE と対応させる。
- */
+// @hirokisakabe/pom の parseXml.ts:TAG_TO_TYPE と対応させる。
+// upstream の型定義がエクスポートされていないため手元で維持する。
+// upstream に TAG_TO_TYPE の変更があった場合はここも更新が必要。
 const VALID_TAGS = new Set([
   "Text",
   "Image",
